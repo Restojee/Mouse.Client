@@ -150,9 +150,9 @@ export const StyledMiniMapImagesContainer = styled(StyledBox)({
 })
 
 type StyledMiniMapImageContainerPropsType = {
-    isVisible: boolean,
-    username: string,
-    isActive: boolean
+    isVisible?: boolean,
+    username?: string,
+    isActive?: boolean
 }
 export const StyledMiniMapImageContainer = styled.div<StyledMiniMapImageContainerPropsType>(({ theme, ...props }) => ({
     height: '80px',
