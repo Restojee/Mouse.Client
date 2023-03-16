@@ -1,12 +1,15 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import {mapsApi} from "@/api/maps";
+import {
+    combineReducers,
+    configureStore
+} from "@reduxjs/toolkit";
+import { coreMapsApi } from "@/api/coreMapsApi";
 
 const rootReducer = combineReducers({
-    [mapsApi.reducerPath]: mapsApi.reducer
+    [coreMapsApi.reducerPath]: coreMapsApi.reducer
 })
 
 export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(mapsApi.middleware)
+        getDefaultMiddleware().concat(coreMapsApi.middleware)
 })
