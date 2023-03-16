@@ -12,6 +12,7 @@ import {CommentIcon} from "@/svg/CommentIcon";
 import {CopyIcon} from "@/svg/CopyIcon";
 import { Button } from "@/ui/Button/Button";
 import {ImageIcon} from "@/svg/ImageIcon";
+import Image from "next/image";
 
 type MapCardProps = {
     label?: string | null;
@@ -43,11 +44,11 @@ export const MapCard = (props: MapCardProps) => {
                 <StyledMapCardButton isHover={ isMapHover } onClick={ onClick }>
                     <Button backgroundColor={ theme.colors.status.success } label="Открыть" />
                 </StyledMapCardButton>
-                <img src={ image || "https://i.imgur.com/WpmGIaD.png" } alt=" " width="300px" height="200px"  />
+                <Image src={ image || "https://i.imgur.com/WpmGIaD.png" } alt=" " width={300} height={200}  />
             </StyledMapCardBody>
             <StyledMapCardFooter justify="space-between">
                 <StyledBox gap={"10px"} justify="flex-start">
-                    <ImageIcon />
+                    <ImageIcon />repla
                     <FavoriteIcon />
                 </StyledBox>
                 <StyledBox gap={"10px"} justify="flex-end" opacity="0.6">
