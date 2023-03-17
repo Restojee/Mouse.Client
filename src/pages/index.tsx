@@ -1,9 +1,6 @@
 import { StyledWelcomeButton } from '@/modules/welcome/styles/StyledWelcomeButton';
 import { StyledWelcomePage } from '@/modules/welcome/styles/StyledWelcomePage';
-import { Inter } from '@next/font/google';
-import {useRouter} from "next/router";
-
-const inter = Inter({ subsets: ['latin'] })
+import { useRouter } from "next/router";
 
 export default function Home() {
     const navigate = useRouter()
