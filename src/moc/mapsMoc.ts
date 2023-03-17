@@ -5,7 +5,7 @@ type MapsDataType = {
     label: string,
     image: string
 }
-export const mapsData = [
+export const mapsData: MapsDataType[] = [
     {
         id: '1',
         addedCount: 4,
@@ -77,7 +77,7 @@ export const mapComments = [
         "name": "Nickname",
         "date": "01.01.2020",
         "avatar": "https://i.imgur.com/P11sXfz.png",
-        "text": "Lorem ipsum dolor sit amet, consectetur agggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggdipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl tincidunt eget nullam non. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Volutpat odio facilisis mauris sit amet massa."
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl tincidunt eget nullam non. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Volutpat odio facilisis mauris sit amet massa."
     },
     {
         "id": 1,

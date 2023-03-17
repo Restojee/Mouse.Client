@@ -16,6 +16,7 @@ import { BookCheckIcon } from "@/svg/BookCheckIcon";
 import { CommentIcon } from "@/svg/CommentIcon";
 import { StyledImageContainer } from "@/ui/Messages/styled";
 import { mapTags } from "@/moc/mapsMoc";
+import Image from "next/image";
 
 export const MapViewMainBlock = () => {
 
@@ -44,7 +45,7 @@ export const MapViewMainBlock = () => {
                 maxHeight="400px"
                 height="100%"
             >
-                <img src={noneImage.src} />
+                <Image src={noneImage.src} width={800} height={400} alt={'map'}/>
             </StyledImageContainer>
             <StyledScrollWrapper slider>
                 <StyledScrollContainer>
