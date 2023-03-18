@@ -1,7 +1,6 @@
 import { StyledMapsGrid } from "@/modules/map/styles/StyledMapsGrid";
 import { MapCard } from "@/modules/map/MapCard";
-import { Map } from "@/api/codegen/mouseMapsApi";
-import { memo } from "react";
+import { Map } from "@/api/codegen/genMouseMapsApi";
 
 type Props = {
     maps?: Map[];

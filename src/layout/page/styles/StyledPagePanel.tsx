@@ -19,7 +19,7 @@ export const StyledPagePanel = styled.div<Partial<Props>>(props => ({
     }
 }));
 
-export const StyledPanelPointBlockWrapper = styled.div({
+export const StyledPanelSectionWrapper = styled.div({
     position: "relative",
     display: "flex",
     justifyContent: "flex-end"

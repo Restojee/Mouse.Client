@@ -42,13 +42,13 @@ export const MapCard = (props: MapCardProps) => {
             </StyledMapCardHeader>
             <StyledMapCardBody>
                 <StyledMapCardButton isHover={ isMapHover } onClick={ onClick }>
-                    <Button backgroundColor={ theme.colors.status.success } label="Открыть" />
+                    <Button bgColor={ theme.colors.status.success } label="Открыть" />
                 </StyledMapCardButton>
                 <Image src={ image || "https://i.imgur.com/WpmGIaD.png" } alt=" " width={300} height={200}  />
             </StyledMapCardBody>
             <StyledMapCardFooter justify="space-between">
                 <StyledBox gap={"10px"} justify="flex-start">
-                    <ImageIcon />repla
+                    <ImageIcon />
                     <FavoriteIcon />
                 </StyledBox>
                 <StyledBox gap={"10px"} justify="flex-end" opacity="0.6">

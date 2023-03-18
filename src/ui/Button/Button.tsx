@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import {
     StyledButton,
     StyledButtonProps
@@ -12,16 +12,17 @@ type ButtonProps = {
     label?: string;
     type?: "button" | "submit";
     onClick?: () => void;
+    children?: ReactElement;
     bgColor?: Property.BackgroundColor
 }
 export const Button = (props: ButtonProps & StyledButtonProps) => {
 
-    const { label, append, prepend, onClick, type = "button", ...styleProps } = props;
+    const { label, append, prepend, onClick, type = "button", children, ...styleProps } = props;
 
     return (
         <StyledButton onClick={ onClick } type={ type } { ...styleProps } >
             { prepend }
-            <Typography isEllipsis>{ label }</Typography>
+            { children || <Typography isEllipsis>{ label }</Typography> }
             { append }
         </StyledButton>
     )

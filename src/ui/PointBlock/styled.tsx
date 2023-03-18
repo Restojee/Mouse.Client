@@ -20,12 +20,7 @@ export const StyledPointBlockContainer = styled(StyledBox)<PointBlockContainerPr
     width: props.width || 250,
     zIndex: theme.order.other,
     color: theme.colors.textOnSecondary,
-    fontSize: theme.font.fontSize,
-    ...props.isVisible && {
-        visibility: "hidden",
-        opacity: 0,
-        pointerEvents: "none"
-    }
+    fontSize: theme.font.fontSize
 }))
 export const StyledPointBlockHeader = styled(StyledBox)({
     marginBottom: 15

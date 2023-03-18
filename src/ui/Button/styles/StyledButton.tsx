@@ -3,7 +3,6 @@ import { Property } from "csstype";
 
 export type StyledButtonProps = {
     justify?: Property.JustifyContent;
-    backgroundColor?: Property.BackgroundColor;
     borderRadius?: Property.BorderRadius;
     fontSize?: Property.FontSize;
     width?: Property.Width;
@@ -17,9 +16,8 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     theme,
     isBold,
     justify = "center",
-    backgroundColor = theme.colors.brandColor,
+    bgColor = theme.colors.brandColor,
     size = "md",
-    bgColor,
     borderRadius = "10px",
     width = "min-content",
     margin = ""
@@ -39,6 +37,7 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     cursor: "pointer",
     gap: 10,
     columnGap: 10,
+    backgroundColor: bgColor,
     rowGap: 10,
     "&:hover": {
         opacity: 0.7

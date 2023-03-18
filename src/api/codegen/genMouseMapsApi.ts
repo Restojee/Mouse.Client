@@ -26,9 +26,9 @@ const injectedRtkApi = api.injectEndpoints({
       }),
     }),
     updateMapImage: build.mutation<
-      UpdateMapImageApiResponse,
-      UpdateMapImageApiArg
-    >({
+        UpdateMapImageApiResponse,
+        UpdateMapImageApiArg
+        >({
       query: (queryArg) => ({
         url: `/maps/update-image/${queryArg.mapId}`,
         method: "PUT",
@@ -50,18 +50,18 @@ const injectedRtkApi = api.injectEndpoints({
       }),
     }),
     addFavoriteMap: build.mutation<
-      AddFavoriteMapApiResponse,
-      AddFavoriteMapApiArg
-    >({
+        AddFavoriteMapApiResponse,
+        AddFavoriteMapApiArg
+        >({
       query: (queryArg) => ({
         url: `/maps/${queryArg.mapId}/favorites/create`,
         method: "POST",
       }),
     }),
     addCompletedMap: build.mutation<
-      AddCompletedMapApiResponse,
-      AddCompletedMapApiArg
-    >({
+        AddCompletedMapApiResponse,
+        AddCompletedMapApiArg
+        >({
       query: (queryArg) => ({
         url: `/maps/${queryArg.mapId}/completed/create`,
         method: "POST",
@@ -83,9 +83,9 @@ const injectedRtkApi = api.injectEndpoints({
       }),
     }),
     createComment: build.mutation<
-      CreateCommentApiResponse,
-      CreateCommentApiArg
-    >({
+        CreateCommentApiResponse,
+        CreateCommentApiArg
+        >({
       query: (queryArg) => ({
         url: `/comments`,
         method: "POST",
@@ -93,9 +93,9 @@ const injectedRtkApi = api.injectEndpoints({
       }),
     }),
     getCurrentUser: build.query<
-      GetCurrentUserApiResponse,
-      GetCurrentUserApiArg
-    >({
+        GetCurrentUserApiResponse,
+        GetCurrentUserApiArg
+        >({
       query: () => ({ url: `/users/current` }),
     }),
     getTag: build.query<GetTagApiResponse, GetTagApiArg>({
@@ -111,9 +111,9 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({ url: `/maps/one/by-id/${queryArg.mapId}` }),
     }),
     getFavoriteMapsByUser: build.query<
-      GetFavoriteMapsByUserApiResponse,
-      GetFavoriteMapsByUserApiArg
-    >({
+        GetFavoriteMapsByUserApiResponse,
+        GetFavoriteMapsByUserApiArg
+        >({
       query: (queryArg) => ({
         url: `/maps/favorites/collect/by-user`,
         params: {
@@ -124,9 +124,9 @@ const injectedRtkApi = api.injectEndpoints({
       }),
     }),
     getCompletedMapsByUser: build.query<
-      GetCompletedMapsByUserApiResponse,
-      GetCompletedMapsByUserApiArg
-    >({
+        GetCompletedMapsByUserApiResponse,
+        GetCompletedMapsByUserApiArg
+        >({
       query: (queryArg) => ({
         url: `/maps/completed/collect/by-user`,
         params: {
@@ -153,36 +153,36 @@ const injectedRtkApi = api.injectEndpoints({
       }),
     }),
     getTipPaginate: build.query<
-      GetTipPaginateApiResponse,
-      GetTipPaginateApiArg
-    >({
+        GetTipPaginateApiResponse,
+        GetTipPaginateApiArg
+        >({
       query: () => ({ url: `/info/collect` }),
     }),
     getCommentsByUserId: build.query<
-      GetCommentsByUserIdApiResponse,
-      GetCommentsByUserIdApiArg
-    >({
+        GetCommentsByUserIdApiResponse,
+        GetCommentsByUserIdApiArg
+        >({
       query: (queryArg) => ({ url: `/comments/by-user/${queryArg.userId}` }),
     }),
     getCommentsByMapId: build.query<
-      GetCommentsByMapIdApiResponse,
-      GetCommentsByMapIdApiArg
-    >({
+        GetCommentsByMapIdApiResponse,
+        GetCommentsByMapIdApiArg
+        >({
       query: (queryArg) => ({ url: `/comments/by-map/${queryArg.mapId}` }),
     }),
     removeFavoriteMap: build.mutation<
-      RemoveFavoriteMapApiResponse,
-      RemoveFavoriteMapApiArg
-    >({
+        RemoveFavoriteMapApiResponse,
+        RemoveFavoriteMapApiArg
+        >({
       query: (queryArg) => ({
         url: `/maps/${queryArg.mapId}/favorites/remove`,
         method: "DELETE",
       }),
     }),
     removeCompletedMap: build.mutation<
-      RemoveCompletedMapApiResponse,
-      RemoveCompletedMapApiArg
-    >({
+        RemoveCompletedMapApiResponse,
+        RemoveCompletedMapApiArg
+        >({
       query: (queryArg) => ({
         url: `/maps/${queryArg.mapId}/completed/remove`,
         method: "DELETE",
@@ -204,7 +204,7 @@ const injectedRtkApi = api.injectEndpoints({
   }),
   overrideExisting: false,
 });
-export { injectedRtkApi as mouseMapsApi };
+export { injectedRtkApi as genMouseMapsApi };
 export type GetTagsApiResponse = /** status 200 OK */ Tag[];
 export type GetTagsApiArg = void;
 export type UpdateTagApiResponse = /** status 200 OK */ Tag;
@@ -381,32 +381,3 @@ export type CreateCommentRequest = {
   text?: string;
   mapId?: number;
 };
-export const {
-  useGetTagsQuery,
-  useUpdateTagMutation,
-  useCreateTagMutation,
-  useUpdateMapMutation,
-  useUpdateMapImageMutation,
-  useSetMapTagsMutation,
-  useUpdateTipMutation,
-  useAddFavoriteMapMutation,
-  useAddCompletedMapMutation,
-  useCreateMapMutation,
-  useCreateTipMutation,
-  useCreateCommentMutation,
-  useGetCurrentUserQuery,
-  useGetTagQuery,
-  useDeleteTagMutation,
-  useGetMapQuery,
-  useGetFavoriteMapsByUserQuery,
-  useGetCompletedMapsByUserQuery,
-  useGetMapsQuery,
-  useGetMapsByUserQuery,
-  useGetTipPaginateQuery,
-  useGetCommentsByUserIdQuery,
-  useGetCommentsByMapIdQuery,
-  useRemoveFavoriteMapMutation,
-  useRemoveCompletedMapMutation,
-  useDeleteMapMutation,
-  useRemoveTipMutation,
-} = injectedRtkApi;
