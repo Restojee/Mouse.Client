@@ -9,10 +9,10 @@ const config: ConfigFile = {
     //     },
     //   }
     // },
-    outputFile: "./src/api/codegen/mouseMapsApi.ts",
+    outputFile: "./src/api/codegen/genMouseMapsApi.ts",
     exportName: "mouseMapsApi",
     apiImport: "coreMapsApi",
-    hooks: true,
+    hooks: false,
 }
 
 export default config
