@@ -12,6 +12,7 @@ import {CommentIcon} from "@/svg/CommentIcon";
 import {CopyIcon} from "@/svg/CopyIcon";
 import { Button } from "@/ui/Button/Button";
 import {ImageIcon} from "@/svg/ImageIcon";
+import { IconButton } from "@/ui/Button/IconButton";
 import Image from "next/image";
 
 type MapCardProps = {
@@ -26,6 +27,12 @@ export const MapCard = (props: MapCardProps) => {
 
     const theme = useAppTheme();
 
+    const onIconsClick= (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+        alert('Пока не работает....')
+    }
+
+
     const {
         label,
         isMapHover,
@@ -38,7 +45,9 @@ export const MapCard = (props: MapCardProps) => {
         <StyledMapCard>
             <StyledMapCardHeader>
                 <Typography>{ label }</Typography>
-                <CopyIcon />
+                <IconButton onClick={onIconsClick}>
+                    <CopyIcon />
+                </IconButton>
             </StyledMapCardHeader>
             <StyledMapCardBody>
                 <StyledMapCardButton isHover={ isMapHover } onClick={ onClick }>
@@ -47,11 +56,15 @@ export const MapCard = (props: MapCardProps) => {
                 <Image src={ image || "https://i.imgur.com/WpmGIaD.png" } alt=" " width={300} height={200}  />
             </StyledMapCardBody>
             <StyledMapCardFooter justify="space-between">
-                <StyledBox gap={"10px"} justify="flex-start">
-                    <ImageIcon />
-                    <FavoriteIcon />
+                <StyledBox gap={ "10px" } justify="flex-start">
+                    <IconButton onClick={onIconsClick}>
+                        <ImageIcon />
+                    </IconButton>
+                    <IconButton onClick={onIconsClick}>
+                        <FavoriteIcon />
+                    </IconButton>
                 </StyledBox>
-                <StyledBox gap={"10px"} justify="flex-end" opacity="0.6">
+                <StyledBox gap={ "10px" } justify="flex-end" opacity="0.6">
                     <StyledBox gap="5px" align="center" title="Выполнений">
                         <BookCheckIcon />
                         <Typography>{ addedCount }</Typography>

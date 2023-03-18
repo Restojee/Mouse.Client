@@ -26,7 +26,7 @@ export const Info = () => {
                         </StyledBox>
                         <StyledInfoBlock>
                             <Typography>{text}</Typography>
-                            <Typography margin="0 0 0 auto" opacity="0.5" addSize="-2px">
+                            <Typography margin="10px 0 0 auto" opacity="0.5" addSize="-2px">
                                 {date}
                             </Typography>
                         </StyledInfoBlock>

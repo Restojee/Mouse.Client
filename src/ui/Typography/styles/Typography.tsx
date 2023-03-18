@@ -8,7 +8,6 @@ type Props = {
     size?: Property.FontSize;
     opacity?: Property.Opacity;
     margin?: Property.Margin;
-
     fontSize?: number | string;
     isEllipsis?: boolean;
     isUpperCase?: boolean;

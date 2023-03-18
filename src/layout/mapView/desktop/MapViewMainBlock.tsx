@@ -3,7 +3,6 @@ import { StyledBox } from "@/ui/Box/styles/StyledBox";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { IconButton } from "@/ui/Button/IconButton";
 import { CopyIcon } from "@/svg/CopyIcon";
-import { Avatar } from "@/layout/avatar/Avatar";
 import noneImage from "@/assets/images/noneImage.jpg";
 import { StyledTag, StyledTagsContainer } from "@/ui/Tag/styled";
 import { CloseIcon } from "@/svg/CloseIcon";
@@ -17,6 +16,7 @@ import { BookCheckIcon } from "@/svg/BookCheckIcon";
 import { CommentIcon } from "@/svg/CommentIcon";
 import { StyledImageContainer } from "@/ui/Messages/styled";
 import { mapTags } from "@/moc/mapsMoc";
+import Image from "next/image";
 
 export const MapViewMainBlock = () => {
 
@@ -45,7 +45,7 @@ export const MapViewMainBlock = () => {
                 maxHeight="400px"
                 height="100%"
             >
-                <img src={noneImage.src} />
+                <Image src={noneImage.src} width={800} height={400} alt={'map'}/>
             </StyledImageContainer>
             <StyledScrollWrapper slider>
                 <StyledScrollContainer>
@@ -77,7 +77,7 @@ export const MapViewMainBlock = () => {
     );
 };
 
-const mapViewInfoArray = [
+export const mapViewInfoArray = [
     {
         icon: <UsersIcon />,
         count: 12,

@@ -86,7 +86,7 @@ export const DesktopMapView = (props: PropsType) => {
     );
 }
 
-const panelIconsArray = [
+export const panelIconsArray = [
     { icon: (theme: typeof DefaultTheme) => <AddImageIcon size="30px" color={ theme.colors.primary } />, },
     { icon: (theme: typeof DefaultTheme) => <FavoriteIcon size="30px" color={ theme.colors.primary } />, },
     { icon: (theme: typeof DefaultTheme) => <OutIcon size="30px" color={ theme.colors.primary } />, },
