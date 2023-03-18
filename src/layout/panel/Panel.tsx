@@ -1,16 +1,16 @@
-import {Avatar} from "@/layout/avatar/Avatar";
-import {NavLink} from "@/layout/navigation/NavLink";
-import {MoonIcon} from "@/svg/MoonIcon";
-import {StyledNavLinkSection} from "@/layout/navigation/styles/StyledNavLinkSection";
-import {BurgerIcon} from "@/svg/BurgerIcon";
-import {NotificationsIcon} from "@/svg/NotificationIcons";
-import {ChartIcon} from "@/svg/ChartIcon";
-import {PaperIcon} from "@/svg/PaperIcon";
-import {ChatFillIcon} from "@/svg/ChatFillIcon";
-import {SettingsIcon} from "@/svg/SettingsIcon";
-import {LogInIcon} from "@/svg/LogInIcon";
-import {ReactNode} from "react";
-import {Property} from "csstype";
+import { Avatar } from "@/layout/avatar/Avatar";
+import { NavLink } from "@/layout/navigation/NavLink";
+import { MoonIcon } from "@/svg/MoonIcon";
+import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
+import { BurgerIcon } from "@/svg/BurgerIcon";
+import { NotificationsIcon } from "@/svg/NotificationIcons";
+import { ChartIcon } from "@/svg/ChartIcon";
+import { PaperIcon } from "@/svg/PaperIcon";
+import { ChatFillIcon } from "@/svg/ChatFillIcon";
+import { SettingsIcon } from "@/svg/SettingsIcon";
+import { LogInIcon } from "@/svg/LogInIcon";
+import { ReactNode } from "react";
+import { Property } from "csstype";
 import { StyledPanel } from "@/layout/panel/styled";
 
 export type PanelProps = {
@@ -41,21 +41,21 @@ export const Panel = (props: PanelProps) => {
                 }
             />
             <Avatar size="46px" image={avatar} />
-            {tabsData.map(el => (
+            { tabsData.map(el => (
                 <NavLink
-                    key={el.tab}
-                    label={el.label}
-                    isChecked={el.tab === props.activeTab}
-                    onClick={() => onTabClickHandler(el.tab)}
-                    margin={el.margin}
-                    border={el.border}
-                    prepend={(
+                    key={ el.tab }
+                    label={ el.label }
+                    isChecked={ el.tab === props.activeTab }
+                    onClick={ () => onTabClickHandler(el.tab) }
+                    margin={ el.margin }
+                    border={ el.border }
+                    prepend={ (
                         <StyledNavLinkSection>
                             {el.icon}
                         </StyledNavLinkSection>
-                    )}
+                    ) }
                 />
-            ))}
+            )) }
             <NavLink
                 border
                 label="Сменить тему"

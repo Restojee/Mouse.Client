@@ -9,23 +9,28 @@ type Props = {
 }
 export const Layout = (props: Props) => {
 
-    const {children} = props;
+    const { children } = props;
 
-    const [isOpen, setIsOpen] = useState(true)
-    const [activeTab, setActiveTab] = useState<TabsType>('notifications')
+    const [ isOpen, setIsOpen ] = useState(true)
+    const [ activeTab, setActiveTab ] = useState<TabsType>('notifications')
 
     return (
         <StyledLayout>
             <Sidebar />
             <StyledWrapper>
-                {children}
-                {isOpen && <Drawer isOpen={isOpen} activeTab={activeTab} />}
+                { children }
+                { isOpen && (
+                    <Drawer
+                        isOpen={ isOpen }
+                        activeTab={ activeTab }
+                    />
+                ) }
             </StyledWrapper>
             <Panel
-                setActiveTab={setActiveTab}
-                activeTab={activeTab}
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
+                setActiveTab={ setActiveTab }
+                activeTab={ activeTab }
+                isOpen={ isOpen }
+                setIsOpen={ setIsOpen }
             />
         </StyledLayout>
     )

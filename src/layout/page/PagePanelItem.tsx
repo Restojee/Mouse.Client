@@ -5,7 +5,7 @@ import { StyledPagePanelButton } from "@/layout/page/styles/StyledPagePanelButto
 type PropsType = {
     setActiveItem?: (isActive: boolean) => void,
     onClick?: () => void,
-    icon?: React.ReactNode,
+    prepend?: React.ReactNode,
     activeIcon?: React.ReactNode,
     content?: React.ReactNode
 }
@@ -18,7 +18,7 @@ export const PagePanelItem = (props: PropsType) => {
     return (
         <StyledBox>
             <StyledPagePanelButton onClick={pagePanelItemClick}>
-                {props.icon}
+                {props.prepend}
                 {isPagePanelItemOpen && props.activeIcon}
             </StyledPagePanelButton>
             {isPagePanelItemOpen && props.content}
