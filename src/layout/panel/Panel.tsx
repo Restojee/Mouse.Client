@@ -12,6 +12,7 @@ import { LogInIcon } from "@/svg/LogInIcon";
 import { ReactNode } from "react";
 import { Property } from "csstype";
 import { StyledPanel } from "@/layout/panel/styled";
+import { signIn } from "next-auth/react"
 
 export type PanelProps = {
     activeTab: string;
@@ -67,6 +68,7 @@ export const Panel = (props: PanelProps) => {
             />
             <NavLink
                 label="Выйти/войти"
+                onClick={ signIn }
                 prepend={(
                     <StyledNavLinkSection>
                         <LogInIcon />
