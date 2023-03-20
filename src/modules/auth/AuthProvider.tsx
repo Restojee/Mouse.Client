@@ -8,11 +8,5 @@ type AuthProviderProps = {
 export const AuthProvider = (props: AuthProviderProps) => {
     const session = useSession();
 
-    console.log(session.data?.accessToken);
-
-    if (session.data?.accessToken) {
-        accessTokenProvider.setToken(session.data.accessToken)
-    }
-
     return props.children;
 }

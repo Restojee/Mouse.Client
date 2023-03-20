@@ -1,7 +1,7 @@
-import { makeAccessTokenProvider, makeRefreshTokenProvider } from "@/services/storage";
+import { makeTokenProvider } from "@/services/storage";
 
-const accessTokenProvider = makeAccessTokenProvider();
-const refreshTokenProvider = makeRefreshTokenProvider();
+const accessTokenProvider = makeTokenProvider({ storageKey: "access_token" });
+const refreshTokenProvider = makeTokenProvider({ storageKey: "refresh_token" });
 
 export {
     accessTokenProvider,
