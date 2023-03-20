@@ -8,10 +8,13 @@ import { SessionProvider } from "next-auth/react";
 export default function App ({ Component, ...rest }: AppProps) {
     const { store, props } = wrapper.useWrappedStore(rest);
     return (
-        <Provider store={ store }>
-            <ThemeProvider>
-                <Component {...props.pageProps} />
-            </ThemeProvider>
-        </Provider>
+        // @ts-ignore
+        <SessionProvider session={ rest.session }>
+            <Provider store={ store }>
+                <ThemeProvider>
+                    <Component {...props.pageProps} />
+                </ThemeProvider>
+            </Provider>
+        </SessionProvider>
     );
 }
