@@ -1,14 +1,9 @@
 import { StyledWelcomeButton } from '@/modules/welcome/styles/StyledWelcomeButton';
 import { StyledWelcomePage } from '@/modules/welcome/styles/StyledWelcomePage';
 import { useRouter } from "next/router";
-import {useSession} from "next-auth/react";
 
 export default function Home() {
-   const navigate = useRouter()
-
-   const session = useSession();
-
-    console.log("accessToken", session);
+  const navigate = useRouter()
 
   return (
       <StyledWelcomePage>
