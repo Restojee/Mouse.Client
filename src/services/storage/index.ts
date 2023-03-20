@@ -1,7 +1,5 @@
-import { makeAccessTokenProvider } from "@/services/storage/makeAccessTokenProvider";
-import { makeRefreshTokenProvider } from "@/services/storage/makeRefreshTokenProvider";
+import { makeTokenProvider } from "./makeTokenProvider";
 
 export  {
-    makeAccessTokenProvider,
-    makeRefreshTokenProvider
+    makeTokenProvider
 };
