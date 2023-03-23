@@ -53,7 +53,14 @@ export const MapCard = (props: MapCardProps) => {
                 <StyledMapCardButton isHover={ isMapHover } onClick={ onClick }>
                     <Button bgColor={ theme.colors.status.success } label="Открыть" />
                 </StyledMapCardButton>
-                <Image src={ image || "https://i.imgur.com/WpmGIaD.png" } alt=" " width={300} height={200}  />
+                <Image
+                    src={ image || "https://i.imgur.com/WpmGIaD.png" }
+                    alt=" "
+                    objectFit={'cover'}
+                    objectPosition={'center'}
+                    width={500}
+                    height={350}
+                />
             </StyledMapCardBody>
             <StyledMapCardFooter justify="space-between">
                 <StyledBox gap={ "10px" } justify="flex-start">
