@@ -75,7 +75,12 @@ export const DefaultTheme = {
         button: {
             sm: {
                 padding: '6px 10px',
-                fontSize: '12px',
+                fontSize: '10px',
+                svg: { width: '12px', height: '12px' },
+            },
+            md: {
+                padding: '7px 12px',
+                fontSize: '14px',
                 svg: { width: '14px', height: '14px' },
             },
         },

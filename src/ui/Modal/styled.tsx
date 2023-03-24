@@ -5,6 +5,7 @@ export const StyledModalsWrapper = styled.div(({theme}) => ({
     display: "flex",
     justifyContent: "center",
     overflow: "auto",
+    alignItems: "center",
     top: 0,
     right: 0,
     left: 0,

@@ -11,7 +11,7 @@ type FormProps = {
     children: ReactNode;
     onSubmit: () => void;
 }
-export const Form = (props: FormProps & StyledBoxProps) => {
+export const Form = (props: Partial<FormProps & StyledBoxProps>) => {
 
     const onSubmitHandler = (event: FormEvent<HTMLDivElement>) => {
         event.preventDefault();
