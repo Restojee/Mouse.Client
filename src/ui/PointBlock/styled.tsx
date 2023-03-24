@@ -17,19 +17,12 @@ export const StyledPointBlockContainer = styled(StyledBox)<PointBlockContainerPr
     boxShadow: '0 0 10px 1px rgba(0, 0, 0, 0.1)',
     borderRadius: 10,
     padding: 15,
-    visibility: "hidden",
-    opacity: 0,
-    pointerEvents: "none",
     width: props.width || 250,
     zIndex: theme.order.other,
     color: theme.colors.textOnSecondary,
     fontSize: theme.font.fontSize,
     transition: '0.2s',
-    ...props.isVisible && {
-        visibility: "visible",
-        opacity: 1,
-        pointerEvents: "initial"
-    }
+    pointerEvents: "initial"
 }))
 export const StyledPointBlockHeader = styled(StyledBox)({
     marginBottom: 15

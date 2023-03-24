@@ -39,6 +39,7 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     columnGap: 10,
     backgroundColor: bgColor,
     rowGap: 10,
+    padding: "7px 10px",
     "&:hover": {
         opacity: 0.7
     },

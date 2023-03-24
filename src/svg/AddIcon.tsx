@@ -4,6 +4,7 @@ export const AddIcon = (props: SvgIconPropsType) => {
 
     return (
         <svg
+            onClick={props.onClick}
             width={props.size || '24px'}
             height={props.size || '24px'}
             viewBox="0 0 24 24"

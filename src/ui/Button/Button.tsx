@@ -6,7 +6,7 @@ import {
 import { Typography } from "../Typography/styles/Typography";
 import { Property } from "csstype";
 
-type ButtonProps = {
+export type ButtonProps = {
     append?: ReactElement;
     prepend?: ReactElement;
     label?: string;

@@ -11,4 +11,5 @@ export const StyledNavLinkSection = styled.div<Props>(props => ({
     opacity: props.isOpen ? `0.7` : `1`,
     transform: props.isOpen ? `scale(0.8)` : `scale(1)`,
     transition: "0.5s",
+    cursor: "pointer"
 }))
