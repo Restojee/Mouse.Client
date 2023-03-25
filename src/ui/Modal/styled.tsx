@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledModalsWrapper = styled.div(({theme}) => ({
+export const StyledModalWrapper = styled.div(({theme}) => ({
     position: "fixed",
     display: "flex",
     justifyContent: "center",

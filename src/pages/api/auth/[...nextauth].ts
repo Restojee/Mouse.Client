@@ -25,11 +25,6 @@ export const authOptions: NextAuthOptions = {
             },
         }
     ],
-    session: {
-        strategy: "jwt",
-        maxAge: THIRTY_DAYS,
-        updateAge: THIRTY_MINUTES,
-    },
     callbacks: {
         async jwt({ token, account }) {
             // Persist the OAuth access_token to the token right after signin

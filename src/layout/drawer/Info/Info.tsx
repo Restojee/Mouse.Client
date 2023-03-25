@@ -14,7 +14,7 @@ export const Info = () => {
                 Полезная инфа
             </StyledDrawerHeader>
             <StyledInfoList>
-                {infoMoc.map(({ title, date, text, id }) => (
+                { infoMoc.map(({ title, date, text, id }) => (
                     <StyledBox key={id} gap="5px" direction="column">
                         <StyledBox align="center">
                             <Typography margin="0 0 0 15px" addSize="0" opacity="0.5">
@@ -31,7 +31,7 @@ export const Info = () => {
                             </Typography>
                         </StyledInfoBlock>
                     </StyledBox>
-                ))}
+                )) }
             </StyledInfoList>
         </StyledBox>
     );

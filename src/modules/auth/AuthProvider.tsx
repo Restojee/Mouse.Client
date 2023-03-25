@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { accessTokenProvider } from "@/services";
 import { useSession } from "next-auth/react";
 
 type AuthProviderProps = {

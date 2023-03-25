@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Avatar } from "@/layout/avatar/Avatar";
 import { StyledTextarea } from "@/ui/Textarea/styled";
 import { Property } from "csstype";
 import { Typography } from "@/ui/Typography/styles/Typography";
+import {StyledAvatar} from "@/layout/avatar/styles/StyledAvatar";
 
 export const StyledMessageStyled = styled.div(({ theme }) => ({
     display: 'flex',
@@ -16,7 +16,7 @@ export const StyledMessageStyled = styled.div(({ theme }) => ({
     }
 }))
 
-export const StyledMessageAvatar = styled(Avatar)({
+export const StyledMessageAvatar = styled(StyledAvatar)({
     minWidth: 50,
     minHeight: 50,
     marginRight: 10,
@@ -94,7 +94,7 @@ type StyledImageContainerPropsType = {
     maxHeight?: Property.MaxHeight,
     bgColor?: Property.BackgroundColor
 }
-export const StyledImageContainer = styled.div<StyledImageContainerPropsType>((props) => ({
+export const StyledMapContentPreview = styled.div<StyledImageContainerPropsType>((props) => ({
     borderRadius: props.borderRadius || 'inherit',
     margin: props.margin,
     width: props.width,
