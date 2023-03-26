@@ -20,8 +20,8 @@ export const SNotificationWrapper = styled.div<TSNotificationWrapper>(({ theme, 
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: theme.colors.secondary,
-            color: theme.colors.textOnSecondary,
+            backgroundColor: theme.colors.primary,
+            color: theme.colors.textOnPrimary,
             boxShadow: '1px 1px 2px rgb(0, 0, 0, 0.1), -1px -1px 2px rgb(0, 0, 0, 0.1)',
             width: 30,
             height: 30,
@@ -53,7 +53,7 @@ export const SNotificationContainer = styled.div<TSNotificationContainerProps>((
     height: 60,
     padding: '10px 20px',
     backgroundColor: props.severity
-        ? theme.colors.severity[props.severity]
+        ? theme.colors.status[props.severity]
         : theme.colors.primary,
     zIndex: theme.orders.notifications,
     '&:last-of-type': {
