@@ -24,7 +24,7 @@ export const DefaultTheme = {
             success: '#7fd482',
             danger: '#ff8935',
             info: '#6b88e9',
-            error: '#ff3548',
+            error: '#ce5252',
         },
 
         input: {
@@ -91,6 +91,7 @@ export const DefaultTheme = {
         leftSidebar: 5,
         rightSidebar: 5,
         megaShadow: 10,
+        notifications: 15,
         modal: 10,
         dropdown: 5,
     },
