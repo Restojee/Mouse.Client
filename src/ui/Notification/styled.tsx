@@ -13,15 +13,15 @@ export const SNotificationWrapper = styled.div<TSNotificationWrapper>(({ theme, 
     left: '50%',
     right: '50%',
     color: '#fff',
-    zIndex: theme.orders.notifications,
+    zIndex: theme.order.notifications,
     ...props.notificationsCount > 1 && {
         '&:after': {
             content: `'${ props.notificationsCount }'`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: theme.colors.primary,
-            color: theme.colors.textOnPrimary,
+            backgroundColor: theme.colors.secondary,
+            color: theme.colors.textOnSecondary,
             boxShadow: '1px 1px 2px rgb(0, 0, 0, 0.1), -1px -1px 2px rgb(0, 0, 0, 0.1)',
             width: 30,
             height: 30,
@@ -30,7 +30,7 @@ export const SNotificationWrapper = styled.div<TSNotificationWrapper>(({ theme, 
             position: 'absolute',
             right: -170,
             top: -70,
-            zIndex: theme.orders.notifications,
+            zIndex: theme.order.notifications,
         }
     }
 }))
@@ -55,7 +55,7 @@ export const SNotificationContainer = styled.div<TSNotificationContainerProps>((
     backgroundColor: props.severity
         ? theme.colors.status[props.severity]
         : theme.colors.primary,
-    zIndex: theme.orders.notifications,
+    zIndex: theme.order.notifications,
     '&:last-of-type': {
         boxShadow: '0 0 5px 0 rgb(0, 0, 0, 0.3)',
     }
@@ -71,8 +71,11 @@ export const SNotificationIcon = styled.div({
     borderRadius: '50%',
     cursor: 'pointer',
     svg: {
-        width: 18,
-        height: 18,
+        width: 24,
+        height: 24,
+    },
+    circle: {
+        stroke: '#fff'
     },
 
     '&:hover': {

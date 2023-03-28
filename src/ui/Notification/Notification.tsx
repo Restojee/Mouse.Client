@@ -2,20 +2,19 @@ import React, { useEffect, useState } from "react";
 import { SNotificationContainer, SNotificationIcon, SNotificationWrapper } from "./styled";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { CloseIcon } from "@/svg/CloseIcon";
-
-type AppMessageType = {
-    id: string;
-    severity: "error" | "success";
-    text: string;
-};
+import { hideAppMessage, setAppLastMessage } from "@/bll/appReducer";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 const Notification = () => {
-    const messages = [] as AppMessageType[];
+    const dispatch = useAppDispatch()
+
+    const messages = useAppSelector(state => state.app.messages);
 
     const [timerId, setTimerId] = useState(0);
 
     const setIsOpen = (id: string) => {
-        // dispatch(hideAppMessage(id));
+        dispatch(hideAppMessage(id));
     };
 
     const stopTimer = () => {
@@ -25,7 +24,7 @@ const Notification = () => {
     const startTimer = () => {
         stopTimer();
         const id: number = window.setInterval(() => {
-            // dispatch(setAppLastMessage());
+            dispatch(setAppLastMessage());
         }, 2900);
         setTimerId(id);
     };
