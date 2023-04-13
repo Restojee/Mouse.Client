@@ -10,12 +10,12 @@ import {
     useGetMapsQuery
 } from "@/api/mapsApi";
 
-export const getStaticProps = wrapper.getStaticProps(store => async () => {
-    await store.dispatch(mapsApi.endpoints.getMaps.initiate({ page: 0, size: 20 }));
-    return {
-        props: {  }
-    }
-});
+// export const getStaticProps = wrapper.getStaticProps(store => async () => {
+//     await store.dispatch(mapsApi.endpoints.getMaps.initiate({ page: 0, size: 20 }));
+//     return {
+//         props: {  }
+//     }
+// });
 export default function Maps() {
     const { data: maps } = useGetMapsQuery({ page: 0, size: 20 });
     return (
