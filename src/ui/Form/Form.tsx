@@ -15,7 +15,7 @@ export const Form = (props: FormProps & Partial<StyledBoxProps>) => {
 
     const onSubmitHandler = (event: FormEvent<HTMLDivElement>) => {
         event.preventDefault();
-        props.onSubmit()
+        props.onSubmit && props.onSubmit()
     }
 
     return (

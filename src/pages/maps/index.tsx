@@ -16,7 +16,8 @@ export const getServerSideProps = wrapper.getStaticProps(store => async () => {
     await store.dispatch(mapsApi.endpoints.getMaps.initiate({ page: 0, size: 20 }));
     return { props }
 });
-const Maps = () => {
+
+export default function Maps() {
     const { data: maps } = useGetMapsQuery({ page: 0, size: 20 });
     return (
         <MapPageContainer>
@@ -24,5 +25,3 @@ const Maps = () => {
         </MapPageContainer>
     )
 }
-
-export default Maps;

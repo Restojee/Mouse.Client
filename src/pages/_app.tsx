@@ -3,9 +3,13 @@ import { Provider } from 'react-redux';
 import { wrapper } from "@/store";
 import { ThemeProvider } from "@/layout/theme/ThemeProvider";
 import { SessionProvider } from "next-auth/react";
+
 import { mapsApi } from "@/api/mapsApi";
 import { AppProps } from "next/app";
 import { Session } from "next-auth";
+import { AuthProvider } from "@/modules/auth/AuthProvider";
+import Notification from "@/ui/Notification/Notification";
+import "@/styles/globals.css"
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async () => {
     const props = {};
@@ -18,9 +22,12 @@ export default function App ({ Component, ...rest }: AppProps<{ session: Session
     return (
         <SessionProvider session={ pageProps.session }>
             <Provider store={ store }>
-                <ThemeProvider>
-                    <Component { ...pageProps } />
-                </ThemeProvider>
+                <AuthProvider>
+                    <ThemeProvider>
+                        <Component {...props.pageProps} />
+                        <Notification/>
+                    </ThemeProvider>
+                </AuthProvider>
             </Provider>
         </SessionProvider>
     );

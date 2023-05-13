@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-export const StyledMapCardBody = styled.div(props => ({
+export const StyledMapCardBody = styled.div({
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     height: "150px",
@@ -10,4 +11,4 @@ export const StyledMapCardBody = styled.div(props => ({
         objectFit: "cover",
         objectPosition: "center"
     }
-}))
+})
