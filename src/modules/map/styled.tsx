@@ -14,7 +14,7 @@ const AnimateMapView = keyframes`
     }
 `;
 
-export const StyledMapViewContainer = styled.div`
+export const StyledMapContent = styled.div`
     display: flex;
     flex-direction: row;
     box-shadow: 0 0 100px 1px rgba(0, 0, 0, 1);
@@ -28,12 +28,12 @@ export const StyledMapViewContainer = styled.div`
     background-color: ${ ({ theme }) => theme.colors.primary };
     border-radius: ${ ({ theme }) => theme.blockSettings.siteBorder };
     z-index: ${ ({ theme }) => theme.order.modal };
-    animation-name: ${ AnimateMapView };
-    animation-duration: 0.2s;
-    animation-timing-function: ease-in;
+    // animation-name: ${ AnimateMapView };
+    // animation-duration: 0.2s;
+    // animation-timing-function: ease-in;
 `;
 
-export const StyledMapViewMainBlock = styled.div(({ theme }) => ({
+export const StyledMapContentMain = styled.div(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: 25,
@@ -46,7 +46,7 @@ export const StyledMapViewMainBlock = styled.div(({ theme }) => ({
     },
 }))
 
-export const StyledMapViewTextarea = styled(StyledTextarea)(({ theme }) => ({
+export const StyledMapContentNoteForm = styled(StyledTextarea)(({ theme }) => ({
     backgroundColor: theme.colors.primaryLighter,
     "&:hover": {
         opacity: 0.8,
@@ -58,7 +58,7 @@ export const StyledMapViewTextarea = styled(StyledTextarea)(({ theme }) => ({
     },
 }))
 
-export const StyledMapViewSidebarBlock = styled.div(({ theme }) => ({
+export const StyledMapContentSidebar = styled.div(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     backgroundColor: theme.colors.secondary,
@@ -75,13 +75,25 @@ export const StyledMapViewSidebarBlock = styled.div(({ theme }) => ({
     },
 }))
 
-export const StyledMapViewSidebarBlockPanel = styled(StyledBox)({
+export const StyledMapContentSidebarIconsSection = styled(StyledBox)({
     width: "100%",
     padding: "20px 0",
     borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
 })
 
-export const StyledMapViewSidebarBlockPanelIcons = styled.div({
+export const StyledMapContentSidebarComments = styled(StyledBox)({
+    width: "100%",
+    flexDirection: "column",
+    overflow: "hidden",
+    padding: "20px 0 0",
+})
+
+export const StyledMapContentSidebarCommentsHeader = styled(StyledBox)({
+    width: "100%",
+    padding: "0 20px"
+})
+
+export const StyledContentSidebarBodyIcon = styled.div({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -131,22 +143,7 @@ export const StyledMapViewSidebarBlockPanelIcons = styled.div({
 })
 
 export const StyledMiniMapImagesContainer = styled(StyledBox)({
-    borderRadius: "10px",
-    "&:after": {
-        content: '""',
-        height: "80px",
-        maxHeight: "80px",
-        pointerEvents: "none",
-        marginLeft: "-140px",
-        minWidth: "130px",
-        maxWidth: "130px",
-        borderRadius: "10px",
-        backgroundColor: "rgba(255, 255, 255, 0.3)",
-        boxShadow:
-            "140px 0 0 0 rgba(255, 255, 255, 0.25), 280px 0 0 0 rgba(255, 255, 255, 0.2), 420px 0 0 0 rgba(255, 255, 255, 0.15), 560px 0 0 0 rgba(255, 255, 255, 0.1), 700px 0 0 0 rgba(255, 255, 255, 0.05)",
-        opacity: "0.1",
-        zIndex: "-1",
-    }
+    borderRadius: "10px"
 })
 
 type StyledMiniMapImageContainerPropsType = {
@@ -167,7 +164,7 @@ export const StyledMiniMapImageContainer = styled.div<StyledMiniMapImageContaine
     position: 'relative',
     transition: '0.1s',
     transitionProperty: 'background-color, transform, box-shadow',
-    backgroundColor: theme.colors.mapBg,
+    backgroundColor: "gray",
 
     '&:hover': {
         transform: 'scale(0.97)',
@@ -175,38 +172,6 @@ export const StyledMiniMapImageContainer = styled.div<StyledMiniMapImageContaine
 
     '&:active': {
         transform: 'scale(0.96)',
-    },
-    ...props.isVisible && {
-        '&::after': {
-            content: `' ${ props.username || ' ' }'`,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            borderRadius: 'inherit',
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)',
-            transition: '0.7s',
-            transitionProperty: 'opacity',
-        },
-        '&:hover': {
-            '&::after': {
-                opacity: 0.3,
-            },
-        },
-    },
-    ...props.isActive && {
-        boxShadow: '0 0 5px 0 rgba(255, 255, 255, 0.3)',
-        pointerEvents: 'none',
-
-        '&::after': {
-            opacity: 0.3,
-        }
     }
 }))
 
@@ -242,4 +207,11 @@ export const StyledMobileMapViewSidebarBlock = styled(StyledBox)(({ theme }) => 
     borderRadius: 'inherit',
     width: '100%',
     padding: 0
+}))
+
+export const StyledMapContentSidebarProfile = styled(StyledBox)(({ theme }) => ({
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "20px",
+    margin: "0 30px 20px 30px"
 }))

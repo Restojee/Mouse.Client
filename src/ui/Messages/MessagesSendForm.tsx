@@ -6,9 +6,9 @@ import { Property } from "csstype";
 import { StyledMessageSendForm, StyledMessageSendFormIcon, StyledMessageSendFormTextarea } from "@/ui/Messages/styled";
 
 type PropsType = {
-    bgColor?: Property.BackgroundColor
+    bgColor: Property.BackgroundColor
 }
-function MessageSendFormContainer(props: PropsType) {
+export const MessageSendFormContainer = (props: Partial<PropsType>) => {
 
     const theme = useTheme() as typeof DefaultTheme
 
@@ -24,4 +24,3 @@ function MessageSendFormContainer(props: PropsType) {
         </StyledMessageSendForm>
     );
 }
-export default MessageSendFormContainer;

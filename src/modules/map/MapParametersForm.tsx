@@ -5,7 +5,7 @@ import { EditFillIcon } from "@/svg/EditFillIcon";
 import { ImageForm } from "@/ui/ImageForm/ImageForm";
 import {
     StyledTag,
-    StyledTagsContainer
+    StyledMapContentTags
 } from "@/ui/Tag/styled";
 import { StyledButtonIcon } from "@/ui/Button/styles/StyledButtonIcon";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -26,13 +26,13 @@ export const MapParametersForm = () => {
                 onChange={ onChangePackImage }
                 value={ mapImage }
             />
-            <StyledTagsContainer>
+            <StyledMapContentTags>
                 <Typography>Теги: </Typography>
                 <StyledTag small>Тег</StyledTag>
                 <StyledButtonIcon>
                     <EditFillIcon color={ theme.colors.iconOnSecondary } size="20px" />
                 </StyledButtonIcon>
-            </StyledTagsContainer>
+            </StyledMapContentTags>
         </StyledBox>
     );
 }

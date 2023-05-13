@@ -8,10 +8,10 @@ type Props = {
     children: ReactNode;
 }
 export const Layout = (props: Props) => {
-
     const { children } = props;
 
-    const [ isOpen, setIsOpen ] = useState(true)
+    const [ isOpen, setIsOpen ] = useState(true);
+
     const [ activeTab, setActiveTab ] = useState<TabsType>('notifications')
 
     return (

@@ -1,4 +1,4 @@
-import { StyledMiniMapImageContainer, StyledMiniMapImagesContainer } from "@/layout/mapView/styled";
+import { StyledMiniMapImageContainer, StyledMiniMapImagesContainer } from "@/modules/map/styled";
 import { useState } from "react";
 
 export const MiniMapImages = () => {

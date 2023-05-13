@@ -17,7 +17,7 @@ type PropsType = {
     avatar: string,
     text: string
 }
-const Message = (props: PropsType) => (
+export const Message = (props: PropsType) => (
     <StyledMessageStyled>
         <StyledMessageAvatar src={ props.avatar } />
         <StyledMessageBody>
@@ -39,5 +39,3 @@ const Message = (props: PropsType) => (
         </StyledMessageBody>
     </StyledMessageStyled>
 );
-
-export default Message;
