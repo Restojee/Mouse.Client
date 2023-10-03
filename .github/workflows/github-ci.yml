@@ -1,21 +1,19 @@
-name: Build and Test
+name: Deploy
 
 on:
   pull_request:
-    branches: [main]
-    types: [opened, synchronize]
+    branches: [ main ]
+    types: [ opened, synchronize ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
-      - name: Install dependencies and build
+      - uses: actions/checkout@v2
+      - name: Rebuild and start docker container
         run: |
-          npm install
-          npm run build
+          docker compose up -d --build
+        env:
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          FILE_STORAGE_URL: ${{ secrets.FILE_STORAGE_URL }}
