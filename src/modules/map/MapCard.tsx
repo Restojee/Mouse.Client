@@ -14,35 +14,38 @@ import { Button } from "@/ui/Button/Button";
 import {ImageIcon} from "@/svg/ImageIcon";
 import { IconButton } from "@/ui/Button/IconButton";
 import Image from "next/image";
+import { useState } from 'react';
+import { Map } from "@/api/codegen/genMouseMapsApi";
 
 type MapCardProps = {
+    id: Map['id'];
     label?: string | null;
-    isMapHover?: boolean;
     addedCount?: number;
     commentsCount?: number;
     image?: string | null;
-    onClick?: () => void;
+    onClick?: (id: Map['id']) => void;
 }
 export const MapCard = (props: MapCardProps) => {
-
     const theme = useAppTheme();
+    const [isMapHover, setIsMapHover] = useState(false);
 
     const onIconsClick= (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         alert('Пока не работает....')
     }
 
-
     const {
         label,
-        isMapHover,
         addedCount,
         image = "",
         onClick,
         commentsCount
     } = props;
     return (
-        <StyledMapCard>
+        <StyledMapCard
+            onMouseLeave={() => setIsMapHover(false)}
+            onMouseEnter={() => setIsMapHover(true)}
+        >
             <StyledMapCardHeader>
                 <Typography>{ label }</Typography>
                 <IconButton onClick={onIconsClick}>
@@ -50,8 +53,14 @@ export const MapCard = (props: MapCardProps) => {
                 </IconButton>
             </StyledMapCardHeader>
             <StyledMapCardBody>
-                <StyledMapCardButton isHover={ isMapHover } onClick={ onClick }>
-                    <Button bgColor={ theme.colors.status.success } label="Открыть" />
+                <StyledMapCardButton
+                    isHover={ isMapHover }
+                    onClick={ () => onClick?.(props.id) }
+                >
+                    <Button
+                        bgColor={ theme.colors.status.success }
+                        label="Открыть"
+                    />
                 </StyledMapCardButton>
                 <Image
                     src={ image || "https://i.imgur.com/WpmGIaD.png" }

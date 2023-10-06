@@ -2,9 +2,10 @@ import React from 'react';
 import { Map } from "@/api/codegen/genMouseMapsApi";
 import {
     StyledMapContentMain,
-    StyledMapContentNoteForm, StyledMiniMapImageContainer, StyledMiniMapImagesContainer
+    StyledMapContentNoteForm,
+    StyledMiniMapImageContainer,
+    StyledMiniMapImagesContainer
 } from "@/modules/map/styled";
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { IconButton } from "@/ui/Button/IconButton";
 import { CopyIcon } from "@/svg/CopyIcon";
@@ -50,7 +51,7 @@ export const MapContentMain = (props: Partial<PropsType>) => {
                     </IconButton>
                 </StyledMapContentTitle>
                 <StyledMapContentCounters>
-                    { MAP_ADDITIONAL_INFO_COLLECTION.map((info, index) => (
+                    { MAP_ADDITIONAL_INFO_COLLECTION?.map((info, index) => (
                         <StyledMapContentCounter
                             key={ index }
                             gap="5px"
@@ -80,9 +81,9 @@ export const MapContentMain = (props: Partial<PropsType>) => {
                 </StyledScrollContainer>
             </StyledScrollWrapper>
             <StyledMapContentTags>
-                { MAP_TAG_COLLECTION.map(({ label, id }) => (
+                { MAP_TAG_COLLECTION?.map(({ name, id }) => (
                     <StyledTag key={ id } bgColor={ theme.colors.primaryLighter }>
-                        <Typography isEllipsis>{ label }</Typography>
+                        <Typography isEllipsis>{ name }</Typography>
                         <IconButton isAdmin>
                             <CloseIcon />
                         </IconButton>

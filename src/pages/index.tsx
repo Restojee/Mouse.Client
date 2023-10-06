@@ -1,3 +1,4 @@
+import { routes } from '@/common/routes';
 import { StyledWelcomeButton } from '@/modules/welcome/styles/StyledWelcomeButton';
 import { StyledWelcomePage } from '@/modules/welcome/styles/StyledWelcomePage';
 import { MetaTags } from '@/ui/MetaTags/MetaTags';
@@ -14,7 +15,7 @@ export default function Home() {
   return (
       <StyledWelcomePage>
         <MetaTags title={'Welcome'}/>
-        <StyledWelcomeButton onClick={() => navigate.push('/maps')}>
+        <StyledWelcomeButton onClick={() => navigate.push(routes.MAPS)}>
           Go!
         </StyledWelcomeButton>
       </StyledWelcomePage>
