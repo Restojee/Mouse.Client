@@ -1,15 +1,11 @@
-import { StyledPageWrapper } from "@/layout/page/styles/StyledPageWrapper";
-import { StyledPageContent } from "@/layout/page/styles/StyledPageContent";
 import { wrapper } from "@/store";
 import { MapsContent } from "@/modules/map/MapsContent";
-import { Layout } from "@/layout/Layout";
-import { PageHeader } from "@/layout/page/PageHeader";
-import { PageFooter } from "@/layout/page/PageFooter";
 import {
     mapsApi,
     useGetMapsQuery
 } from "@/api/mapsApi";
 import { MapPageContainer } from "@/modules/map/MapContainer";
+import { MetaTags } from '@/ui/MetaTags/MetaTags';
 
 export const getServerSideProps = wrapper.getStaticProps(store => async () => {
     const props = {}
@@ -21,6 +17,7 @@ export default function Maps() {
     const { data: maps } = useGetMapsQuery({ page: 0, size: 20 });
     return (
         <MapPageContainer>
+            <MetaTags title={'Maps'}/>
             <MapsContent maps={ maps } />
         </MapPageContainer>
     )
