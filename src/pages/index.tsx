@@ -11,12 +11,12 @@ export default function Home() {
 
     console.log("accessToken", session);
 
-  return (
-      <StyledWelcomePage>
-          <MetaTags title={'Welcome'}/>
-          <StyledWelcomeButton onClick={() => navigate.push(routes.MAPS)}>
-              Go!
-          </StyledWelcomeButton>
-      </StyledWelcomePage>
-  )
-}
+    return (
+        <StyledWelcomePage>
+            <MetaTags title={'Welcome'}/>
+            <StyledWelcomeButton onClick={() => navigate.push(routes.MAPS)}>
+                Go!
+            </StyledWelcomeButton>
+        </StyledWelcomePage>
+    )
+  }

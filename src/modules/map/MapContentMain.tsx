@@ -31,6 +31,8 @@ import { CommentIcon } from "@/svg/CommentIcon";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import Image from "next/image";
 import { CommonUtils } from "@/common/utils";
+import { MiniMapImages } from "@/modules/map/MiniMapImages";
+import { StyledBox } from "@/ui/Box/styles/StyledBox";
 
 type PropsType = {
     messages: any,
@@ -71,15 +73,9 @@ export const MapContentMain = (props: Partial<PropsType>) => {
             >
                 <Image src={ CommonUtils.getMapImageLink(props.map?.image) } width={ 800 } height={ 400 } alt="map" />
             </StyledMapContentPreview>
-            <StyledScrollWrapper slider>
-                <StyledScrollContainer>
-                    <StyledMiniMapImagesContainer>
-                        <StyledMiniMapImageContainer isActive>
-                            Карта
-                        </StyledMiniMapImageContainer>
-                    </StyledMiniMapImagesContainer>
-                </StyledScrollContainer>
-            </StyledScrollWrapper>
+                <StyledBox maxWidth={'100%'} overflow={"auto"}>
+                    <MiniMapImages/>
+                </StyledBox>
             <StyledMapContentTags>
                 { MAP_TAG_COLLECTION?.map(({ name, id }) => (
                     <StyledTag key={ id } bgColor={ theme.colors.primaryLighter }>

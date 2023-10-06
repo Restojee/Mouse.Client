@@ -1,6 +1,5 @@
 import { Comment, Tag, User } from '@/api/codegen/genMouseMapsApi';
 import { Map } from '@/api/codegen/genMouseMapsApi';
-
 export const USER_COLLECTION: User[]  = [
     {
         id: 1,
@@ -19,6 +18,72 @@ export const mapTags: Tag[] = [
 export const mapsData: Map[] = [
     {
         id: 1,
+        user: {
+            id: 1,
+            username: 'Code001',
+        },
+        name: 'Карта 1',
+        image: '',
+        description: 'awdawdwa',
+        tags: mapTags,
+    },
+    {
+        id: 2,
+        user: {
+            id: 1,
+            username: 'Code001',
+        },
+        name: 'Карта 1',
+        image: '',
+        description: 'awdawdwa',
+        tags: mapTags,
+    },
+    {
+        id: 3,
+        user: {
+            id: 1,
+            username: 'Code001',
+        },
+        name: 'Карта 1',
+        image: '',
+        description: 'awdawdwa',
+        tags: mapTags,
+    },
+    {
+        id: 4,
+        user: {
+            id: 1,
+            username: 'Code001',
+        },
+        name: 'Карта 1',
+        image: '',
+        description: 'awdawdwa',
+        tags: mapTags,
+    },
+    {
+        id: 5,
+        user: {
+            id: 1,
+            username: 'Code001',
+        },
+        name: 'Карта 1',
+        image: '',
+        description: 'awdawdwa',
+        tags: mapTags,
+    },
+    {
+        id: 6,
+        user: {
+            id: 1,
+            username: 'Code001',
+        },
+        name: 'Карта 1',
+        image: '',
+        description: 'awdawdwa',
+        tags: mapTags,
+    },
+    {
+        id: 7,
         user: {
             id: 1,
             username: 'Code001',
@@ -59,7 +124,6 @@ export const MAP_TAG_COLLECTION = [
         'avatar': 'https://i.imgur.com/P11sXfz.png',
         'text': 'Lorem ipsum dolor sit amet',
     },
-
     {
         'id': 4,
         'name': 'Nickname',
