@@ -18,7 +18,7 @@ export const MapContentSidebarComments = () => {
             <StyledScrollWrapper>
                 <StyledScrollContainer padding="10px 15px">
                     { MAP_COMMENT_COLLECTION.map((mapComment) => (
-                        <Message key={ mapComment.id } { ...mapComment } />
+                        <Message key={ mapComment.id } comment={mapComment} />
                     )) }
                 </StyledScrollContainer>
             </StyledScrollWrapper>
