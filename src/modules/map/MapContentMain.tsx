@@ -47,7 +47,7 @@ export const MapContentMain = (props: Partial<PropsType>) => {
         <StyledMapContentMain>
             <StyledMapContentHeader>
                 <StyledMapContentTitle>
-                    <Typography addSize="18px">!map 123456</Typography>
+                    <Typography addSize="18px">!map {props.map?.name}</Typography>
                     <IconButton opacity="0.6">
                         <CopyIcon />
                     </IconButton>
@@ -73,9 +73,9 @@ export const MapContentMain = (props: Partial<PropsType>) => {
             >
                 <Image src={ CommonUtils.getMapImageLink(props.map?.image) } width={ 800 } height={ 400 } alt="map" />
             </StyledMapContentPreview>
-                <StyledBox maxWidth={'100%'} overflow={"auto"}>
-                    <MiniMapImages/>
-                </StyledBox>
+            <StyledBox maxWidth={'100%'} overflow={"auto"}>
+                <MiniMapImages/>
+            </StyledBox>
             <StyledMapContentTags>
                 { MAP_TAG_COLLECTION?.map(({ name, id }) => (
                     <StyledTag key={ id } bgColor={ theme.colors.primaryLighter }>

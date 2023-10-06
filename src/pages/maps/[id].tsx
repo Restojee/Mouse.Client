@@ -1,6 +1,7 @@
 import { mapsData } from '@/moc/mapsMoc';
 import { wrapper} from "@/store";
 import { MapPageContainer } from "@/modules/map/MapContainer";
+import { MetaTags } from '@/ui/MetaTags/MetaTags';
 import { StyledModalWrapper } from "@/ui/Modal/styled";
 import { StyledMapContent } from "@/modules/map/styled";
 import { useRouter } from "next/router";
@@ -41,6 +42,7 @@ const Map = (props: Props) => {
 
     return (
         <MapPageContainer>
+            <MetaTags title={props.map.name}/>
             <StyledModalWrapper>
                 <StyledMapContent>
                     <MapContentMain map={ props.map } />
