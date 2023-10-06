@@ -2,9 +2,10 @@ import React from 'react';
 import { Map } from "@/api/codegen/genMouseMapsApi";
 import {
     StyledMapContentMain,
-    StyledMapContentNoteForm, StyledMiniMapImageContainer, StyledMiniMapImagesContainer
+    StyledMapContentNoteForm,
+    StyledMiniMapImageContainer,
+    StyledMiniMapImagesContainer
 } from "@/modules/map/styled";
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { IconButton } from "@/ui/Button/IconButton";
 import { CopyIcon } from "@/svg/CopyIcon";
@@ -30,6 +31,8 @@ import { CommentIcon } from "@/svg/CommentIcon";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import Image from "next/image";
 import { CommonUtils } from "@/common/utils";
+import { MiniMapImages } from "@/modules/map/MiniMapImages";
+import { StyledBox } from "@/ui/Box/styles/StyledBox";
 
 type PropsType = {
     messages: any,
@@ -50,7 +53,7 @@ export const MapContentMain = (props: Partial<PropsType>) => {
                     </IconButton>
                 </StyledMapContentTitle>
                 <StyledMapContentCounters>
-                    { MAP_ADDITIONAL_INFO_COLLECTION.map((info, index) => (
+                    { MAP_ADDITIONAL_INFO_COLLECTION?.map((info, index) => (
                         <StyledMapContentCounter
                             key={ index }
                             gap="5px"
@@ -70,19 +73,13 @@ export const MapContentMain = (props: Partial<PropsType>) => {
             >
                 <Image src={ CommonUtils.getMapImageLink(props.map?.image) } width={ 800 } height={ 400 } alt="map" />
             </StyledMapContentPreview>
-            <StyledScrollWrapper slider>
-                <StyledScrollContainer>
-                    <StyledMiniMapImagesContainer>
-                        <StyledMiniMapImageContainer isActive>
-                            Карта
-                        </StyledMiniMapImageContainer>
-                    </StyledMiniMapImagesContainer>
-                </StyledScrollContainer>
-            </StyledScrollWrapper>
+                <StyledBox maxWidth={'100%'} overflow={"auto"}>
+                    <MiniMapImages/>
+                </StyledBox>
             <StyledMapContentTags>
-                { MAP_TAG_COLLECTION.map(({ label, id }) => (
+                { MAP_TAG_COLLECTION?.map(({ name, id }) => (
                     <StyledTag key={ id } bgColor={ theme.colors.primaryLighter }>
-                        <Typography isEllipsis>{ label }</Typography>
+                        <Typography isEllipsis>{ name }</Typography>
                         <IconButton isAdmin>
                             <CloseIcon />
                         </IconButton>

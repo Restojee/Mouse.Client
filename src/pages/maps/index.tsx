@@ -1,3 +1,4 @@
+import { mapsData } from '@/moc/mapsMoc';
 import { wrapper } from "@/store";
 import { MapsContent } from "@/modules/map/MapsContent";
 import {
@@ -18,7 +19,7 @@ export default function Maps() {
     return (
         <MapPageContainer>
             <MetaTags title={'Maps'}/>
-            <MapsContent maps={ maps } />
+            <MapsContent maps={ mapsData } />
         </MapPageContainer>
     )
 }

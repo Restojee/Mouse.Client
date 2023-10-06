@@ -1,5 +1,5 @@
+import { mapsData } from '@/moc/mapsMoc';
 import { wrapper} from "@/store";
-import { mapsApi } from "@/api/mapsApi";
 import { MapPageContainer } from "@/modules/map/MapContainer";
 import { StyledModalWrapper } from "@/ui/Modal/styled";
 import { StyledMapContent } from "@/modules/map/styled";
@@ -24,9 +24,10 @@ export const panelIconsArray = [
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async (initialAppProps) => {
     const { query } = initialAppProps;
-    const { data: maps } = await store.dispatch(mapsApi.endpoints.getMaps.initiate({ page: 0, size: 20 }));
-    const { data: map } = await store.dispatch(mapsApi.endpoints.getMap.initiate({ mapId: 1 }));
-    const props = { maps, map };
+    const mapId = Number(query.id)
+    // const { data: maps } = await store.dispatch(mapsApi.endpoints.getMaps.initiate({ page: 0, size: 20 }));
+    // const { data: map } = await store.dispatch(mapsApi.endpoints.getMap.initiate({ mapId }));
+    const props = { maps: mapsData, map: mapsData[0]};
     return { props };
 });
 
