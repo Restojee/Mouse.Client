@@ -1,7 +1,5 @@
 import React from 'react';
 import { PanelProps, tabsData, TabsType } from "@/layout/panel/Panel";
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
-import { Avatar } from "@/layout/avatar/Avatar";
 import { StyledMobilePanel } from "@/layout/panel/styled";
 
 export const MobilePanel = (props: PanelProps) => {

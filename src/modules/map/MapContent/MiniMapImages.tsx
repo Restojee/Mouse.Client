@@ -1,11 +1,14 @@
 import { StyledMiniMapImageContainer } from "@/modules/map/styled";
 import { useState } from "react";
-import { mapsData } from "@/moc/mapsMoc";
 import Image from "next/image";
 import { DEFAULT_MAP_IMAGE } from "@/common/contants";
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import { StyledBox } from "@/ui/Box";
+import { Map } from '@/api/codegen/genMouseMapsApi';
 
-export const MiniMapImages = () => {
+type MiniMapImagesPropsType = {
+    maps: Map[]
+}
+export const MiniMapImages = ({maps}: MiniMapImagesPropsType) => {
     const [miniMapActiveId, setMiniMapActiveId] = useState(1)
     
     const onClickHandler = () => {
@@ -27,7 +30,7 @@ export const MiniMapImages = () => {
             >
                 Карта
             </StyledMiniMapImageContainer>
-            { mapsData.map((item) => (
+            { maps.map((item) => (
                 <StyledMiniMapImageContainer
                     onClick={ () => onClickImage(item.id) }
                     isActive={ miniMapActiveId === item.id }

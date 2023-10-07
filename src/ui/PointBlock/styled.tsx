@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import { StyledBox } from "@/ui/Box";
 import { Property } from "csstype";
 
 type PointBlockContainerPropsType = {

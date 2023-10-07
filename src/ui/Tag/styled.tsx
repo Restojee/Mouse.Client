@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import { StyledBox } from "@/ui/Box";
 import { Property } from "csstype";
 
 export const StyledMapContentTags = styled(StyledBox)({
@@ -20,7 +20,7 @@ export const StyledTag = styled(StyledBox)<StyledTagType>(({ theme,...props }) =
     whiteSpace: 'nowrap',
     alignItems: 'center',
     backgroundColor: props.bgColor || 'rgba(0, 0, 0, 0.1)',
-    padding: '2px 10px',
+    padding: '2px 15px',
     borderRadius: '20px',
     svg: {
         opacity: 0.8,

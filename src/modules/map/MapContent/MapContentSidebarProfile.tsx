@@ -1,30 +1,36 @@
-import { Avatar } from "@/layout/avatar/Avatar";
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import { User } from '@/api/codegen/genMouseMapsApi';
+import { Avatar } from '@/ui/Avatar';
+import { StyledBox } from "@/ui/Box";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { StyledMapContentSidebarProfile } from "@/modules/map/styled";
 import React from "react";
 
-type Props = {
-    username: string
+type MapContentSidebarProfilePropsType = {
+    user?: User,
+    date: string
 }
-export const MapContentSidebarProfile = (props: Partial<Props>) => {
+export const MapContentSidebarProfile = (props: MapContentSidebarProfilePropsType) => {
+    const {
+        user,
+        date
+    } = props
+
     return (
         <StyledMapContentSidebarProfile>
             <Avatar
-                border
-                size="70px"
-                image="http://tfm-maps.ru:9000/auth/P11sXfz.png"
+                size={70}
+                image={user?.avatar}
+                username={user?.username}
             />
             <StyledBox direction="column">
                 <Typography
                     isLink
                     isEllipsis
-                    addSize="4px"
                     fontWeight="bold"
                 >
-                    { props?.username }
+                    { user?.username }
                 </Typography>
-                <Typography>12 февраля</Typography>
+                <Typography>{date}</Typography>
             </StyledBox>
         </StyledMapContentSidebarProfile>
     )

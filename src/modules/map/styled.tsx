@@ -1,24 +1,12 @@
-import styled, { keyframes } from "styled-components";
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import styled from "styled-components";
+import { StyledBox } from "@/ui/Box";
 import { StyledTextarea } from "@/ui/Textarea/styled";
-
-const AnimateMapView = keyframes`
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-`;
 
 export const StyledMapContentMain = styled.div(({theme}) => ({
     display: "flex",
     flexDirection: "column",
     gap: 25,
-    overflow: "hidden",
+    overflow: "auto",
     color: theme.colors.textOnPrimary,
     padding: 30,
     borderRadius: "inherit",
@@ -61,18 +49,6 @@ export const StyledMapContentSidebarIconsSection = styled(StyledBox)({
     width: "100%",
     padding: "20px 0",
     borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-})
-
-export const StyledMapContentSidebarComments = styled(StyledBox)({
-    width: "100%",
-    flexDirection: "column",
-    overflow: "hidden",
-    padding: "20px 0 0",
-})
-
-export const StyledMapContentSidebarCommentsHeader = styled(StyledBox)({
-    width: "100%",
-    padding: "0 20px"
 })
 
 export const StyledContentSidebarBodyIcon = styled.div({

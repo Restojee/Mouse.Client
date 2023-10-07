@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import { Property } from "csstype";
-import {FormActions} from "@/ui/Form/FormActions";
-import {StyledBox} from "@/ui/Box/styles/StyledBox";
 
 export const StyledForm = styled.form({
     display: 'flex',

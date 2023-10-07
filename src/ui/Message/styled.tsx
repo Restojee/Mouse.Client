@@ -1,57 +1,10 @@
 import styled from 'styled-components';
 import { StyledTextarea } from "@/ui/Textarea/styled";
 import { Property } from "csstype";
-import { Typography } from "@/ui/Typography/styles/Typography";
-import {StyledAvatar} from "@/layout/avatar/styles/StyledAvatar";
-
-export const StyledMessageStyled = styled.div(({ theme }) => ({
-    display: 'flex',
-    maxWidth: '100%',
-    marginBottom: '10px',
-    backgroundColor: theme.colors.secondary,
-    borderRadius: '10px',
-    padding: '10px',
-    '&:last-of-type': {
-        marginBottom: '0'
-    }
-}))
-
-export const StyledMessageAvatar = styled(StyledAvatar)({
-    minWidth: 50,
-    minHeight: 50,
-    marginRight: 10,
-})
-
-export const StyledMessageBody = styled.div({
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    overflow: 'hidden'
-})
 
 export const StyledMessageText = styled.div({
     wordBreak: 'break-word',
     maxWidth: '100%'
-})
-
-export const StyledMessageFooter = styled(Typography)(({ theme }) => ({
-    display: 'flex',
-    opacity: 0.4,
-    marginLeft: 'auto',
-    fontSize: `calc(${ theme.font.fontSize } - 2px)`,
-    cursor: 'pointer',
-
-    '&:hover': {
-        textDecoration: 'underline',
-    }
-}))
-
-export const StyledMessageSendForm = styled.div({
-    display: "flex",
-    alignItems: "center",
-    marginTop: "auto",
-    width: "100%",
-    padding: "10px 0 10px 10px",
 })
 
 export const StyledMessageSendFormTextarea = styled(StyledTextarea)<{ bgColor?: Property.BackgroundColor }>(

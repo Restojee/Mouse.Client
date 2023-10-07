@@ -1,10 +1,10 @@
-import { mapsData } from '@/moc/mapsMoc';
 import { wrapper} from "@/store";
+import { MAP_COMMENT_COLLECTION, mapsData } from '@/moc/mapsMoc';
 import { MapPageContainer } from "@/modules/map/MapContainer";
 import { MetaTags } from '@/ui/MetaTags/MetaTags';
 import { StyledModalWrapper } from "@/ui/Modal/styled";
 import { useRouter } from "next/router";
-import { Map } from "@/api/codegen/genMouseMapsApi";
+import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
 import { MapsContent } from "@/modules/map/MapsContent";
 import React from "react";
 import { DefaultTheme } from "@/layout/theme/constants";
@@ -27,13 +27,14 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (ini
     const mapId = Number(query.id)
     // const { data: maps } = await store.dispatch(mapsApi.endpoints.getMaps.initiate({ page: 0, size: 20 }));
     // const { data: map } = await store.dispatch(mapsApi.endpoints.getMap.initiate({ mapId }));
-    const props = { maps: mapsData, map: mapsData[0]};
+    const props = { maps: mapsData, map: mapsData[0], messages: MAP_COMMENT_COLLECTION};
     return { props };
 });
 
 type Props = {
     map: Map;   
-    maps: Map[]
+    maps: Map[];
+    messages: Comment[]
 }
 
 const Map = (props: Props) => {
@@ -44,8 +45,16 @@ const Map = (props: Props) => {
             <MetaTags title={props.map.name}/>
             <StyledModalWrapper>
                 <Paper direction={"row"} maxWidth={1200}>
-                    <MapContentMain map={ props.map } />
-                    <MapContentSidebar />
+                    <MapContentMain
+                        map={ props.map }
+                        user={props.map.user}
+                        messages={props.messages}
+                    />
+                    <MapContentSidebar
+                        user={props.map.user}
+                        mapId={props.map.id}
+                        date={'01.01.2000'}
+                    />
                 </Paper>
             </StyledModalWrapper>
             <MapsContent maps={ props.maps } />

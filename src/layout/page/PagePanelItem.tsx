@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import { StyledBox } from "@/ui/Box";
 import { StyledPagePanelButton } from "@/layout/page/styles/StyledPagePanelButton";
 
 type PropsType = {

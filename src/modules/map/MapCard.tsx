@@ -5,7 +5,7 @@ import { Typography } from "@/ui/Typography/styles/Typography";
 import { StyledMapCardBody } from "@/modules/map/styles/StyledMapCardBody";
 import { StyledMapCardButton } from "@/modules/map/styles/StyledMapCardButton";
 import { StyledMapCardFooter } from "@/modules/map/styles/StyledMapCardFooter";
-import { StyledBox} from "@/ui/Box/styles/StyledBox";
+import { StyledBox} from "@/ui/Box";
 import {FavoriteIcon} from "@/svg/FavoriteIcon";
 import {BookCheckIcon} from "@/svg/BookCheckIcon";
 import {CommentIcon} from "@/svg/CommentIcon";

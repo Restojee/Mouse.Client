@@ -1,4 +1,4 @@
-import { StyledBox } from '@/ui/Box/styles/StyledBox';
+import { StyledBox } from '@/ui/Box';
 import React, { useState } from 'react';
 import {Typography} from "@/ui/Typography/styles/Typography";
 import {StyledTab} from "@/layout/drawer/Notifications/styled";

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {StyledBox, StyledBoxProps} from "@/ui/Box/styles/StyledBox";
+import {StyledBox, StyledBoxProps} from "@/ui/Box";
 import {
     FormEvent,
     ReactNode

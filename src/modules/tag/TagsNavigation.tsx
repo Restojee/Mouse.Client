@@ -1,12 +1,9 @@
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import { StyledBox } from "@/ui/Box";
 import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
 import { SidebarSection } from "@/layout/sidebar/SidebarSection";
 import { NavLink } from "@/layout/navigation/NavLink";
 import { CloseIcon } from "@/svg/CloseIcon";
-import {
-    useCreateTagMutation, useDeleteTagMutation,
-    useGetTagsQuery
-} from "@/api/tagsApi";
+import { useDeleteTagMutation, useGetTagsQuery } from "@/api/tagsApi";
 import { AddIcon } from "@/svg/AddIcon";
 import { CreateTagPopup } from "@/modules/tag/CreateTagPopup";
 import { ScrollBox } from "@/ui/ScrollBox/ScrollBox";
@@ -16,15 +13,11 @@ import {
 } from "@/ui/Modal/styled";
 import { Fragment, useState } from "react";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import FormElement from "@/ui/Form/FormElement";
-import { Form } from "@/ui/Form/Form";
 import { SubmitButton } from "@/ui/Button/SubmitButton";
 import { CancelButton } from "@/ui/Button/CancelButton";
-import {StyledCardActions, StyledFormElementContainer} from "@/ui/Form/styled";
+import {StyledCardActions} from "@/ui/Form/styled";
 import styled from "styled-components";
 import {Typography} from "@/ui/Typography/styles/Typography";
-import Box from "next-auth/providers/box";
-
 type TagsNavigationSectionProps = {
     isOpen: boolean;
 }

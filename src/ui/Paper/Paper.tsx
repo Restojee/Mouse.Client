@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyledPaper } from "./styled";
-import { StyledBoxProps } from "@/ui/Box/styles/StyledBox";
+import { StyledBoxProps } from "@/ui/Box";
 
 const Paper = ({children, ...props}: Partial<StyledBoxProps>) => {
     return (

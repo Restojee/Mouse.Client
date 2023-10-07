@@ -1,4 +1,3 @@
-import { Avatar } from "@/layout/avatar/Avatar";
 import { NavLink } from "@/layout/navigation/NavLink";
 import { MoonIcon } from "@/svg/MoonIcon";
 import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
@@ -9,6 +8,7 @@ import { PaperIcon } from "@/svg/PaperIcon";
 import { ChatFillIcon } from "@/svg/ChatFillIcon";
 import { SettingsIcon } from "@/svg/SettingsIcon";
 import { LogInIcon } from "@/svg/LogInIcon";
+import { Avatar } from '@/ui/Avatar';
 import { ReactNode } from "react";
 import { Property } from "csstype";
 import { StyledPanel } from "@/layout/panel/styled";
@@ -45,7 +45,7 @@ export const Panel = (props: PanelProps) => {
                     </StyledNavLinkSection>
                 }
             />
-            <Avatar size="46px" image={avatar} />
+            <Avatar size={46} image={avatar} />
             { tabsData.map(el => (
                 <NavLink
                     key={ el.tab }

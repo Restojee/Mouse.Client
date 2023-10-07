@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyledBox} from "@/ui/Box/styles/StyledBox";
+import {StyledBox} from "@/ui/Box";
 
 type ScrollBoxType = {
     children: React.ReactNode

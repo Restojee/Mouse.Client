@@ -1,11 +1,11 @@
+import { Avatar } from '@/ui/Avatar';
 import React from 'react';
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import { StyledBox } from "@/ui/Box";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { CommentFillIcon } from "@/svg/CommentFillIcon";
 import { FavoriteIcon } from "@/svg/FavoriteIcon";
 import { InIcon } from "@/svg/InIcon";
 import { BookCheckFillIcon } from "@/svg/BookCheckFillIcon";
-import { Avatar } from "@/layout/avatar/Avatar";
 import { StyledStatisticIconContainer, StyledStatisticIconText } from "@/layout/drawer/Statistic/styled";
 import { drawerStatisticMoc } from "@/moc/drawerStatisticMoc";
 import { StyledDrawerBlock, StyledDrawerHeader } from "@/layout/drawer/styled";
@@ -21,14 +21,14 @@ export const Statistic = () => {
             { drawerStatisticMoc.map((user) => (
                 <StyledDrawerBlock key={ user.name + user.nameId }>
                     <StyledBox align="center">
-                        <Avatar size="80px" image={ user.avatar } />
+                        <Avatar size={80} image={ user.avatar } />
                         <StyledBox gap="5px" direction="column">
                             <StyledBox gap="4px" align="center">
-                                <Typography addSize="4px">{ user.name }</Typography>
+                                <Typography>{ user.name }</Typography>
                                 <Typography opacity="0.4">{ user.nameId }</Typography>
                             </StyledBox>
                             <StyledBox>
-                                <Typography addSize="0px" opacity="0.5">
+                                <Typography opacity="0.5">
                                     Регистрация: { user.date }
                                 </Typography>
                             </StyledBox>
@@ -36,9 +36,13 @@ export const Statistic = () => {
                     </StyledBox>
                     <StyledBox align="center">
                         <StyledBox grow="1" justify="center" title="Выполнено">
-                            <StyledStatisticIconContainer fillingPercent={ user.completionCounter }>
+                            <StyledStatisticIconContainer
+                                fillingPercent={ user.completionCounter }
+                            >
                                 <BookCheckFillIcon />
-                                <StyledStatisticIconText>{ user.completionCounter }</StyledStatisticIconText>
+                                <StyledStatisticIconText>
+                                    { user.completionCounter }
+                                </StyledStatisticIconText>
                             </StyledStatisticIconContainer>
                         </StyledBox>
                         <StyledBox grow="1" justify="center" title="Добавлено">
