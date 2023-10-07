@@ -3,7 +3,6 @@ import { wrapper} from "@/store";
 import { MapPageContainer } from "@/modules/map/MapContainer";
 import { MetaTags } from '@/ui/MetaTags/MetaTags';
 import { StyledModalWrapper } from "@/ui/Modal/styled";
-import { StyledMapContent } from "@/modules/map/styled";
 import { useRouter } from "next/router";
 import { Map } from "@/api/codegen/genMouseMapsApi";
 import { MapsContent } from "@/modules/map/MapsContent";
@@ -13,8 +12,8 @@ import { AddImageIcon } from "@/svg/AddImageIcon";
 import { FavoriteIcon } from "@/svg/FavoriteIcon";
 import { OutIcon } from "@/svg/OutIcon";
 import { TrashIcon } from "@/svg/TrashIcon";
-import { MapContentSidebar } from "@/modules/map/MapContentSidebar";
-import { MapContentMain } from "@/modules/map/MapContentMain";
+import { MapContentSidebar, MapContentMain } from "@/modules/map";
+import Paper from "@/ui/Paper/Paper";
 
 export const panelIconsArray = [
     { icon: (theme: typeof DefaultTheme) => <AddImageIcon size="30px" color={ theme.colors.primary } />, },
@@ -44,10 +43,10 @@ const Map = (props: Props) => {
         <MapPageContainer>
             <MetaTags title={props.map.name}/>
             <StyledModalWrapper>
-                <StyledMapContent>
+                <Paper direction={"row"} maxWidth={1200}>
                     <MapContentMain map={ props.map } />
                     <MapContentSidebar />
-                </StyledMapContent>
+                </Paper>
             </StyledModalWrapper>
             <MapsContent maps={ props.maps } />
         </MapPageContainer>

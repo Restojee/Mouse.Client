@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { StyledBox } from "@/ui/Box/styles/StyledBox";
 import { Property } from "csstype";
 
@@ -40,25 +40,4 @@ export const StyledTag = styled(StyledBox)<StyledTagType>(({ theme,...props }) =
         fontSize: `calc(${ theme.font.fontSize } - 2px)`,
         padding: '3px 10px',
     },
-}))
-
-export const StyledMapContentHeader = styled(StyledBox)(props => ({
-    alignItems: "center",
-    justifyContent: "space-between"
-}))
-
-export const StyledMapContentTitle = styled(StyledBox)(props => ({
-    alignItems: "center",
-}))
-
-export const StyledMapContentCounters = styled(StyledBox)(props => ({
-    opacity: 0.6,
-    alignItems: "center",
-    gap: "15px"
-}))
-
-export const StyledMapContentCounter = styled(StyledBox)(props => ({
-    gap: "5px",
-    alignItems: "center",
-
 }))

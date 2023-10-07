@@ -3,24 +3,14 @@ import { Map } from "@/api/codegen/genMouseMapsApi";
 import {
     StyledMapContentMain,
     StyledMapContentNoteForm,
-    StyledMiniMapImageContainer,
-    StyledMiniMapImagesContainer
 } from "@/modules/map/styled";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { IconButton } from "@/ui/Button/IconButton";
 import { CopyIcon } from "@/svg/CopyIcon";
 import { StyledMapContentPreview } from "@/ui/Messages/styled";
 import {
-    StyledScrollContainer,
-    StyledScrollWrapper
-} from "@/ui/ScrollContainer/ScrollContainer";
-import {
     StyledTag,
     StyledMapContentTags,
-    StyledMapContentHeader,
-    StyledMapContentTitle,
-    StyledMapContentCounters,
-    StyledMapContentCounter
 } from "@/ui/Tag/styled";
 import { MAP_TAG_COLLECTION } from "@/moc/mapsMoc";
 import { CloseIcon } from "@/svg/CloseIcon";
@@ -31,7 +21,7 @@ import { CommentIcon } from "@/svg/CommentIcon";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import Image from "next/image";
 import { CommonUtils } from "@/common/utils";
-import { MiniMapImages } from "@/modules/map/MiniMapImages";
+import { MiniMapImages } from "@/modules/map/MapContent/MiniMapImages";
 import { StyledBox } from "@/ui/Box/styles/StyledBox";
 
 type PropsType = {
@@ -45,16 +35,16 @@ export const MapContentMain = (props: Partial<PropsType>) => {
 
     return (
         <StyledMapContentMain>
-            <StyledMapContentHeader>
-                <StyledMapContentTitle>
+            <StyledBox justify={'space-between'} align={"center"}>
+                <StyledBox align={"center"}>
                     <Typography addSize="18px">!map {props.map?.name}</Typography>
                     <IconButton opacity="0.6">
                         <CopyIcon />
                     </IconButton>
-                </StyledMapContentTitle>
-                <StyledMapContentCounters>
+                </StyledBox>
+                <StyledBox opacity={ 0.6} align={"center"} gap={15}>
                     { MAP_ADDITIONAL_INFO_COLLECTION?.map((info, index) => (
-                        <StyledMapContentCounter
+                        <StyledBox
                             key={ index }
                             gap="5px"
                             align="center"
@@ -62,10 +52,10 @@ export const MapContentMain = (props: Partial<PropsType>) => {
                         >
                             { info.icon }
                             <Typography>{ info.count}</Typography>
-                        </StyledMapContentCounter>
+                        </StyledBox>
                     )) }
-                </StyledMapContentCounters>
-            </StyledMapContentHeader>
+                </StyledBox>
+            </StyledBox>
             <StyledMapContentPreview
                 bgColor={ theme.colors.mapBackground }
                 maxHeight="400px"
@@ -73,9 +63,7 @@ export const MapContentMain = (props: Partial<PropsType>) => {
             >
                 <Image src={ CommonUtils.getMapImageLink(props.map?.image) } width={ 800 } height={ 400 } alt="map" />
             </StyledMapContentPreview>
-            <StyledBox maxWidth={'100%'} overflow={"auto"}>
-                <MiniMapImages/>
-            </StyledBox>
+            <MiniMapImages/>
             <StyledMapContentTags>
                 { MAP_TAG_COLLECTION?.map(({ name, id }) => (
                     <StyledTag key={ id } bgColor={ theme.colors.primaryLighter }>

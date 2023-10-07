@@ -1,17 +1,18 @@
 import styled from "styled-components";
 import { Property } from "csstype";
+import { ReactNode } from "react";
 
 export type StyledBoxProps = {
     direction: Property.FlexDirection,
     align: Property.AlignItems,
-    borderRadius: Property.BorderRadius,
+    borderRadius: Property.BorderRadius<number>,
     justify: Property.JustifyContent,
     gap: Property.RowGap<number>,
     margin: Property.Margin,
     padding: Property.Padding,
     bgColor: Property.BackgroundColor,
     border: Property.Border,
-    maxWidth: Property.MaxWidth,
+    maxWidth: Property.MaxWidth<number>,
     color: Property.Color,
     width: Property.Width,
     height: Property.Height,
@@ -27,6 +28,8 @@ export type StyledBoxProps = {
     bgColorByActive: string,
     stylized: boolean,
     zIndex: number;
+    
+    children: ReactNode | JSX.Element;
 }
 export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props }) => ({
     display: "flex",

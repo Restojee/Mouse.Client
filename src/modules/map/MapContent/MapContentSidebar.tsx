@@ -1,8 +1,8 @@
 import React from "react";
 import { StyledMapContentSidebar } from "@/modules/map/styled";
-import { MapContentSidebarProfile } from "@/modules/map/MapContentSidebarProfile";
-import { MapContentSidebarIcons } from "@/modules/map/MapContentSidebarIcons";
-import { MapContentSidebarComments } from "@/modules/map/MapContentSidebarCommentSection";
+import { MapContentSidebarProfile } from "@/modules/map/MapContent/MapContentSidebarProfile";
+import { MapContentSidebarIcons } from "@/modules/map/MapContent/MapContentSidebarIcons";
+import { MapContentSidebarComments } from "@/modules/map/MapContent/MapContentSidebarCommentSection";
 
 type Props = {
     mapId: number;

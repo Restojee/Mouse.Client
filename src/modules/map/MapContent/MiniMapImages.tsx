@@ -1,8 +1,9 @@
-import { StyledMiniMapImageContainer, StyledMiniMapImagesContainer } from "@/modules/map/styled";
+import { StyledMiniMapImageContainer } from "@/modules/map/styled";
 import { useState } from "react";
 import { mapsData } from "@/moc/mapsMoc";
 import Image from "next/image";
 import { DEFAULT_MAP_IMAGE } from "@/common/contants";
+import { StyledBox } from "@/ui/Box/styles/StyledBox";
 
 export const MiniMapImages = () => {
     const [miniMapActiveId, setMiniMapActiveId] = useState(1)
@@ -18,7 +19,7 @@ export const MiniMapImages = () => {
     };
     
     return (
-        <StyledMiniMapImagesContainer>
+        <StyledBox borderRadius={10}>
             <StyledMiniMapImageContainer
                 onClick={ onClickHandler }
                 isActive={ miniMapActiveId === -1 }
@@ -41,6 +42,6 @@ export const MiniMapImages = () => {
                     />
                 </StyledMiniMapImageContainer>
             )) }
-        </StyledMiniMapImagesContainer>
+        </StyledBox>
     );
 };
