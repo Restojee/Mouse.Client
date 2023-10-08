@@ -8,7 +8,7 @@ import { StyledMapContentPreview } from '@/ui/Message/styled';
 type MapContentPreviewPropsType = {
     image: Map['image']
 }
-export const MapContentPreview = ({ image }: MapContentPreviewPropsType) => {
+export const Preview = ({ image }: MapContentPreviewPropsType) => {
     const theme = useAppTheme();
 
     return (

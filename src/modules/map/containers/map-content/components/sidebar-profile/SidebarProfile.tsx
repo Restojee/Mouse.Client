@@ -8,7 +8,7 @@ type MapContentSidebarProfilePropsType = {
     user?: User,
     date: string
 }
-export const MapContentSidebarProfile = (props: MapContentSidebarProfilePropsType) => {
+export const SidebarProfile = (props: MapContentSidebarProfilePropsType) => {
     const {
         user,
         date,

@@ -11,7 +11,7 @@ import { Typography } from '@/ui/Typography';
 type MapContentFooterPropsType = {
     tags?: Tag[]
 }
-export const MapContentTags = ({ tags }: MapContentFooterPropsType) => {
+export const Tags = ({ tags }: MapContentFooterPropsType) => {
     const theme = useAppTheme();
 
     const onEditClickHandler = () => {

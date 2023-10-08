@@ -1,6 +1,6 @@
 import React from 'react';
 import { Map } from '@/api/codegen/genMouseMapsApi';
-import { useMapCommentsAction } from '@/modules/map/containers/map-content/hooks/useMapCommentsAction';
+import { useMapCommentsAction } from './useMapCommentsAction';
 import { useUserActions } from '@/modules/user/utils/useUserActions';
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display/Display';
@@ -11,7 +11,7 @@ import { MessageSendFormContainer } from '@/ui/Message/MessagesSendForm';
 type MapContentSidebarCommentsPropsType = {
     mapId: Map['id']
 }
-export const MapContentSidebarComments = ({mapId}: MapContentSidebarCommentsPropsType) => {
+export const SidebarComments = ({mapId}: MapContentSidebarCommentsPropsType) => {
     const {
         onCommentDelete,
         onCommentAdd

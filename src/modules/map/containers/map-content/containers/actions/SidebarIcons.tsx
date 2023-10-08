@@ -13,7 +13,7 @@ import { Map } from '@/api/codegen/genMouseMapsApi';
 type MapContentSidebarIconsPropsType = {
     mapId: Map['id']
 }
-export const MapContentSidebarIcons = ({mapId}: MapContentSidebarIconsPropsType) => {
+export const SidebarIcons = ({mapId}: MapContentSidebarIconsPropsType) => {
     const theme = useAppTheme();
     const {
         onAddMapComplete,
