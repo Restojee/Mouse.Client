@@ -94,68 +94,6 @@ export const StyledContentSidebarBodyIcon = styled.div({
     }
 })
 
-type StyledMiniMapImageContainerPropsType = {
-    isVisible?: boolean,
-    username?: string,
-    isActive?: boolean
-}
-export const StyledMiniMapImageContainer = styled.div<StyledMiniMapImageContainerPropsType>(({theme, ...props}) => ({
-    height: 80,
-    maxHeight: 80,
-    minHeight: 80,
-    display: 'flex',
-    justifyContent: 'center',
-    overflow: "hidden",
-    alignItems: 'center',
-    minWidth: 130,
-    maxWidth: 130,
-    borderRadius: 10,
-    cursor: 'pointer',
-    position: 'relative',
-    transition: '0.1s',
-    transitionProperty: 'background-color, transform, box-shadow',
-    backgroundColor: theme.colors.mapBackground,
-    
-    '&:hover': {
-        transform: 'scale(0.97)',
-    },
-    
-    '&:active': {
-        transform: 'scale(0.96)',
-    },
-    ...props.isVisible && {
-        '&::after': {
-            content: `' ${ props.username } '` || "' '",
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            borderRadius: 'inherit',
-            backdropFilter: 'blur(4px)',
-            '-webkit-backdrop-filter': 'blur(4px)',
-            transition: '0.7s',
-            transitionProperty: 'opacity',
-        },
-        '&:hover': {
-            '&::after': {
-                opacity: 0.3,
-            }
-        }
-    },
-    ...props.isActive && {
-        boxShadow: '0 0 5px 0 rgba(255, 255, 255, 0.3)',
-        pointerEvents: 'none',
-        '&::after': {
-            opacity: 0.3,
-        }
-    },
-}))
-
 export const StyledMobileMapViewContainer = styled.div(({theme}) => ({
     display: 'flex',
     flexDirection: 'column',
