@@ -1,11 +1,15 @@
+import * as React from 'react';
+import { CustomLayout } from '@/layout/common/CustomLayout';
 import { routes } from '@/common/routes';
+import { withLayout } from '@/layout/common/withLayout';
 import { StyledWelcomeButton } from '@/modules/welcome/styles/StyledWelcomeButton';
 import { StyledWelcomePage } from '@/modules/welcome/styles/StyledWelcomePage';
 import { MetaTags } from '@/ui/MetaTags/MetaTags';
+import { NextPage } from 'next';
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-export default function Home() {
+const Home: NextPage = () => {
    const navigate = useRouter()
    const session = useSession();
 
@@ -20,3 +24,5 @@ export default function Home() {
         </StyledWelcomePage>
     )
   }
+
+export default withLayout(Home, CustomLayout);

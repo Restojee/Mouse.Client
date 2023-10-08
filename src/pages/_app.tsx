@@ -1,3 +1,4 @@
+import { LayoutProvider } from '@/layout/common/LayoutProvider';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { wrapper } from "@/store";
@@ -24,7 +25,9 @@ export default function App ({ Component, ...rest }: AppProps<{ session: Session
             <Provider store={ store }>
                 <AuthProvider>
                     <ThemeProvider>
-                        <Component {...props.pageProps} />
+                        <LayoutProvider>
+                            <Component {...props.pageProps} />
+                        </LayoutProvider>
                         <Notification/>
                     </ThemeProvider>
                 </AuthProvider>
