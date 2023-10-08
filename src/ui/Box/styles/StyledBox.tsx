@@ -26,6 +26,7 @@ export type StyledBoxProps = {
     fontSize: Property.FontSize,
     fontWeight: Property.FontWeight,
     zIndex: Property.ZIndex;
+    borderBottom: Property.BorderBottom;
 
     isClickable: boolean,
     isActive: boolean,
@@ -56,6 +57,7 @@ export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props 
     overflow: props.overflow,
     flexGrow: props.grow,
     flexWrap: props.wrap,
+    borderBottom: props.borderBottom,
     columnGap: props.gap,
     transition: props.transition,
     cursor: props.cursor,

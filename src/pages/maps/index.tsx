@@ -1,11 +1,9 @@
+import React from 'react';
 import { mapsData } from '@/moc/mapsMoc';
+import { MapsList } from '@/modules/map/containers/map-list/ui/MapsList';
+import { MapPageContainer } from '@/modules/map/components/MapContainer';
 import { wrapper } from "@/store";
-import { MapsContent } from "@/modules/map/MapsContent";
-import {
-    mapsApi,
-    useGetMapsQuery
-} from "@/api/mapsApi";
-import { MapPageContainer } from "@/modules/map/MapContainer";
+import { mapsApi, useGetMapsQuery } from "@/api/mapsApi";
 import { MetaTags } from '@/ui/MetaTags/MetaTags';
 
 export const getServerSideProps = wrapper.getStaticProps(store => async () => {
@@ -17,9 +15,10 @@ export const getServerSideProps = wrapper.getStaticProps(store => async () => {
 export default function Maps() {
     const { data: maps } = useGetMapsQuery({ page: 0, size: 20 });
     return (
+        // eslint-disable-next-line react/jsx-no-undef
         <MapPageContainer>
             <MetaTags title={'Maps'}/>
-            <MapsContent maps={ mapsData } />
+            <MapsList maps={ mapsData } />
         </MapPageContainer>
     )
 }

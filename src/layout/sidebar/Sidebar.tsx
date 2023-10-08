@@ -3,8 +3,8 @@ import { StyledSidebarLogo } from "@/layout/sidebar/styles/StyledSidebarLogo";
 import { SidebarSwitcher } from "@/layout/sidebar/SidebarSwitcher";
 import { useState } from "react";
 import { TagsNavigation } from "@/modules/tag/TagsNavigation";
-import { MapsByFiltersNavigation } from "@/modules/map/MapsByFiltersNavigation";
-import { MapsByCategoryNavigation } from "@/modules/map/MapsByCategoryNavigation";
+import { MapsByFiltersNavigation } from "@/modules/map/containers/map-navigation/ui/MapsByFiltersNavigation";
+import { MapsByCategoryNavigation } from "@/modules/map/containers/map-navigation/ui/MapsByCategoryNavigation";
 
 export const Sidebar = () => {
 

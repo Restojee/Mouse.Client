@@ -48,18 +48,14 @@ type StyledImageContainerPropsType = {
     bgColor?: Property.BackgroundColor
 }
 export const StyledMapContentPreview = styled.div<StyledImageContainerPropsType>((props) => ({
+    display: 'flex',
     borderRadius: props.borderRadius || 'inherit',
     margin: props.margin,
     width: props.width,
     height: props.height,
+    overflow: 'hidden',
     maxHeight: props.maxHeight,
     transition: '0.2s',
     backgroundColor: props.bgColor,
     flexGrow: 1,
-    img: {
-        width: "100%",
-        objectFit: "cover",
-        objectPosition: "center",
-        borderRadius: "inherit"
-    }
 }))

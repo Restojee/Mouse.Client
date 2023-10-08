@@ -1,5 +1,6 @@
 import { Comment, Tag, User } from '@/api/codegen/genMouseMapsApi';
 import { Map } from '@/api/codegen/genMouseMapsApi';
+
 export const USER_COLLECTION: User[]  = [
     {
         id: 1,

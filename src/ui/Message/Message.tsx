@@ -13,13 +13,13 @@ import {
 type PropsType = {
     comment: Comment,
     onDelete?: (id: number) => void
-    onAuthorClick?: (id: number) => void
+    onUsernameClick?: (id: number) => void
 }
 export const Message = (props: PropsType) => {
     const {
         comment,
         onDelete,
-        onAuthorClick,
+        onUsernameClick,
     } = props;
 
     const theme = useAppTheme();
@@ -31,8 +31,8 @@ export const Message = (props: PropsType) => {
     }
 
     const onAuthorClickHandler = () => {
-        if(comment.user?.id && onAuthorClick) {
-            onAuthorClick(comment.user?.id)
+        if(comment.user?.id && onUsernameClick) {
+            onUsernameClick(comment.user?.id)
         }
     }
 

@@ -7,7 +7,8 @@ import { Property } from 'csstype';
 import { StyledMessageSendFormIcon, StyledMessageSendFormTextarea } from '@/ui/Message/styled';
 
 type PropsType = {
-    bgColor: Property.BackgroundColor
+    bgColor: Property.BackgroundColor;
+    onSendMessage: () => void
 }
 export const MessageSendFormContainer = (props: Partial<PropsType>) => {
 
@@ -24,7 +25,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
                 bgColor={props.bgColor}
                 placeholder="Введите сообщение..."
             />
-            <StyledMessageSendFormIcon>
+            <StyledMessageSendFormIcon onClick={props.onSendMessage}>
                 <SendIcon size="30px" color={theme.colors.textOnSecondary}/>
             </StyledMessageSendFormIcon>
         </StyledBox>
