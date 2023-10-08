@@ -1,18 +1,27 @@
-import { StyledBox } from '@/ui/Box';
 import React from 'react';
-import { useTheme } from 'styled-components';
-import { DefaultTheme } from '@/layout/theme/constants';
+import { useAppTheme } from '@/hooks/useAppTheme';
+import { StyledBox } from '@/ui/Box';
 import { SendIcon } from '@/svg/SendIcon';
 import { Property } from 'csstype';
-import { StyledMessageSendFormIcon, StyledMessageSendFormTextarea } from '@/ui/Message/styled';
+import { StyledMessageSendFormIcon, StyledMessageSendFormTextarea } from './styled';
 
 type PropsType = {
+    value: string;
     bgColor: Property.BackgroundColor;
-    onSendMessage: () => void
+    onSendClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+    onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 export const MessageSendFormContainer = (props: Partial<PropsType>) => {
+    const {
+        value,
+        bgColor,
+        onSendClick,
+        onChange,
+        onKeyDown,
+    } = props;
 
-    const theme = useTheme() as typeof DefaultTheme;
+    const theme = useAppTheme();
 
     return (
         <StyledBox
@@ -22,10 +31,13 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
             padding={'10px 0 10px 10px'}
         >
             <StyledMessageSendFormTextarea
-                bgColor={props.bgColor}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+                bgColor={bgColor}
+                value={value}
                 placeholder="Введите сообщение..."
             />
-            <StyledMessageSendFormIcon onClick={props.onSendMessage}>
+            <StyledMessageSendFormIcon onClick={onSendClick}>
                 <SendIcon size="30px" color={theme.colors.textOnSecondary}/>
             </StyledMessageSendFormIcon>
         </StyledBox>

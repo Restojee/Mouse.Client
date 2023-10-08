@@ -31,6 +31,7 @@ export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
             overflow={'hidden'}
             width={size}
             height={size}
+            minWidth={size}
             bgColor={'rgba(0, 0, 0, 0.05)'}
         >
             <Display condition={image}>

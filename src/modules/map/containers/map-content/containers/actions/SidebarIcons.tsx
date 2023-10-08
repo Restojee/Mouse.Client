@@ -30,7 +30,7 @@ export const SidebarIcons = ({mapId}: MapContentSidebarIconsPropsType) => {
     return (
         <StyledBox
             width={'100%'}
-            padding={'20px 0'}
+            padding={'10px 0 10px 0'}
             borderBottom={'1px solid rgba(0, 0, 0, 0.1)'}
         >
             <StyledContentSidebarBodyIcon

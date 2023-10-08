@@ -1,7 +1,7 @@
 import { User } from '@/api/codegen/genMouseMapsApi';
 import { Avatar } from '@/ui/Avatar';
 import { StyledBox } from '@/ui/Box';
-import { Typography } from '@/ui/Typography/styles/Typography';
+import { Typography } from '@/ui/Typography';
 import React from 'react';
 
 type MapContentSidebarProfilePropsType = {
@@ -19,15 +19,19 @@ export const SidebarProfile = (props: MapContentSidebarProfilePropsType) => {
             direction={'column'}
             align={'center'}
             gap={20}
-            margin={'0 30px 20px 30px'}
+            margin={'0 30px 0 30px'}
         >
             <Avatar
-                size={70}
+                size={80}
                 image={user?.avatar}
                 username={user?.username}
             />
-            <StyledBox direction="column">
+            <StyledBox
+                direction="column"
+                textAlign={'center'}
+            >
                 <Typography
+                    fontSize={'1.1rem'}
                     isLink
                     isEllipsis
                     fontWeight="bold"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { useMapCommentsAction } from './useMapCommentsAction';
 import { useUserActions } from '@/modules/user/utils/useUserActions';
@@ -11,29 +11,36 @@ import { MessageSendFormContainer } from '@/ui/Message/MessagesSendForm';
 type MapContentSidebarCommentsPropsType = {
     mapId: Map['id']
 }
-export const SidebarComments = ({mapId}: MapContentSidebarCommentsPropsType) => {
+export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) => {
     const {
+        commentText,
         onCommentDelete,
-        onCommentAdd
-    } = useMapCommentsAction()
+        onCommentAdd,
+        onInputChange,
+        onInputKeyDown,
+    } = useMapCommentsAction();
 
     const {
-        onUsernameClick
-    } = useUserActions()
+        onUsernameClick,
+    } = useUserActions();
 
     const comments = MAP_COMMENT_COLLECTION;
 
-    const onDeleteHandler = (id: number) => {
-        onCommentDelete(id)
-    }
+    const onDeleteHandler = useCallback((id: number) => {
+        onCommentDelete(id);
+    }, [onCommentDelete]);
 
-    const onCommentAddHandler = () => {
-        onCommentAdd(mapId)
-    }
+    const onCommentAddHandler = useCallback(() => {
+        onCommentAdd(mapId);
+    }, [onCommentAdd, mapId]);
 
-    const onUsernameClickHandler = (id: number) => {
-        onUsernameClick(id)
-    }
+    const onInputKeyDownHandler = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        onInputKeyDown(e, mapId);
+    }, [onInputKeyDown, mapId]);
+
+    const onUsernameClickHandler = useCallback((id: number) => {
+        onUsernameClick(id);
+    }, [onUsernameClick]);
 
     return (
         <StyledBox
@@ -69,7 +76,10 @@ export const SidebarComments = ({mapId}: MapContentSidebarCommentsPropsType) => 
                 </StyledBox>
             </Display>
             <MessageSendFormContainer
-                onSendMessage={ onCommentAddHandler}
+                value={commentText}
+                onChange={onInputChange}
+                onKeyDown={onInputKeyDownHandler}
+                onSendClick={onCommentAddHandler}
             />
         </StyledBox>
     );
