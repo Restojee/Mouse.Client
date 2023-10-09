@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import Image from 'next/image';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { MINI_IMAGES_HEIGHT, MINI_IMAGES_WIDTH } from './constants';
@@ -16,7 +16,12 @@ export const MiniMapImages = ({ maps }: MiniMapImagesPropsType) => {
         setMiniMapActiveId(-1);
     };
 
-    const onClickImage = (id?: number) => {
+    const onClickImage = (e: MouseEvent<HTMLDivElement>, id?: number) => {
+        const currentElement: HTMLDivElement = e.currentTarget;
+        if (currentElement) {
+            currentElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
         if (id) {
             setMiniMapActiveId(id);
         }
@@ -39,7 +44,7 @@ export const MiniMapImages = ({ maps }: MiniMapImagesPropsType) => {
                 {maps.map((item) => (
                     <StyledMiniMapImageContainer
                         key={item.id}
-                        onClick={() => onClickImage(item.id)}
+                        onClick={(e) => onClickImage(e, item.id)}
                         isActive={miniMapActiveId === item.id}
                         username={item.user?.username}
                         isVisible
