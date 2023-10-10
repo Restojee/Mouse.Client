@@ -43,7 +43,7 @@ export const mapsData: MapsDataType[] = [
     }
 ]
 
-export const mapTags = [
+export const MAP_TAG_COLLECTION = [
     {
         "id": 0,
         "label": "тег1"
@@ -71,7 +71,7 @@ export const mapTags = [
 ]
 
 
-export const mapComments = [
+export const MAP_COMMENT_COLLECTION = [
     {
         "id": 0,
         "name": "Nickname",
