@@ -3,10 +3,7 @@ import { StyledBox } from "@/ui/Box";
 import { Typography } from '@/ui/Typography/styles/Typography';
 import { EditFillIcon } from "@/svg/EditFillIcon";
 import { ImageForm } from "@/ui/ImageForm/ImageForm";
-import {
-    StyledTag,
-    StyledMapContentTags
-} from "@/ui/Tag/styled";
+import { StyledTag } from "@/ui/Tag/styled";
 import { StyledButtonIcon } from "@/ui/Button/styles/StyledButtonIcon";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
@@ -20,19 +17,23 @@ export const MapParametersForm = () => {
     };
 
     return (
-        <StyledBox width={"100%"} gap="15px" direction="column">
+        <StyledBox
+            width={"100%"}
+            gap="15px"
+            direction="column"
+        >
             <ImageForm
                 fileType="image"
                 onChange={ onChangePackImage }
                 value={ mapImage }
             />
-            <StyledMapContentTags>
+            <StyledBox wrap={'wrap'} gap={5}>
                 <Typography>Теги: </Typography>
                 <StyledTag small>Тег</StyledTag>
                 <StyledButtonIcon>
-                    <EditFillIcon color={ theme.colors.iconOnSecondary } size="20px" />
+                    <EditFillIcon color={ theme.colors.iconOnSecondary } size="15px" />
                 </StyledButtonIcon>
-            </StyledMapContentTags>
+            </StyledBox>
         </StyledBox>
     );
 }

@@ -1,4 +1,4 @@
-import { MapParametersForm } from "@/modules/map/containers/map-create/ui/MapParametersForm";
+import { MapParametersForm } from "@/modules/map/containers/map-create/containers/create-form/MapParametersForm";
 import { PointBlock } from "@/ui/PointBlock/PointBlock";
 
 type Props = {

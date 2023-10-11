@@ -2,6 +2,10 @@ import { Map } from '@/api/codegen/genMouseMapsApi';
 
 export const useMap = (mapId?: Map['id']) => {
     const onAddMapComplete = () => {
+        alert('добавление прохождения карты пока не работает')
+    }
+
+    const onAddMap = (): void => {
         alert('добавление карты пока не работает')
     }
 
@@ -33,6 +37,7 @@ export const useMap = (mapId?: Map['id']) => {
         onMapDelete,
         onAddMapFavorite,
         onMapShare,
+        onAddMap,
         onMapNameCopy
     };
 };

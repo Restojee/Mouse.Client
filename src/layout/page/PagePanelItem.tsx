@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { StyledBox } from "@/ui/Box";
-import { StyledPagePanelButton } from "@/layout/page/styles/StyledPagePanelButton";
+import React from 'react';
+import { StyledBox } from '@/ui/Box';
+import { StyledPagePanelButton } from '@/layout/page/styles/StyledPagePanelButton';
 
 type PropsType = {
-    setActiveItem?: (isActive: boolean) => void,
-    onClick?: () => void,
-    prepend?: React.ReactNode,
-    activeIcon?: React.ReactNode,
-    content?: React.ReactNode
+    isContentVisible?: boolean;
+    icon: React.ReactNode;
+    content?: React.ReactNode;
+    onClick: () => void
 }
 export const PagePanelItem = (props: PropsType) => {
-    const [isPagePanelItemOpen, setIsPagePanelItemOpen] = useState(false);
+    const {
+        isContentVisible,
+        content,
+        icon,
+        onClick,
+    } = props
 
-    const pagePanelItemClick = () => {
-        setIsPagePanelItemOpen(!isPagePanelItemOpen);
-    };
     return (
-        <StyledBox>
-            <StyledPagePanelButton onClick={pagePanelItemClick}>
-                {props.prepend}
-                {isPagePanelItemOpen && props.activeIcon}
+        <StyledBox gap={10}>
+            {isContentVisible && content}
+            <StyledPagePanelButton onClick={onClick}>
+                {icon}
             </StyledPagePanelButton>
-            {isPagePanelItemOpen && props.content}
         </StyledBox>
     );
-}
+};
 
 export default PagePanelItem;

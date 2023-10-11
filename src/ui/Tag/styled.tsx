@@ -3,7 +3,7 @@ import { StyledBox } from "@/ui/Box";
 import { Property } from "csstype";
 
 export const StyledMapContentTags = styled(StyledBox)({
-    flexWrap: 'wrap',
+
 })
 
 type StyledTagType = {
