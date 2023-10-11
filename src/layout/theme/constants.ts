@@ -20,6 +20,10 @@ export const DefaultTheme = {
 
         mapBackground: '#6b7494',
 
+        default: {
+            paper: '#FFFFFF'
+        },
+
         status: {
             success: '#7fd482',
             danger: '#ff8935',
@@ -79,7 +83,12 @@ export const DefaultTheme = {
                 svg: { width: '12px', height: '12px' },
             },
             md: {
-                padding: '7px 12px',
+                padding: '7px 15px',
+                fontSize: '14px',
+                svg: { width: '14px', height: '14px' },
+            },
+            lg: {
+                padding: '10px 20px',
                 fontSize: '14px',
                 svg: { width: '14px', height: '14px' },
             },

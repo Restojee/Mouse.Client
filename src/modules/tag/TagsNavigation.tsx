@@ -1,93 +1,28 @@
+import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledBox } from "@/ui/Box";
 import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
 import { SidebarSection } from "@/layout/sidebar/SidebarSection";
 import { NavLink } from "@/layout/navigation/NavLink";
 import { CloseIcon } from "@/svg/CloseIcon";
-import { useDeleteTagMutation, useGetTagsQuery } from "@/api/tagsApi";
 import { AddIcon } from "@/svg/AddIcon";
-import { CreateTagPopup } from "@/modules/tag/CreateTagPopup";
+import { CreateTagPopup } from "@/modules/tag/containers/create-tag-popup/CreateTagPopup";
 import { ScrollBox } from "@/ui/ScrollBox/ScrollBox";
-import {
-    StyledMegaShadow,
-    StyledModalWrapper
-} from "@/ui/Modal/styled";
-import { Fragment, useState } from "react";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { SubmitButton } from "@/ui/Button/SubmitButton";
-import { CancelButton } from "@/ui/Button/CancelButton";
-import {StyledCardActions} from "@/ui/Form/styled";
-import styled from "styled-components";
-import {Typography} from "@/ui/Typography/styles/Typography";
+
 type TagsNavigationSectionProps = {
     isOpen: boolean;
 }
 
-const StyledCard = styled(StyledBox)(props => ({
-    backgroundColor: "white",
-    borderRadius: "15px",
-    flexDirection: "column",
-    padding: "20px",
-    gap: "15px",
-    height: "max-content",
-    zIndex: props.theme.order.modal + 1
-}))
-
-type DeleteMapTagProps =  {
-    tagId: number;
-    isVisible: boolean;
-    onClose: () => void;
-}
-function DeleteMapTag(props: Partial<DeleteMapTagProps>) {
-
-    const { tagId = 0, isVisible = false, onClose } = props;
-
-    const theme = useAppTheme();
-
-    const [ deleteTag ] = useDeleteTagMutation();
-
-    if (isVisible) {
-        return (
-            <Fragment>
-                <StyledMegaShadow onClick={ onClose } />
-                <StyledModalWrapper>
-                    <StyledCard width="400px">
-                        <Typography fontSize="18px" color={ theme.colors.textOnSecondary }>
-                            Подтверждение удаления
-                        </Typography>
-                        <StyledBox direction="column">
-                            <Typography color={ theme.colors.textOnSecondary }>
-                                Вы действительно хотите удалить этот тег?
-                            </Typography>
-                            <StyledCardActions>
-                                <SubmitButton
-                                    onClick={ () => deleteTag({ tagId }).then(onClose) }
-                                    bgColor={ theme.colors.status.success }
-                                    label="Подтвердить"
-                                />
-                                <CancelButton
-                                    label="Отмена"
-                                    onClick={ onClose }
-                                />
-                            </StyledCardActions>
-                        </StyledBox>
-                    </StyledCard>
-                </StyledModalWrapper>
-            </Fragment>
-
-        )
-    }
-
-    return null;
-}
-
 export function TagsNavigation(props: TagsNavigationSectionProps) {
-    const { data: tags } = useGetTagsQuery();
+    const {
+        onTagDelete,
+        onTagCreate,
+        modalType,
+        onOpenModal,
+        onCloseModal,
+        tagsList
+    } = useTag();
 
-    const [ tagId, setTagId ] = useState<number>();
-
-    const [ isTagDeleteProcess, setIsTagDeleteProcess ] = useState(false);
-
-    const [ isTagCreateProcess, setIsTagCreateProcess ] = useState(false);
+    console.log(modalType)
 
     if (props.isOpen) {
         return (
@@ -95,34 +30,28 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                 direction="column"
                 gap={ 0 }
                 padding="5px"
-                overflow="hidden"
             >
                 <SidebarSection
                     label="Поиск по тегам"
                     append={
                         <StyledNavLinkSection
-                            onClick={ () => setIsTagCreateProcess(true) }
+                            onClick={ () => onOpenModal('create') }
                             isOpen={ props.isOpen }
                         >
                             <AddIcon />
                         </StyledNavLinkSection>
                     }
-                    prepend={
-                        <CreateTagPopup isVisible={ isTagCreateProcess } />
-                    }
+                    prepend={<CreateTagPopup isVisible={ modalType === 'create' } />}
                     isOpen={ props.isOpen }
                 />
                 <ScrollBox>
-                    { tags?.map(el => (
+                    { tagsList?.map(el => (
                         <NavLink
                             key={ el.id }
                             label={ el.name }
                             isChecked={ false }
                             append={ (
-                                <StyledNavLinkSection onClick={ () => {
-                                    setTagId(el.id);
-                                    setIsTagDeleteProcess(true)
-                                } }>
+                                <StyledNavLinkSection onClick={ () => onTagDelete(el.id) }>
                                     <CloseIcon />
                                 </StyledNavLinkSection>
                             ) }
@@ -131,11 +60,12 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                         />
                     )) }
                 </ScrollBox>
-                <DeleteMapTag
-                    tagId={ tagId }
-                    isVisible={ isTagDeleteProcess }
-                    onClose={ () => setIsTagDeleteProcess(false) }
-                />
+                {/*<Modal*/}
+                {/*    isOpen={ modalType === 'delete' }*/}
+                {/*    text={'Вы действительно хотите удалить тег?'}*/}
+                {/*    onAccess={ () => onTagDelete() }*/}
+                {/*    onClose={ onCloseModal }*/}
+                {/*/>*/}
             </StyledBox>
         )
     }

@@ -9,7 +9,7 @@ export const authOptions: NextAuthOptions = {
             id: "mouse-auth",
             name: "Mouse Auth",
             type: "oauth",
-            wellKnown: "http://tfm-maps.ru:8001/api/.well-known/openid-configuration",
+            wellKnown: "http://151.248.121.176:8000/api/.well-known/openid-configuration",
             authorization: { params: { scope: "openid" } },
             idToken: true,
             clientId: "messaging-client",

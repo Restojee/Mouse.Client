@@ -22,7 +22,7 @@ export const StyledPointBlockContainer = styled(StyledBox)<PointBlockContainerPr
     color: theme.colors.textOnSecondary,
     fontSize: theme.font.fontSize,
     transition: '0.2s',
-    pointerEvents: "initial"
+    pointerEvents: "initial",
 }))
 export const StyledPointBlockHeader = styled(StyledBox)({
     marginBottom: 15

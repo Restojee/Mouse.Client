@@ -10,6 +10,7 @@ export type StyledButtonProps = {
     margin?: string | number;
     size?: 'sm' | 'md' | 'lg';
     isWithError?: boolean;
+    disabled: boolean;
     isBold?: boolean;
 }
 export const StyledButton = styled.button<StyledButtonProps>(({
@@ -18,9 +19,10 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     justify = "center",
     bgColor = theme.colors.brandColor,
     size = "md",
-    borderRadius = "10px",
+    borderRadius = "15px",
     width = "min-content",
-    margin = ""
+    margin = "",
+    disabled
 }) => ({
     justifyContent: justify,
     width: width,
@@ -39,11 +41,15 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     columnGap: 10,
     backgroundColor: bgColor,
     rowGap: 10,
+    borderRadius: borderRadius,
     padding: "7px 10px",
     "&:hover": {
         transform: 'scale(0.9)'
     },
-    borderRadius: borderRadius,
+    ...disabled && {
+        pointerEvents: 'none',
+        opacity: 0.6
+    },
     ...size
         ? theme.sizes.button[size]
         : theme.sizes.button.md,

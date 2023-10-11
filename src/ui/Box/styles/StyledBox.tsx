@@ -3,37 +3,39 @@ import { Property } from "csstype";
 import { ReactNode } from "react";
 
 export type StyledBoxProps = {
-    direction: Property.FlexDirection,
-    align: Property.AlignItems,
-    borderRadius: Property.BorderRadius<number>,
-    justify: Property.JustifyContent,
-    gap: Property.RowGap<number>,
-    margin: Property.Margin<number>,
-    padding: Property.Padding<number>,
-    bgColor: Property.BackgroundColor,
-    border: Property.Border,
-    maxWidth: Property.MaxWidth<number>,
-    minWidth: Property.MinWidth<number>,
-    minHeight: Property.MinHeight<number>,
-    color: Property.Color,
-    width: Property.Width<number>,
-    height: Property.Height<number>,
-    opacity: Property.Opacity,
-    overflow: Property.Overflow,
-    wrap: Property.FlexWrap,
-    transition: Property.Transition,
-    grow: Property.FlexGrow,
-    cursor: Property.Cursor,
-    textAlign: Property.TextAlign,
-    fontSize: Property.FontSize,
-    fontWeight: Property.FontWeight,
+    direction: Property.FlexDirection;
+    align: Property.AlignItems;
+    borderRadius: Property.BorderRadius<number>;
+    justify: Property.JustifyContent;
+    gap: Property.RowGap<number>;
+    margin: Property.Margin<number>;
+    padding: Property.Padding<number>;
+    bgColor: Property.BackgroundColor;
+    border: Property.Border;
+    maxWidth: Property.MaxWidth<number>;
+    minWidth: Property.MinWidth<number>;
+    minHeight: Property.MinHeight<number>;
+    color: Property.Color;
+    width: Property.Width<number>;
+    height: Property.Height<number>;
+    opacity: Property.Opacity;
+    overflow: Property.Overflow;
+    wrap: Property.FlexWrap;
+    transition: Property.Transition;
+    grow: Property.FlexGrow;
+    cursor: Property.Cursor;
+    textAlign: Property.TextAlign;
+    fontSize: Property.FontSize;
+    fontWeight: Property.FontWeight;
+    boxShadow: Property.BoxShadow;
     zIndex: Property.ZIndex;
     borderBottom: Property.BorderBottom;
+    maxHeight: Property.MaxHeight;
 
-    isClickable: boolean,
-    isActive: boolean,
-    bgColorByActive: string,
-    stylized: boolean,
+    isClickable: boolean;
+    isActive: boolean;
+    bgColorByActive: string;
+    stylized: boolean;
 
     children: ReactNode | JSX.Element;
 }
@@ -41,6 +43,7 @@ export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props 
     display: "flex",
     flexDirection: props.direction || "row",
     alignItems: props.align,
+    boxShadow: props.boxShadow,
     justifyContent: props.justify,
     gap: props.gap,
     rowGap: props.gap,
@@ -53,6 +56,7 @@ export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props 
     fontWeight: props.fontWeight,
     borderRadius: props.borderRadius,
     maxWidth: props.maxWidth,
+    maxHeight: props.maxHeight,
     minHeight: props.minHeight,
     minWidth: props.minWidth,
     width: props.width,

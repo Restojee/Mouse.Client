@@ -18,8 +18,6 @@ type PropsType = DefaultInputType & {
     bgColor: Property.BackgroundColor,
     inputPrepend: React.ReactNode,
     inputAppend: React.ReactNode,
-    searchValue: string,
-    setSearchValue: (value: string) => void,
     searchForm: boolean,
     textarea: boolean,
 }
@@ -55,7 +53,7 @@ export default function FormElement(props: Partial<PropsType>) {
                     ) }
                     <StyledInput
                         readOnly={ props.readOnly }
-                        value={ props.searchValue }
+                        value={ props.value }
                         onClick={ props.onClick }
                         onChange={ props.onChange }
                         placeholder={ props.placeholder }

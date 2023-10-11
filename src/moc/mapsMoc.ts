@@ -9,7 +9,7 @@ export const USER_COLLECTION: User[]  = [
     }
 ]
 
-export const mapTags: Tag[] = [
+export const TAGS_COLLECTION: Tag[] = [
     {
         id: 1,
         name: 'антигравитация',
@@ -42,7 +42,7 @@ export const mapsData: Map[] = [
         name: '@123456',
         image: '',
         description: 'awdawdwa',
-        tags: mapTags,
+        tags: TAGS_COLLECTION,
     },
     {
         id: 2,
@@ -53,7 +53,7 @@ export const mapsData: Map[] = [
         name: '@123456',
         image: '',
         description: 'awdawdwa',
-        tags: mapTags,
+        tags: TAGS_COLLECTION,
     },
     {
         id: 3,
@@ -64,7 +64,7 @@ export const mapsData: Map[] = [
         name: '@123456',
         image: '',
         description: 'awdawdwa',
-        tags: mapTags,
+        tags: TAGS_COLLECTION,
     },
     {
         id: 4,
@@ -75,7 +75,7 @@ export const mapsData: Map[] = [
         name: 'Карта 1',
         image: '',
         description: 'awdawdwa',
-        tags: mapTags,
+        tags: TAGS_COLLECTION,
     },
     {
         id: 5,
@@ -86,7 +86,7 @@ export const mapsData: Map[] = [
         name: '@123456',
         image: '',
         description: 'awdawdwa',
-        tags: mapTags,
+        tags: TAGS_COLLECTION,
     },
     {
         id: 6,
@@ -97,7 +97,7 @@ export const mapsData: Map[] = [
         name: '@123456',
         image: '',
         description: 'awdawdwa',
-        tags: mapTags,
+        tags: TAGS_COLLECTION,
     },
     {
         id: 7,
@@ -108,7 +108,7 @@ export const mapsData: Map[] = [
         name: '@123456',
         image: '',
         description: 'awdawdwa',
-        tags: mapTags,
+        tags: TAGS_COLLECTION,
     },
 ];
 

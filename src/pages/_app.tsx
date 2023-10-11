@@ -17,6 +17,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async () =
     await store.dispatch(mapsApi.endpoints.getMaps.initiate({ page: 0, size: 20 }));
     return { props }
 });
+
 export default function App ({ Component, ...rest }: AppProps<{ session: Session }>) {
     const { store, props } = wrapper.useWrappedStore(rest);
     const { pageProps } = rest;
