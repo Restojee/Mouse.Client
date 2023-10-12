@@ -1,24 +1,33 @@
+import { Map } from '@/api/codegen/genMouseMapsApi';
+import { getMapsThunk } from '@/modules/map/containers/map-list/slice';
 import React from 'react';
-import { mapsData } from '@/moc/mapsMoc';
 import { MapsList } from '@/modules/map/containers/map-list/ui/MapsList';
 import { MapPageContainer } from '@/modules/map/components/MapContainer';
-import { wrapper } from "@/store";
-import { mapsApi } from "@/api/mapsApi";
+import { wrapper } from '@/store';
 import { MetaTags } from '@/ui/MetaTags/MetaTags';
 
-export const getServerSideProps = wrapper.getStaticProps(store => async () => {
-    const props = {}
-    // await store.dispatch(mapsApi.getMaps({ page: 0, size: 20 }));
-    return { props }
+export const getServerSideProps = wrapper.getServerSideProps(store => async () => {
+    const { dispatch, getState } = store;
+    await dispatch(getMapsThunk({ page: 0, size: 20 }));
+    const state = getState();
+
+    return {
+        props: {
+            maps: state.maps.mapsList,
+        },
+    };
 });
 
-export default function Maps() {
-    console.log(mapsApi.getMaps({ page: 0, size: 20 }))
+type MapsPropsType = {
+    maps: Map[];
+}
+export default function Maps(props: MapsPropsType) {
+
     return (
         // eslint-disable-next-line react/jsx-no-undef
         <MapPageContainer>
             <MetaTags title={'Maps'}/>
-            <MapsList maps={ mapsData } />
+            <MapsList maps={props.maps}/>
         </MapPageContainer>
-    )
+    );
 }

@@ -1,3 +1,5 @@
+import { mapCreateReducer } from '@/modules/map/containers/map-create';
+import { mapsReducer } from '@/modules/map/containers/map-list/slice';
 import { tagsReducer } from '@/modules/tag';
 import {
     combineReducers,
@@ -9,6 +11,8 @@ import { appReducer } from "@/bll/appReducer";
 const rootReducer = combineReducers({
     app: appReducer,
     tags: tagsReducer,
+    maps: mapsReducer,
+    mapCreate: mapCreateReducer
 })
 
 const makeStore = (context: Context) => configureStore({

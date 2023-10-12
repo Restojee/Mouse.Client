@@ -7,6 +7,7 @@ export type StyledBoxProps = {
     align: Property.AlignItems;
     borderRadius: Property.BorderRadius<number>;
     justify: Property.JustifyContent;
+    position: Property.Position;
     gap: Property.RowGap<number>;
     margin: Property.Margin<number>;
     padding: Property.Padding<number>;
@@ -62,6 +63,7 @@ export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props 
     width: props.width,
     height: props.height,
     opacity: props.opacity,
+    position: props.position,
     overflow: props.overflow,
     flexGrow: props.grow,
     flexWrap: props.wrap,

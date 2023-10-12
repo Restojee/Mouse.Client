@@ -4,23 +4,32 @@ import { StyledPagePanelButton } from '@/layout/page/styles/StyledPagePanelButto
 
 type PropsType = {
     isContentVisible?: boolean;
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     content?: React.ReactNode;
-    onClick: () => void
+    onClick?: () => void;
+    disabled?: boolean;
+    children: React.ReactNode;
+    type?: 'submit';
 }
 export const PagePanelItem = (props: PropsType) => {
     const {
         isContentVisible,
         content,
-        icon,
+        children,
         onClick,
+        disabled,
+        type
     } = props
 
     return (
         <StyledBox gap={10}>
             {isContentVisible && content}
-            <StyledPagePanelButton onClick={onClick}>
-                {icon}
+            <StyledPagePanelButton
+                type={type || 'button'}
+                disabled={disabled}
+                onClick={onClick}
+            >
+                {children}
             </StyledPagePanelButton>
         </StyledBox>
     );

@@ -1,3 +1,4 @@
+import { useAppTheme } from '@/hooks/useAppTheme';
 import React from 'react';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsData } from '@/moc/mapsMoc';
@@ -16,10 +17,17 @@ type MapContentPropsType = {
     map: Map;
 }
 export const MapContent = ({map}: MapContentPropsType) => {
+    const theme = useAppTheme();
     const completedMaps = mapsData;
 
     return (
-        <Paper direction={'row'} maxWidth={1200}>
+        <Paper
+            align={'flex-start'}
+            padding={0}
+            bgColor={theme.colors.primary}
+            direction={'row'}
+            maxWidth={1200}
+        >
             <StyledMapContentMain>
                 <Header
                     completeCount={completedMaps.length}
@@ -27,18 +35,18 @@ export const MapContent = ({map}: MapContentPropsType) => {
                     commentsCount={completedMaps.length}
                     map={map}
                 />
-                <Preview image={map.image}/>
+                <Preview image={map?.image}/>
                 <MiniMapImages maps={completedMaps}/>
-                <Tags tags={map.tags}/>
+                <Tags tags={map?.tags}/>
                 <Note/>
             </StyledMapContentMain>
             <StyledMapContentSidebar>
                 <SidebarProfile
-                    user={map.user}
+                    user={map?.user}
                     date={'01.01.2000'}
                 />
-                <SidebarIcons mapId={map.id}/>
-                <SidebarComments mapId={map.id}/>
+                <SidebarIcons mapId={map?.id}/>
+                <SidebarComments mapId={map?.id}/>
             </StyledMapContentSidebar>
         </Paper>
     );

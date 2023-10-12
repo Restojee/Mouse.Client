@@ -1,7 +1,7 @@
-import { useMap } from '@/modules/map/common';
-import { SvgIconPropsType } from '@/svg/common/types';
+import { useState } from 'react';
+import { useMapCreate } from '../hooks/useMapCreate';
 import { DoneRoundIcon } from '@/svg/DoneRoundIcon';
-import { useMemo, useState } from 'react';
+import { Display } from '@/ui/Display';
 import { AddRoundIcon } from '@/svg/AddRoundIcon';
 import { MapCreatePopup } from './MapCreatePopup';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -11,42 +11,46 @@ export const MapCreateSection = () => {
     const theme = useAppTheme();
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isContentVisible, setIsContentVisible] = useState(false);
-    const {
-        onAddMap
-    } = useMap()
 
-    const onIconClickHandler = () => {
+    const {
+        onMapCreate
+    } = useMapCreate()
+
+    const { isValid } = useMapCreate();
+
+    const onSubmitHandler = async () => {
+        await onMapCreate();
+        setIsPopupOpen(false);
+    };
+
+    const onIconClickHandler = async () => {
         if (isContentVisible) {
-            onAddMap()
-            setIsPopupOpen(false)
+            await onSubmitHandler()
         } else {
             setIsContentVisible(true)
         }
-    console.log(isContentVisible)
+        setIsPopupOpen(false)
     }
-
-    const IconComponent = useMemo((): (props: SvgIconPropsType) => JSX.Element => {
-        if (isContentVisible) {
-            return DoneRoundIcon;
-        } else {
-            return AddRoundIcon;
-        }
-    }, [isContentVisible]);
 
     return (
         <PagePanelItem
-            onClick={onIconClickHandler}
+            disabled={!isValid && isContentVisible}
+            type={isContentVisible ? 'submit' : undefined}
             isContentVisible={isContentVisible}
-            icon={<IconComponent
-                    color={theme.colors.primary}
-                />
-            }
+            onClick={onIconClickHandler}
             content={
                 <MapCreatePopup
                     isVisible={isPopupOpen}
                     onClickCreate={() => setIsPopupOpen(!isPopupOpen)}
                 />
             }
-        />
+        >
+            <Display condition={isContentVisible}>
+                <DoneRoundIcon color={theme.colors.primary}/>
+            </Display>
+            <Display condition={!isContentVisible}>
+                <AddRoundIcon color={theme.colors.primary}/>
+            </Display>
+        </PagePanelItem>
     );
 };

@@ -7,8 +7,8 @@ type StyledImageFormContainerPropsType = {
 export const StyledImageFormContainer = styled.div<StyledImageFormContainerPropsType>(({ theme, ...props }) => ({
     borderRadius: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    padding: '35px 15px',
-    height: 110,
+    padding: '15px 10px',
+    height: 100,
     textAlign: 'center',
     border: '2px dashed rgba(0, 0, 0, 0.1)',
     fontSize: `calc(${ theme.font.fontSize } - 2px)`,

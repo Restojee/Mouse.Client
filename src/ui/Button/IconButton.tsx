@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { CSSObject } from 'styled-components';
 import { Property } from "csstype";
 
 
@@ -9,7 +9,7 @@ type StyledIconButtonPropsType = {
     right?: Property.Right,
     isAdmin?: boolean
 }
-export const IconButton = styled.div<StyledIconButtonPropsType>(props => ({
+export const IconButton = styled.button<StyledIconButtonPropsType>(props => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -18,12 +18,16 @@ export const IconButton = styled.div<StyledIconButtonPropsType>(props => ({
     margin: props.margin,
     padding: props.padding,
     transition: '0.2s',
+    backgroundColor: 'transparent',
     transitionProperty: 'transform',
     '&:hover': {
         transform: 'scale(0.92)',
     },
     ...props.right && {
         marginLeft: 'auto',
+    },
+    ...props.disabled && {
+        opacity: 0.5,
+        pointerEvents: 'none'
     }
-
 }))

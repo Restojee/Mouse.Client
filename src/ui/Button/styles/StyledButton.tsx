@@ -10,7 +10,7 @@ export type StyledButtonProps = {
     margin?: string | number;
     size?: 'sm' | 'md' | 'lg';
     isWithError?: boolean;
-    disabled: boolean;
+    disabled?: boolean;
     isBold?: boolean;
 }
 export const StyledButton = styled.button<StyledButtonProps>(({

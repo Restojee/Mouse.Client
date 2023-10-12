@@ -1,29 +1,37 @@
 import { AxiosResponse } from 'axios';
 import api from '@/api/coreMapsApi';
-import { CreateMapApiArg, CreateMapApiResponse, CreateMapRequest, Map } from '@/api/codegen/genMouseMapsApi';
+import {
+    CreateMapApiResponse,
+    CreateMapRequest, GetMapApiArg, GetMapApiResponse,
+    GetMapsApiArg,
+    Map, SetMapsTagApiArg,
+    SetMapsTagApiResponse,
+    UpdateMapImageApiArg,
+    UpdateMapImageApiResponse,
+} from '@/api/codegen/genMouseMapsApi';
 
 export const mapsApi = {
-    getMaps: async (params: { page: number, size: number }) => {
-        const res = await api.get<AxiosResponse<Map[]>>('/maps/collect', { params });
+    getMaps: async (params: GetMapsApiArg) => {
+        const res = await api.get<GetMapsApiArg, AxiosResponse<Map[]>>('/maps/collect', { params });
         return res.data;
     },
-    createMap: async (body: CreateMapApiArg) => {
-        const res = await api.post<CreateMapRequest, AxiosResponse<CreateMapApiResponse>>('/maps/create', { body });
+    getMapsById: async (params: GetMapApiArg) => {
+        const res = await api.get<GetMapApiArg, AxiosResponse<GetMapApiResponse>>(`/maps/one/by-id/${params.mapId}`, { params });
         return res.data;
     },
-    getMapsByUser: { providesTags: ['Map'] },
+    createMap: async (body: CreateMapRequest) => {
+        const res = await api.post<CreateMapRequest, AxiosResponse<CreateMapApiResponse>>('/maps/create', body);
+        return res.data;
+    },
+    updateMapImage: async (body: UpdateMapImageApiArg) => {
+        const res = await api.put<UpdateMapImageApiArg, AxiosResponse<UpdateMapImageApiResponse>>(`/maps/update-image/${body.mapId}`, body);
+        return res.data;
+    },
+    setMapsTag: async (body: SetMapsTagApiArg) => {
+        const res = await api.put<AxiosResponse<SetMapsTagApiResponse>>('/maps/set-tags', body);
+        return res.data;
+    },
     updateMap: { invalidatesTags: ['Map'] },
     deleteMap: { invalidatesTags: ['Map'] },
-    updateMapImage: { invalidatesTags: ['Map'] },
-    setMapsTag: { invalidatesTags: ['Map', 'Tag'] },
 };
 
-export const {
-    getMaps,
-    getMapsByUser,
-    createMap,
-    updateMap,
-    deleteMap,
-    updateMapImage,
-    setMapsTag,
-} = mapsApi;

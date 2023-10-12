@@ -1,7 +1,8 @@
-import FormElement from "@/ui/Form/FormElement";
-import { AddImageIcon } from "@/svg/AddImageIcon";
-import { MapParametersPopup } from "./MapParametersPopup";
-import { StyledPanelSectionWrapper } from "@/layout/page/styles/StyledPagePanel";
+import { MapParametersForm } from '../containers/create-form/MapParametersForm';
+import { useMapCreate } from '../hooks/useMapCreate';
+import { Input } from '@/ui/Input';
+import { StyledBox } from '@/ui/Box';
+import { AddImageIcon } from '@/svg/AddImageIcon';
 
 type Props = {
     isVisible: boolean;
@@ -9,19 +10,32 @@ type Props = {
 }
 export const MapCreatePopup = (props: Partial<Props>) => {
     const { isVisible = true, onClickCreate } = props;
+    const {
+        name,
+        setName,
+    } = useMapCreate();
+
+    const onNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const text = e.currentTarget.value;
+        setName(text);
+    };
 
     return (
-        <StyledPanelSectionWrapper>
-            <FormElement
+        <StyledBox
+            position={'relative'}
+        >
+            <Input
+                onChange={onNameChangeHandler}
+                value={name}
                 placeholder="Номер карты @123456"
                 inputAppend={
                     <AddImageIcon
-                        onClick={ onClickCreate }
+                        onClick={onClickCreate}
                         color="gray"
                     />
                 }
             />
-            <MapParametersPopup isVisible={ isVisible }/>
-        </StyledPanelSectionWrapper>
-    )
-}
+            {isVisible && <MapParametersForm/>}
+        </StyledBox>
+    );
+};

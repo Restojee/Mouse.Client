@@ -1,11 +1,8 @@
 import axios from 'axios';
-import {getSession} from "next-auth/react";
+import {getSession, useSession} from "next-auth/react";
 
 export const api = axios.create({
     baseURL: process.env.BASE_API_URL,
-    headers: {
-
-    }
 })
 
 api.interceptors.request.use(async (config) => {

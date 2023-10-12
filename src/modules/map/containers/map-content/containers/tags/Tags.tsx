@@ -1,4 +1,6 @@
 import { StyledBox } from '@/ui/Box';
+import { Button } from '@/ui/Button';
+import { Display } from '@/ui/Display';
 import React from 'react';
 import { Tag } from '@/api/codegen/genMouseMapsApi';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -15,22 +17,41 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
     const theme = useAppTheme();
 
     const onEditClickHandler = () => {
-        alert('Пока не работает')
-    }
+        alert('Пока не работает');
+    };
 
     return (
-        <StyledBox wrap={'wrap'} gap={10}>
-            {tags?.map(({ name, id }) => (
-                <StyledTag key={id} bgColor={theme.colors.primaryLighter}>
-                    <Typography isEllipsis>{name}</Typography>
-                    <IconButton isAdmin>
-                        <CloseIcon/>
+        <StyledBox justify={'center'}>
+            <Display condition={tags?.length}>
+                <StyledBox wrap={'wrap'} gap={10}>
+                    {tags?.map(({ name, id }) => (
+                        <StyledTag
+                            key={id}
+                            bgColor={theme.colors.primaryLighter}
+                        >
+                            <Typography isEllipsis>
+                                {name}
+                            </Typography>
+                            <IconButton isAdmin>
+                                <CloseIcon/>
+                            </IconButton>
+                        </StyledTag>
+                    ))}
+                    <IconButton
+                        margin={'0 0 0 10px'}
+                        onClick={onEditClickHandler}
+                    >
+                        <EditFillIcon/>
                     </IconButton>
-                </StyledTag>
-            ))}
-            <IconButton margin={'0 0 0 10px'} onClick={onEditClickHandler}>
-                <EditFillIcon/>
-            </IconButton>
+                </StyledBox>
+            </Display>
+            <Display condition={!tags?.length}>
+                <Button
+                    onClick={onEditClickHandler}
+                    label={'Добавить тег'}
+                    prepend={<EditFillIcon/>}
+                />
+            </Display>
         </StyledBox>
     );
 };
