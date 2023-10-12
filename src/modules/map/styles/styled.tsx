@@ -36,6 +36,7 @@ export const StyledMapContentSidebar = styled.div(({theme}) => ({
     maxWidth: "370px",
     minWidth: "370px",
     maxHeight: "100%",
+    height: "100%",
     width: "100%",
     borderRadius: "inherit",
     padding: "30px 0 0 0",
