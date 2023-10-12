@@ -70,7 +70,9 @@ export const Message = (props: PropsType) => {
                         <CloseIcon size="20px" color="#000"/>
                     </IconButton>
                 </StyledBox>
-                <StyledMessageText>{comment.text}</StyledMessageText>
+                <StyledMessageText>
+                    {comment.text}
+                </StyledMessageText>
             </StyledBox>
         </StyledBox>
     );

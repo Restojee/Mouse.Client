@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react';
 import { Map } from '@/api/codegen/genMouseMapsApi';
-import { useMapCommentsAction } from './useMapCommentsAction';
+import { useMapComments } from './useMapComments';
 import { useUserActions } from '@/modules/user/utils/useUserActions';
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display/Display';
-import { MAP_COMMENT_COLLECTION } from '@/moc/mapsMoc';
 import { Message } from '@/ui/Message';
 import { MessageSendFormContainer } from '@/ui/Message/MessagesSendForm';
 
@@ -13,18 +12,17 @@ type MapContentSidebarCommentsPropsType = {
 }
 export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) => {
     const {
+        comments,
         commentText,
         onCommentDelete,
         onCommentAdd,
         onInputChange,
         onInputKeyDown,
-    } = useMapCommentsAction();
+    } = useMapComments();
 
     const {
         onUsernameClick,
     } = useUserActions();
-
-    const comments = MAP_COMMENT_COLLECTION;
 
     const onDeleteHandler = useCallback((id: number) => {
         onCommentDelete(id);
@@ -49,14 +47,14 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
             direction={'column'}
             overflow={'hidden'}
         >
-            <Display condition={comments.length}>
+            <Display condition={comments?.length}>
                 <StyledBox
                     gap={10}
                     direction={'column'}
                     overflow={'auto'}
                     padding={'20px 0 0'}
                 >
-                    {comments.map((mapComment) => (
+                    {comments?.map((mapComment) => (
                         <Message
                             key={mapComment.id}
                             comment={mapComment}
@@ -66,7 +64,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
                     ))}
                 </StyledBox>
             </Display>
-            <Display condition={!comments.length}>
+            <Display condition={!comments?.length}>
                 <StyledBox
                     margin={'auto'}
                     textAlign={'center'}

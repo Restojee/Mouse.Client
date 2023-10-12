@@ -4,7 +4,8 @@ import { Property } from "csstype";
 
 export const StyledMessageText = styled.div({
     wordBreak: 'break-word',
-    maxWidth: '100%'
+    maxWidth: '100%',
+    textAlign: 'initial',
 })
 
 export const StyledMessageSendFormTextarea = styled(StyledTextarea)<{ bgColor?: Property.BackgroundColor }>(
