@@ -6,8 +6,9 @@ import {
     combineReducers,
     configureStore
 } from "@reduxjs/toolkit";
-import { createWrapper, Context } from 'next-redux-wrapper';
+import { createWrapper, Context, HYDRATE } from 'next-redux-wrapper';
 import { appReducer } from "@/bll/appReducer";
+import { AnyAction } from 'redux';
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -17,8 +18,20 @@ const rootReducer = combineReducers({
     mapCreate: mapCreateReducer,
 })
 
+const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
+    if (action.type === HYDRATE) {
+        const nextState = {
+            ...state, // use previous state
+            ...action.payload, // apply delta from hydration
+        };
+        return nextState;
+    } else {
+        return rootReducer(state, action);
+    }
+};
+
 const makeStore = (context: Context) => configureStore({
-    reducer: rootReducer,
+    reducer,
 })
 
 export const wrapper = createWrapper(makeStore, { debug: false });

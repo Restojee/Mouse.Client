@@ -40,7 +40,7 @@ const Map = (props: MapPropsType) => {
             <StyledModalWrapper>
                 <MapContent map={props.map}/>
             </StyledModalWrapper>
-            <MapsList maps={props.maps}/>
+            <MapsList />
         </MapPageContainer>
     );
 };

@@ -3,16 +3,16 @@ import { StyledImageFormContainer, StyledImageFormLink } from "@/ui/ImageForm/Im
 
 type ImageFormPropsType = {
     placeholder?: string;
-    onClick?: (file: string) => void;
+    onClick?: (file: Blob) => void;
     name?: string;
-    onChange: (file: string) => void;
-    value: string;
+    onChange: (file: Blob) => void;
+    value: Blob | null;
     fileType?: "image";
 };
 export const ImageForm = (props: ImageFormPropsType) => {
 
     const inputAccept = {
-        image: ".png, .jpg, .jpeg, .gif",
+        image: ".png, .jpg, .jpeg",
         document: ".doc, .pdf",
     };
     const inputFile = useRef<HTMLInputElement | null>(null);

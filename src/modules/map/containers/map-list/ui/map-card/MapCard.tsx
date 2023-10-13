@@ -1,3 +1,4 @@
+import { getMapImageLink } from '@/common/utils';
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { StyledMapCard } from "@/modules/map/styles/StyledMapCard";
 import { StyledMapCardHeader } from "@/modules/map/styles/StyledMapCardHeader";

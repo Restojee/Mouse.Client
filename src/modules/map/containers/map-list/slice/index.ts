@@ -7,6 +7,7 @@ import { MapsStateType } from '../types';
 export const getMapsThunk = createAsyncThunk('map/get', async (arg: GetMapsApiArg, thunkAPI) => {
     try {
         const maps = await mapsApi.getMaps(arg);
+
         thunkAPI.dispatch(setMaps(maps));
 
         return maps;

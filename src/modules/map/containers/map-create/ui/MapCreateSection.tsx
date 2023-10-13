@@ -13,7 +13,7 @@ export const MapCreateSection = () => {
     const [isContentVisible, setIsContentVisible] = useState(false);
 
     const {
-        onMapCreate
+        onMapCreate,
     } = useMapCreate()
 
     const { isValid } = useMapCreate();

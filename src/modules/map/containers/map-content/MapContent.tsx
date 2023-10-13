@@ -1,6 +1,7 @@
+import { getMapImageLink } from '@/common/utils';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import React from 'react';
-import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
+import { Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsData } from '@/moc/mapsMoc';
 import { SidebarIcons } from './containers/actions/SidebarIcons';
 import { SidebarComments } from './containers/comments/SidebarComments';
@@ -35,7 +36,7 @@ export const MapContent = ({ map }: MapContentPropsType) => {
                     commentsCount={completedMaps.length}
                     map={map}
                 />
-                <Preview image={map?.image}/>
+                <Preview image={getMapImageLink(map?.image)}/>
                 <MiniMapImages maps={completedMaps}/>
                 <Tags tags={map?.tags}/>
                 <Note/>

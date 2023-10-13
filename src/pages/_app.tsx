@@ -1,8 +1,9 @@
+import { useAppSelector } from '@/hooks/useAppSelector';
 import React from 'react';
-import { getMapsThunk } from '@/modules/map/containers/map-list/slice';
+import { getMapsThunk, selectMaps } from '@/modules/map/containers/map-list/slice';
 import { LayoutProvider } from '@/layout/common/LayoutProvider';
 import { Provider } from 'react-redux';
-import { wrapper } from '@/store';
+import { RootState, wrapper } from '@/store';
 import { ThemeProvider } from '@/layout/theme/ThemeProvider';
 import { SessionProvider } from 'next-auth/react';
 import { AppProps } from 'next/app';
@@ -11,19 +12,13 @@ import { AuthProvider } from '@/modules/auth/AuthProvider';
 import Notification from '@/ui/Notification/Notification';
 import '@/styles/globals.css';
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async () => {
-    const props = {};
-    return { props };
-});
-
-
-export default function App({ Component, ...rest }: AppProps<{ session: Session }>) {
+function App({ Component, ...rest }: AppProps<{ session: Session, initialState: RootState }>) {
     const { store, props } = wrapper.useWrappedStore(rest);
     const { pageProps } = rest;
 
     return (
-        <SessionProvider session={pageProps.session}>
-            <Provider store={store}>
+        <Provider serverState={pageProps.initialState} store={store}>
+            <SessionProvider session={pageProps.session}>
                 <AuthProvider>
                     <ThemeProvider>
                         <LayoutProvider>
@@ -32,7 +27,9 @@ export default function App({ Component, ...rest }: AppProps<{ session: Session 
                         <Notification/>
                     </ThemeProvider>
                 </AuthProvider>
-            </Provider>
-        </SessionProvider>
+            </SessionProvider>
+        </Provider>
     );
 }
+
+export default App;

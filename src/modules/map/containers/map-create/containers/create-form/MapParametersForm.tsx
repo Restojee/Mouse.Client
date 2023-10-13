@@ -1,3 +1,4 @@
+import { useMapCreate } from '@/modules/map/containers/map-create/hooks/useMapCreate';
 import React, { useState } from 'react';
 import { PointBlock } from '@/ui/PointBlock/PointBlock';
 import { StyledBox } from '@/ui/Box';
@@ -10,10 +11,15 @@ import { useAppTheme } from '@/hooks/useAppTheme';
 
 export const MapParametersForm = () => {
     const theme = useAppTheme();
-    const [mapImage, setMapImage] = useState('');
+    const [mapImage, setMapImage] = useState<Blob | null>(null);
 
-    const onChangePackImage = (file: string) => {
+    const {
+        setImage
+    } = useMapCreate()
+
+    const onChangePackImage = (file: Blob) => {
         setMapImage(file);
+        setImage(file);
     };
 
     return (
