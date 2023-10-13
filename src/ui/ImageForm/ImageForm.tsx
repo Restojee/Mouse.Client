@@ -12,7 +12,7 @@ type ImageFormPropsType = {
 export const ImageForm = (props: ImageFormPropsType) => {
 
     const inputAccept = {
-        image: ".png, .jpg, .jpeg",
+        image: ".png, .jpg, .jpeg, .gif",
         document: ".doc, .pdf",
     };
     const inputFile = useRef<HTMLInputElement | null>(null);
@@ -22,20 +22,21 @@ export const ImageForm = (props: ImageFormPropsType) => {
         inputFile.current?.click();
     };
 
-    const convertFileToBase64 = (file: File, callBack: (value: string) => void): void => {
+    const convertFileToBlob = (file: File, callBack: (value: Blob) => void): void => {
         const reader = new FileReader();
         reader.onloadend = () => {
-            const file64 = reader.result as string;
-            callBack(file64);
+            const blob = new Blob([reader.result as ArrayBuffer]);
+            callBack(blob);
         };
-        reader.readAsDataURL(file);
+        reader.readAsArrayBuffer(file);
     };
-    const uploadFile = (files: any) => {
+
+    const uploadFile = (files: FileList | null) => {
         if (files && files.length) {
             const file = files[0];
-            convertFileToBase64(file, (file64: string) => {
-                props.onChange(file64);
-            })
+            convertFileToBlob(file, (blob: Blob) => {
+                props.onChange(blob);
+            });
         }
     };
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {

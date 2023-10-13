@@ -30,7 +30,7 @@ export const MapCard = (props: MapCardProps) => {
     const theme = useAppTheme();
     const [isMapHover, setIsMapHover] = useState(false);
 
-    const onIconsClick= (e: React.MouseEvent<HTMLDivElement>) => {
+    const onIconsClick= (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
         alert('Пока не работает....')
     }
