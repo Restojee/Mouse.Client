@@ -15,5 +15,6 @@ jobs:
           docker compose up -d --build
         env:
           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          BASE_API_URL: ${{ secrets.BASE_API_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           FILE_STORAGE_URL: ${{ secrets.FILE_STORAGE_URL }}
