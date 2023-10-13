@@ -1,7 +1,7 @@
 import { getMapImageLink } from '@/common/utils';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import React from 'react';
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsData } from '@/moc/mapsMoc';
 import { SidebarIcons } from './containers/actions/SidebarIcons';
 import { SidebarComments } from './containers/comments/SidebarComments';
