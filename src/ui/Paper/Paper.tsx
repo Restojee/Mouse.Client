@@ -2,11 +2,15 @@ import { useAppTheme } from '@/hooks/useAppTheme';
 import React from 'react';
 import { StyledBox, StyledBoxProps } from '@/ui/Box';
 
-export const Paper = ({ children, ...props }: Partial<StyledBoxProps>) => {
+type PaperPropsType = Partial<StyledBoxProps> & {
+    onClick: (e: React.MouseEvent<HTMLDivElement>) => void
+}
+export const Paper = ({ children, onClick, ...props }: PaperPropsType) => {
     const theme = useAppTheme();
 
     return (
         <StyledBox
+            onClick={onClick}
             direction={'column'}
             textAlign={'center'}
             align={'center'}

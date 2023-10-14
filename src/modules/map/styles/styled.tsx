@@ -6,9 +6,10 @@ export const StyledMapContentMain = styled.div(({theme}) => ({
     display: "flex",
     flexDirection: "column",
     gap: 25,
+    minHeight: "100%",
     overflow: "auto",
     color: theme.colors.textOnPrimary,
-    padding: 30,
+    padding: 20,
     borderRadius: "inherit",
     flexGrow: 1,
     "::placeholder": {
@@ -17,6 +18,7 @@ export const StyledMapContentMain = styled.div(({theme}) => ({
 }))
 
 export const StyledMapContentNoteForm = styled(StyledTextarea)(({theme}) => ({
+    marginTop: 'auto',
     backgroundColor: theme.colors.primaryLighter,
     "&:hover": {
         opacity: 0.8,
@@ -37,6 +39,8 @@ export const StyledMapContentSidebar = styled.div(({theme}) => ({
     minWidth: "370px",
     maxHeight: "100%",
     height: "100%",
+    position: 'sticky',
+    top: 0,
     width: "100%",
     borderRadius: "inherit",
     padding: "30px 0 0 0",

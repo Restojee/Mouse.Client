@@ -31,8 +31,7 @@ export const useMapCreate = () => {
     }, []);
 
     const onMapCreate = useCallback(async (): Promise<void> => {
-        const res = dispatch(createMapThunk());
-        alert(res);
+        dispatch(createMapThunk());
     }, []);
 
     const isValid = useMemo((): boolean => {

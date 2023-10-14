@@ -101,7 +101,7 @@ export const DefaultTheme = {
         rightSidebar: 5,
         megaShadow: 10,
         notifications: 15,
-        modal: 10,
+        modal: 11,
         dropdown: 5,
     },
 }

@@ -9,8 +9,13 @@ import { StyledModalWrapper } from '@/ui/Modal/styled';
 const MapViewModal = () => {
     const dispatch = useAppDispatch();
 
-    const {mapId} = useMapView()
     const map = useAppSelector(selectMapContent);
+
+    const {
+        mapId,
+        closeMap
+    } = useMapView()
+
 
     useEffect(() => {
         if (mapId) {
@@ -19,7 +24,7 @@ const MapViewModal = () => {
     }, [mapId]);
 
     return (
-        <StyledModalWrapper>
+        <StyledModalWrapper onClick={closeMap}>
             <MapContent map={map}/>
         </StyledModalWrapper>
     );

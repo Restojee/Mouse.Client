@@ -5,13 +5,14 @@ export const StyledModalWrapper = styled.div(({theme}) => ({
     display: "flex",
     justifyContent: "center",
     overflow: "auto",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     alignItems: "center",
     top: 0,
     right: 0,
     left: 0,
     bottom: 0,
     zIndex: theme.order.modal,
-    padding: 10
+    padding: 40
 }))
 
 

@@ -28,6 +28,7 @@ export const ImageForm = (props: ImageFormPropsType) => {
             const blob = new Blob([reader.result as ArrayBuffer]);
             callBack(blob);
         };
+
         reader.readAsArrayBuffer(file);
     };
 

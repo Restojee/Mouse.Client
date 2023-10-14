@@ -5,8 +5,7 @@ import { mapCreateReducer } from '@/modules/map/containers/map-create';
 import { mapsReducer } from '@/modules/map/containers/map-list/slice';
 import { tagsReducer } from '@/modules/tag';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { Context, createWrapper, HYDRATE } from 'next-redux-wrapper';
-import { AnyAction } from 'redux';
+import { Context, createWrapper } from 'next-redux-wrapper';
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -18,19 +17,8 @@ const rootReducer = combineReducers({
 
 })
 
-const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
-    if (action.type === HYDRATE) {
-        return {
-            ...state,
-            ...action.payload,
-        };
-    } else {
-        return rootReducer(state, action);
-    }
-};
-
 // @ts-ignore
-const makeStore = (context: Context) => configureStore({ reducer })
+const makeStore = (context: Context) => configureStore({ reducer: rootReducer })
 
 export const wrapper = createWrapper(makeStore, { debug: false });
 

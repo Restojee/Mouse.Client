@@ -36,7 +36,7 @@ export const Header = (props: MapContentHeaderPropsType) => {
     return (
         <StyledBox justify={'space-between'} align={'center'}>
             <StyledBox align={'center'} gap={10}>
-                <Typography>
+                <Typography fontSize={'1.1rem'}>
                     !map {map?.name}
                 </Typography>
                 <IconButton opacity="0.6" onClick={onCopyClickHandler}>

@@ -1,24 +1,32 @@
-import { routes } from '@/common/routes';
+import { useEffect } from 'react';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { selectMaps } from '@/modules/map/containers/map-list/slice';
+import { getMapsThunk, selectMaps } from '@/modules/map/containers/map-list/slice';
+import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
 import { StyledMapsGrid } from "@/modules/map/styles/StyledMapsGrid";
 import { MapCard } from "@/modules/map/containers/map-list/ui/map-card/MapCard";
 import { Map } from "@/api/codegen/genMouseMapsApi";
 import {CommonUtils} from "@/common/utils";
 import { StyledBox } from '@/ui/Box';
-import { useRouter } from 'next/router';
 
 export const MapsList = () => {
-    const router = useRouter()
+    const dispatch = useAppDispatch();
+
     const maps = useAppSelector(selectMaps)
+
+    const {openMap} = useMapView()
 
     const onMapClickHandler = async (id: Map['id']) => {
         try {
-            await router.push(`${routes.MAPS}/${id}`)
+            await openMap(id)
         } catch (err) {
             console.log(err)
         }
     }
+
+    useEffect(() => {
+        dispatch(getMapsThunk({ page: 0, size: 100 }))
+    }, []);
 
     if (!maps.length) {
         return (

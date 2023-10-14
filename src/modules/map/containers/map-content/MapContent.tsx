@@ -1,5 +1,10 @@
 import { getMapImageLink } from '@/common/utils';
 import { useAppTheme } from '@/hooks/useAppTheme';
+import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
+import { CloseIcon } from '@/svg/CloseIcon';
+import { StyledBox } from '@/ui/Box';
+import { IconButton } from '@/ui/Button/IconButton';
+import { ModalCloseIcon } from '@/ui/ModalCloseIcon/ModalCloseIcon';
 import React from 'react';
 import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsData } from '@/moc/mapsMoc';
@@ -19,16 +24,28 @@ type MapContentPropsType = {
 }
 export const MapContent = ({ map }: MapContentPropsType) => {
     const theme = useAppTheme();
+    const {closeMap} = useMapView()
     const completedMaps = mapsData;
+
+    const fixEventPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+    };
 
     return (
         <Paper
+            position={'relative'}
+            onClick={fixEventPropagation}
             align={'flex-start'}
             padding={0}
             bgColor={theme.colors.primary}
             direction={'row'}
             maxWidth={1200}
+            overflow={'auto'}
         >
+            <ModalCloseIcon
+                color={theme.colors.textOnSecondary}
+                onClick={closeMap}
+            />
             <StyledMapContentMain>
                 <Header
                     completeCount={completedMaps.length}

@@ -1,20 +1,16 @@
-import { DeleteMapApiArg, DeleteMapApiResponse, GetMapApiArg, GetMapsApiArg, Map } from '@/api/codegen/genMouseMapsApi';
+import { DeleteMapApiArg, GetMapApiArg, GetMapsApiArg, Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Property } from 'csstype';
 import { MapsStateType } from '../types';
-import Rotate = Property.Rotate;
 
 export const deleteMapsThunk = createAsyncThunk('map/delete', async (arg: DeleteMapApiArg, thunkAPI) => {
     try {
-        const state = thunkAPI.getState() as RootState
         await mapsApi.deleteMap(arg)
-
-
-        return maps;
+        thunkAPI.dispatch(deleteMap(arg.mapId))
+        thunkAPI.dispatch(setMapContent(null))
     } catch (error) {
-        thunkAPI.rejectWithValue('Ошибка загрузки карт');
+        thunkAPI.rejectWithValue('Ошибка удаления карты');
         return null;
     }
 });
@@ -57,10 +53,13 @@ const slice = createSlice({
             state.mapsList = action.payload;
         },
         addMap: (state, action: PayloadAction<Map>) => {
-            state.mapsList.push(action.payload);
+            state.mapsList.unshift(action.payload);
         },
-        setMapContent: (state, action: PayloadAction<Map>) => {
+        setMapContent: (state, action: PayloadAction<Map | null>) => {
             state.mapContent = action.payload;
+        },
+        deleteMap: (state, action: PayloadAction<Map['id']>) => {
+            state.mapsList = state.mapsList.filter(el => el.id !== action.payload)
         },
     },
 });
@@ -72,5 +71,6 @@ export const {
     setMaps,
     addMap,
     setMapContent,
+    deleteMap
 } = slice.actions;
 export const mapsReducer = slice.reducer;
