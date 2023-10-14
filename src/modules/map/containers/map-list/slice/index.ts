@@ -53,7 +53,7 @@ const slice = createSlice({
             state.mapsList = action.payload;
         },
         addMap: (state, action: PayloadAction<Map>) => {
-            state.mapsList.unshift(action.payload);
+            state.mapsList.push(action.payload);
         },
         setMapContent: (state, action: PayloadAction<Map | null>) => {
             state.mapContent = action.payload;

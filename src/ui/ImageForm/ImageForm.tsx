@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
-import { StyledImageFormContainer, StyledImageFormLink } from "@/ui/ImageForm/ImageFormElements";
+import { StyledImageFormContainer, StyledImageFormLink } from '@/ui/ImageForm/ImageFormElements';
 
 type ImageFormPropsType = {
     placeholder?: string;
@@ -7,13 +7,13 @@ type ImageFormPropsType = {
     name?: string;
     onChange: (file: Blob) => void;
     value: Blob | null;
-    fileType?: "image";
+    fileType?: 'image';
 };
 export const ImageForm = (props: ImageFormPropsType) => {
 
     const inputAccept = {
-        image: ".png, .jpg, .jpeg, .gif",
-        document: ".doc, .pdf",
+        image: '.png, .jpg, .jpeg',
+        document: '.doc, .pdf',
     };
     const inputFile = useRef<HTMLInputElement | null>(null);
     const [drag, setDrag] = useState(false);
@@ -24,13 +24,15 @@ export const ImageForm = (props: ImageFormPropsType) => {
 
     const convertFileToBlob = (file: File, callBack: (value: Blob) => void): void => {
         const reader = new FileReader();
-        reader.onloadend = () => {
-            const blob = new Blob([reader.result as ArrayBuffer]);
+
+        reader.onload = (e) => {
+            const arrayBuffer = e.target?.result as ArrayBuffer;
+            const blob = new Blob([arrayBuffer], { type: file.type });
             callBack(blob);
         };
 
         reader.readAsArrayBuffer(file);
-    };
+    }
 
     const uploadFile = (files: FileList | null) => {
         if (files && files.length) {
@@ -42,7 +44,10 @@ export const ImageForm = (props: ImageFormPropsType) => {
     };
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         const files = e.target.files;
-        uploadFile(files);
+
+        if (files) {
+            uploadFile(files);
+        }
     };
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -63,28 +68,28 @@ export const ImageForm = (props: ImageFormPropsType) => {
 
     return (
         <StyledImageFormContainer
-            onClick={ onClickHandler }
-            onDragStart={ (e) => dragStartHandler(e) }
-            onDragLeave={ (e) => dragLeaveHandler(e) }
-            onDragOver={ (e) => dragStartHandler(e) }
-            onDrop={ (e) => onDropHandler(e) }
-            image={ props.value }
-            isDrag={ drag }
+            onClick={onClickHandler}
+            onDragStart={(e) => dragStartHandler(e)}
+            onDragLeave={(e) => dragLeaveHandler(e)}
+            onDragOver={(e) => dragStartHandler(e)}
+            onDrop={(e) => onDropHandler(e)}
+            image={props.value && URL.createObjectURL(props.value)}
+            isDrag={drag}
         >
             <input
-                accept={ props.fileType && inputAccept[props.fileType] }
-                name={ props.name }
+                accept={props.fileType && inputAccept[props.fileType]}
+                name={props.name}
                 type="file"
-                ref={ inputFile }
-                onChange={ uploadHandler }
-                style={ { display: "none" } }
+                ref={inputFile}
+                onChange={uploadHandler}
+                style={{ display: 'none' }}
             />
-            { !props.value && (
+            {!props.value && (
                 <>
                     <StyledImageFormLink>Загрузите,</StyledImageFormLink>
                     <span> перетащите изображение или вставьте из буфера (Ctrl+V)</span>
                 </>
-            ) }
+            )}
         </StyledImageFormContainer>
     );
-}
+};

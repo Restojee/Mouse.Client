@@ -38,8 +38,6 @@ export const useMapCreate = () => {
         return name ? name.trim().length > 1 : false;
     }, [name]);
 
-    console.log(name, isValid);
-
     return {
         name,
         image,

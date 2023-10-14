@@ -11,14 +11,14 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg, thunkAP
         const name = selectMapName(state);
         const image = selectMapImage(state);
         const tags = selectMapTags(state);
-        const map = await mapsApi.createMap({ name });
+        let map = await mapsApi.createMap({ name });
 
         if (map.id && tags) {
             await mapsApi.setMapsTag({ mapId: map.id });
         }
 
         if (map.id && image) {
-            await mapsApi.updateMapImage({ mapId: map.id, body: { file: image } });
+            map = await mapsApi.updateMapImage({ mapId: map.id, body: { file: image } });
         }
 
         thunkAPI.dispatch(addMap(map))

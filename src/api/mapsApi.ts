@@ -27,12 +27,20 @@ export const mapsApi = {
         const res = await api.post<CreateMapRequest, AxiosResponse<CreateMapApiResponse>>('/maps/create', body);
         return res.data;
     },
-    updateMapImage: async (body: UpdateMapImageApiArg) => {
-        const res = await api.put<UpdateMapImageApiArg, AxiosResponse<UpdateMapImageApiResponse>>(`/maps/update-image/${body.mapId}`, body);
+    updateMapImage: async (arg: UpdateMapImageApiArg) => {
+        const formData = new FormData();
+        formData.append('file', arg.body.file, 'filename.png');
+
+        const res = await api.put<UpdateMapImageApiArg, AxiosResponse<UpdateMapImageApiResponse>>(
+            `/maps/update-image/${arg.mapId}`,
+            formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } },
+        );
+
         return res.data;
     },
     deleteMap: async (params: DeleteMapApiArg) => {
-        const res = await api.delete<DeleteMapApiArg, AxiosResponse<DeleteMapApiResponse>>(`/maps/remove`, {params});
+        const res = await api.delete<DeleteMapApiArg, AxiosResponse<DeleteMapApiResponse>>(`/maps/remove`, { params });
         return res.data;
     },
     setMapsTag: async (body: SetMapsTagApiArg) => {

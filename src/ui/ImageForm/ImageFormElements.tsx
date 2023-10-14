@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type StyledImageFormContainerPropsType = {
-    image: Blob | null,
+    image: string | null,
     isDrag: boolean
 }
 export const StyledImageFormContainer = styled.div<StyledImageFormContainerPropsType>(({ theme, ...props }) => ({
