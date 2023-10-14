@@ -1,8 +1,9 @@
+import { useMapTag } from './hooks/useMapTag';
 import { StyledBox } from '@/ui/Box';
 import { Button } from '@/ui/Button';
 import { Display } from '@/ui/Display';
 import React from 'react';
-import { Tag } from '@/api/codegen/genMouseMapsApi';
+import { Tag, Map } from '@/api/codegen/genMouseMapsApi';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { CloseIcon } from '@/svg/CloseIcon';
 import { EditFillIcon } from '@/svg/EditFillIcon';
@@ -16,8 +17,12 @@ type MapContentFooterPropsType = {
 export const Tags = ({ tags }: MapContentFooterPropsType) => {
     const theme = useAppTheme();
 
-    const onEditClickHandler = () => {
-        alert('Пока не работает');
+    const {
+        onTagsEdit,
+    } = useMapTag();
+
+    const onEditClickHandler = (mapId: Map['id'], tagId: Tag['id']) => {
+        onTagsEdit(mapId, tagId);
     };
 
     return (

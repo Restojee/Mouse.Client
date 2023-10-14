@@ -18,7 +18,6 @@ export const addMapCommentsThunk = createAsyncThunk('map-comments', async (arg: 
         const { mapId, text } = arg;
         const comment = await commentsApi.addComment({ mapId, text });
         thunkAPI.dispatch(addComment(comment));
-        console.log('addComment', comment)
     } catch (error) {
         return console.log(`Ошибка добавления коммента, ${error}`);
     }

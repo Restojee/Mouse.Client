@@ -22,8 +22,6 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg, thunkAP
         }
 
         thunkAPI.dispatch(addMap(map))
-
-        return 'Карта успешно создана';
     } catch (error) {
         return thunkAPI.rejectWithValue('Ошибка добавления карты');
     }
@@ -46,8 +44,6 @@ const slice = createSlice({
         setMapTags: (state, action: PayloadAction<Map['tags']>) => {
             state.tags = action.payload;
         },
-    },
-    extraReducers: (builder) => {
     },
 });
 

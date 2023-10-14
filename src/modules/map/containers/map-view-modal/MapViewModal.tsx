@@ -1,5 +1,5 @@
+import { getMapByIdThunk, selectMapContent } from '@/modules/map/containers/map-content/slice';
 import React, { useEffect } from 'react';
-import { getMapByIdThunk, selectMapContent } from '@/modules/map/containers/map-list/slice';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { useMapView } from './hooks/useMapView';

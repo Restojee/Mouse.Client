@@ -33,12 +33,17 @@ const Notification = () => {
         messages.length ? startTimer() : stopTimer();
     }, [messages]);
 
-    return messages ? (
+    if(!messages) {
+        return null
+    }
+
+    return (
         <SNotificationWrapper notificationsCount={messages.length < 100 ? messages.length : "99+"}>
             {messages.map(({ id, severity, text }) => (
                 <SNotificationContainer
                     onMouseOver={stopTimer}
                     onMouseLeave={startTimer}
+                    title={text}
                     key={id}
                     severity={severity}
                 >
@@ -49,9 +54,7 @@ const Notification = () => {
                 </SNotificationContainer>
             ))}
         </SNotificationWrapper>
-    ) : (
-        <></>
-    );
+    )
 };
 
 export default Notification;

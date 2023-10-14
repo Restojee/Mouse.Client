@@ -13,8 +13,19 @@ export const AuthProvider = (props: AuthProviderProps) => {
     const isAuth = useSelector(selectIsAuth);
 
     useEffect(() => {
+        const id = setInterval(() => {
+            dispatch(getCurrentUserThunk())
+            console.log(isAuth)
+        }, 300000)
+
+        return () => {
+            clearInterval(id)
+        }
+    }, [])
+
+    useEffect(() => {
         dispatch(getCurrentUserThunk())
-    }, [isAuth])
+    }, [isAuth]);
 
     return props.children;
 }

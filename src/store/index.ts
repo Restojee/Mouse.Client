@@ -1,6 +1,7 @@
 import { appReducer } from '@/bll/appReducer';
 import { authReducer } from '@/modules/auth/slice';
 import { mapCommentsReducer } from '@/modules/map/containers/map-content/containers/comments/slice';
+import { mapReducer } from '@/modules/map/containers/map-content/slice';
 import { mapCreateReducer } from '@/modules/map/containers/map-create';
 import { mapsReducer } from '@/modules/map/containers/map-list/slice';
 import { tagsReducer } from '@/modules/tag';
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     tags: tagsReducer,
     comments: mapCommentsReducer,
     maps: mapsReducer,
+    map: mapReducer,
     mapCreate: mapCreateReducer,
 
 })

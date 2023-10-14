@@ -1,9 +1,9 @@
+import { useCallback } from 'react';
 import { Tag } from '@/api/codegen/genMouseMapsApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { openTagModal, closeTagModal, selectTagModalType, selectTags } from '@/modules/tag';
 import { ModalType } from '@/modules/tag/types';
-import { useCallback } from 'react';
 
 export const useTag = () => {
     const dispatch = useAppDispatch();

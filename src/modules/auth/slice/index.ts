@@ -1,8 +1,13 @@
 import { authApi } from '@/api/authApi';
 import { User } from '@/api/codegen/genMouseMapsApi';
+import { setAppMessage } from '@/bll/appReducer';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthStateType } from '../types';
+
+export const refreshThunk = createAsyncThunk('refresh', async (arg, thunkAPI) => {
+
+});
 
 export const getCurrentUserThunk = createAsyncThunk('current-user', async (arg, thunkAPI) => {
     try {
@@ -13,7 +18,8 @@ export const getCurrentUserThunk = createAsyncThunk('current-user', async (arg, 
             thunkAPI.dispatch(setCurrentUser(res));
         }
     } catch (error) {
-        console.log(`Ошибка получения данных о юзере, ${error}`);
+        thunkAPI.dispatch(setAuthStatus('unauthenticated'))
+        thunkAPI.dispatch(setCurrentUser(null))
     }
 });
 
@@ -31,9 +37,17 @@ const slice = createSlice({
             state.status = action.payload;
             state.isAuth = action.payload === 'authenticated';
         },
-        setCurrentUser: (state, action: PayloadAction<User>) => {
+        setCurrentUser: (state, action: PayloadAction<User | null>) => {
             state.user = action.payload;
         },
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(getCurrentUserThunk.rejected, (state, action) => {
+                state.isAuth = false;
+                state.user = null;
+                state.status = 'unauthenticated';
+            })
     },
 });
 

@@ -25,7 +25,7 @@ export const DefaultTheme = {
         },
 
         status: {
-            success: '#7fd482',
+            success: '#70c073',
             danger: '#ff8935',
             info: '#6b88e9',
             error: '#ce5252',

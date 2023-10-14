@@ -1,7 +1,8 @@
 import { Map } from '@/api/codegen/genMouseMapsApi';
+import { setAppMessage } from '@/bll/appReducer';
 import { routes } from '@/common/routes';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { deleteMapsThunk } from '@/modules/map/containers/map-list/slice';
+import { deleteMapsThunk } from '@/modules/map/containers/map-content/slice';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
@@ -10,46 +11,46 @@ export const useMap = (mapId?: Map['id']) => {
     const router = useRouter();
 
     const onAddMapComplete = () => {
-        alert('добавление прохождения карты пока не работает')
-    }
+        alert('добавление прохождения карты пока не работает');
+    };
 
     const onAddMap = (): void => {
-        alert('добавление карты пока не работает')
-    }
+        alert('добавление карты пока не работает');
+    };
 
     const onAddMapFavorite = (): void => {
-        alert('добавление карты в избранное пока не работает')
-    }
+        alert('добавление карты в избранное пока не работает');
+    };
 
     const onMapShare = (): void => {
-        alert('кнопка поделиться пока не работает')
-    }
+        alert('кнопка поделиться пока не работает');
+    };
 
     const onMapDelete = useCallback(async (): Promise<void> => {
-        try {
-            if(mapId) {
-                dispatch(deleteMapsThunk({ mapId }))
+        if (mapId) {
+            const res = await dispatch(deleteMapsThunk({ mapId }));
+
+            if (res.payload) {
                 await router.push({
                     pathname: routes.MAPS,
-                    query: {}
-                })
+                    query: {},
+                });
             }
-        } catch (error) {
-            console.log('Ошибка удаления')
         }
 
-    }, [mapId])
+
+    }, [mapId]);
 
     const onMapNameCopy = async (name: Map['name']): Promise<void> => {
-        const text = `!map ${name}`
+        const text = `!map ${name}`;
 
         try {
             await navigator.clipboard.writeText(text);
-            alert('Скопировано!');
+            dispatch(setAppMessage({severity: 'success', text: 'Скопировано'}))
         } catch (error) {
-            alert('Ошибка копирования');
+            dispatch(setAppMessage({severity: 'error', text: 'Ошибка копирования'}))
         }
-    }
+    };
 
     return {
         onAddMapComplete,
@@ -57,7 +58,7 @@ export const useMap = (mapId?: Map['id']) => {
         onAddMapFavorite,
         onMapShare,
         onAddMap,
-        onMapNameCopy
+        onMapNameCopy,
     };
 };
 

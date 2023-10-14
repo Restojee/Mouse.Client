@@ -30,6 +30,7 @@ export const authOptions: NextAuthOptions = {
             // Persist the OAuth access_token to the token right after signin
             if (account) {
                 token.accessToken = account.access_token
+                token.refreshToken = account.refresh_token
             }
             console.log(token);
             return token
