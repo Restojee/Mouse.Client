@@ -1,8 +1,23 @@
-import { GetMapApiArg, GetMapsApiArg, Map } from '@/api/codegen/genMouseMapsApi';
+import { DeleteMapApiArg, DeleteMapApiResponse, GetMapApiArg, GetMapsApiArg, Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Property } from 'csstype';
 import { MapsStateType } from '../types';
+import Rotate = Property.Rotate;
+
+export const deleteMapsThunk = createAsyncThunk('map/delete', async (arg: DeleteMapApiArg, thunkAPI) => {
+    try {
+        const state = thunkAPI.getState() as RootState
+        await mapsApi.deleteMap(arg)
+
+
+        return maps;
+    } catch (error) {
+        thunkAPI.rejectWithValue('Ошибка загрузки карт');
+        return null;
+    }
+});
 
 export const getMapsThunk = createAsyncThunk('map/get', async (arg: GetMapsApiArg, thunkAPI) => {
     try {
@@ -51,6 +66,7 @@ const slice = createSlice({
 });
 
 export const selectMaps = (state: RootState) => state.maps.mapsList;
+export const selectMapContent = (state: RootState) => state.maps.mapContent;
 
 export const {
     setMaps,

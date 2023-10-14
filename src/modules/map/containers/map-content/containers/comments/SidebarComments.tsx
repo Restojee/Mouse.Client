@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsAuth } from '@/modules/auth/slice';
 import React, { useCallback } from 'react';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { useMapComments } from './useMapComments';
@@ -20,6 +22,8 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
         onInputKeyDown,
     } = useMapComments();
 
+    const isAuth = useAppSelector(selectIsAuth);
+
     const {
         onUsernameClick,
     } = useUserActions();
@@ -39,6 +43,8 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
     const onUsernameClickHandler = useCallback((id: number) => {
         onUsernameClick(id);
     }, [onUsernameClick]);
+
+    console.log(isAuth, 'auth')
 
     return (
         <StyledBox
@@ -74,6 +80,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
                 </StyledBox>
             </Display>
             <MessageSendFormContainer
+                disabled={!isAuth}
                 value={commentText}
                 onChange={onInputChange}
                 onKeyDown={onInputKeyDownHandler}

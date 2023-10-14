@@ -11,7 +11,7 @@ type MapContentHeaderPropsType = {
     completeCount: number;
     viewCount: number;
     commentsCount: number;
-    map?: Map;
+    map?: Map | null
 }
 export const Header = (props: MapContentHeaderPropsType) => {
     const {

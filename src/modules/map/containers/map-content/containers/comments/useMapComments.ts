@@ -5,7 +5,7 @@ import {
     addMapCommentsThunk,
     getMapCommentsThunk,
     selectMapComments,
-} from '@/modules/map/containers/map-content/containers/comments/slice';
+} from './slice';
 import { useRouter } from 'next/router';
 import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
 
@@ -49,8 +49,8 @@ export const useMapComments = () => {
     };
 
     useEffect(() => {
-        const mapId = Number(id);
         if (id) {
+            const mapId = Number(id);
             dispatch(getMapCommentsThunk({ mapId }));
         }
     }, [id]);

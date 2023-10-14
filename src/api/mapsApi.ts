@@ -2,7 +2,11 @@ import { AxiosResponse } from 'axios';
 import api from '@/api/coreMapsApi';
 import {
     CreateMapApiResponse,
-    CreateMapRequest, GetMapApiArg, GetMapApiResponse,
+    CreateMapRequest,
+    DeleteMapApiArg,
+    DeleteMapApiResponse,
+    GetMapApiArg,
+    GetMapApiResponse,
     GetMapsApiArg,
     Map, SetMapsTagApiArg,
     SetMapsTagApiResponse,
@@ -16,7 +20,7 @@ export const mapsApi = {
         return res.data;
     },
     getMapsById: async (params: GetMapApiArg) => {
-        const res = await api.get<GetMapApiArg, AxiosResponse<GetMapApiResponse>>(`/maps/one/by-id/${params.mapId}`, { params });
+        const res = await api.get<GetMapApiArg, AxiosResponse<GetMapApiResponse>>(`/maps/one/by-id/${params.mapId}`);
         return res.data;
     },
     createMap: async (body: CreateMapRequest) => {
@@ -27,11 +31,14 @@ export const mapsApi = {
         const res = await api.put<UpdateMapImageApiArg, AxiosResponse<UpdateMapImageApiResponse>>(`/maps/update-image/${body.mapId}`, body);
         return res.data;
     },
+    deleteMap: async (params: DeleteMapApiArg) => {
+        const res = await api.delete<DeleteMapApiArg, AxiosResponse<DeleteMapApiResponse>>(`/maps/remove`, {params});
+        return res.data;
+    },
     setMapsTag: async (body: SetMapsTagApiArg) => {
         const res = await api.put<AxiosResponse<SetMapsTagApiResponse>>('/maps/set-tags', body);
         return res.data;
     },
     updateMap: { invalidatesTags: ['Map'] },
-    deleteMap: { invalidatesTags: ['Map'] },
 };
 

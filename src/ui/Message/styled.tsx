@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { StyledTextarea } from "@/ui/Textarea/styled";
-import { Property } from "csstype";
+import { StyledTextarea } from '@/ui/Textarea/styled';
+import { Property } from 'csstype';
 
 export const StyledMessageText = styled.div({
     wordBreak: 'break-word',
     maxWidth: '100%',
     textAlign: 'initial',
-})
+});
 
 export const StyledMessageSendFormTextarea = styled(StyledTextarea)<{ bgColor?: Property.BackgroundColor }>(
     ({ theme, ...props }) => ({
@@ -20,9 +20,9 @@ export const StyledMessageSendFormTextarea = styled(StyledTextarea)<{ bgColor?: 
         backgroundColor: props.bgColor || '',
         '&:focus': {
             height: 100,
-            overflow: 'auto'
-        }
-    }))
+            overflow: 'auto',
+        },
+    }));
 
 export const StyledMessageSendFormIcon = styled.div({
     display: 'flex',
@@ -33,12 +33,12 @@ export const StyledMessageSendFormIcon = styled.div({
     transition: '0.1s',
     transitionProperty: 'transform',
     '&:hover': {
-        transform: 'translateX(5px)'
+        transform: 'translateX(5px)',
     },
     '&:active': {
-        transform: 'translateX(5px) scale(1.1)'
-    }
-})
+        transform: 'translateX(5px) scale(1.1)',
+    },
+});
 
 type StyledImageContainerPropsType = {
     borderRadius?: Property.BorderRadius,
@@ -59,4 +59,19 @@ export const StyledMapContentPreview = styled.div<StyledImageContainerPropsType>
     transition: '0.2s',
     backgroundColor: props.bgColor,
     flexGrow: 1,
-}))
+}));
+
+export const StyledMessageDisabled = styled.div({
+    display: 'flex',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.7,
+    userSelect: 'none',
+    msUserSelect: 'none',
+});

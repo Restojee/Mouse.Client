@@ -1,5 +1,5 @@
-import {Property} from "csstype";
-import styled from "styled-components";
+import { Property } from 'csstype';
+import styled from 'styled-components';
 
 type Props = {
     margin?: Property.Margin;
@@ -7,51 +7,62 @@ type Props = {
     gap?: Property.Gap;
     isOpen?: boolean;
     withBorder?: boolean
+    isDisabled?: boolean
     isChecked?: boolean;
 }
 export const StyledNavLink = styled.div<Props>(({
-    theme,
-    margin,
-    isOpen,
-    withBorder,
-    gap,
-    isChecked,
-    justifyContent
-}) => ({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    padding: "8px",
-    borderRadius: "10px",
-    position: "relative",
-    whiteSpace: "nowrap",
-    cursor: "pointer",
+                                                    theme,
+                                                    margin,
+                                                    isOpen,
+                                                    withBorder,
+                                                    isDisabled,
+                                                    gap,
+                                                    isChecked,
+                                                    justifyContent,
+                                                }) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: '8px',
+    borderRadius: '10px',
+    position: 'relative',
+    whiteSpace: 'nowrap',
     gap: gap,
     margin: margin,
     justifyContent: justifyContent,
-    transition: "0.5s",
+    transition: '0.5s',
 
     svg: {
-      transition: "0.2s"
+        transition: '0.2s',
     },
     ...withBorder && {
-        "&:after": {
+        '&:after': {
             content: '""',
-            position: "absolute",
+            position: 'absolute',
             bottom: -5,
             right: 5,
             left: 5,
             height: 1,
-            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        },
+    },
+    ...isDisabled && {
+        opacity: 0.3,
+        '*': {
+            cursor: 'default',
         }
     },
-    ...isChecked && {
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
+    ...!isDisabled && {
+        cursor: 'pointer',
+        ...isChecked && {
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        },
+        '&:hover': {
+            backgroundColor: isOpen ? `rgba(255, 255, 255, 0.05)` : `rgba(255, 255, 255, 0.1)`,
+            svg: {
+                transform: 'scale(0.85)',
+            },
+        },
     },
-    "&:hover": {
-        backgroundColor: isOpen ? `rgba(255, 255, 255, 0.05)` : `rgba(255, 255, 255, 0.1)`,
-        svg: {
-            transform: 'scale(0.85)'
-        }
-    }
-}))
+
+}));

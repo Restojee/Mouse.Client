@@ -15,7 +15,7 @@ import { StyledMapContentMain, StyledMapContentSidebar } from '../../styles/styl
 import { Paper } from '@/ui/Paper';
 
 type MapContentPropsType = {
-    map: Map;
+    map: Map | null;
 }
 export const MapContent = ({ map }: MapContentPropsType) => {
     const theme = useAppTheme();

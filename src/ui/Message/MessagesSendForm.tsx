@@ -1,11 +1,13 @@
+import { Display } from '@/ui/Display';
 import React from 'react';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { StyledBox } from '@/ui/Box';
 import { SendIcon } from '@/svg/SendIcon';
 import { Property } from 'csstype';
-import { StyledMessageSendFormIcon, StyledMessageSendFormTextarea } from './styled';
+import { StyledMessageSendFormIcon, StyledMessageSendFormTextarea, StyledMessageDisabled } from './styled';
 
 type PropsType = {
+    disabled: boolean;
     value: string;
     bgColor: Property.BackgroundColor;
     onSendClick: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -19,6 +21,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
         onSendClick,
         onChange,
         onKeyDown,
+        disabled,
     } = props;
 
     const theme = useAppTheme();
@@ -28,18 +31,26 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
             align={'center'}
             margin={'auto 0 0 0'}
             width={'100%'}
-            padding={'10px 0 10px 10px'}
+            padding={disabled ? '10px'  : '10px 0 10px 10px'}
+            position={'relative'}
         >
+            <Display condition={disabled}>
+                <StyledMessageDisabled>
+                    Вы не авторизованы
+                </StyledMessageDisabled>
+            </Display>
             <StyledMessageSendFormTextarea
                 onChange={onChange}
                 onKeyDown={onKeyDown}
                 bgColor={bgColor}
                 value={value}
-                placeholder="Введите сообщение..."
+                placeholder={disabled ? "" : "Введите сообщение..."}
             />
-            <StyledMessageSendFormIcon onClick={onSendClick}>
-                <SendIcon size="30px" color={theme.colors.textOnSecondary}/>
-            </StyledMessageSendFormIcon>
+            <Display condition={!disabled}>
+                <StyledMessageSendFormIcon onClick={onSendClick}>
+                    <SendIcon size="30px" color={theme.colors.textOnSecondary}/>
+                </StyledMessageSendFormIcon>
+            </Display>
         </StyledBox>
     );
 };
