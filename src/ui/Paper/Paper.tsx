@@ -3,7 +3,7 @@ import React from 'react';
 import { StyledBox, StyledBoxProps } from '@/ui/Box';
 
 type PaperPropsType = Partial<StyledBoxProps> & {
-    onClick: (e: React.MouseEvent<HTMLDivElement>) => void
+    onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 export const Paper = ({ children, onClick, ...props }: PaperPropsType) => {
     const theme = useAppTheme();
