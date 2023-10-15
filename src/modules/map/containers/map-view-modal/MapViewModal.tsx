@@ -16,7 +16,6 @@ const MapViewModal = () => {
         closeMap
     } = useMapView()
 
-
     useEffect(() => {
         if (mapId) {
             dispatch(getMapByIdThunk({ mapId }))

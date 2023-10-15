@@ -1,22 +1,23 @@
-import { getMapImageLink } from '@/common/utils';
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { StyledMapCard } from "@/modules/map/styles/StyledMapCard";
-import { StyledMapCardHeader } from "@/modules/map/styles/StyledMapCardHeader";
-import { Typography } from "@/ui/Typography/styles/Typography";
-import { StyledMapCardBody } from "@/modules/map/styles/StyledMapCardBody";
-import { StyledMapCardButton } from "@/modules/map/styles/StyledMapCardButton";
-import { StyledMapCardFooter } from "@/modules/map/styles/StyledMapCardFooter";
-import { StyledBox} from "@/ui/Box";
-import {FavoriteIcon} from "@/svg/FavoriteIcon";
-import {BookCheckIcon} from "@/svg/BookCheckIcon";
-import {CommentIcon} from "@/svg/CommentIcon";
-import {CopyIcon} from "@/svg/CopyIcon";
-import { Button } from "@/ui/Button/Button";
-import {ImageIcon} from "@/svg/ImageIcon";
-import { IconButton } from "@/ui/Button/IconButton";
-import Image from "next/image";
+import { DEFAULT_MAP_IMAGE } from '@/common/contants';
+import { useAppTheme } from '@/hooks/useAppTheme';
+import { useMap } from '@/modules/map/common';
+import { StyledMapCard } from '@/modules/map/styles/StyledMapCard';
+import { StyledMapCardHeader } from '@/modules/map/styles/StyledMapCardHeader';
+import { Typography } from '@/ui/Typography/styles/Typography';
+import { StyledMapCardBody } from '@/modules/map/styles/StyledMapCardBody';
+import { StyledMapCardButton } from '@/modules/map/styles/StyledMapCardButton';
+import { StyledMapCardFooter } from '@/modules/map/styles/StyledMapCardFooter';
+import { StyledBox } from '@/ui/Box';
+import { FavoriteIcon } from '@/svg/FavoriteIcon';
+import { BookCheckIcon } from '@/svg/BookCheckIcon';
+import { CommentIcon } from '@/svg/CommentIcon';
+import { CopyIcon } from '@/svg/CopyIcon';
+import { Button } from '@/ui/Button/Button';
+import { ImageIcon } from '@/svg/ImageIcon';
+import { IconButton } from '@/ui/Button/IconButton';
+import Image from 'next/image';
 import { useState } from 'react';
-import { Map } from "@/api/codegen/genMouseMapsApi";
+import { Map } from '@/api/codegen/genMouseMapsApi';
 
 type MapCardProps = {
     id: Map['id'];
@@ -30,17 +31,24 @@ export const MapCard = (props: MapCardProps) => {
     const theme = useAppTheme();
     const [isMapHover, setIsMapHover] = useState(false);
 
-    const onIconsClick= (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation()
-        alert('Пока не работает....')
-    }
+    const {
+        onMapNameCopy,
+        onAddMapFavorite
+    } = useMap(props.id);
+
+    const onIconsClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        if (props.label) {
+            await onMapNameCopy(props.label);
+        }
+    };
 
     const {
         label,
         addedCount,
-        image = "",
+        image = '',
         onClick,
-        commentsCount
+        commentsCount,
     } = props;
     return (
         <StyledMapCard
@@ -48,23 +56,23 @@ export const MapCard = (props: MapCardProps) => {
             onMouseEnter={() => setIsMapHover(true)}
         >
             <StyledMapCardHeader>
-                <Typography>{ label }</Typography>
+                <Typography>{label}</Typography>
                 <IconButton onClick={onIconsClick}>
-                    <CopyIcon />
+                    <CopyIcon/>
                 </IconButton>
             </StyledMapCardHeader>
             <StyledMapCardBody>
                 <StyledMapCardButton
-                    isHover={ isMapHover }
-                    onClick={ () => onClick?.(props.id) }
+                    isHover={isMapHover}
+                    onClick={() => onClick?.(props.id)}
                 >
                     <Button
-                        bgColor={ theme.colors.status.success }
+                        bgColor={theme.colors.status.success}
                         label="Открыть"
                     />
                 </StyledMapCardButton>
                 <Image
-                    src={ image || "https://i.imgur.com/WpmGIaD.png" }
+                    src={image || DEFAULT_MAP_IMAGE}
                     alt=" "
                     objectFit={'cover'}
                     objectPosition={'center'}
@@ -73,25 +81,25 @@ export const MapCard = (props: MapCardProps) => {
                 />
             </StyledMapCardBody>
             <StyledMapCardFooter justify="space-between">
-                <StyledBox gap={ "10px" } justify="flex-start">
-                    <IconButton onClick={onIconsClick}>
-                        <ImageIcon />
-                    </IconButton>
-                    <IconButton onClick={onIconsClick}>
-                        <FavoriteIcon />
+                <StyledBox gap={'10px'} justify="flex-start">
+                    {/*<IconButton onClick={onIconsClick}>*/}
+                    {/*    <ImageIcon />*/}
+                    {/*</IconButton>*/}
+                    <IconButton onClick={onAddMapFavorite}>
+                        <FavoriteIcon/>
                     </IconButton>
                 </StyledBox>
-                <StyledBox gap={ "10px" } justify="flex-end" opacity="0.6">
+                <StyledBox gap={'10px'} justify="flex-end" opacity="0.6">
                     <StyledBox gap="5px" align="center" title="Выполнений">
-                        <BookCheckIcon />
-                        <Typography>{ addedCount }</Typography>
+                        <BookCheckIcon/>
+                        <Typography>{addedCount}</Typography>
                     </StyledBox>
                     <StyledBox gap="5px" align="center" title="Комментариев">
-                        <CommentIcon />
-                        <Typography>{ commentsCount }</Typography>
+                        <CommentIcon/>
+                        <Typography>{commentsCount}</Typography>
                     </StyledBox>
                 </StyledBox>
             </StyledMapCardFooter>
         </StyledMapCard>
-    )
-}
+    );
+};

@@ -1,14 +1,23 @@
 import { AxiosResponse } from 'axios';
 import api from '@/api/coreMapsApi';
 import {
+    AddFavoriteMapApiArg,
+    AddFavoriteMapApiResponse,
     CreateMapApiResponse,
     CreateMapRequest,
     DeleteMapApiArg,
     DeleteMapApiResponse,
+    GetCompletedMapsByUserApiArg,
+    GetCompletedMapsByUserApiResponse,
+    GetFavoriteMapsByUserApiArg,
+    GetFavoriteMapsByUserApiResponse,
     GetMapApiArg,
     GetMapApiResponse,
     GetMapsApiArg,
-    Map, SetMapsTagApiArg,
+    Map,
+    RemoveFavoriteMapApiArg,
+    RemoveFavoriteMapApiResponse,
+    SetMapsTagApiArg,
     SetMapsTagApiResponse,
     UpdateMapImageApiArg,
     UpdateMapImageApiResponse,
@@ -44,7 +53,23 @@ export const mapsApi = {
         return res.data;
     },
     setMapsTag: async (body: SetMapsTagApiArg) => {
-        const res = await api.put<AxiosResponse<SetMapsTagApiResponse>>('/maps/set-tags', body);
+        const res = await api.put<SetMapsTagApiArg, AxiosResponse<SetMapsTagApiResponse>>('/maps/set-tags', body);
+        return res.data;
+    },
+    getCompleted: async (params: GetCompletedMapsByUserApiArg) => {
+        const res = await api.get<GetCompletedMapsByUserApiArg, AxiosResponse<GetCompletedMapsByUserApiResponse>>(`/maps/completed/collect/by-user`, { params });
+        return res.data;
+    },
+    getFavorites: async (params: GetFavoriteMapsByUserApiArg) => {
+        const res = await api.get<GetFavoriteMapsByUserApiArg, AxiosResponse<GetFavoriteMapsByUserApiResponse>>(`/maps/favorites/collect/by-user`, { params });
+        return res.data;
+    },
+    addFavorite: async (params: AddFavoriteMapApiArg) => {
+        const res = await api.post<AddFavoriteMapApiArg, AxiosResponse<AddFavoriteMapApiResponse>>(`/maps/${params.mapId}/favorites/create`);
+        return res.data;
+    },
+    removeFavorite: async (params: RemoveFavoriteMapApiArg) => {
+        const res = await api.delete<RemoveFavoriteMapApiArg, AxiosResponse<RemoveFavoriteMapApiResponse>>(`/maps/${params.mapId}/favorites/remove`);
         return res.data;
     },
 };

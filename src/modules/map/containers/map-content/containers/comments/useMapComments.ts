@@ -8,7 +8,7 @@ import {
     setComments,
 } from './slice';
 import { useRouter } from 'next/router';
-import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
+import { Map } from '@/api/codegen/genMouseMapsApi';
 
 export const useMapComments = () => {
     const dispatch = useAppDispatch();
@@ -33,7 +33,7 @@ export const useMapComments = () => {
     }, [commentText]);
 
     const clearComments = useCallback(() => {
-        dispatch(setComments([]))
+        dispatch(setComments([]));
     }, []);
 
     const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -53,9 +53,19 @@ export const useMapComments = () => {
     };
 
     useEffect(() => {
+        dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
+    }, []);
+
+    useEffect(() => {
         if (mapId) {
-            dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
+            const id = setInterval(() => {
+                dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
+            }, 5000);
+            return () => {
+                clearInterval(id);
+            };
         }
+
     }, [mapId]);
 
     return {

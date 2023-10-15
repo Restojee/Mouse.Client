@@ -1,4 +1,10 @@
-import { DeleteMapApiArg, GetMapApiArg, GetMapsApiArg, Map } from '@/api/codegen/genMouseMapsApi';
+import {
+    DeleteMapApiArg, GetCompletedMapsByUserApiArg,
+    GetFavoriteMapsByUserApiArg,
+    GetMapApiArg,
+    GetMapsApiArg,
+    Map,
+} from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { RootState } from '@/store';
@@ -11,6 +17,26 @@ export const getMapsThunk = createAsyncThunk('map/get', async (arg: GetMapsApiAr
 
         thunkAPI.dispatch(setMaps(maps));
 
+        return maps;
+    } catch (error) {
+        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка загрузки карт: ${Error}`}))
+    }
+});
+
+export const getFavoriteMapsThunk = createAsyncThunk('map/get-favorites', async (arg: GetFavoriteMapsByUserApiArg, thunkAPI) => {
+    try {
+        const maps = await mapsApi.getFavorites(arg);
+        thunkAPI.dispatch(setMaps(maps));
+        return maps;
+    } catch (error) {
+        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка загрузки карт: ${Error}`}))
+    }
+});
+
+export const getCompletedMapsThunk = createAsyncThunk('map/get-completed', async (arg: GetCompletedMapsByUserApiArg, thunkAPI) => {
+    try {
+        const maps = await mapsApi.getCompleted(arg);
+        thunkAPI.dispatch(setMaps(maps));
         return maps;
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка загрузки карт: ${Error}`}))

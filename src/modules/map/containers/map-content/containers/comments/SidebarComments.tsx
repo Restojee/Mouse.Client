@@ -32,14 +32,15 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
 
     const scrollToBottomHandler = (isNotSmooth?: boolean) => {
         const ref = scrollToBottomRef.current;
+        const timeout = isNotSmooth ? 0 : 200
 
         if (ref) {
             setTimeout(() => {
                 ref.scrollTo({
                     top: ref.scrollHeight ,
-                    behavior: isNotSmooth ? 'auto' : 'smooth',
+                    behavior: isNotSmooth ? undefined : 'smooth',
                 });
-            }, 200)
+            }, timeout)
         }
     };
 
@@ -61,14 +62,14 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
 
     useEffect(() => {
         scrollToBottomHandler(true);
+    }, [comments?.length]);
+
+    useEffect(() => {
+        scrollToBottomHandler();
         return () => {
             clearComments()
         }
     }, []);
-
-    useEffect(() => {
-        scrollToBottomHandler();
-    }, [comments?.length]);
 
     return (
         <StyledBox

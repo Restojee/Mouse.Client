@@ -1,4 +1,4 @@
-import { DeleteMapApiArg, GetMapApiArg, Map } from '@/api/codegen/genMouseMapsApi';
+import { AddFavoriteMapApiArg, DeleteMapApiArg, GetMapApiArg, Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { deleteMap } from '@/modules/map/containers/map-list/slice';
@@ -15,6 +15,17 @@ export const deleteMapsThunk = createAsyncThunk('map/delete', async (arg: Delete
         return thunkAPI.fulfillWithValue(true)
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({severity: 'error', text: 'Ошибка удаления'}))
+        return thunkAPI.rejectWithValue(false);
+    }
+});
+
+export const addFavorite = createAsyncThunk('map/favorite', async (arg: AddFavoriteMapApiArg, thunkAPI) => {
+    try {
+        await mapsApi.addFavorite(arg)
+        thunkAPI.dispatch(setAppMessage({severity: 'success', text: 'Добавлено в избранное'}))
+        return thunkAPI.fulfillWithValue(true)
+    } catch (error) {
+        thunkAPI.dispatch(setAppMessage({severity: 'error', text: 'Ошибка добавления в избранное'}))
         return thunkAPI.rejectWithValue(false);
     }
 });

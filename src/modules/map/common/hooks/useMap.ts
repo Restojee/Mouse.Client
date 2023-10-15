@@ -2,7 +2,7 @@ import { Map } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { routes } from '@/common/routes';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { deleteMapsThunk } from '@/modules/map/containers/map-content/slice';
+import { addFavorite, deleteMapsThunk } from '@/modules/map/containers/map-content/slice';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
@@ -10,21 +10,23 @@ export const useMap = (mapId?: Map['id']) => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const onAddMapComplete = () => {
+    const onAddMapComplete = useCallback(() => {
         alert('добавление прохождения карты пока не работает');
-    };
+    }, []);
 
-    const onAddMap = (): void => {
+    const onAddMap = useCallback((): void => {
         alert('добавление карты пока не работает');
-    };
+    }, []);
 
-    const onAddMapFavorite = (): void => {
-        alert('добавление карты в избранное пока не работает');
-    };
+    const onAddMapFavorite = useCallback((): void => {
+        if (mapId) {
+            dispatch(addFavorite({ mapId }));
+        }
+    }, [mapId]);
 
-    const onMapShare = (): void => {
+    const onMapShare = useCallback((): void => {
         alert('кнопка поделиться пока не работает');
-    };
+    }, [mapId]);
 
     const onMapDelete = useCallback(async (): Promise<void> => {
         if (mapId) {
@@ -46,9 +48,9 @@ export const useMap = (mapId?: Map['id']) => {
 
         try {
             await navigator.clipboard.writeText(text);
-            dispatch(setAppMessage({severity: 'success', text: 'Скопировано'}))
+            dispatch(setAppMessage({ severity: 'success', text: 'Скопировано' }));
         } catch (error) {
-            dispatch(setAppMessage({severity: 'error', text: 'Ошибка копирования'}))
+            dispatch(setAppMessage({ severity: 'error', text: 'Ошибка копирования' }));
         }
     };
 
