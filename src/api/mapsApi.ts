@@ -47,6 +47,5 @@ export const mapsApi = {
         const res = await api.put<AxiosResponse<SetMapsTagApiResponse>>('/maps/set-tags', body);
         return res.data;
     },
-    updateMap: { invalidatesTags: ['Map'] },
 };
 

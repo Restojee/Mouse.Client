@@ -1,4 +1,5 @@
 import { Avatar } from '@/ui/Avatar';
+import { Display } from '@/ui/Display';
 import React from 'react';
 import { Comment } from '@/api/codegen/genMouseMapsApi';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -66,9 +67,11 @@ export const Message = (props: PropsType) => {
                     <Typography fontSize={'0.7rem'}>
                         01.01.2000
                     </Typography>
-                    <IconButton onClick={onDeleteHandler} isAdmin>
-                        <CloseIcon size="20px" color="#000"/>
-                    </IconButton>
+                    <Display condition={!!onDelete}>
+                        <IconButton onClick={onDeleteHandler} isAdmin>
+                            <CloseIcon size="20px" color="#000"/>
+                        </IconButton>
+                    </Display>
                 </StyledBox>
                 <StyledMessageText>
                     {comment.text}

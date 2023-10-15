@@ -5,6 +5,7 @@ import {
     addMapCommentsThunk,
     getMapCommentsThunk,
     selectMapComments,
+    setComments,
 } from './slice';
 import { useRouter } from 'next/router';
 import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
@@ -17,19 +18,22 @@ export const useMapComments = () => {
 
     const [commentText, setCommentText] = useState('');
 
-    const { id } = router.query;
+    const { mapId } = router.query;
 
-    const onCommentAdd = useCallback((mapId: Map['id']): void => {
+    const onCommentAdd = useCallback(async (mapId: Map['id']): Promise<void> => {
         const messageText = String(commentText).trim();
 
         if (messageText.length) {
-            dispatch(addMapCommentsThunk({ mapId, text: commentText }));
-            setCommentText('');
+            const res = await dispatch(addMapCommentsThunk({ mapId, text: commentText }));
+
+            if (res.payload) {
+                setCommentText('');
+            }
         }
     }, [commentText]);
 
-    const onCommentDelete = useCallback((id: Comment['id']): void => {
-        alert('удаление коммента пока не работает');
+    const clearComments = useCallback(() => {
+        dispatch(setComments([]))
     }, []);
 
     const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -49,19 +53,18 @@ export const useMapComments = () => {
     };
 
     useEffect(() => {
-        if (id) {
-            const mapId = Number(id);
-            dispatch(getMapCommentsThunk({ mapId }));
+        if (mapId) {
+            dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
         }
-    }, [id]);
+    }, [mapId]);
 
     return {
         comments,
         commentText,
         onCommentAdd,
-        onCommentDelete,
         onInputChange,
         onInputKeyDown,
+        clearComments,
     };
 };
 

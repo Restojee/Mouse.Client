@@ -13,6 +13,7 @@ type PropsType = {
     onSendClick: (e: React.MouseEvent<HTMLDivElement>) => void;
     onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onFocus: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 export const MessageSendFormContainer = (props: Partial<PropsType>) => {
     const {
@@ -20,6 +21,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
         bgColor,
         onSendClick,
         onChange,
+        onFocus,
         onKeyDown,
         disabled,
     } = props;
@@ -42,6 +44,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
             <StyledMessageSendFormTextarea
                 onChange={onChange}
                 onKeyDown={onKeyDown}
+                onFocus={onFocus}
                 bgColor={bgColor}
                 value={value}
                 placeholder={disabled ? "" : "Введите сообщение..."}

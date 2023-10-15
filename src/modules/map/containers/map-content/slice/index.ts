@@ -48,6 +48,7 @@ const slice = createSlice({
         },
         closeTagsModal: (state) => {
             state.isTagsModalOpen = false;
+            state.mapContent = null;
         },
     },
 });

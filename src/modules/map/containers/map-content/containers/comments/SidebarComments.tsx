@@ -1,6 +1,6 @@
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
-import React, { useCallback } from 'react';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { useMapComments } from './useMapComments';
 import { useUserActions } from '@/modules/user/utils/useUserActions';
@@ -16,24 +16,39 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
     const {
         comments,
         commentText,
-        onCommentDelete,
         onCommentAdd,
         onInputChange,
         onInputKeyDown,
+        clearComments,
     } = useMapComments();
-
-    const isAuth = useAppSelector(selectIsAuth);
 
     const {
         onUsernameClick,
     } = useUserActions();
 
-    const onDeleteHandler = useCallback((id: number) => {
-        onCommentDelete(id);
-    }, [onCommentDelete]);
+    const isAuth = useAppSelector(selectIsAuth);
 
-    const onCommentAddHandler = useCallback(() => {
-        onCommentAdd(mapId);
+    const scrollToBottomRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottomHandler = (isNotSmooth?: boolean) => {
+        const ref = scrollToBottomRef.current;
+
+        if (ref) {
+            setTimeout(() => {
+                ref.scrollTo({
+                    top: ref.scrollHeight ,
+                    behavior: isNotSmooth ? 'auto' : 'smooth',
+                });
+            }, 200)
+        }
+    };
+
+    const onFocusHandler = useCallback(async () => {
+        scrollToBottomHandler();
+    }, [onCommentAdd, mapId]);
+
+    const onCommentAddHandler = useCallback(async () => {
+        await onCommentAdd(mapId);
     }, [onCommentAdd, mapId]);
 
     const onInputKeyDownHandler = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -44,7 +59,16 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
         onUsernameClick(id);
     }, [onUsernameClick]);
 
-    console.log(isAuth, 'auth')
+    useEffect(() => {
+        scrollToBottomHandler(true);
+        return () => {
+            clearComments()
+        }
+    }, []);
+
+    useEffect(() => {
+        scrollToBottomHandler();
+    }, [comments?.length]);
 
     return (
         <StyledBox
@@ -55,6 +79,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
         >
             <Display condition={comments?.length}>
                 <StyledBox
+                    ref={scrollToBottomRef}
                     gap={10}
                     direction={'column'}
                     overflow={'auto'}
@@ -64,7 +89,6 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
                         <Message
                             key={mapComment.id}
                             comment={mapComment}
-                            onDelete={onDeleteHandler}
                             onUsernameClick={onUsernameClickHandler}
                         />
                     ))}
@@ -82,6 +106,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
             <MessageSendFormContainer
                 disabled={!isAuth}
                 value={commentText}
+                onFocus={onFocusHandler}
                 onChange={onInputChange}
                 onKeyDown={onInputKeyDownHandler}
                 onSendClick={onCommentAddHandler}
