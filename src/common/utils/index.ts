@@ -1,3 +1,5 @@
+import packageJson from '../../../package.json'
+
 export const getMapImageLink = (link: string | null | undefined) => {
     if (link) {
         return process.env.FILE_STORAGE_URL + "/" + link;
@@ -25,4 +27,12 @@ export const CommonUtils = {
 export const DomUtils = {
     createRootContainerElement,
     getRootContainerElement
+}
+
+
+
+export const getAppVersion = () => {
+    const appVersion = packageJson.version
+
+    return `v ${appVersion}`
 }

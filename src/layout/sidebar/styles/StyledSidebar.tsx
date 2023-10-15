@@ -28,6 +28,6 @@ export const StyledSidebar = styled.div<Partial<Props>>(({
     ...isOpen && {
         maxWidth: theme.sizes.leftSidebar.width,
         overflow: "hidden",
-        rowGap: 20,
+        rowGap: 5,
     }
 }))

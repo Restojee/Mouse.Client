@@ -1,12 +1,17 @@
+import { Tag } from '@/api/codegen/genMouseMapsApi';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsAuth } from '@/modules/auth/slice';
 import { useTag } from '@/modules/tag/hooks/useTag';
-import { StyledBox } from "@/ui/Box";
-import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
-import { SidebarSection } from "@/layout/sidebar/SidebarSection";
-import { NavLink } from "@/layout/navigation/NavLink";
-import { CloseIcon } from "@/svg/CloseIcon";
-import { AddIcon } from "@/svg/AddIcon";
-import { CreateTagPopup } from "@/modules/tag/containers/create-tag-popup/CreateTagPopup";
-import { ScrollBox } from "@/ui/ScrollBox/ScrollBox";
+import { StyledNavLinkSection } from '@/layout/navigation/styles/StyledNavLinkSection';
+import { SidebarSection } from '@/layout/sidebar/SidebarSection';
+import { NavLink } from '@/layout/navigation/NavLink';
+import { CloseIcon } from '@/svg/CloseIcon';
+import { AddIcon } from '@/svg/AddIcon';
+import { StyledBox } from '@/ui/Box';
+import { Display } from '@/ui/Display';
+import { Modal } from '@/ui/Modal/Modal';
+import { ScrollBox } from '@/ui/ScrollBox/ScrollBox';
+import { useState } from 'react';
 
 type TagsNavigationSectionProps = {
     isOpen: boolean;
@@ -15,59 +20,68 @@ type TagsNavigationSectionProps = {
 export function TagsNavigation(props: TagsNavigationSectionProps) {
     const {
         onTagDelete,
-        onTagCreate,
         modalType,
         onOpenModal,
         onCloseModal,
-        tagsList
+        tagsList,
     } = useTag();
 
-    console.log(modalType)
+    const isAuth = useAppSelector(selectIsAuth);
+    const [tagId, setTagId] = useState<Tag['id'] | null>(null);
+
+    const onTagDeleteHandler = (id: Tag['id']) => {
+        setTagId(id)
+        onOpenModal('delete')
+    }
 
     if (props.isOpen) {
         return (
             <StyledBox
                 direction="column"
-                gap={ 0 }
+                gap={10}
                 padding="5px"
+                overflow={'hidden'}
             >
                 <SidebarSection
                     label="Поиск по тегам"
                     append={
-                        <StyledNavLinkSection
-                            onClick={ () => onOpenModal('create') }
-                            isOpen={ props.isOpen }
-                        >
-                            <AddIcon />
-                        </StyledNavLinkSection>
+                        <Display condition={isAuth}>
+                            <StyledNavLinkSection
+                                onClick={() => onOpenModal('create')}
+                                isOpen={props.isOpen && isAuth}
+                            >
+                                <AddIcon/>
+                            </StyledNavLinkSection>
+                        </Display>
                     }
-                    prepend={<CreateTagPopup isVisible={ modalType === 'create' } />}
-                    isOpen={ props.isOpen }
+                    isOpen={props.isOpen}
                 />
                 <ScrollBox>
-                    { tagsList?.map(el => (
+                    {tagsList?.map(el => (
                         <NavLink
-                            key={ el.id }
-                            label={ el.name }
-                            isChecked={ false }
-                            append={ (
-                                <StyledNavLinkSection onClick={ () => onTagDelete(el.id) }>
-                                    <CloseIcon />
-                                </StyledNavLinkSection>
-                            ) }
+                            key={el.id}
+                            label={el.name}
+                            isChecked={false}
+                            append={(
+                                <Display condition={isAuth}>
+                                    <StyledNavLinkSection onClick={() => onTagDeleteHandler(el.id)}>
+                                        <CloseIcon/>
+                                    </StyledNavLinkSection>
+                                </Display>
+                            )}
                             justifyContent="space-between"
-                            isOpen={ props.isOpen }
+                            isOpen={props.isOpen}
                         />
-                    )) }
+                    ))}
                 </ScrollBox>
-                {/*<Modal*/}
-                {/*    isOpen={ modalType === 'delete' }*/}
-                {/*    text={'Вы действительно хотите удалить тег?'}*/}
-                {/*    onAccess={ () => onTagDelete() }*/}
-                {/*    onClose={ onCloseModal }*/}
-                {/*/>*/}
+                <Modal
+                    isOpen={modalType === 'delete'}
+                    text={'Вы действительно хотите удалить тег?'}
+                    onAccess={() => onTagDelete(tagId)}
+                    onClose={onCloseModal}
+                />
             </StyledBox>
-        )
+        );
     }
-    return null
+    return null;
 }

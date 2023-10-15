@@ -5,12 +5,14 @@ import { Property } from "csstype";
 type PointBlockContainerPropsType = {
     bottom?: Property.Bottom,
     left?: Property.Left,
+    right?: Property.Right,
     isVisible?: boolean
 }
 export const StyledPointBlockContainer = styled(StyledBox)<PointBlockContainerPropsType>(({ theme, ...props }) => ({
     position: 'absolute',
     bottom: props.bottom,
     left: props.left,
+    right: props.right,
     gap: 0,
     flexDirection: 'column',
     backgroundColor: theme.colors.secondary,

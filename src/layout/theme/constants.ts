@@ -13,6 +13,7 @@ export const DefaultTheme = {
 
         secondary: '#fff',
         secondaryDark: '#F6F6F6',
+        secondaryAccent: 'rgba(0,0,0,0.28)',
         textOnSecondary: '#000',
         iconOnSecondary: '#939393',
 

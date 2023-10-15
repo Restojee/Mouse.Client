@@ -2,7 +2,14 @@ import { useCallback } from 'react';
 import { Tag } from '@/api/codegen/genMouseMapsApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { openTagModal, closeTagModal, selectTagModalType, selectTags } from '@/modules/tag';
+import {
+    openTagModal,
+    closeTagModal,
+    selectTagModalType,
+    selectTags,
+    createTagThunk,
+    deleteTagThunk,
+} from '@/modules/tag';
 import { ModalType } from '@/modules/tag/types';
 
 export const useTag = () => {
@@ -11,12 +18,16 @@ export const useTag = () => {
     const modalType = useAppSelector(selectTagModalType);
     const tagsList = useAppSelector(selectTags);
 
-    const onTagDelete = useCallback((id: Tag['id']): void => {
-        alert('удаление тега пока не работает');
+    const onTagCreate = useCallback(async (name: string) => {
+        if (name.trim().length) {
+            return dispatch(createTagThunk({ name }));
+        }
     }, []);
 
-    const onTagCreate = useCallback((text: Tag['name']): void => {
-        alert('добавление тега пока не работает');
+    const onTagDelete = useCallback((tagId: Tag['id'] | null): void => {
+        if (tagId) {
+            dispatch(deleteTagThunk({ tagId }));
+        }
     }, []);
 
     const onOpenModal = useCallback((modalType: ModalType): void => {
@@ -33,7 +44,7 @@ export const useTag = () => {
         modalType,
         tagsList,
         onCloseModal,
-        onOpenModal
+        onOpenModal,
     };
 };
 

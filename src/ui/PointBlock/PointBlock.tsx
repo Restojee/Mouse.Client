@@ -13,6 +13,7 @@ type PointBlockViewPropsType = {
     children: React.ReactNode,
     width: Property.Width,
     left: Property.Left,
+    right: Property.Right,
     bottom: Property.Bottom,
     footer: React.ReactNode,
     isVisible: boolean
@@ -22,6 +23,7 @@ export function PointBlock(props: Partial<PointBlockViewPropsType>) {
         <StyledPointBlockContainer
             isVisible={ props.isVisible }
             left={ props.left }
+            right={ props.right }
             width={ props.width }
             bottom={ props.bottom }
         >

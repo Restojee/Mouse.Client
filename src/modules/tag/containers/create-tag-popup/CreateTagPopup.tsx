@@ -1,19 +1,21 @@
 import { useAppTheme } from '@/hooks/useAppTheme';
-import { useTag } from '@/modules/tag/common/hooks/useTag';
+import { useTag } from '@/modules/tag/hooks/useTag';
 import { DoneRoundIcon } from '@/svg/DoneRoundIcon';
 import { Button } from '@/ui/Button';
 import { Form } from '@/ui/Form/Form';
 import FormElement from '@/ui/Form/FormElement';
-import { PointBlock } from "@/ui/PointBlock/PointBlock";
+import { ModalCloseIcon } from '@/ui/ModalCloseIcon';
+import { PointBlock } from '@/ui/PointBlock/PointBlock';
 import React from 'react';
 
 type CreateTagPopupProps = {
     isVisible: boolean;
+    onClose: () => void;
 }
 export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
     const theme = useAppTheme();
     const [name, setName] = React.useState('');
-    const { onTagAdd } = useTag();
+    const { onTagCreate } = useTag();
     const { isVisible = true } = props;
 
     const isValid = React.useMemo(() => {
@@ -21,19 +23,17 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
     }, [name]);
 
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.currentTarget.name);
-        console.log(e.currentTarget.name)
+        setName(e.currentTarget.value);
     };
 
-    const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            onFormSubmit();
-        }
-    };
-
-    const onFormSubmit = () => {
+    const onFormSubmit = async () => {
         if (isValid) {
-            onTagAdd(name);
+            const res = await onTagCreate(name);
+            console.log(res)
+            if (res?.payload) {
+                setName('');
+                props.onClose?.();
+            }
         }
     };
 
@@ -41,14 +41,20 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
         return (
             <PointBlock
                 header="Добавить тег"
-                width="100%"
-                left="0"
-                bottom="35px"
+                width="auto"
+                left="5px"
+                right="5px"
+                bottom="15px"
             >
+                <ModalCloseIcon
+                    size={30}
+                    onClick={props.onClose}
+                    color={theme.colors.secondaryAccent}
+                />
                 <Form onSubmit={onFormSubmit} gap="15px">
                     <FormElement
+                        autoFocus
                         value={name}
-                        onKeyDown={onKeyDownHandler}
                         onChange={onChangeHandler}
                         placeholder="Введите название..."
                     />
@@ -62,8 +68,8 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
                     </Button>
                 </Form>
             </PointBlock>
-        )
+        );
     }
 
     return null;
-}
+};

@@ -28,14 +28,15 @@ const AsyncModalContent = (props: ModalPropsType) => {
                         {text || 'Вы действительно уверены?'}
                     </Typography>
                     <StyledCardActions>
-                        <Button size={'lg'}
-                            onClick={onAccess}
-                            bgColor={theme.colors.status.success}
-                            label="Подтвердить"
-                        />
                         <Button
                             label="Отмена"
                             onClick={onClose}
+                        />
+                        <Button
+                            size={'lg'}
+                            onClick={onAccess}
+                            bgColor={theme.colors.status.success}
+                            label="Подтвердить"
                         />
                     </StyledCardActions>
                 </Paper>
