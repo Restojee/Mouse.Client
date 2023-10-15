@@ -14,5 +14,6 @@ export const StyledMapCardButton = styled.div<MapsCardButtonProps>(props => ({
     height: "100%",
     opacity: props.isHover ? 1 : 0,
     position: "absolute",
-    transition:" 0.2s"
+    transition:" 0.2s",
+    zIndex: 1,
 }))

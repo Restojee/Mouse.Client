@@ -1,34 +1,35 @@
+import { useAppSelector } from '@/hooks/useAppSelector';
 import React from 'react';
+import { getMapsThunk, selectMaps } from '@/modules/map/containers/map-list/slice';
+import { LayoutProvider } from '@/layout/common/LayoutProvider';
 import { Provider } from 'react-redux';
-import { wrapper } from "@/store";
-import { ThemeProvider } from "@/layout/theme/ThemeProvider";
-import { SessionProvider } from "next-auth/react";
+import { RootState, wrapper } from '@/store';
+import { ThemeProvider } from '@/layout/theme/ThemeProvider';
+import { SessionProvider } from 'next-auth/react';
+import { AppProps } from 'next/app';
+import { Session } from 'next-auth';
+import { AuthProvider } from '@/modules/auth/AuthProvider';
+import Notification from '@/ui/Notification/Notification';
+import '@/styles/globals.css';
 
-import { mapsApi } from "@/api/mapsApi";
-import { AppProps } from "next/app";
-import { Session } from "next-auth";
-import { AuthProvider } from "@/modules/auth/AuthProvider";
-import Notification from "@/ui/Notification/Notification";
-import "@/styles/globals.css"
-
-export const getServerSideProps = wrapper.getServerSideProps(store => async () => {
-    const props = {};
-    await store.dispatch(mapsApi.endpoints.getMaps.initiate({ page: 0, size: 20 }));
-    return { props }
-});
-export default function App ({ Component, ...rest }: AppProps<{ session: Session }>) {
+function App({ Component, ...rest }: AppProps<{ session: Session, initialState: RootState }>) {
     const { store, props } = wrapper.useWrappedStore(rest);
     const { pageProps } = rest;
+
     return (
-        <SessionProvider session={ pageProps.session }>
-            <Provider store={ store }>
+        <Provider serverState={pageProps.initialState} store={store}>
+            <SessionProvider session={pageProps.session}>
                 <AuthProvider>
                     <ThemeProvider>
-                        <Component {...props.pageProps} />
+                        <LayoutProvider>
+                            <Component {...props.pageProps} />
+                        </LayoutProvider>
                         <Notification/>
                     </ThemeProvider>
                 </AuthProvider>
-            </Provider>
-        </SessionProvider>
+            </SessionProvider>
+        </Provider>
     );
 }
+
+export default App;

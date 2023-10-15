@@ -6,7 +6,7 @@ export const LeftSidebarArrowIcon = (props: SvgIconPropsType) => {
             <svg
                 width={props.size || '24px'}
                 height={props.size || '24px'}
-                style={{transform: props.rotate, transition: '0.8s'}}
+                style={{transform: props.rotate || 'rotate(0)', transition: '0.8s'}}
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"

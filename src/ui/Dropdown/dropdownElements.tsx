@@ -1,5 +1,5 @@
-import styled, { css, CSSObject } from 'styled-components';
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import styled from 'styled-components';
+import { StyledBox } from "@/ui/Box";
 
 type DropdownWrapperProps = {
     top: string;

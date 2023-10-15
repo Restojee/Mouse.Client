@@ -1,20 +1,24 @@
-import { StyledWelcomeButton } from '@/modules/welcome/styles/StyledWelcomeButton';
-import { StyledWelcomePage } from '@/modules/welcome/styles/StyledWelcomePage';
-import { useRouter } from "next/router";
-import {useSession} from "next-auth/react";
+import React, { Suspense } from 'react';
+import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
+import { Display } from '@/ui/Display';
+import { AsyncMapViewModal } from '@/modules/map/containers/map-view-modal';
+import { MapsList } from '@/modules/map/containers/map-list/ui/MapsList';
+import { MapPageContainer } from '@/modules/map/components/MapContainer';
+import { MetaTags } from '@/ui/MetaTags/MetaTags';
 
-export default function Home() {
-   const navigate = useRouter()
+export default function Maps() {
+    const {mapId} = useMapView()
 
-   const session = useSession();
-
-    console.log("accessToken", session);
-
-  return (
-      <StyledWelcomePage>
-        <StyledWelcomeButton onClick={() => navigate.push('/maps')}>
-          Go!
-        </StyledWelcomeButton>
-      </StyledWelcomePage>
-  )
+    return (
+        // eslint-disable-next-line react/jsx-no-undef
+        <MapPageContainer>
+            <MetaTags title={'Maps'}/>
+            <MapsList/>
+            <Display condition={mapId}>
+                <Suspense fallback={null}>
+                    <AsyncMapViewModal />
+                </Suspense>
+            </Display>
+        </MapPageContainer>
+    );
 }

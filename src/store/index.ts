@@ -1,21 +1,26 @@
-import {
-    combineReducers,
-    configureStore
-} from "@reduxjs/toolkit";
-import { coreMapsApi } from "@/api/coreMapsApi";
-import { createWrapper, Context } from 'next-redux-wrapper';
-import { appReducer } from "@/bll/appReducer";
+import { appReducer } from '@/bll/appReducer';
+import { authReducer } from '@/modules/auth/slice';
+import { mapCommentsReducer } from '@/modules/map/containers/map-content/containers/comments/slice';
+import { mapReducer } from '@/modules/map/containers/map-content/slice';
+import { mapCreateReducer } from '@/modules/map/containers/map-create';
+import { mapsReducer } from '@/modules/map/containers/map-list/slice';
+import { tagsReducer } from '@/modules/tag';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { Context, createWrapper } from 'next-redux-wrapper';
 
 const rootReducer = combineReducers({
-    [coreMapsApi.reducerPath]: coreMapsApi.reducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer,
+    tags: tagsReducer,
+    comments: mapCommentsReducer,
+    maps: mapsReducer,
+    map: mapReducer,
+    mapCreate: mapCreateReducer,
+
 })
 
-const makeStore = (context: Context) => configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(coreMapsApi.middleware)
-})
+// @ts-ignore
+const makeStore = (context: Context) => configureStore({ reducer: rootReducer })
 
 export const wrapper = createWrapper(makeStore, { debug: false });
 

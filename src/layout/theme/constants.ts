@@ -7,7 +7,7 @@ export const DefaultTheme = {
 
         primaryDark: '#3d3d3d',
         primary: '#2b2b2b',
-        primaryLight: '#2b2b2bf4',
+        primaryLight: '#383838',
         primaryLighter: '#3d3d3d',
         textOnPrimary: '#fff',
 
@@ -20,8 +20,12 @@ export const DefaultTheme = {
 
         mapBackground: '#6b7494',
 
+        default: {
+            paper: '#FFFFFF'
+        },
+
         status: {
-            success: '#7fd482',
+            success: '#70c073',
             danger: '#ff8935',
             info: '#6b88e9',
             error: '#ce5252',
@@ -79,7 +83,12 @@ export const DefaultTheme = {
                 svg: { width: '12px', height: '12px' },
             },
             md: {
-                padding: '7px 12px',
+                padding: '7px 15px',
+                fontSize: '14px',
+                svg: { width: '14px', height: '14px' },
+            },
+            lg: {
+                padding: '10px 20px',
                 fontSize: '14px',
                 svg: { width: '14px', height: '14px' },
             },
@@ -92,7 +101,7 @@ export const DefaultTheme = {
         rightSidebar: 5,
         megaShadow: 10,
         notifications: 15,
-        modal: 10,
+        modal: 11,
         dropdown: 5,
     },
 }

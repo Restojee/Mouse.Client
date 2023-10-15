@@ -1,19 +1,19 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
-import { StyledImageFormContainer, StyledImageFormLink } from "@/ui/ImageForm/ImageFormElements";
+import { StyledImageFormContainer, StyledImageFormLink } from '@/ui/ImageForm/ImageFormElements';
 
 type ImageFormPropsType = {
     placeholder?: string;
-    onClick?: (file: string) => void;
+    onClick?: (file: Blob) => void;
     name?: string;
-    onChange: (file: string) => void;
-    value: string;
-    fileType?: "image";
+    onChange: (file: Blob) => void;
+    value: Blob | null;
+    fileType?: 'image';
 };
 export const ImageForm = (props: ImageFormPropsType) => {
 
     const inputAccept = {
-        image: ".png, .jpg, .jpeg, .gif",
-        document: ".doc, .pdf",
+        image: '.png, .jpg, .jpeg',
+        document: '.doc, .pdf',
     };
     const inputFile = useRef<HTMLInputElement | null>(null);
     const [drag, setDrag] = useState(false);
@@ -22,25 +22,32 @@ export const ImageForm = (props: ImageFormPropsType) => {
         inputFile.current?.click();
     };
 
-    const convertFileToBase64 = (file: File, callBack: (value: string) => void): void => {
+    const convertFileToBlob = (file: File, callBack: (value: Blob) => void): void => {
         const reader = new FileReader();
-        reader.onloadend = () => {
-            const file64 = reader.result as string;
-            callBack(file64);
+
+        reader.onload = (e) => {
+            const arrayBuffer = e.target?.result as ArrayBuffer;
+            const blob = new Blob([arrayBuffer], { type: file.type });
+            callBack(blob);
         };
-        reader.readAsDataURL(file);
-    };
-    const uploadFile = (files: any) => {
+
+        reader.readAsArrayBuffer(file);
+    }
+
+    const uploadFile = (files: FileList | null) => {
         if (files && files.length) {
             const file = files[0];
-            convertFileToBase64(file, (file64: string) => {
-                props.onChange(file64);
-            })
+            convertFileToBlob(file, (blob: Blob) => {
+                props.onChange(blob);
+            });
         }
     };
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         const files = e.target.files;
-        uploadFile(files);
+
+        if (files) {
+            uploadFile(files);
+        }
     };
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -61,28 +68,28 @@ export const ImageForm = (props: ImageFormPropsType) => {
 
     return (
         <StyledImageFormContainer
-            onClick={ onClickHandler }
-            onDragStart={ (e) => dragStartHandler(e) }
-            onDragLeave={ (e) => dragLeaveHandler(e) }
-            onDragOver={ (e) => dragStartHandler(e) }
-            onDrop={ (e) => onDropHandler(e) }
-            image={ props.value }
-            isDrag={ drag }
+            onClick={onClickHandler}
+            onDragStart={(e) => dragStartHandler(e)}
+            onDragLeave={(e) => dragLeaveHandler(e)}
+            onDragOver={(e) => dragStartHandler(e)}
+            onDrop={(e) => onDropHandler(e)}
+            image={props.value && URL.createObjectURL(props.value)}
+            isDrag={drag}
         >
             <input
-                accept={ props.fileType && inputAccept[props.fileType] }
-                name={ props.name }
+                accept={props.fileType && inputAccept[props.fileType]}
+                name={props.name}
                 type="file"
-                ref={ inputFile }
-                onChange={ uploadHandler }
-                style={ { display: "none" } }
+                ref={inputFile}
+                onChange={uploadHandler}
+                style={{ display: 'none' }}
             />
-            { !props.value && (
+            {!props.value && (
                 <>
-                    <StyledImageFormLink>Загрузите</StyledImageFormLink>
-                    <span> или перетащите изображение</span>
+                    <StyledImageFormLink>Загрузите,</StyledImageFormLink>
+                    <span> перетащите изображение или вставьте из буфера (Ctrl+V)</span>
                 </>
-            ) }
+            )}
         </StyledImageFormContainer>
     );
-}
+};

@@ -1,7 +1,7 @@
-import {ReactElement} from "react";
-import {Property} from "csstype";
-import {StyledNavLink} from "@/layout/navigation/styles/StyledNavLink";
-import {Typography} from "@/ui/Typography/styles/Typography";
+import { ReactElement } from 'react';
+import { Property } from 'csstype';
+import { StyledNavLink } from '@/layout/navigation/styles/StyledNavLink';
+import { Typography } from '@/ui/Typography/styles/Typography';
 
 type NavLinkProps = {
     label?: string;
@@ -30,16 +30,18 @@ export const NavLink = (props: NavLinkProps) => {
         justifyContent,
         isDisabled,
         onClick,
-        gap = "15px"
+        gap = '15px',
     } = props;
 
     return (
         <StyledNavLink
+            title={isDisabled ? 'Необходимо войти в аккаунт' : label}
             margin={margin}
             withBorder={border}
             gap={gap}
             isOpen={isOpen}
             isChecked={isChecked}
+            isDisabled={isDisabled}
             justifyContent={justifyContent}
             onClick={isDisabled ? undefined : onClick}
         >
@@ -47,5 +49,5 @@ export const NavLink = (props: NavLinkProps) => {
             {isOpen && label && <Typography isEllipsis>{label}</Typography>}
             {append}
         </StyledNavLink>
-    )
-}
+    );
+};

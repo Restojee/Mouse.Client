@@ -1,14 +1,15 @@
 import {
     StyledFormElementContainer,
     StyledFormElementHeader,
-    StyledInput, StyledInputIcon,
-    StyledInputWrapper
-} from "@/ui/Form/styled";
+    StyledInput,
+    StyledInputIcon,
+    StyledInputWrapper,
+} from '@/ui/Form/styled';
+import { DefaultInputType } from '@/ui/Input/Input';
 import { Property } from "csstype";
 import { StyledTextarea } from "../Textarea/styled";
 import React, { ChangeEvent } from "react";
 
-type DefaultInputType = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 type PropsType = DefaultInputType & {
     readOnly: boolean,
     onClick: () => void,
@@ -18,12 +19,22 @@ type PropsType = DefaultInputType & {
     bgColor: Property.BackgroundColor,
     inputPrepend: React.ReactNode,
     inputAppend: React.ReactNode,
-    searchValue: string,
-    setSearchValue: (value: string) => void,
     searchForm: boolean,
     textarea: boolean,
 }
 export default function FormElement(props: Partial<PropsType>) {
+    const {
+        textarea,
+        searchForm,
+        bgColor,
+        inputAppend,
+        inputPrepend,
+        isOpen,
+        title,
+        ref,
+        ...inputProps
+    } = props
+
     return (
         // Подсказка:
         // <Form>
@@ -38,33 +49,25 @@ export default function FormElement(props: Partial<PropsType>) {
         // </Form>
 
         <StyledFormElementContainer>
-            { props.title &&
+            { title &&
                 <StyledFormElementHeader>
-                    { props.title }
+                    { title }
                 </StyledFormElementHeader>
             }
-            { props.textarea &&
+            { textarea &&
                 <StyledTextarea />
             }
-            { props.textarea || (
-                <StyledInputWrapper bgColor={ props.bgColor }>
-                    { props.inputPrepend && (
+            { textarea || (
+                <StyledInputWrapper bgColor={ bgColor }>
+                    { inputPrepend && (
                         <StyledInputIcon left>
-                            { props.inputPrepend }
+                            { inputPrepend }
                         </StyledInputIcon>
                     ) }
-                    <StyledInput
-                        readOnly={ props.readOnly }
-                        value={ props.searchValue }
-                        onClick={ props.onClick }
-                        onChange={ props.onChange }
-                        placeholder={ props.placeholder }
-                        type={ props.type }
-                        name={ props.name }
-                    />
+                    <StyledInput {...inputProps}/>
                     { props.inputAppend && (
                         <StyledInputIcon right>
-                            { props.inputAppend }
+                            { inputAppend }
                         </StyledInputIcon>
                     ) }
                 </StyledInputWrapper>

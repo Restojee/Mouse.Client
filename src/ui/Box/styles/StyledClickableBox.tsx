@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StyledBox}  from "@/ui/Box/styles/StyledBox";
+import { StyledBox}  from "@/ui/Box";
 
 export const StyledClickableBox = styled(StyledBox)(props => ({
     cursor: "pointer",

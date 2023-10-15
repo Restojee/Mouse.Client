@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledBox } from "@/ui/Box/styles/StyledBox";
+import { StyledBox } from "@/ui/Box";
 import { Property } from "csstype";
 
 type PointBlockContainerPropsType = {
@@ -22,7 +22,7 @@ export const StyledPointBlockContainer = styled(StyledBox)<PointBlockContainerPr
     color: theme.colors.textOnSecondary,
     fontSize: theme.font.fontSize,
     transition: '0.2s',
-    pointerEvents: "initial"
+    pointerEvents: "initial",
 }))
 export const StyledPointBlockHeader = styled(StyledBox)({
     marginBottom: 15

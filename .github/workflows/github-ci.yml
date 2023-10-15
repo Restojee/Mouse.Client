@@ -1,19 +1,20 @@
 name: Deploy
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
     types: [ opened, synchronize ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: [self-hosted]
     steps:
-      - uses: actions/checkout@v2
+      - name: Create .env
+        run: echo "${{ secrets.PROD_ENV_FILE }}" > .env
+
       - name: Rebuild and start docker container
         run: |
           docker compose up -d --build
-        env:
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          FILE_STORAGE_URL: ${{ secrets.FILE_STORAGE_URL }}

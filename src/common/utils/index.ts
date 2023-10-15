@@ -1,4 +1,4 @@
-const getMapImageLink = (link: string | null | undefined) => {
+export const getMapImageLink = (link: string | null | undefined) => {
     if (link) {
         return process.env.FILE_STORAGE_URL + "/" + link;
     }

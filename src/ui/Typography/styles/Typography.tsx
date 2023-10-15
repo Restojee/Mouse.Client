@@ -4,11 +4,10 @@ import { Property } from "csstype";
 type Props = {
     textAlign?: Property.TextAlign,
     fontWeight?: Property.FontWeight,
-    addSize?: Property.FontSize;
-    size?: Property.FontSize;
+    size?: Property.FontSize<number>;
     opacity?: Property.Opacity;
-    margin?: Property.Margin;
-    fontSize?: number | string;
+    margin?: Property.Margin<number>;
+    fontSize?: Property.FontSize<number>;
     isEllipsis?: boolean;
     isUpperCase?: boolean;
     isLink?: boolean;
@@ -35,12 +34,11 @@ export const Typography = styled.p<Props>(props => ({
         textOverflow: "ellipsis",
     },
     ...props.isLink && {
-        textDecoration: "underline",
         color: props.theme.colors.brandColor,
         fontWeight: "bold",
         cursor: "pointer",
         "&:hover":{
-            opacity: 0.8
+            textDecoration: "underline",
         }
     },
     ...props.isClickable && {

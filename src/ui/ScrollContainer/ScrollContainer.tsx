@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { Property } from "csstype";
 
 type StyledScrollWrapperPropsType = {
-    slider?: boolean,
+    isSlider?: boolean,
     grow?: Property.FlexGrow,
     maxHeight?: Property.MaxHeight
 }
@@ -13,7 +13,7 @@ export const StyledScrollWrapper = styled.div<StyledScrollWrapperPropsType>((pro
     minHeight: 'max-content',
     maxHeight: props.maxHeight,
     flexGrow: props.grow || '1',
-    ...props.slider && {
+    ...props.isSlider && {
         flexGrow: 'initial',
         alignItems: 'center',
     },
@@ -30,4 +30,5 @@ export const StyledScrollContainer = styled.div<StyledScrollContainerPropsType>(
     borderRadius: props.borderRadius,
     minWidth: '100%',
     display: 'inline-table',
+    height: 100
 }))
