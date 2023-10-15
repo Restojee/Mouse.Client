@@ -7,25 +7,25 @@ import { closeTagsModal, openTagsModal, selectIsTagsModalOpen } from '@/modules/
 export const useMapTag = () => {
     const dispatch = useAppDispatch();
 
-    const isModalOpen = useAppSelector(selectIsTagsModalOpen)
+    const isModalOpen = useAppSelector(selectIsTagsModalOpen);
 
     const onTagsEdit = useCallback((mapId: Map['id']): void => {
         alert('редактирование тегов пока не работает');
     }, []);
 
     const onModalClose = useCallback((mapId: Map['id']): void => {
-        dispatch(closeTagsModal())
+        dispatch(closeTagsModal());
     }, []);
 
     const onModalOpen = useCallback((): void => {
-        dispatch(openTagsModal())
+        dispatch(openTagsModal());
     }, []);
 
     return {
         onTagsEdit,
         onModalClose,
         isModalOpen,
-        onModalOpen
+        onModalOpen,
     };
 };
 
