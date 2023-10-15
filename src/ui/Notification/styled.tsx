@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+const notificationHeight = 60
+
 type TSNotificationWrapper = {
     notificationsCount: string | number;
 };
@@ -7,8 +9,11 @@ export const SNotificationWrapper = styled.div<TSNotificationWrapper>(({ theme, 
     position: 'fixed',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'flex-end',
     gap: 15,
     alignItems: 'flex-end',
+    overflow: 'hidden',
+    maxHeight: (notificationHeight ) * 3 + 20 + 20,
     bottom: 20,
     right: '60px',
     color: '#fff',
@@ -39,7 +44,6 @@ type TSNotificationContainerProps = {
 };
 export const SNotificationContainer = styled.div<TSNotificationContainerProps>(({ theme, ...props }) => ({
     display: 'flex',
-    position: 'absolute',
     bottom: '100%',
     alignItems: 'center',
     gap: 20,
@@ -49,7 +53,8 @@ export const SNotificationContainer = styled.div<TSNotificationContainerProps>((
     fontSize: 12,
     lineHeight: 20,
     maxWidth: 330,
-    height: 60,
+    height: notificationHeight,
+    minHeight: notificationHeight,
     padding: '10px 20px',
     backgroundColor: props.severity
         ? theme.colors.status[props.severity]
