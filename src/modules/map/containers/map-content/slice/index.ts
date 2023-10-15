@@ -33,6 +33,7 @@ export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: Get
 
 const initialState: MapContentStateType = {
     mapContent: null,
+    isTagsModalOpen: false,
 };
 
 const slice = createSlice({
@@ -42,12 +43,21 @@ const slice = createSlice({
         setMapContent: (state, action: PayloadAction<Map | null>) => {
             state.mapContent = action.payload;
         },
+        openTagsModal: (state) => {
+            state.isTagsModalOpen = true;
+        },
+        closeTagsModal: (state) => {
+            state.isTagsModalOpen = false;
+        },
     },
 });
 
 export const selectMapContent = (state: RootState) => state.map.mapContent;
+export const selectIsTagsModalOpen = (state: RootState) => state.map.isTagsModalOpen;
 
 export const {
     setMapContent,
+    openTagsModal,
+    closeTagsModal,
 } = slice.actions;
 export const mapReducer = slice.reducer;

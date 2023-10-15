@@ -1,5 +1,6 @@
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
+import { setAppMessage } from '@/bll/appReducer';
 import { addMap } from '@/modules/map/containers/map-list/slice';
 import { RootState } from '@/store';
 import { MapCreateFormType } from '../containers/create-form/types';
@@ -22,8 +23,9 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg, thunkAP
         }
 
         thunkAPI.dispatch(addMap(map))
+        thunkAPI.dispatch(setAppMessage({severity: 'success', text: `Карта добавлена`}))
     } catch (error) {
-        return thunkAPI.rejectWithValue('Ошибка добавления карты');
+        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка добавления: ${error}`}))
     }
 });
 

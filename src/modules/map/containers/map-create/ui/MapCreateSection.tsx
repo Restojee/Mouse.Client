@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsAuth } from '@/modules/auth/slice';
 import { useState } from 'react';
 import { useMapCreate } from '../hooks/useMapCreate';
 import { DoneRoundIcon } from '@/svg/DoneRoundIcon';
@@ -11,6 +13,8 @@ export const MapCreateSection = () => {
     const theme = useAppTheme();
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isContentVisible, setIsContentVisible] = useState(false);
+
+    const isAuth = useAppSelector(selectIsAuth)
 
     const {
         onMapCreate,
@@ -34,7 +38,7 @@ export const MapCreateSection = () => {
 
     return (
         <PagePanelItem
-            disabled={!isValid && isContentVisible}
+            disabled={(!isValid && isContentVisible) || !isAuth}
             type={isContentVisible ? 'submit' : undefined}
             isContentVisible={isContentVisible}
             onClick={onIconClickHandler}

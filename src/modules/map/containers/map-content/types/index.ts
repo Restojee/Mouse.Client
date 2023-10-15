@@ -1,5 +1,6 @@
 import { Map } from '@/api/codegen/genMouseMapsApi';
 
 export type MapContentStateType = {
-    mapContent: Map | null
+    mapContent: Map | null;
+    isTagsModalOpen: boolean;
 }

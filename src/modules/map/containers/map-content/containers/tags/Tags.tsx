@@ -1,3 +1,5 @@
+import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
+import { mockProviders } from 'next-auth/client/__tests__/helpers/mocks';
 import { useMapTag } from './hooks/useMapTag';
 import { StyledBox } from '@/ui/Box';
 import { Button } from '@/ui/Button';
@@ -18,11 +20,15 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
     const theme = useAppTheme();
 
     const {
+        mapId
+    } = useMapView()
+
+    const {
         onTagsEdit,
     } = useMapTag();
 
-    const onEditClickHandler = (mapId: Map['id'], tagId: Tag['id']) => {
-        onTagsEdit(mapId, tagId);
+    const onEditClickHandler = () => {
+        onTagsEdit(mapId);
     };
 
     return (

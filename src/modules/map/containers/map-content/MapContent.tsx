@@ -33,7 +33,6 @@ export const MapContent = ({ map }: MapContentPropsType) => {
 
     return (
         <Paper
-            position={'relative'}
             onClick={fixEventPropagation}
             align={'flex-start'}
             padding={0}
@@ -42,10 +41,6 @@ export const MapContent = ({ map }: MapContentPropsType) => {
             maxWidth={1200}
             overflow={'auto'}
         >
-            <ModalCloseIcon
-                color={theme.colors.textOnSecondary}
-                onClick={closeMap}
-            />
             <StyledMapContentMain>
                 <Header
                     completeCount={completedMaps.length}
@@ -59,6 +54,10 @@ export const MapContent = ({ map }: MapContentPropsType) => {
                 <Note/>
             </StyledMapContentMain>
             <StyledMapContentSidebar>
+                <ModalCloseIcon
+                    color={theme.colors.textOnSecondary}
+                    onClick={closeMap}
+                />
                 <SidebarProfile
                     user={map?.user}
                     date={'01.01.2000'}

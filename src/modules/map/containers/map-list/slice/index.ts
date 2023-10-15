@@ -13,8 +13,7 @@ export const getMapsThunk = createAsyncThunk('map/get', async (arg: GetMapsApiAr
 
         return maps;
     } catch (error) {
-        thunkAPI.rejectWithValue('Ошибка загрузки карт');
-        return null;
+        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка загрузки карт: ${Error}`}))
     }
 });
 
