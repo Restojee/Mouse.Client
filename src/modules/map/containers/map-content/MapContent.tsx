@@ -1,11 +1,13 @@
+import { IS_TABLET } from '@/common/constants';
 import { getMapImageLink } from '@/common/utils';
+import { formatDateTime } from '@/common/utils/formatDateTime';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
 import { CloseIcon } from '@/svg/CloseIcon';
 import { StyledBox } from '@/ui/Box';
 import { IconButton } from '@/ui/Button/IconButton';
 import { ModalCloseIcon } from '@/ui/ModalCloseIcon/ModalCloseIcon';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsData } from '@/moc/mapsMoc';
 import { SidebarIcons } from './containers/actions/SidebarIcons';
@@ -31,13 +33,20 @@ export const MapContent = ({ map }: MapContentPropsType) => {
         e.stopPropagation();
     };
 
+    const dateTime = useMemo(() => {
+        if(map) {
+            return formatDateTime(map?.createdUtcDate)
+        }
+        return ''
+    }, [map])
+
     return (
         <Paper
             onClick={fixEventPropagation}
             align={'flex-start'}
             padding={0}
             bgColor={theme.colors.primary}
-            direction={'row'}
+            direction={!IS_TABLET ?'row' : 'column'}
             maxWidth={1200}
             overflow={'auto'}
         >
@@ -60,7 +69,7 @@ export const MapContent = ({ map }: MapContentPropsType) => {
                 />
                 <SidebarProfile
                     user={map?.user}
-                    date={'01.01.2000'}
+                    date={dateTime}
                 />
                 <SidebarIcons mapId={map?.id}/>
                 <SidebarComments mapId={map?.id}/>

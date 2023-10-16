@@ -65,24 +65,44 @@ export type GetMapApiResponse = /** status 200 OK */ Map;
 export type GetMapApiArg = {
   mapId: number;
 };
-export type GetFavoriteMapsByUserApiResponse = /** status 200 OK */ Map[];
+export type GetFavoriteMapsByUserApiResponse = /** status 200 OK */ {
+  records: Map[];
+  pageNumber: number;
+  pageSize: number;
+  totalRecordsCount: number;
+};
 export type GetFavoriteMapsByUserApiArg = {
   userId?: number;
   page?: number;
   size?: number;
 };
-export type GetCompletedMapsByUserApiResponse = /** status 200 OK */ Map[];
+export type GetCompletedMapsByUserApiResponse = /** status 200 OK */ {
+  records: Map[];
+  pageNumber: number;
+  pageSize: number;
+  totalRecordsCount: number;
+};
 export type GetCompletedMapsByUserApiArg = {
   userId?: number;
   page?: number;
   size?: number;
 };
-export type GetMapsApiResponse = /** status 200 OK */ Map[];
+export type GetMapsApiResponse = /** status 200 OK */ {
+  records: Map[];
+  pageNumber: number;
+  pageSize: number;
+  totalRecordsCount: number;
+};
 export type GetMapsApiArg = {
   page?: number;
   size?: number;
 };
-export type GetMapsByUserApiResponse = /** status 200 OK */ Map[];
+export type GetMapsByUserApiResponse = /** status 200 OK */ {
+  records: Map[];
+  pageNumber: number;
+  pageSize: number;
+  totalRecordsCount: number;
+};
 export type GetMapsByUserApiArg = {
   userId?: number;
   page?: number;
@@ -140,6 +160,8 @@ export type Map = {
   user?: User;
   image?: string;
   tags?: Tag[];
+  createdUtcDate: string | null;
+  modifiedUtcDate: string | null;
 };
 export type UpdateMapRequest = {
   id?: number;
@@ -169,6 +191,8 @@ export type Comment = {
   id?: number;
   text?: string;
   user?: User;
+  createdUtcDate: string | null;
+  modifiedUtcDate: string | null;
 };
 export type CreateCommentRequest = {
   text?: string;

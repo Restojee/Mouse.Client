@@ -15,7 +15,7 @@ export const getMapsThunk = createAsyncThunk('map/get', async (arg: GetMapsApiAr
     try {
         const maps = await mapsApi.getMaps(arg);
 
-        thunkAPI.dispatch(setMaps(maps));
+        thunkAPI.dispatch(setMaps(maps.records));
 
         return maps;
     } catch (error) {
@@ -26,7 +26,7 @@ export const getMapsThunk = createAsyncThunk('map/get', async (arg: GetMapsApiAr
 export const getFavoriteMapsThunk = createAsyncThunk('map/get-favorites', async (arg: GetFavoriteMapsByUserApiArg, thunkAPI) => {
     try {
         const maps = await mapsApi.getFavorites(arg);
-        thunkAPI.dispatch(setMaps(maps));
+        thunkAPI.dispatch(setMaps(maps.records));
         return maps;
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка загрузки карт: ${Error}`}))
@@ -36,7 +36,7 @@ export const getFavoriteMapsThunk = createAsyncThunk('map/get-favorites', async 
 export const getCompletedMapsThunk = createAsyncThunk('map/get-completed', async (arg: GetCompletedMapsByUserApiArg, thunkAPI) => {
     try {
         const maps = await mapsApi.getCompleted(arg);
-        thunkAPI.dispatch(setMaps(maps));
+        thunkAPI.dispatch(setMaps(maps.records));
         return maps;
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка загрузки карт: ${Error}`}))
@@ -44,7 +44,10 @@ export const getCompletedMapsThunk = createAsyncThunk('map/get-completed', async
 });
 
 const initialState: MapsStateType = {
-    mapsList: [],
+    records: [],
+    totalRecordsCount: 0,
+    pageSize: 100,
+    pageNumber: 0
 };
 
 const slice = createSlice({
@@ -52,18 +55,18 @@ const slice = createSlice({
     initialState,
     reducers: {
         setMaps: (state, action: PayloadAction<Map[]>) => {
-            state.mapsList = action.payload;
+            state.records = action.payload;
         },
         addMap: (state, action: PayloadAction<Map>) => {
-            state.mapsList.push(action.payload);
+            state.records.unshift(action.payload);
         },
         deleteMap: (state, action: PayloadAction<Map['id']>) => {
-            state.mapsList = state.mapsList.filter(el => el.id !== action.payload)
+            state.records = state.records.filter(el => el.id !== action.payload)
         },
     },
 });
 
-export const selectMaps = (state: RootState) => state.maps.mapsList;
+export const selectMaps = (state: RootState) => state.maps.records;
 
 export const {
     setMaps,

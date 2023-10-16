@@ -1,3 +1,4 @@
+import { useAppTheme } from '@/hooks/useAppTheme';
 import { AVATAR_SIZE } from '@/ui/Avatar/constants';
 import { getInitials } from '@/ui/Avatar/utils';
 import { StyledBox } from '@/ui/Box';
@@ -17,6 +18,8 @@ export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
         username,
     } = props;
 
+    const theme = useAppTheme()
+
     const initials = React.useMemo(() => {
         return getInitials(username);
     }, [username, image]);
@@ -32,7 +35,7 @@ export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
             width={size}
             height={size}
             minWidth={size}
-            bgColor={'rgba(0, 0, 0, 0.05)'}
+            bgColor={theme.colors.secondaryDark}
         >
             <Display condition={image}>
                 <Image

@@ -13,7 +13,7 @@ import {
     GetFavoriteMapsByUserApiResponse,
     GetMapApiArg,
     GetMapApiResponse,
-    GetMapsApiArg,
+    GetMapsApiArg, GetMapsApiResponse,
     Map,
     RemoveFavoriteMapApiArg,
     RemoveFavoriteMapApiResponse,
@@ -25,7 +25,7 @@ import {
 
 export const mapsApi = {
     getMaps: async (params: GetMapsApiArg) => {
-        const res = await api.get<GetMapsApiArg, AxiosResponse<Map[]>>('/maps/collect', { params });
+        const res = await api.get<GetMapsApiArg, AxiosResponse<GetMapsApiResponse>>('/maps/collect', { params });
         return res.data;
     },
     getMapsById: async (params: GetMapApiArg) => {

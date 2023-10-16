@@ -1,3 +1,4 @@
+import { IS_TABLET } from '@/common/constants';
 import styled from "styled-components";
 
 export const StyledModalWrapper = styled.div(({theme}) => ({
@@ -12,7 +13,10 @@ export const StyledModalWrapper = styled.div(({theme}) => ({
     left: 0,
     bottom: 0,
     zIndex: theme.order.modal,
-    padding: 40
+    padding: 40,
+    ...IS_TABLET && {
+        padding: 10
+    }
 }))
 
 

@@ -1,38 +1,35 @@
-import packageJson from '../../../package.json'
+import packageJson from '../../../package.json';
 
 export const getMapImageLink = (link: string | null | undefined) => {
     if (link) {
-        return process.env.FILE_STORAGE_URL + "/" + link;
+        return process.env.FILE_STORAGE_URL + '/' + link;
     }
     // NOT FOUND
-    return ""
-}
+    return '';
+};
 
-export const createRootContainerElement = (rootContainerClass: string) : HTMLDivElement => {
-    const element = document.createElement("div");
-    element.setAttribute("class", rootContainerClass);
+export const createRootContainerElement = (rootContainerClass: string): HTMLDivElement => {
+    const element = document.createElement('div');
+    element.setAttribute('class', rootContainerClass);
     return document.body.appendChild(element);
-}
+};
 
-export const getRootContainerElement = (rootContainerClass: string) : Element => {
-    const container = document.querySelector(`.${ rootContainerClass }`);
+export const getRootContainerElement = (rootContainerClass: string): Element => {
+    const container = document.querySelector(`.${rootContainerClass}`);
     return container ? container : createRootContainerElement(rootContainerClass);
 };
 
-
 export const CommonUtils = {
     getMapImageLink,
-}
+};
 
 export const DomUtils = {
     createRootContainerElement,
-    getRootContainerElement
-}
-
-
+    getRootContainerElement,
+};
 
 export const getAppVersion = () => {
-    const appVersion = packageJson.version
+    const appVersion = packageJson.version;
 
-    return `v ${appVersion}`
-}
+    return `v ${appVersion}`;
+};

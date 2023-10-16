@@ -1,6 +1,7 @@
+import { formatDateTime } from '@/common/utils/formatDateTime';
 import { Avatar } from '@/ui/Avatar';
 import { Display } from '@/ui/Display';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Comment } from '@/api/codegen/genMouseMapsApi';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { StyledBox } from '@/ui/Box';
@@ -37,6 +38,10 @@ export const Message = (props: PropsType) => {
         }
     }
 
+    const dateTime = useMemo(() => {
+        return formatDateTime(comment.createdUtcDate)
+    }, [comment])
+
     return (
         <StyledBox
             maxWidth={'100%'}
@@ -65,7 +70,7 @@ export const Message = (props: PropsType) => {
                         {comment.user?.username}
                     </Typography>
                     <Typography fontSize={'0.7rem'}>
-                        01.01.2000
+                        {dateTime}
                     </Typography>
                     <Display condition={!!onDelete}>
                         <IconButton onClick={onDeleteHandler} isAdmin>
