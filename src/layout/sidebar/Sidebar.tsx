@@ -44,12 +44,14 @@ export const Sidebar = () => {
                     <MapsByFiltersNavigation isOpen={isOpen}/>
                 </Display>
             </StyledBox>
-            <StyledBox position={'relative'}>
-                <CreateTagPopup
-                    isVisible={(modalType === 'create') && isAuth}
-                    onClose={onCloseModal}
-                />
-            </StyledBox>
+            <Display condition={isOpen}>
+                <StyledBox position={'relative'}>
+                    <CreateTagPopup
+                        isVisible={(modalType === 'create') && isAuth}
+                        onClose={onCloseModal}
+                    />
+                </StyledBox>
+            </Display>
             <StyledBox direction={'column'} overflow={'hidden'} grow={1}>
                 <TagsNavigation isOpen={isOpen}/>
                 <StyledSidebarLogo isOpen={isOpen}>
