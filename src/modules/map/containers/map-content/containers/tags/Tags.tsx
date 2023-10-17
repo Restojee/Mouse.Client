@@ -1,11 +1,10 @@
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
-import { mockProviders } from 'next-auth/client/__tests__/helpers/mocks';
 import { useMapTag } from './hooks/useMapTag';
 import { StyledBox } from '@/ui/Box';
 import { Button } from '@/ui/Button';
 import { Display } from '@/ui/Display';
 import React from 'react';
-import { Tag, Map } from '@/api/codegen/genMouseMapsApi';
+import { Tag } from '@/api/codegen/genMouseMapsApi';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { CloseIcon } from '@/svg/CloseIcon';
 import { EditFillIcon } from '@/svg/EditFillIcon';
@@ -52,14 +51,19 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
                         margin={'0 0 0 10px'}
                         onClick={onEditClickHandler}
                     >
-                        <EditFillIcon/>
+                        <Button
+                            bgColor={theme.colors.secondaryAccent}
+                            onClick={onEditClickHandler}
+                            label={'Изменить'}
+                            prepend={<EditFillIcon/>}
+                        />
                     </IconButton>
                 </StyledBox>
             </Display>
             <Display condition={!tags?.length}>
                 <Button
                     onClick={onEditClickHandler}
-                    label={'Добавить тег'}
+                    label={'Добавить теги'}
                     prepend={<EditFillIcon/>}
                 />
             </Display>

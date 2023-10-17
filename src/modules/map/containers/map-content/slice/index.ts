@@ -2,15 +2,15 @@ import { AddFavoriteMapApiArg, DeleteMapApiArg, GetMapApiArg, Map } from '@/api/
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { deleteMap } from '@/modules/map/containers/map-list/slice';
-import { MapContentStateType } from '../types';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { MapContentStateType } from '../types';
 
 export const deleteMapsThunk = createAsyncThunk('map/delete', async (arg: DeleteMapApiArg, thunkAPI) => {
     try {
         await mapsApi.deleteMap(arg)
         thunkAPI.dispatch(deleteMap(arg.mapId))
-        thunkAPI.dispatch(setMapContent(null))
+        thunkAPI.dispatch(setCurrentMapContent(null))
         thunkAPI.dispatch(setAppMessage({severity: 'success', text: 'Удалено'}))
         return thunkAPI.fulfillWithValue(true)
     } catch (error) {
@@ -33,7 +33,8 @@ export const addFavorite = createAsyncThunk('map/favorite', async (arg: AddFavor
 export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: GetMapApiArg, thunkAPI) => {
     try {
         const map = await mapsApi.getMapsById(arg);
-        thunkAPI.dispatch(setMapContent(map));
+        thunkAPI.dispatch(setCurrentMapContent(map));
+        thunkAPI.dispatch(setInitialMapContent(map));
         return map;
 
     } catch (error) {
@@ -43,7 +44,8 @@ export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: Get
 });
 
 const initialState: MapContentStateType = {
-    mapContent: null,
+    initialMapContent: null,
+    currentMapContent: null,
     isTagsModalOpen: false,
 };
 
@@ -51,24 +53,29 @@ const slice = createSlice({
     name: 'map',
     initialState,
     reducers: {
-        setMapContent: (state, action: PayloadAction<Map | null>) => {
-            state.mapContent = action.payload;
+        setInitialMapContent: (state, action: PayloadAction<Map | null>) => {
+            state.initialMapContent = action.payload;
+        },
+        setCurrentMapContent: (state, action: PayloadAction<Map | null>) => {
+            state.currentMapContent = { ...state.initialMapContent, ...action.payload } as Map;
         },
         openTagsModal: (state) => {
             state.isTagsModalOpen = true;
         },
         closeTagsModal: (state) => {
             state.isTagsModalOpen = false;
-            state.mapContent = null;
+            state.currentMapContent = null;
         },
     },
 });
 
-export const selectMapContent = (state: RootState) => state.map.mapContent;
+export const selectCurrentMapContent = (state: RootState) => state.map.currentMapContent;
+export const selectInitialMapContent = (state: RootState) => state.map.initialMapContent;
 export const selectIsTagsModalOpen = (state: RootState) => state.map.isTagsModalOpen;
 
 export const {
-    setMapContent,
+    setInitialMapContent,
+    setCurrentMapContent,
     openTagsModal,
     closeTagsModal,
 } = slice.actions;

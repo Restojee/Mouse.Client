@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { AsyncModalContent } from './AsyncModalContent';
 
 export type ModalPropsType = {
@@ -6,6 +6,7 @@ export type ModalPropsType = {
     onClose: () => void;
     onAccess: () => void;
     text?: string;
+    children?: ReactNode;
 }
 export const Modal = ({ isOpen, ...props }: ModalPropsType) => {
 

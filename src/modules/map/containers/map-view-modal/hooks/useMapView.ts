@@ -16,7 +16,7 @@ export const useMapView = () => {
 
     const id = Number(mapId);
 
-    const openMap = useCallback(async (id: Map['id']) => {
+    const openMap = useCallback(async (id: Map['id']): Promise<void> => {
         if (id && isAuth) {
             await router.push({
                 pathname: router.pathname,

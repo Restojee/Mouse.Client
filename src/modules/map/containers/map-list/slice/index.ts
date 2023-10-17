@@ -35,7 +35,7 @@ export const getFavoriteMapsThunk = createAsyncThunk('map/get-favorites', async 
 
 export const getCompletedMapsThunk = createAsyncThunk('map/get-completed', async (arg: GetCompletedMapsByUserApiArg, thunkAPI) => {
     try {
-        const maps = await mapsApi.getCompleted(arg);
+        const maps = await mapsApi.getCompletedByUserId(arg);
         thunkAPI.dispatch(setMaps(maps.records));
         return maps;
     } catch (error) {

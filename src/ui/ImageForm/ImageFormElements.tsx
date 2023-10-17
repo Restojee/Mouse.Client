@@ -5,9 +5,12 @@ type StyledImageFormContainerPropsType = {
     isDrag: boolean
 }
 export const StyledImageFormContainer = styled.div<StyledImageFormContainerPropsType>(({ theme, ...props }) => ({
+    display: 'flex',
+    gap: 5,
+    alignItems: 'center',
     borderRadius: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    padding: '15px 10px',
+    padding: '15px 15px',
     height: 100,
     textAlign: 'center',
     border: '2px dashed rgba(0, 0, 0, 0.1)',
@@ -28,6 +31,7 @@ export const StyledImageFormContainer = styled.div<StyledImageFormContainerProps
 }))
 
 export const StyledImageFormLink = styled.span(({ theme }) => ({
+    display: 'inline',
     color: theme.colors.brandColor,
     cursor: 'pointer',
     fontWeight: 'bold',

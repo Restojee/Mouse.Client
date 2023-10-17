@@ -1,4 +1,5 @@
-import { getMapByIdThunk, selectMapContent } from '@/modules/map/containers/map-content/slice';
+import { getMapByIdThunk, selectCurrentMapContent } from '@/modules/map/containers/map-content/slice';
+import { ImageUploadModal } from '@/ui/ImageUploadModal/ImageUploadModal';
 import React, { useEffect } from 'react';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -9,7 +10,7 @@ import { StyledModalWrapper } from '@/ui/Modal/styled';
 const MapViewModal = () => {
     const dispatch = useAppDispatch();
 
-    const map = useAppSelector(selectMapContent);
+    const map = useAppSelector(selectCurrentMapContent);
 
     const {
         mapId,
@@ -25,6 +26,7 @@ const MapViewModal = () => {
     return (
         <StyledModalWrapper onClick={closeMap}>
             <MapContent map={map}/>
+            {/*<ImageUploadModal/>*/}
         </StyledModalWrapper>
     );
 };

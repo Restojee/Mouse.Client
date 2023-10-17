@@ -1,3 +1,4 @@
+import { StyledBox } from '@/ui/Box';
 import React, { ChangeEvent, useRef, useState } from 'react';
 import { StyledImageFormContainer, StyledImageFormLink } from '@/ui/ImageForm/ImageFormElements';
 
@@ -86,8 +87,8 @@ export const ImageForm = (props: ImageFormPropsType) => {
             />
             {!props.value && (
                 <>
-                    <StyledImageFormLink>Загрузите,</StyledImageFormLink>
-                    <span> перетащите изображение или вставьте из буфера (Ctrl+V)</span>
+                    <StyledImageFormLink>Загрузите</StyledImageFormLink>
+                    <span> или перетащите изображение</span>
                 </>
             )}
         </StyledImageFormContainer>

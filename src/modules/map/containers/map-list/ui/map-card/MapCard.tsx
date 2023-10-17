@@ -13,7 +13,6 @@ import { BookCheckIcon } from '@/svg/BookCheckIcon';
 import { CommentIcon } from '@/svg/CommentIcon';
 import { CopyIcon } from '@/svg/CopyIcon';
 import { Button } from '@/ui/Button/Button';
-import { ImageIcon } from '@/svg/ImageIcon';
 import { IconButton } from '@/ui/Button/IconButton';
 import Image from 'next/image';
 import { useState } from 'react';

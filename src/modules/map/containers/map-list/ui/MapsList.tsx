@@ -39,7 +39,7 @@ export const MapsList = () => {
                 dispatch(getFavoriteMapsThunk({ page: 0, size: 100, userId }));
                 break;
             case 'completed':
-                dispatch(getCompletedMapsThunk({ page: 0, size: 100, userId }));
+                dispatch(getCompletedMapsThunk({ userId }));
                 break;
             default:
                 dispatch(getMapsThunk({ page: 0, size: 100 }));

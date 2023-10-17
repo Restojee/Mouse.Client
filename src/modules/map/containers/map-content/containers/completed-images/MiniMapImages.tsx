@@ -1,31 +1,25 @@
-import { MouseEvent, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { getMapImageLink } from '@/common/utils';
+import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
+import { useCompletedMap } from './hooks/useCompletedMap';
 import { MINI_IMAGES_HEIGHT, MINI_IMAGES_WIDTH } from './constants';
 import { StyledMiniMapImageContainer } from './styles';
-import { DEFAULT_MAP_IMAGE } from '@/common/contants';
 import { StyledBox } from '@/ui/Box';
 
-type MiniMapImagesPropsType = {
-    maps: Map[]
-}
-export const MiniMapImages = ({ maps }: MiniMapImagesPropsType) => {
-    const [miniMapActiveId, setMiniMapActiveId] = useState(-1);
+export const MiniMapImages = () => {
+    const { mapId } = useMapView();
 
-    const onClickHandler = () => {
-        setMiniMapActiveId(-1);
-    };
+    const {
+        maps,
+        activeId,
+        onMapClick,
+        onInitialMapClick
+    } = useCompletedMap(mapId);
 
-    const onClickImage = (e: MouseEvent<HTMLDivElement>, id?: number) => {
-        const currentElement: HTMLDivElement = e.currentTarget;
-        if (currentElement) {
-            currentElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
-
-        if (id) {
-            setMiniMapActiveId(id);
-        }
-    };
+    if (!maps?.length) {
+        return null;
+    }
 
     return (
         <StyledBox>
@@ -35,23 +29,23 @@ export const MiniMapImages = ({ maps }: MiniMapImagesPropsType) => {
                 gap={5}
             >
                 <StyledMiniMapImageContainer
-                    onClick={onClickHandler}
-                    isActive={miniMapActiveId === -1}
+                    onClick={onInitialMapClick}
+                    isActive={activeId === null}
                     username="Карта"
                 >
                     Карта
                 </StyledMiniMapImageContainer>
-                {maps.map((item) => (
+                {maps?.map((item, index) => (
                     <StyledMiniMapImageContainer
-                        key={item.id}
-                        onClick={(e) => onClickImage(e, item.id)}
-                        isActive={miniMapActiveId === item.id}
+                        key={item.id ? `${item.id + index}` : index}
+                        onClick={(e) => onMapClick(e, item)}
+                        isActive={activeId === item.id}
                         username={item.user?.username}
                         isVisible
                     >
                         <Image
-                            alt={'mini map'}
-                            src={item.image || DEFAULT_MAP_IMAGE}
+                            alt={item.user?.username}
+                            src={getMapImageLink(item?.image)}
                             height={MINI_IMAGES_HEIGHT}
                             width={MINI_IMAGES_WIDTH}
                         />

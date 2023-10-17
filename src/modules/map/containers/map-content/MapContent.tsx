@@ -3,12 +3,9 @@ import { getMapImageLink } from '@/common/utils';
 import { formatDateTime } from '@/common/utils/formatDateTime';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
-import { CloseIcon } from '@/svg/CloseIcon';
-import { StyledBox } from '@/ui/Box';
-import { IconButton } from '@/ui/Button/IconButton';
 import { ModalCloseIcon } from '@/ui/ModalCloseIcon/ModalCloseIcon';
 import React, { useMemo } from 'react';
-import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
+import { Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsData } from '@/moc/mapsMoc';
 import { SidebarIcons } from './containers/actions/SidebarIcons';
 import { SidebarComments } from './containers/comments/SidebarComments';
@@ -58,9 +55,9 @@ export const MapContent = ({ map }: MapContentPropsType) => {
                     map={map}
                 />
                 <Preview image={getMapImageLink(map?.image)}/>
-                <MiniMapImages maps={completedMaps}/>
-                <Tags tags={map?.tags}/>
+                <MiniMapImages />
                 <Note/>
+                <Tags tags={map?.tags}/>
             </StyledMapContentMain>
             <StyledMapContentSidebar>
                 <ModalCloseIcon

@@ -1,12 +1,13 @@
 import { AxiosResponse } from 'axios';
 import api from '@/api/coreMapsApi';
 import {
+    AddCompletedMapApiArg, AddCompletedMapApiResponse,
     AddFavoriteMapApiArg,
     AddFavoriteMapApiResponse,
     CreateMapApiResponse,
     CreateMapRequest,
     DeleteMapApiArg,
-    DeleteMapApiResponse,
+    DeleteMapApiResponse, GetCompletedMapsByMapApiArg, GetCompletedMapsByMapApiResponse,
     GetCompletedMapsByUserApiArg,
     GetCompletedMapsByUserApiResponse,
     GetFavoriteMapsByUserApiArg,
@@ -56,7 +57,23 @@ export const mapsApi = {
         const res = await api.put<SetMapsTagApiArg, AxiosResponse<SetMapsTagApiResponse>>('/maps/set-tags', body);
         return res.data;
     },
-    getCompleted: async (params: GetCompletedMapsByUserApiArg) => {
+    getCompletedByMapId: async (params: GetCompletedMapsByMapApiArg) => {
+        const res = await api.get<GetCompletedMapsByMapApiArg, AxiosResponse<GetCompletedMapsByMapApiResponse>>(`/maps/completed/collect/by-map`, { params });
+        return res.data;
+    },
+    addCompletedMap: async (arg: AddCompletedMapApiArg) => {
+        const formData = new FormData();
+        formData.append('file', arg.body.file, 'filename.png');
+
+        const res = await api.post<AddCompletedMapApiArg, AxiosResponse<AddCompletedMapApiResponse>>(
+            `/maps/${arg.mapId}/completed/create`,
+            formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } },
+        );
+
+        return res.data;
+    },
+    getCompletedByUserId: async (params: GetCompletedMapsByUserApiArg) => {
         const res = await api.get<GetCompletedMapsByUserApiArg, AxiosResponse<GetCompletedMapsByUserApiResponse>>(`/maps/completed/collect/by-user`, { params });
         return res.data;
     },

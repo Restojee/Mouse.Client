@@ -1,3 +1,4 @@
+import { DEFAULT_MAP_IMAGE } from '@/common/contants';
 import packageJson from '../../../package.json';
 
 export const getMapImageLink = (link: string | null | undefined) => {
@@ -5,7 +6,7 @@ export const getMapImageLink = (link: string | null | undefined) => {
         return process.env.FILE_STORAGE_URL + '/' + link;
     }
     // NOT FOUND
-    return '';
+    return DEFAULT_MAP_IMAGE;
 };
 
 export const createRootContainerElement = (rootContainerClass: string): HTMLDivElement => {

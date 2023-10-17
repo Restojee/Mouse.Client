@@ -1,3 +1,7 @@
+import { DeleteIcon } from '@/svg/DeleteIcon';
+import { EditFillIcon } from '@/svg/EditFillIcon';
+import { StyledBox } from '@/ui/Box';
+import { IconButton } from '@/ui/Button/IconButton';
 import React from 'react';
 import Image from 'next/image';
 import { Map } from '@/api/codegen/genMouseMapsApi';
@@ -17,6 +21,14 @@ export const Preview = ({ image }: MapContentPreviewPropsType) => {
             maxHeight="400px"
             height="100%"
         >
+            {/*<StyledBox>*/}
+            {/*    <IconButton>*/}
+            {/*        <EditFillIcon/>*/}
+            {/*    </IconButton>*/}
+            {/*    <IconButton>*/}
+            {/*        <DeleteIcon/>*/}
+            {/*    </IconButton>*/}
+            {/*</StyledBox>*/}
             <Image
                 src={image || DEFAULT_MAP_IMAGE}
                 width={800}

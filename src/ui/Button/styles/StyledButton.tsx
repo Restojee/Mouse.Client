@@ -44,7 +44,7 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     borderRadius: borderRadius,
     padding: "7px 10px",
     "&:hover": {
-        transform: 'scale(0.9)'
+        transform: 'scale(0.98)'
     },
     ...disabled && {
         pointerEvents: 'none',

@@ -87,6 +87,12 @@ export type GetCompletedMapsByUserApiArg = {
   page?: number;
   size?: number;
 };
+export type GetCompletedMapsByMapApiArg = {
+  mapId?: number;
+};
+
+export type GetCompletedMapsByMapApiResponse = /** status 200 OK */ Map[];
+
 export type GetMapsApiResponse = /** status 200 OK */ {
   records: Map[];
   pageNumber: number;

@@ -1,3 +1,5 @@
+import { StyledBox } from '@/ui/Box';
+import { Display } from '@/ui/Display';
 import { Paper } from '@/ui/Paper';
 import React from 'react';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -12,6 +14,7 @@ const AsyncModalContent = (props: ModalPropsType) => {
         onClose,
         onAccess,
         text,
+        children,
     } = props;
 
     const theme = useAppTheme();
@@ -21,12 +24,21 @@ const AsyncModalContent = (props: ModalPropsType) => {
             <StyledMegaShadow/>
             <StyledModalWrapper onClick={onClose}>
                 <Paper width={400} height={'auto'} gap={20}>
-                    <Typography fontSize="18px" color={theme.colors.textOnSecondary}>
-                        Подтверждение действия
-                    </Typography>
-                    <Typography color={theme.colors.textOnSecondary}>
-                        {text || 'Вы действительно уверены?'}
-                    </Typography>
+                    <Display condition={!children}>
+                        <>
+                            <Typography fontSize="18px" color={theme.colors.textOnSecondary}>
+                                Подтверждение действия
+                            </Typography>
+                            <Typography color={theme.colors.textOnSecondary}>
+                                {text || 'Вы действительно уверены?'}
+                            </Typography>
+                        </>
+                    </Display>
+                    <Display condition={children}>
+                        <StyledBox direction={'column'}>
+                            {children}
+                        </StyledBox>
+                    </Display>
                     <StyledCardActions>
                         <Button
                             label="Отмена"
