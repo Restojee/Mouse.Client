@@ -1,4 +1,6 @@
-import React from 'react';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { getCompletedMapsThunk } from '@/modules/map/containers/map-content/containers/completed-images/slice';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { getMapImageLink } from '@/common/utils';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
@@ -9,6 +11,7 @@ import { StyledBox } from '@/ui/Box';
 
 export const MiniMapImages = () => {
     const { mapId } = useMapView();
+    const dispatch = useAppDispatch();
 
     const {
         maps,
@@ -16,6 +19,10 @@ export const MiniMapImages = () => {
         onMapClick,
         onInitialMapClick
     } = useCompletedMap(mapId);
+
+    useEffect(() => {
+        dispatch(getCompletedMapsThunk({ mapId }));
+    }, []);
 
     if (!maps?.length) {
         return null;

@@ -1,26 +1,31 @@
 import React from 'react';
-import { useMap } from '@/modules/map/common';
-import { useAppTheme } from '@/hooks/useAppTheme';
-import { StyledContentSidebarBodyIcon } from '@/modules/map/styles/styled';
-import { AddImageIcon } from '@/svg/AddImageIcon';
-import { SvgIconPropsType } from '@/svg/common/types';
-import { FavoriteIcon } from '@/svg/FavoriteIcon';
+import { StyledBox } from '@/ui/Box';
 import { OutIcon } from '@/svg/OutIcon';
 import { TrashIcon } from '@/svg/TrashIcon';
-import { StyledBox } from '@/ui/Box';
+import { useMap } from '@/modules/map/common';
+import { useAppTheme } from '@/hooks/useAppTheme';
+import { AddImageIcon } from '@/svg/AddImageIcon';
+import { FavoriteIcon } from '@/svg/FavoriteIcon';
 import { Map } from '@/api/codegen/genMouseMapsApi';
+import { SvgIconPropsType } from '@/svg/common/types';
+import { StyledContentSidebarBodyIcon } from '@/modules/map/styles/styled';
+import { useCompletedMap } from '../completed-images/hooks/useCompletedMap';
 
 type MapContentSidebarIconsPropsType = {
     mapId: Map['id']
 }
 export const SidebarIcons = ({mapId}: MapContentSidebarIconsPropsType) => {
     const theme = useAppTheme();
+
     const {
-        onAddMapComplete,
         onAddMapFavorite,
         onMapShare,
         onMapDelete
     } = useMap(mapId)
+
+    const {
+        onCompletedMapModalOpen
+    } = useCompletedMap()
 
     const iconsProps: SvgIconPropsType = {
         size: 30,
@@ -34,7 +39,7 @@ export const SidebarIcons = ({mapId}: MapContentSidebarIconsPropsType) => {
             borderBottom={'1px solid rgba(0, 0, 0, 0.1)'}
         >
             <StyledContentSidebarBodyIcon
-                onClick={onAddMapComplete}
+                onClick={onCompletedMapModalOpen}
             >
                 <AddImageIcon{...iconsProps}/>
             </StyledContentSidebarBodyIcon>

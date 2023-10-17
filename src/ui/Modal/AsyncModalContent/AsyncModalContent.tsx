@@ -14,7 +14,9 @@ const AsyncModalContent = (props: ModalPropsType) => {
         onClose,
         onAccess,
         text,
+        title,
         children,
+        width
     } = props;
 
     const theme = useAppTheme();
@@ -23,19 +25,22 @@ const AsyncModalContent = (props: ModalPropsType) => {
         <React.Fragment>
             <StyledMegaShadow/>
             <StyledModalWrapper onClick={onClose}>
-                <Paper width={400} height={'auto'} gap={20}>
+                <Paper
+                    onClick={(e) => e.stopPropagation()}
+                    height={'auto'}
+                    gap={20}
+                    width={width || 400}
+                >
+                    <Typography fontSize="18px" color={theme.colors.textOnSecondary}>
+                        {title || 'Подтверждение действия'}
+                    </Typography>
                     <Display condition={!children}>
-                        <>
-                            <Typography fontSize="18px" color={theme.colors.textOnSecondary}>
-                                Подтверждение действия
-                            </Typography>
-                            <Typography color={theme.colors.textOnSecondary}>
-                                {text || 'Вы действительно уверены?'}
-                            </Typography>
-                        </>
+                        <Typography color={theme.colors.textOnSecondary}>
+                            {text || 'Вы действительно уверены?'}
+                        </Typography>
                     </Display>
                     <Display condition={children}>
-                        <StyledBox direction={'column'}>
+                        <StyledBox direction={'column'} width={'100%'}>
                             {children}
                         </StyledBox>
                     </Display>

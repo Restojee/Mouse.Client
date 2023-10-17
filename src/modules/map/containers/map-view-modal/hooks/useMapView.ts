@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
+import { setCurrentMapContent, setInitialMapContent } from '@/modules/map/containers/map-content/slice';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { routes } from '@/common/routes';
@@ -28,6 +29,8 @@ export const useMapView = () => {
     }, [mapId, isAuth]);
 
     const closeMap = useCallback(async () => {
+        dispatch(setCurrentMapContent(null))
+        dispatch(setInitialMapContent(null))
         await router.push(routes.MAPS);
     }, [router]);
 

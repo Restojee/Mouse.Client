@@ -1,5 +1,5 @@
-import { StyledBox } from '@/ui/Box';
 import React, { ChangeEvent, useRef, useState } from 'react';
+import { Property } from 'csstype';
 import { StyledImageFormContainer, StyledImageFormLink } from '@/ui/ImageForm/ImageFormElements';
 
 type ImageFormPropsType = {
@@ -9,6 +9,8 @@ type ImageFormPropsType = {
     onChange: (file: Blob) => void;
     value: Blob | null;
     fileType?: 'image';
+    width?: Property.Width<number>;
+    height?: Property.Height<number>;
 };
 export const ImageForm = (props: ImageFormPropsType) => {
 
@@ -76,6 +78,8 @@ export const ImageForm = (props: ImageFormPropsType) => {
             onDrop={(e) => onDropHandler(e)}
             image={props.value && URL.createObjectURL(props.value)}
             isDrag={drag}
+            width={props.width}
+            height={props.height}
         >
             <input
                 accept={props.fileType && inputAccept[props.fileType]}

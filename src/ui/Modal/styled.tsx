@@ -1,7 +1,8 @@
 import { IS_TABLET } from '@/common/constants';
+import { StyledBox } from '@/ui/Box';
 import styled from "styled-components";
 
-export const StyledModalWrapper = styled.div(({theme}) => ({
+export const StyledModalWrapper = styled(StyledBox)(({theme}) => ({
     position: "fixed",
     display: "flex",
     justifyContent: "center",

@@ -1,13 +1,16 @@
 import { AxiosResponse } from 'axios';
 import api from '@/api/coreMapsApi';
 import {
-    AddCompletedMapApiArg, AddCompletedMapApiResponse,
+    AddCompletedMapApiArg,
+    AddCompletedMapApiResponse,
     AddFavoriteMapApiArg,
     AddFavoriteMapApiResponse,
     CreateMapApiResponse,
     CreateMapRequest,
     DeleteMapApiArg,
-    DeleteMapApiResponse, GetCompletedMapsByMapApiArg, GetCompletedMapsByMapApiResponse,
+    DeleteMapApiResponse,
+    GetCompletedMapsByMapApiArg,
+    GetCompletedMapsByMapApiResponse,
     GetCompletedMapsByUserApiArg,
     GetCompletedMapsByUserApiResponse,
     GetFavoriteMapsByUserApiArg,
@@ -15,7 +18,8 @@ import {
     GetMapApiArg,
     GetMapApiResponse,
     GetMapsApiArg, GetMapsApiResponse,
-    Map,
+    RemoveCompletedMapApiArg,
+    RemoveCompletedMapApiResponse,
     RemoveFavoriteMapApiArg,
     RemoveFavoriteMapApiResponse,
     SetMapsTagApiArg,
@@ -75,6 +79,10 @@ export const mapsApi = {
     },
     getCompletedByUserId: async (params: GetCompletedMapsByUserApiArg) => {
         const res = await api.get<GetCompletedMapsByUserApiArg, AxiosResponse<GetCompletedMapsByUserApiResponse>>(`/maps/completed/collect/by-user`, { params });
+        return res.data;
+    },
+    removeCompletedMap: async (params: RemoveCompletedMapApiArg) => {
+        const res = await api.delete<RemoveCompletedMapApiArg, AxiosResponse<RemoveCompletedMapApiResponse>>(`/maps/${params.mapId}/completed/remove`);
         return res.data;
     },
     getFavorites: async (params: GetFavoriteMapsByUserApiArg) => {

@@ -1,12 +1,11 @@
-import { DeleteIcon } from '@/svg/DeleteIcon';
-import { EditFillIcon } from '@/svg/EditFillIcon';
-import { StyledBox } from '@/ui/Box';
-import { IconButton } from '@/ui/Button/IconButton';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsImageFetching } from '@/modules/map/containers/map-content/slice';
 import React from 'react';
 import Image from 'next/image';
+import { useAppTheme } from '@/hooks/useAppTheme';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { DEFAULT_MAP_IMAGE } from '@/common/contants';
-import { useAppTheme } from '@/hooks/useAppTheme';
+import { ImageActions } from '../image-actions/ImageActions';
 import { StyledMapContentPreview } from '@/ui/Message/styled';
 
 type MapContentPreviewPropsType = {
@@ -21,14 +20,7 @@ export const Preview = ({ image }: MapContentPreviewPropsType) => {
             maxHeight="400px"
             height="100%"
         >
-            {/*<StyledBox>*/}
-            {/*    <IconButton>*/}
-            {/*        <EditFillIcon/>*/}
-            {/*    </IconButton>*/}
-            {/*    <IconButton>*/}
-            {/*        <DeleteIcon/>*/}
-            {/*    </IconButton>*/}
-            {/*</StyledBox>*/}
+            <ImageActions/>
             <Image
                 src={image || DEFAULT_MAP_IMAGE}
                 width={800}
@@ -36,6 +28,7 @@ export const Preview = ({ image }: MapContentPreviewPropsType) => {
                 objectFit={'cover'}
                 objectPosition={'center'}
                 alt={'map'}
+                priority
             />
         </StyledMapContentPreview>
     );

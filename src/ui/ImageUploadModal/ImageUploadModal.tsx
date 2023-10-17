@@ -1,33 +1,45 @@
 import { StyledBox } from '@/ui/Box';
 import { ImageForm } from '@/ui/ImageForm/ImageForm';
 import { Modal } from '@/ui/Modal/Modal';
-import { StyledModalWrapper } from '@/ui/Modal/styled';
-import { Paper } from '@/ui/Paper';
-import { Typography } from '@/ui/Typography';
+import { useState } from 'react';
 
 type ImageUploadModalPropsType = {
-    onClose?: () => void;
+    onClose: () => void;
+    onAccess: (image: Blob) => Promise<boolean>;
     isOpen?: boolean;
+    title: string;
 }
 export const ImageUploadModal = (props: ImageUploadModalPropsType) => {
+    const [image, setImage] = useState<Blob | null>(null);
+
+    const onAccessHandler = async () => {
+        if (image) {
+            const res = await props.onAccess(image);
+            if(res) {
+                props.onClose();
+                setImage(null)
+            }
+        }
+    };
+
     return (
-        <StyledModalWrapper>
-            {/*<Modal>*/}
-            {/*    <Paper>*/}
-            {/*        <Typography margin={'0 0 20px 0'}>*/}
-            {/*            Добавить свой скрин*/}
-            {/*        </Typography>*/}
-            {/*        <ImageForm*/}
-            {/*            onChange={() => {}}*/}
-            {/*            value={''}*/}
-            {/*        />*/}
-            {/*        <StyledBox>*/}
+        <Modal
+            isOpen={props.isOpen}
+            title={props.title}
+            onClose={props.onClose}
+            onAccess={onAccessHandler}
+            width={420}
+        >
+            <ImageForm
+                width={'100%'}
+                height={'180px'}
+                onChange={setImage}
+                value={image}
+            />
+            <StyledBox>
 
-            {/*        </StyledBox>*/}
-            {/*    </Paper>*/}
-            {/*</Modal>*/}
-
-        </StyledModalWrapper>
+            </StyledBox>
+        </Modal>
     );
 };
 
