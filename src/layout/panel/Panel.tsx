@@ -34,9 +34,10 @@ export const Panel = (props: PanelProps) => {
     const userData = useAppSelector(selectCurrentUser);
 
     const onTabClickHandler = (tab: TabsType) => {
-        props.setActiveTab(tab)
-        props.setIsOpen(true)
-        if(props.activeTab === tab && props.isOpen) props.setIsOpen(false)
+        alert('Пока не работает')
+        // props.setActiveTab(tab)
+        // props.setIsOpen(true)
+        // if(props.activeTab === tab && props.isOpen) props.setIsOpen(false)
     }
 
     const avatar = userData?.avatar
@@ -45,7 +46,7 @@ export const Panel = (props: PanelProps) => {
         <StyledPanel>
             <NavLink
                 isDisabled={!isAuth}
-                onClick={() => props.setIsOpen(!props.isOpen)}
+                onClick={() => alert('Пока не работает')}
                 prepend={
                     <StyledNavLinkSection>
                         <BurgerIcon />

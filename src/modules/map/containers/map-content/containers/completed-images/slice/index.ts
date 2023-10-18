@@ -1,5 +1,4 @@
 import {
-    AddCompletedMapApiArg,
     GetCompletedMapsByMapApiArg,
     Map,
     RemoveCompletedMapApiArg,
