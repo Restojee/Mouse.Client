@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { getAppVersion } from '@/common/utils';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -8,7 +9,6 @@ import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display';
 import { useEffect } from 'react';
-import * as React from 'react';
 import { StyledSidebar } from '@/layout/sidebar/styles/StyledSidebar';
 import { StyledSidebarLogo } from '@/layout/sidebar/styles/StyledSidebarLogo';
 import { SidebarSwitcher } from '@/layout/sidebar/SidebarSwitcher';
@@ -30,6 +30,7 @@ export const Sidebar = () => {
 
     useEffect(() => {
         dispatch(getTagsThunk());
+        setIsOpen(window.innerWidth > 900)
     }, []);
 
     return (
