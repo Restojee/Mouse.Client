@@ -7,10 +7,11 @@ import {
 } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
+import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
 import { deleteMap } from '@/modules/map/containers/map-list/slice';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MapContentStateType } from '../types';
+import { MapContentStateType, UpdateMapImageThunkArgType } from '../types';
 
 export const deleteMapThunk = createAsyncThunk('map/delete', async (arg: DeleteMapApiArg, thunkAPI) => {
     try {
@@ -48,12 +49,15 @@ export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: Get
     }
 });
 
-export const updateMapImageThunk = createAsyncThunk('map/update-image', async (arg: UpdateMapImageApiArg, thunkAPI) => {
+export const updateMapImageThunk = createAsyncThunk('map/update-image', async (arg: UpdateMapImageThunkArgType, thunkAPI) => {
     try {
-        const map = await mapsApi.updateMapImage(arg);
-        thunkAPI.dispatch(getMapByIdThunk({ mapId: arg.mapId }));
-        return map;
-
+        const file = convertDataUrlToBlob(arg.file);
+        if (file && arg.mapId) {
+            const validArg: UpdateMapImageApiArg = { mapId: arg.mapId, body: { file } };
+            const map = await mapsApi.updateMapImage(validArg);
+            thunkAPI.dispatch(getMapByIdThunk({ mapId: arg.mapId }));
+            return map;
+        }
     } catch (error) {
         return thunkAPI.rejectWithValue(false);
     }

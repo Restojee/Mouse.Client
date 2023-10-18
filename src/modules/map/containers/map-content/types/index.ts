@@ -8,3 +8,8 @@ export type MapContentStateType = {
     isInitialMap: boolean;
     isImageFetching: boolean;
 }
+
+export type UpdateMapImageThunkArgType = {
+    mapId: Map['id'];
+    file: string;
+}

@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Property } from 'csstype';
 import { StyledImageFormContainer, StyledImageFormLink } from '@/ui/ImageForm/ImageFormElements';
+import { Property } from 'csstype';
+import React, { useEffect, useRef, useState } from 'react';
 
 type ImageFormPropsType = {
     placeholder?: string;
-    onClick?: (file: Blob) => void;
+    onClick?: (file: string) => void;
     name?: string;
-    onChange: (file: Blob) => void;
-    value: Blob | null;
+    onChange: (file: string) => void;
+    value: string | null;
     fileType?: 'image';
     width?: Property.Width<number>;
     height?: Property.Height<number>;
@@ -25,23 +25,26 @@ export const ImageForm = (props: ImageFormPropsType) => {
         inputFile.current?.click();
     };
 
-    const convertFileToBlob = (file: File, callBack: (value: Blob) => void): void => {
+    const convertFileToDataUrl = (file: File, callback: (result: string | void) => void): string | void => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            const arrayBuffer = e.target?.result as ArrayBuffer;
-            const blob = new Blob([arrayBuffer], { type: file.type });
-            callBack(blob);
+            const dataUrl = e.target?.result;
+            if (typeof dataUrl === 'string') {
+                callback(dataUrl);
+            }
         };
 
-        reader.readAsArrayBuffer(file);
-    }
+        reader.readAsDataURL(file);
+    };
 
     const uploadFile = (files: FileList | null) => {
         if (files && files.length) {
             const file = files[0];
-            convertFileToBlob(file, (blob: Blob) => {
-                props.onChange(blob);
+            convertFileToDataUrl(file, (convertedFile) => {
+                if (convertedFile) {
+                    props.onChange(convertedFile);
+                }
             });
         }
     };
@@ -54,10 +57,10 @@ export const ImageForm = (props: ImageFormPropsType) => {
         }
     };
 
-    function onPasteHandler (e: ClipboardEvent): any {
-        const files = e.clipboardData?.files
-        if(files) {
-            uploadFile(files)
+    function onPasteHandler(e: ClipboardEvent): any {
+        const files = e.clipboardData?.files;
+        if (files) {
+            uploadFile(files);
         }
     };
 
@@ -82,9 +85,9 @@ export const ImageForm = (props: ImageFormPropsType) => {
         document.addEventListener('paste', onPasteHandler);
 
         return () => {
-            document.removeEventListener('paste', onPasteHandler)
-        }
-    })
+            document.removeEventListener('paste', onPasteHandler);
+        };
+    });
 
     return (
         <StyledImageFormContainer
@@ -93,7 +96,7 @@ export const ImageForm = (props: ImageFormPropsType) => {
             onDragLeave={(e) => dragLeaveHandler(e)}
             onDragOver={(e) => dragStartHandler(e)}
             onDrop={(e) => onDropHandler(e)}
-            image={props.value && URL.createObjectURL(props.value)}
+            image={props.value}
             isDrag={drag}
             width={props.width}
             height={props.height}

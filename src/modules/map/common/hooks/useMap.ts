@@ -43,7 +43,7 @@ export const useMap = (mapId?: Map['id']) => {
         }
     }, [mapId]);
 
-    const onMapImageUpdate = useCallback(async (file: Blob): Promise<boolean> => {
+    const onMapImageUpdate = useCallback(async (file: string): Promise<boolean> => {
         try {
             if (mapId) {
                 const res = await dispatch(updateMapImageThunk({ mapId, body: { file } }));

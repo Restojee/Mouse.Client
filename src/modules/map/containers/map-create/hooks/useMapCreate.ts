@@ -22,7 +22,7 @@ export const useMapCreate = () => {
         dispatch(setMapTags(tags));
     }, []);
 
-    const onImageChange = useCallback((image: Blob): void => {
+    const onImageChange = useCallback((image: string): void => {
         dispatch(setMapImage(image));
     }, []);
 

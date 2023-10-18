@@ -11,13 +11,13 @@ import { useAppTheme } from '@/hooks/useAppTheme';
 
 export const MapParametersForm = () => {
     const theme = useAppTheme();
-    const [mapImage, setMapImage] = useState<Blob | null>(null);
+    const [mapImage, setMapImage] = useState<string | null>(null);
 
     const {
         setImage
     } = useMapCreate()
 
-    const onChangePackImage = (file: Blob) => {
+    const onChangePackImage = (file: string) => {
         setMapImage(file);
         setImage(file);
     };

@@ -1,6 +1,7 @@
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
+import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
 import { addMap } from '@/modules/map/containers/map-list/slice';
 import { RootState } from '@/store';
 import { MapCreateFormType } from '../containers/create-form/types';
@@ -19,7 +20,8 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg, thunkAP
         }
 
         if (map.id && image) {
-            map = await mapsApi.updateMapImage({ mapId: map.id, body: { file: image } });
+            const file = convertDataUrlToBlob(image)
+            map = await mapsApi.updateMapImage({ mapId: map.id, body: { file } });
         }
 
         thunkAPI.dispatch(addMap(map))
@@ -40,7 +42,7 @@ const slice = createSlice({
         setMapName: (state, action: PayloadAction<Map['name']>) => {
             state.name = action.payload;
         },
-        setMapImage: (state, action: PayloadAction<Blob>) => {
+        setMapImage: (state, action: PayloadAction<string>) => {
             state.image = action.payload;
         },
         setMapTags: (state, action: PayloadAction<Map['tags']>) => {

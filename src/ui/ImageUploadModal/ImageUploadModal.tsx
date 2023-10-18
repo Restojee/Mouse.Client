@@ -5,12 +5,12 @@ import { useState } from 'react';
 
 type ImageUploadModalPropsType = {
     onClose: () => void;
-    onAccess: (image: Blob) => Promise<boolean>;
+    onAccess: (image: string) => Promise<boolean>;
     isOpen?: boolean;
     title: string;
 }
 export const ImageUploadModal = (props: ImageUploadModalPropsType) => {
-    const [image, setImage] = useState<Blob | null>(null);
+    const [image, setImage] = useState<string | null>(null);
 
     const onAccessHandler = async () => {
         if (image) {

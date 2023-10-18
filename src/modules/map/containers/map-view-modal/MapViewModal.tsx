@@ -33,12 +33,12 @@ const MapViewModal = () => {
         addCompletedMap,
     } = useCompletedMap();
 
-    const onMapUpdateImage = useCallback(async (image: Blob) => {
+    const onMapUpdateImage = useCallback(async (image: string) => {
         const res = await onMapImageUpdate(image);
         return Boolean(res);
     }, [mapId]);
 
-    const onCompletedMapUpdateImage = useCallback(async (image: Blob) => {
+    const onCompletedMapUpdateImage = useCallback(async (image: string) => {
         const res = await addCompletedMap(mapId, image);
         return Boolean(res?.payload);
     }, [mapId]);
