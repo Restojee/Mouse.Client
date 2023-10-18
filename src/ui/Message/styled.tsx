@@ -74,6 +74,8 @@ type StyledImageContainerPropsType = {
 export const StyledMapContentPreview = styled.div<StyledImageContainerPropsType>((props) => ({
     display: 'flex',
     position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: props.borderRadius || 'inherit',
     margin: props.margin,
     width: props.width,

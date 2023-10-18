@@ -30,7 +30,6 @@ export const useMapComments = () => {
 
         if (messageText.length) {
             const res = await dispatch(addMapCommentsThunk({ mapId, text: commentText }));
-
             if (res.payload) {
                 setCommentText('');
             }
@@ -46,16 +45,15 @@ export const useMapComments = () => {
         setCommentText(text);
     }, []);
 
-    const onInputKeyDown = useCallback(async (e: React.KeyboardEvent<HTMLTextAreaElement>, mapId: Map['id']): Promise<void> => {
+    const onInputKeyUp = useCallback(async (e: React.KeyboardEvent<HTMLTextAreaElement>, mapId: Map['id']): Promise<void> => {
         if (e.ctrlKey || e.shiftKey) {
             return;
         }
 
         if (e.key === 'Enter') {
-            e.preventDefault();
             await onCommentAdd(mapId);
         }
-    }, []);
+    }, [onCommentAdd]);
 
     useEffect(() => {
         dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
@@ -78,7 +76,7 @@ export const useMapComments = () => {
         onCommentAdd,
         clearComments,
         onInputChange,
-        onInputKeyDown,
+        onInputKeyUp,
         isCommentsInitialized,
         isCommentCreateFetching,
     };

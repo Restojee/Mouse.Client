@@ -15,9 +15,9 @@ export const MiniMapImages = () => {
 
     const {
         maps,
-        activeId,
         onMapClick,
-        onInitialMapClick
+        onInitialMapClick,
+        activeMapIdentifier
     } = useCompletedMap(mapId);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export const MiniMapImages = () => {
             >
                 <StyledMiniMapImageContainer
                     onClick={onInitialMapClick}
-                    isActive={activeId === null}
+                    isActive={activeMapIdentifier === null}
                     username="Карта"
                 >
                     Карта
@@ -46,7 +46,7 @@ export const MiniMapImages = () => {
                     <StyledMiniMapImageContainer
                         key={item.id ? `${item.id + index}` : index}
                         onClick={(e) => onMapClick(e, item)}
-                        isActive={activeId === item.id}
+                        isActive={activeMapIdentifier === item.createdUtcDate}
                         username={item.user?.username}
                         isVisible
                     >

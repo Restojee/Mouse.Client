@@ -12,7 +12,7 @@ type PropsType = {
     isFetching?: boolean;
     bgColor: Property.BackgroundColor;
     onSendClick: (e: React.MouseEvent<HTMLDivElement>) => void;
-    onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+    onKeyUp: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     onFocus: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
@@ -23,7 +23,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
         onSendClick,
         onChange,
         onFocus,
-        onKeyDown,
+        onKeyUp,
         disabled,
         isFetching,
     } = props;
@@ -45,7 +45,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
             </Display>
             <StyledMessageSendFormTextarea
                 onChange={onChange}
-                onKeyDown={onKeyDown}
+                onKeyDown={onKeyUp}
                 onFocus={onFocus}
                 bgColor={bgColor}
                 value={value}

@@ -19,7 +19,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
         commentText,
         onCommentAdd,
         onInputChange,
-        onInputKeyDown,
+        onInputKeyUp,
         clearComments,
         isCommentsInitialized,
         isCommentCreateFetching
@@ -55,9 +55,9 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
         await onCommentAdd(mapId);
     }, [onCommentAdd, mapId]);
 
-    const onInputKeyDownHandler = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        onInputKeyDown(e, mapId);
-    }, [onInputKeyDown, mapId]);
+    const onInputKeyUpHandler = useCallback(async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        await onInputKeyUp(e, mapId);
+    }, [onInputKeyUp, mapId]);
 
     const onUsernameClickHandler = useCallback((id: number) => {
         onUsernameClick(id);
@@ -73,9 +73,6 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
             clearComments()
         }
     }, []);
-
-
-    console.log(isCommentCreateFetching)
 
     return (
         <StyledBox
@@ -120,7 +117,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
                 value={commentText}
                 onFocus={onFocusHandler}
                 onChange={onInputChange}
-                onKeyDown={onInputKeyDownHandler}
+                onKeyUp={onInputKeyUpHandler}
                 onSendClick={onCommentAddHandler}
             />
         </StyledBox>

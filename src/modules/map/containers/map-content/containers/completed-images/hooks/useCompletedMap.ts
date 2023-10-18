@@ -21,7 +21,7 @@ import {
 export const useCompletedMap = (mapId?: Map['id']) => {
     const dispatch = useAppDispatch();
 
-    const [activeId, setMiniMapActiveId] = useState<Map['id'] | null>(null);
+    const [activeMapIdentifier, setActiveMapIdentifier] = useState<Map['createdUtcDate'] | null>(null);
 
     const isCompletedMapModalOpen = useAppSelector(selectIsCompletedModalOpen);
     const maps = useAppSelector(selectCompletedMaps);
@@ -44,12 +44,12 @@ export const useCompletedMap = (mapId?: Map['id']) => {
         if (map) {
             dispatch(setIsInitialMap(false));
             dispatch(setCurrentMapContent(map));
-            setMiniMapActiveId(map.id);
+            setActiveMapIdentifier(map.createdUtcDate);
         }
     }, []);
 
     const onInitialMapClick = useCallback(() => {
-        setMiniMapActiveId(null);
+        setActiveMapIdentifier(null);
         dispatch(setIsInitialMap(true));
         dispatch(setCurrentMapContent(initialMapContent));
     }, []);
@@ -78,12 +78,12 @@ export const useCompletedMap = (mapId?: Map['id']) => {
     return {
         maps,
         isMyMap,
-        activeId,
         onMapClick,
         isInitialMap,
         addCompletedMap,
         onInitialMapClick,
         deleteCompletedMap,
+        activeMapIdentifier,
         isCompletedMapModalOpen,
         onCompletedMapModalOpen,
         onCompletedMapModalClose,
