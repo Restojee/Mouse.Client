@@ -1,14 +1,12 @@
+import React, { useCallback, useEffect } from 'react';
 import { useMap } from '@/modules/map/common';
-import {
-    useCompletedMap,
-} from '@/modules/map/containers/map-content/containers/completed-images/hooks/useCompletedMap';
-import { getMapByIdThunk, selectCurrentMapContent } from '@/modules/map/containers/map-content/slice';
+import { useCompletedMap, } from '../map-content/containers/completed-images/hooks/useCompletedMap';
+import { getMapByIdThunk, selectCurrentMapContent } from '../map-content/slice';
 import { ImageUploadModal } from '@/ui/ImageUploadModal/ImageUploadModal';
-import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { useMapView } from './hooks/useMapView';
-import { MapContent } from '@/modules/map/containers/map-content';
+import { MapContent } from '../map-content';
 import { StyledModalWrapper } from '@/ui/Modal/styled';
 
 const MapViewModal = () => {

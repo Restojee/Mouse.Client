@@ -6,7 +6,9 @@ import {
 } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
+import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
 import { setCurrentMapContent } from '@/modules/map/containers/map-content/slice';
+import { UpdateMapImageThunkArgType } from '@/modules/map/containers/map-content/types';
 import { RootState } from '@/store';
 import { MapCompletedStateType } from '../type';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -20,11 +22,14 @@ export const getCompletedMapsThunk = createAsyncThunk('completed-maps/get', asyn
     }
 });
 
-export const addCompletedMapThunk = createAsyncThunk('completed-maps/create', async (arg: AddCompletedMapApiArg, thunkAPI) => {
+export const addCompletedMapThunk = createAsyncThunk('completed-maps/create', async (arg: UpdateMapImageThunkArgType, thunkAPI) => {
     try {
-        await mapsApi.addCompletedMap(arg);
-        thunkAPI.dispatch(getCompletedMapsThunk({ mapId: arg.mapId }));
-        thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Успешно добавлено' }));
+        const file = convertDataUrlToBlob(arg.file);
+        if (arg.mapId) {
+            await mapsApi.addCompletedMap({ mapId: arg.mapId, body: { file } });
+            thunkAPI.dispatch(getCompletedMapsThunk({ mapId: arg.mapId }));
+            thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Успешно добавлено' }));
+        }
         return thunkAPI.fulfillWithValue(true);
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({ severity: 'error', text: 'Ошибка добавления' }));

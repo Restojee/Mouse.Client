@@ -15,7 +15,6 @@ export const AuthProvider = (props: AuthProviderProps) => {
     useEffect(() => {
         const id = setInterval(() => {
             dispatch(getCurrentUserThunk())
-            console.log(isAuth)
         }, 300000)
 
         return () => {

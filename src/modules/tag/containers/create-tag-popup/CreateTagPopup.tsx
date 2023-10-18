@@ -29,7 +29,6 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
     const onFormSubmit = async () => {
         if (isValid) {
             const res = await onTagCreate(name);
-            console.log(res)
             if (res?.payload) {
                 setName('');
                 props.onClose?.();

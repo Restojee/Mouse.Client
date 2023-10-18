@@ -8,7 +8,7 @@ import {
     selectInitialMapContent,
     selectIsInitialMap,
     setCurrentMapContent,
-    setIsInitialMap
+    setIsInitialMap,
 } from '@/modules/map/containers/map-content/slice';
 import {
     addCompletedMapThunk,
@@ -32,8 +32,8 @@ export const useCompletedMap = (mapId?: Map['id']) => {
 
     const isMyMap = currentMapContent?.user?.id === userId;
 
-    const onMapClick = useCallback((e: React.MouseEvent<HTMLDivElement>, map: Map) => {
-        const currentElement: HTMLDivElement = e.currentTarget;
+    const onMapClick = useCallback((e?: React.MouseEvent<HTMLDivElement>, map?: Map) => {
+        const currentElement: HTMLDivElement | undefined = e?.currentTarget;
         if (currentElement) {
             currentElement.scrollIntoView({
                 behavior: 'smooth',
@@ -41,9 +41,11 @@ export const useCompletedMap = (mapId?: Map['id']) => {
                 inline: 'center',
             });
         }
-        dispatch(setIsInitialMap(false))
-        dispatch(setCurrentMapContent(map));
-        setMiniMapActiveId(map.id);
+        if (map) {
+            dispatch(setIsInitialMap(false));
+            dispatch(setCurrentMapContent(map));
+            setMiniMapActiveId(map.id);
+        }
     }, []);
 
     const onInitialMapClick = useCallback(() => {
@@ -52,24 +54,25 @@ export const useCompletedMap = (mapId?: Map['id']) => {
         dispatch(setCurrentMapContent(initialMapContent));
     }, []);
 
-    const addCompletedMap = useCallback(async (mapId: Map['id'], file: Blob) => {
+    const addCompletedMap = useCallback(async (mapId: Map['id'], file: string) => {
         if (mapId && file) {
-            return dispatch(addCompletedMapThunk({mapId, body: {file}}))
+            return dispatch(addCompletedMapThunk({ mapId, file }));
         }
     }, []);
 
     const deleteCompletedMap = useCallback(() => {
         if (mapId) {
             dispatch(deleteCompletedMapThunk({ mapId }));
+            onInitialMapClick();
         }
     }, [mapId]);
 
     const onCompletedMapModalClose = useCallback(() => {
-        dispatch(setIsCompletedMapModalOpen(false))
+        dispatch(setIsCompletedMapModalOpen(false));
     }, []);
 
     const onCompletedMapModalOpen = useCallback(() => {
-        dispatch(setIsCompletedMapModalOpen(true))
+        dispatch(setIsCompletedMapModalOpen(true));
     }, []);
 
     return {

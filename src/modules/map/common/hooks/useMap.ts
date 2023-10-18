@@ -46,7 +46,7 @@ export const useMap = (mapId?: Map['id']) => {
     const onMapImageUpdate = useCallback(async (file: string): Promise<boolean> => {
         try {
             if (mapId) {
-                const res = await dispatch(updateMapImageThunk({ mapId, body: { file } }));
+                const res = await dispatch(updateMapImageThunk({ mapId,  file }));
                 dispatch(setAppMessage({ severity: 'success', text: 'Обложка обновлена' }));
                 return Boolean(res.payload);
             }

@@ -1,3 +1,4 @@
+import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
 import { StyledBox } from '@/ui/Box';
 import { ImageForm } from '@/ui/ImageForm/ImageForm';
 import { Modal } from '@/ui/Modal/Modal';
@@ -15,12 +16,23 @@ export const ImageUploadModal = (props: ImageUploadModalPropsType) => {
     const onAccessHandler = async () => {
         if (image) {
             const res = await props.onAccess(image);
-            if(res) {
+            if (res) {
                 props.onClose();
-                setImage(null)
+                setImage(null);
             }
         }
     };
+
+    useGlobalKeyDown((e) => {
+        if (e.key === 'Enter') {
+            onAccessHandler();
+            return;
+        }
+
+        if (e.key === 'Escape') {
+            props.onClose();
+        }
+    })
 
     return (
         <Modal

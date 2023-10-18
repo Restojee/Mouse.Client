@@ -1,4 +1,5 @@
 import { Map } from '@/api/codegen/genMouseMapsApi';
+import { setAppMessage } from '@/bll/appReducer';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
@@ -31,8 +32,14 @@ export const useMapCreate = () => {
     }, []);
 
     const onMapCreate = useCallback(async (): Promise<void> => {
-        dispatch(createMapThunk());
-    }, []);
+        const nameLength = name?.trim().length
+        if (nameLength && nameLength < 10) {
+            dispatch(createMapThunk());
+            dispatch(setMapName(''));
+        } else {
+            dispatch(setAppMessage({severity: 'error', text: 'Некорректный номер карты'}))
+        }
+    }, [name]);
 
     const isValid = useMemo((): boolean => {
         return name ? name.trim().length > 1 : false;
