@@ -24,7 +24,7 @@ export const MapParametersForm = () => {
 
     return (
         <PointBlock
-            header="Дополнительные параметры"
+            header="Доп. параметры карты"
             width="230px"
             bottom="60px"
         >

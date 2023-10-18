@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Property } from 'csstype';
 import { StyledImageFormContainer, StyledImageFormLink } from '@/ui/ImageForm/ImageFormElements';
 
@@ -45,13 +45,22 @@ export const ImageForm = (props: ImageFormPropsType) => {
             });
         }
     };
-    const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+
+    const uploadHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const files = e.target.files;
 
         if (files) {
             uploadFile(files);
         }
     };
+
+    function onPasteHandler (e: ClipboardEvent): any {
+        const files = e.clipboardData?.files
+        if(files) {
+            uploadFile(files)
+        }
+    };
+
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setDrag(true);
@@ -68,6 +77,14 @@ export const ImageForm = (props: ImageFormPropsType) => {
         const files = e.dataTransfer.files;
         uploadFile(files);
     };
+
+    useEffect(() => {
+        document.addEventListener('paste', onPasteHandler);
+
+        return () => {
+            document.removeEventListener('paste', onPasteHandler)
+        }
+    })
 
     return (
         <StyledImageFormContainer
@@ -90,10 +107,10 @@ export const ImageForm = (props: ImageFormPropsType) => {
                 style={{ display: 'none' }}
             />
             {!props.value && (
-                <>
-                    <StyledImageFormLink>Загрузите</StyledImageFormLink>
-                    <span> или перетащите изображение</span>
-                </>
+                <span>
+                    <StyledImageFormLink>Загрузите скрин,</StyledImageFormLink>
+                    <span> перетащите или вставьте из буфера обмена (Ctrl+V)</span>
+                </span>
             )}
         </StyledImageFormContainer>
     );

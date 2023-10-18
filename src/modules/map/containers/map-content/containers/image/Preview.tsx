@@ -1,5 +1,3 @@
-import { useAppSelector } from '@/hooks/useAppSelector';
-import { selectIsImageFetching } from '@/modules/map/containers/map-content/slice';
 import React from 'react';
 import Image from 'next/image';
 import { useAppTheme } from '@/hooks/useAppTheme';
