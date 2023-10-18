@@ -9,12 +9,13 @@ export const getMapCommentsThunk = createAsyncThunk('map-comments', async (arg: 
     try {
         const comments = await commentsApi.getCommentsByMapId({ mapId: arg.mapId });
         thunkAPI.dispatch(setComments(comments));
+        thunkAPI.dispatch(setIsCommentsInitialized(true));
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки комментов: ${error}` }));
     }
 });
 
-export const addMapCommentsThunk = createAsyncThunk('map-comments', async (arg: CreateCommentRequest, thunkAPI) => {
+export const addMapCommentsThunk = createAsyncThunk('map-comments/create', async (arg: CreateCommentRequest, thunkAPI) => {
     try {
         const { mapId, text } = arg;
         const comment = await commentsApi.addComment({ mapId, text });
@@ -25,15 +26,17 @@ export const addMapCommentsThunk = createAsyncThunk('map-comments', async (arg: 
             thunkAPI.dispatch(addComment({ ...comment, user }));
         }
 
-        return thunkAPI.fulfillWithValue(true)
+        return thunkAPI.fulfillWithValue(true);
     } catch (error) {
-        thunkAPI.dispatch(setAppMessage({text:`Ошибка добавления коммента, ${error}`, severity: 'error'}));
+        thunkAPI.dispatch(setAppMessage({ text: `Ошибка добавления коммента, ${error}`, severity: 'error' }));
         return thunkAPI.rejectWithValue(false);
     }
 });
 
 const initialState: MapCommentsStateType = {
     commentsList: [],
+    isCommentsInitialized: false,
+    isCommentCreateFetching: false,
 };
 const slice = createSlice({
     name: 'map-comments',
@@ -45,13 +48,34 @@ const slice = createSlice({
         addComment: (state, action: PayloadAction<Comment>) => {
             state.commentsList.push(action.payload);
         },
+        setIsCommentsInitialized: (state, action: PayloadAction<boolean>) => {
+            state.isCommentsInitialized = action.payload;
+        },
+        setIsCommentCreateFetching: (state, action: PayloadAction<boolean>) => {
+            state.isCommentsInitialized = action.payload;
+        },
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(addMapCommentsThunk.pending, (state, action) => {
+                state.isCommentCreateFetching = true;
+            })
+            .addCase(addMapCommentsThunk.fulfilled, (state, action) => {
+                state.isCommentCreateFetching = false;
+            })
+            .addCase(addMapCommentsThunk.rejected, (state, action) => {
+                state.isCommentCreateFetching = false;
+            });
     },
 });
 
 export const selectMapComments = (state: RootState) => state.comments?.commentsList;
+export const selectIsCommentsInitialized = (state: RootState) => state.comments?.isCommentsInitialized;
+export const selectIsCommentCreateFetching = (state: RootState) => state.comments?.isCommentCreateFetching;
 
 export const {
     setComments,
     addComment,
+    setIsCommentsInitialized,
 } = slice.actions;
 export const mapCommentsReducer = slice.reducer;

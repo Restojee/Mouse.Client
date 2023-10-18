@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { shallowEqual } from 'react-redux';
 import {
     addMapCommentsThunk,
     getMapCommentsThunk,
+    selectIsCommentCreateFetching,
+    selectIsCommentsInitialized,
     selectMapComments,
     setComments,
 } from './slice';
@@ -14,7 +17,9 @@ export const useMapComments = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const comments = useAppSelector(selectMapComments);
+    const comments = useAppSelector(selectMapComments, shallowEqual);
+    const isCommentsInitialized = useAppSelector(selectIsCommentsInitialized);
+    const isCommentCreateFetching = useAppSelector(selectIsCommentCreateFetching);
 
     const [commentText, setCommentText] = useState('');
 
@@ -36,21 +41,21 @@ export const useMapComments = () => {
         dispatch(setComments([]));
     }, []);
 
-    const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const onInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.currentTarget.value;
         setCommentText(text);
-    };
+    }, []);
 
-    const onInputKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>, mapId: Map['id']): void => {
+    const onInputKeyDown = useCallback(async (e: React.KeyboardEvent<HTMLTextAreaElement>, mapId: Map['id']): Promise<void> => {
         if (e.ctrlKey || e.shiftKey) {
             return;
         }
 
         if (e.key === 'Enter') {
             e.preventDefault();
-            onCommentAdd(mapId);
+            await onCommentAdd(mapId);
         }
-    };
+    }, []);
 
     useEffect(() => {
         dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
@@ -65,16 +70,17 @@ export const useMapComments = () => {
                 clearInterval(id);
             };
         }
-
     }, [mapId]);
 
     return {
         comments,
         commentText,
         onCommentAdd,
+        clearComments,
         onInputChange,
         onInputKeyDown,
-        clearComments,
+        isCommentsInitialized,
+        isCommentCreateFetching,
     };
 };
 

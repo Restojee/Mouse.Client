@@ -1,4 +1,8 @@
 import React from 'react';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsImageFetching } from '@/modules/map/containers/map-content/slice';
+import { StyledBox } from '@/ui/Box';
+import { BoxLoader } from '@/ui/BoxLoader/BoxLoader';
 import Image from 'next/image';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { Map } from '@/api/codegen/genMouseMapsApi';
@@ -11,6 +15,7 @@ type MapContentPreviewPropsType = {
 }
 export const Preview = ({ image }: MapContentPreviewPropsType) => {
     const theme = useAppTheme();
+    const isImageLoading = useAppSelector(selectIsImageFetching)
 
     return (
         <StyledMapContentPreview
@@ -19,15 +24,21 @@ export const Preview = ({ image }: MapContentPreviewPropsType) => {
             height="100%"
         >
             <ImageActions/>
-            <Image
-                src={image || DEFAULT_MAP_IMAGE}
-                width={800}
-                height={400}
-                objectFit={'cover'}
-                objectPosition={'center'}
-                alt={'map'}
-                priority
-            />
+            <StyledBox
+                opacity={isImageLoading ? 0 : 1}
+                transition={'0.2s'}
+            >
+                <Image
+                    src={image || DEFAULT_MAP_IMAGE}
+                    width={800}
+                    height={400}
+                    objectFit={'cover'}
+                    objectPosition={'center'}
+                    alt={'map'}
+                    priority
+                />
+            </StyledBox>
+            <BoxLoader isLoading={isImageLoading}/>
         </StyledMapContentPreview>
     );
 };

@@ -1,4 +1,5 @@
 import { selectCurrentUserId } from '@/modules/auth/slice';
+import { BoxLoader } from '@/ui/BoxLoader/BoxLoader';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
@@ -6,7 +7,7 @@ import { useAppSelector } from '@/hooks/useAppSelector';
 import {
     getCompletedMapsThunk,
     getFavoriteMapsThunk,
-    getMapsThunk,
+    getMapsThunk, selectIsMapsFetching,
     selectMaps,
 } from '@/modules/map/containers/map-list/slice';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
@@ -22,6 +23,7 @@ export const MapsList = () => {
 
     const maps = useAppSelector(selectMaps);
     const userId = useAppSelector(selectCurrentUserId);
+    const isFetching = useAppSelector(selectIsMapsFetching)
 
     const { openMap } = useMapView();
 
@@ -45,18 +47,19 @@ export const MapsList = () => {
                 dispatch(getMapsThunk({ page: 0, size: 100 }));
                 break;
         }
-    }, [router.query, userId]);
+    }, [router.query.filter, userId]);
 
-    if (!maps.length) {
+    if (!maps.length && !isFetching) {
         return (
             <StyledBox
+                position={'relative'}
                 align={'center'}
                 justify={'center'}
                 height={'100%'}
                 margin={'auto'}
                 opacity={0.5}
             >
-                Карты не найдены
+                {'Карты не найдены'}
             </StyledBox>
         );
     }
@@ -74,6 +77,7 @@ export const MapsList = () => {
                     image={CommonUtils.getMapImageLink(map.image)}
                 />
             ))}
+            <BoxLoader isLoading={isFetching}/>
         </StyledMapsGrid>
     );
 };

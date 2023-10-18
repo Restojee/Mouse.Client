@@ -1,3 +1,4 @@
+import { BoxLoader } from '@/ui/BoxLoader/BoxLoader';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
@@ -20,6 +21,8 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
         onInputChange,
         onInputKeyDown,
         clearComments,
+        isCommentsInitialized,
+        isCommentCreateFetching
     } = useMapComments();
 
     const {
@@ -71,12 +74,16 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
         }
     }, []);
 
+
+    console.log(isCommentCreateFetching)
+
     return (
         <StyledBox
             width={'100%'}
             grow={1}
             direction={'column'}
             overflow={'hidden'}
+            position={'relative'}
         >
             <Display condition={comments?.length}>
                 <StyledBox
@@ -95,8 +102,11 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
                     ))}
                 </StyledBox>
             </Display>
-            <Display condition={!comments?.length}>
+            <BoxLoader isLoading={!isCommentsInitialized}/>
+            <Display condition={!comments?.length && isCommentsInitialized}>
                 <StyledBox
+                    align={'center'}
+                    grow={1}
                     margin={'auto'}
                     textAlign={'center'}
                     opacity={0.4}
@@ -105,6 +115,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
                 </StyledBox>
             </Display>
             <MessageSendFormContainer
+                isFetching={isCommentCreateFetching}
                 disabled={!isAuth}
                 value={commentText}
                 onFocus={onFocusHandler}

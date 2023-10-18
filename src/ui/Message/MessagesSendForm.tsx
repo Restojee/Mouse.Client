@@ -9,6 +9,7 @@ import { StyledMessageSendFormIcon, StyledMessageSendFormTextarea, StyledMessage
 type PropsType = {
     disabled: boolean;
     value: string;
+    isFetching?: boolean;
     bgColor: Property.BackgroundColor;
     onSendClick: (e: React.MouseEvent<HTMLDivElement>) => void;
     onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
@@ -24,6 +25,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
         onFocus,
         onKeyDown,
         disabled,
+        isFetching,
     } = props;
 
     const theme = useAppTheme();
@@ -33,7 +35,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
             align={'center'}
             margin={'auto 0 0 0'}
             width={'100%'}
-            padding={disabled ? '10px'  : '10px 0 10px 10px'}
+            padding={disabled ? '10px' : '10px 0 10px 10px'}
             position={'relative'}
         >
             <Display condition={disabled}>
@@ -47,11 +49,18 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
                 onFocus={onFocus}
                 bgColor={bgColor}
                 value={value}
-                placeholder={disabled ? "" : "Введите сообщение..."}
+                placeholder={disabled ? '' : 'Введите сообщение...'}
             />
             <Display condition={!disabled}>
-                <StyledMessageSendFormIcon onClick={onSendClick}>
-                    <SendIcon size="30px" color={theme.colors.textOnSecondary}/>
+                <StyledMessageSendFormIcon
+                    isDisabled={Boolean(!value?.trim().length)}
+                    isFetching={Boolean(isFetching)}
+                    onClick={onSendClick}
+                >
+                    <SendIcon
+                        size="30px"
+                        color={theme.colors.textOnSecondary}
+                    />
                 </StyledMessageSendFormIcon>
             </Display>
         </StyledBox>

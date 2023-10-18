@@ -1,7 +1,6 @@
 import {
-    DeleteMapApiArg, GetCompletedMapsByUserApiArg,
+    GetCompletedMapsByUserApiArg,
     GetFavoriteMapsByUserApiArg,
-    GetMapApiArg,
     GetMapsApiArg,
     Map,
 } from '@/api/codegen/genMouseMapsApi';
@@ -19,7 +18,7 @@ export const getMapsThunk = createAsyncThunk('map/get', async (arg: GetMapsApiAr
 
         return maps;
     } catch (error) {
-        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка загрузки карт: ${Error}`}))
+        thunkAPI.dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки карт: ${Error}` }));
     }
 });
 
@@ -29,7 +28,7 @@ export const getFavoriteMapsThunk = createAsyncThunk('map/get-favorites', async 
         thunkAPI.dispatch(setMaps(maps.records));
         return maps;
     } catch (error) {
-        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка загрузки карт: ${Error}`}))
+        thunkAPI.dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки карт: ${Error}` }));
     }
 });
 
@@ -39,7 +38,7 @@ export const getCompletedMapsThunk = createAsyncThunk('map/get-completed', async
         thunkAPI.dispatch(setMaps(maps.records));
         return maps;
     } catch (error) {
-        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка загрузки карт: ${Error}`}))
+        thunkAPI.dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки карт: ${Error}` }));
     }
 });
 
@@ -47,7 +46,8 @@ const initialState: MapsStateType = {
     records: [],
     totalRecordsCount: 0,
     pageSize: 100,
-    pageNumber: 0
+    pageNumber: 0,
+    isMapsFetching: false,
 };
 
 const slice = createSlice({
@@ -61,16 +61,47 @@ const slice = createSlice({
             state.records.unshift(action.payload);
         },
         deleteMap: (state, action: PayloadAction<Map['id']>) => {
-            state.records = state.records.filter(el => el.id !== action.payload)
+            state.records = state.records.filter(el => el.id !== action.payload);
         },
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(getMapsThunk.pending, (state) => {
+                state.isMapsFetching = true;
+            })
+            .addCase(getFavoriteMapsThunk.pending, (state) => {
+                state.isMapsFetching = true;
+            })
+            .addCase(getCompletedMapsThunk.pending, (state) => {
+                state.isMapsFetching = true;
+            })
+            .addCase(getMapsThunk.fulfilled, (state) => {
+                state.isMapsFetching = false;
+            })
+            .addCase(getFavoriteMapsThunk.fulfilled, (state) => {
+                state.isMapsFetching = false;
+            })
+            .addCase(getCompletedMapsThunk.fulfilled, (state) => {
+                state.isMapsFetching = false;
+            })
+            .addCase(getMapsThunk.rejected, (state) => {
+                state.isMapsFetching = false;
+            })
+            .addCase(getFavoriteMapsThunk.rejected, (state) => {
+                state.isMapsFetching = false;
+            })
+            .addCase(getCompletedMapsThunk.rejected, (state) => {
+                state.isMapsFetching = false;
+            });
     },
 });
 
 export const selectMaps = (state: RootState) => state.maps.records;
+export const selectIsMapsFetching = (state: RootState) => state.maps.isMapsFetching;
 
 export const {
     setMaps,
     addMap,
-    deleteMap
+    deleteMap,
 } = slice.actions;
 export const mapsReducer = slice.reducer;

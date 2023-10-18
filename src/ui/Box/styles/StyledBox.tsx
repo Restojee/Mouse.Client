@@ -22,6 +22,7 @@ export type StyledBoxProps = {
     opacity: Property.Opacity;
     overflow: Property.Overflow;
     wrap: Property.FlexWrap;
+    transform: Property.Transform;
     transition: Property.Transition;
     grow: Property.FlexGrow;
     cursor: Property.Cursor;
@@ -69,6 +70,7 @@ export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props 
     flexWrap: props.wrap,
     borderBottom: props.borderBottom,
     columnGap: props.gap,
+    transform: props.transform,
     transition: props.transition,
     cursor: props.cursor,
     ...props.stylized && {

@@ -30,7 +30,9 @@ export const Sidebar = () => {
 
     useEffect(() => {
         dispatch(getTagsThunk());
-        setIsOpen(window.innerWidth > 900)
+        setTimeout(() => {
+            setIsOpen(window.innerWidth > 900)
+        }, 200)
     }, []);
 
     return (

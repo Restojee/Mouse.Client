@@ -1,4 +1,5 @@
 import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
+import { setIsCommentsInitialized } from '@/modules/map/containers/map-content/containers/comments/slice';
 import { useCallback } from 'react';
 import { setCurrentMapContent, setInitialMapContent } from '@/modules/map/containers/map-content/slice';
 import { Map } from '@/api/codegen/genMouseMapsApi';
@@ -32,6 +33,7 @@ export const useMapView = () => {
     const closeMap = useCallback(async () => {
         dispatch(setCurrentMapContent(null));
         dispatch(setInitialMapContent(null));
+        dispatch(setIsCommentsInitialized(false));
         await router.push(routes.MAPS);
     }, [router]);
 
