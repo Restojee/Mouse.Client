@@ -49,7 +49,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
 
     const onFocusHandler = useCallback(async () => {
         scrollToBottomHandler();
-    }, [onCommentAdd, mapId]);
+    }, []);
 
     const onCommentAddHandler = useCallback(async () => {
         await onCommentAdd(mapId);
@@ -72,7 +72,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
         return () => {
             clearComments()
         }
-    }, []);
+    }, [clearComments]);
 
     return (
         <StyledBox

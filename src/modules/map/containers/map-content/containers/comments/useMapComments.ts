@@ -57,7 +57,7 @@ export const useMapComments = () => {
 
     useEffect(() => {
         dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
-    }, []);
+    }, [mapId]);
 
     useEffect(() => {
         if (mapId) {

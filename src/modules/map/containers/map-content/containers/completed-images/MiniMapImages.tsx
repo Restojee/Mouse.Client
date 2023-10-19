@@ -1,5 +1,8 @@
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { getCompletedMapsThunk } from '@/modules/map/containers/map-content/containers/completed-images/slice';
+import {
+    getCompletedMapsThunk,
+    setCompletedMaps,
+} from '@/modules/map/containers/map-content/containers/completed-images/slice';
 import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { getMapImageLink } from '@/common/utils';
@@ -22,7 +25,10 @@ export const MiniMapImages = () => {
 
     useEffect(() => {
         dispatch(getCompletedMapsThunk({ mapId }));
-    }, []);
+        return () => {
+            dispatch(setCompletedMaps([]))
+        }
+    }, [mapId]);
 
     if (!maps?.length) {
         return null;

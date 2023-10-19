@@ -38,6 +38,7 @@ export const getTagsThunk = createAsyncThunk('tag/get', async (arg, thunkAPI) =>
     }
 });
 
+
 const initialState: TagsStateType = {
     modalType: null,
     tagsList: [],
@@ -47,14 +48,11 @@ const slice = createSlice({
     name: 'tags',
     initialState,
     reducers: {
-        closeTagModal: (state) => {
-            state.modalType = null;
-        },
-        openTagModal: (state, action: PayloadAction<ModalType>) => {
+        setTagModalType: (state, action: PayloadAction<ModalType>) => {
             state.modalType = action.payload;
         },
         setTags: (state, action: PayloadAction<Tag[]>) => {
-            state.tagsList = action.payload;
+            state.tagsList = [...action.payload].sort((a, b) => a.name.localeCompare(b.name));
         },
     },
 });
@@ -64,9 +62,8 @@ export const selectTags = (state: RootState) => state.tags.tagsList;
 
 
 export const {
-    closeTagModal,
-    openTagModal,
-    setTags
+    setTagModalType,
+    setTags,
 } = slice.actions;
 
 export const tagsReducer = slice.reducer;

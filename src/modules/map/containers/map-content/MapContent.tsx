@@ -1,10 +1,12 @@
 import { IS_TABLET } from '@/common/constants';
 import { getMapImageLink } from '@/common/utils';
 import { formatDateTime } from '@/common/utils/formatDateTime';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppTheme } from '@/hooks/useAppTheme';
+import { setSelectedTagIds } from '@/modules/map/containers/map-content/slice';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
 import { ModalCloseIcon } from '@/ui/ModalCloseIcon/ModalCloseIcon';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { mapsData } from '@/moc/mapsMoc';
 import { SidebarIcons } from './containers/actions/SidebarIcons';
@@ -22,6 +24,7 @@ type MapContentPropsType = {
     map: Map | null;
 }
 export const MapContent = ({ map }: MapContentPropsType) => {
+    const dispatch = useAppDispatch();
     const theme = useAppTheme();
     const {closeMap} = useMapView()
     const completedMaps = mapsData;
@@ -36,6 +39,12 @@ export const MapContent = ({ map }: MapContentPropsType) => {
         }
         return ''
     }, [map])
+
+    useEffect(() => {
+        return () => {
+            dispatch(setSelectedTagIds([]))
+        }
+    }, [])
 
     return (
         <Paper

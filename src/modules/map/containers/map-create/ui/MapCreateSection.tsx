@@ -11,6 +11,7 @@ import PagePanelItem from '@/layout/page/PagePanelItem';
 
 export const MapCreateSection = () => {
     const theme = useAppTheme();
+
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isContentVisible, setIsContentVisible] = useState(false);
 

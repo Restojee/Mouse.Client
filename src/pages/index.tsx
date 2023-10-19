@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { TagsModal } from '@/modules/tag/containers/tags-modal/TagsModal';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
 import { Display } from '@/ui/Display';
 import { AsyncMapViewModal } from '@/modules/map/containers/map-view-modal';
@@ -7,7 +8,7 @@ import { MapPageContainer } from '@/modules/map/components/MapContainer';
 import { MetaTags } from '@/ui/MetaTags/MetaTags';
 
 export default function Maps() {
-    const {mapId} = useMapView()
+    const { mapId } = useMapView();
 
     return (
         // eslint-disable-next-line react/jsx-no-undef
@@ -16,9 +17,10 @@ export default function Maps() {
             <MapsList/>
             <Display condition={mapId}>
                 <Suspense fallback={null}>
-                    <AsyncMapViewModal />
+                    <AsyncMapViewModal/>
                 </Suspense>
             </Display>
+            <TagsModal/>
         </MapPageContainer>
     );
 }

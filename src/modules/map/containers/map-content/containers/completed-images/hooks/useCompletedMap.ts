@@ -52,7 +52,7 @@ export const useCompletedMap = (mapId?: Map['id']) => {
         setActiveMapIdentifier(null);
         dispatch(setIsInitialMap(true));
         dispatch(setCurrentMapContent(initialMapContent));
-    }, []);
+    }, [initialMapContent]);
 
     const addCompletedMap = useCallback(async (mapId: Map['id'], file: string) => {
         if (mapId && file) {
@@ -65,7 +65,7 @@ export const useCompletedMap = (mapId?: Map['id']) => {
             dispatch(deleteCompletedMapThunk({ mapId }));
             onInitialMapClick();
         }
-    }, [mapId]);
+    }, [mapId, onInitialMapClick]);
 
     const onCompletedMapModalClose = useCallback(() => {
         dispatch(setIsCompletedMapModalOpen(false));

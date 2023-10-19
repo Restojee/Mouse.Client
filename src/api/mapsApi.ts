@@ -27,6 +27,7 @@ import {
     UpdateMapImageApiArg,
     UpdateMapImageApiResponse,
 } from '@/api/codegen/genMouseMapsApi';
+import queryString from 'query-string';
 
 export const mapsApi = {
     getMaps: async (params: GetMapsApiArg) => {
@@ -58,7 +59,9 @@ export const mapsApi = {
         return res.data;
     },
     setMapsTag: async (body: SetMapsTagApiArg) => {
-        const res = await api.put<SetMapsTagApiArg, AxiosResponse<SetMapsTagApiResponse>>('/maps/set-tags', body);
+        const query = queryString.stringify({tagIds: body.tagIds, mapId: body.mapId})
+
+        const res = await api.put<SetMapsTagApiArg, AxiosResponse<SetMapsTagApiResponse>>('/maps/set-tags', query);
         return res.data;
     },
     getCompletedByMapId: async (params: GetCompletedMapsByMapApiArg) => {

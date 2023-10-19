@@ -30,9 +30,17 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
     const [tagId, setTagId] = useState<Tag['id'] | null>(null);
 
     const onTagDeleteHandler = (id: Tag['id']) => {
-        setTagId(id)
-        onOpenModal('delete')
-    }
+        setTagId(id);
+        onOpenModal('delete');
+    };
+
+    const modalToggleHandler = () => {
+        if (modalType === 'create') {
+            onOpenModal(null);
+        } else {
+            onOpenModal('create');
+        }
+    };
 
     if (props.isOpen) {
         return (
@@ -47,7 +55,7 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                     append={
                         <Display condition={isAuth}>
                             <StyledNavLinkSection
-                                onClick={() => onOpenModal('create')}
+                                onClick={modalToggleHandler}
                                 isOpen={props.isOpen && isAuth}
                             >
                                 <AddIcon/>

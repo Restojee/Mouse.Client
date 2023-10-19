@@ -143,7 +143,7 @@ export type RemoveTipApiArg = {
 export type Tag = {
   id?: number;
   description?: string;
-  name?: string;
+  name: string;
 };
 export type UpdateTagRequest = {
   tagId?: number;

@@ -1,21 +1,34 @@
-import { useCallback } from 'react';
+import { selectMapTags, setMapTagIds } from '@/modules/map/containers';
+import {
+    selectSelectedTagIds,
+    toggleSelectedTagById,
+    updateMapTagsThunk,
+} from '@/modules/map/containers/map-content/slice';
+import { ModalType } from '@/modules/tag/types';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 import { Tag } from '@/api/codegen/genMouseMapsApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
-    openTagModal,
-    closeTagModal,
     selectTagModalType,
     selectTags,
     createTagThunk,
     deleteTagThunk,
+    setTagModalType,
 } from '@/modules/tag';
-import { ModalType } from '@/modules/tag/types';
 
 export const useTag = () => {
     const dispatch = useAppDispatch();
+    const router = useRouter();
+
+    const { mapId } = router.query;
+
+    const [selectedTagIdsForCreateMap, setSelectedTagIdsForCreateMap] = useState<Tag['id'][]>([]);
 
     const modalType = useAppSelector(selectTagModalType);
+    const selectedTagIds = useAppSelector(selectSelectedTagIds);
+    const selectedIdForCreateMap = useAppSelector(selectMapTags);
     const tagsList = useAppSelector(selectTags);
 
     const onTagCreate = useCallback(async (name: string) => {
@@ -31,12 +44,56 @@ export const useTag = () => {
     }, []);
 
     const onOpenModal = useCallback((modalType: ModalType): void => {
-        dispatch(openTagModal(modalType));
+        dispatch(setTagModalType(modalType));
     }, []);
 
     const onCloseModal = useCallback((): void => {
-        dispatch(closeTagModal());
+        dispatch(setTagModalType(null));
     }, []);
+
+    const updateMapTags = useCallback((): void => {
+        const id = Number(mapId);
+        if (mapId) {
+            dispatch(updateMapTagsThunk(id));
+        } else {
+            dispatch(setMapTagIds(selectedTagIdsForCreateMap));
+            dispatch(setTagModalType(null))
+        }
+    }, [mapId, selectedTagIdsForCreateMap]);
+
+    const toggleSelectedTag = useCallback((id: Tag['id']) => {
+        if (id && mapId) {
+            dispatch(toggleSelectedTagById(id));
+            return;
+        }
+
+        if (id && !selectedTagIdsForCreateMap?.includes(id)) {
+            setSelectedTagIdsForCreateMap(prev => [...prev, id]);
+            return;
+        }
+        if (id && selectedTagIdsForCreateMap?.includes(id)) {
+            const filteredTagIds = selectedTagIdsForCreateMap.filter(tagId => tagId !== id);
+            setSelectedTagIdsForCreateMap(filteredTagIds);
+            return;
+        }
+    }, [mapId, selectedTagIdsForCreateMap]);
+
+    const checkIsSelectedTagId = useCallback((id: Tag['id']) => {
+        if (id && mapId) {
+            return selectedTagIds.includes(id);
+        }
+
+        if (id && !mapId) {
+            return selectedTagIdsForCreateMap.includes(id);
+        }
+        return false;
+    }, [mapId, selectedTagIds, selectedTagIdsForCreateMap]);
+
+    useEffect(() => {
+        if(!selectedIdForCreateMap?.length) {
+            setSelectedTagIdsForCreateMap([])
+        }
+    }, [selectedIdForCreateMap])
 
     return {
         onTagCreate,
@@ -45,6 +102,10 @@ export const useTag = () => {
         tagsList,
         onCloseModal,
         onOpenModal,
+        updateMapTags,
+        toggleSelectedTag,
+        checkIsSelectedTagId,
+        selectedIdForCreateMap,
     };
 };
 

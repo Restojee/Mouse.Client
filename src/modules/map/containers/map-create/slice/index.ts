@@ -1,4 +1,4 @@
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { Map, Tag } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
@@ -16,7 +16,8 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg, thunkAP
         let map = await mapsApi.createMap({ name });
 
         if (map.id && tags) {
-            await mapsApi.setMapsTag({ mapId: map.id });
+            await mapsApi.setMapsTag({ mapId: map.id, tagIds: tags as number[]});
+            thunkAPI.dispatch(setMapTagIds([]))
         }
 
         if (map.id && image) {
@@ -45,7 +46,7 @@ const slice = createSlice({
         setMapImage: (state, action: PayloadAction<string>) => {
             state.image = action.payload;
         },
-        setMapTags: (state, action: PayloadAction<Map['tags']>) => {
+        setMapTagIds: (state, action: PayloadAction<Tag['id'][]>) => {
             state.tags = action.payload;
         },
     },
@@ -58,7 +59,7 @@ export const selectMapTags = (state: RootState) => state.mapCreate?.tags;
 export const {
     setMapName,
     setMapImage,
-    setMapTags,
+    setMapTagIds,
 } = slice.actions;
 
 export const mapCreateReducer = slice.reducer;

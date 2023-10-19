@@ -10,7 +10,7 @@ export const StyledMapContentMain = styled.div(({theme}) => ({
     minHeight: "100%",
     overflow: "auto",
     color: theme.colors.textOnPrimary,
-    padding: 20,
+    padding: '20px 20px 40px 20px',
     borderRadius: "inherit",
     flexGrow: 1,
     "::placeholder": {

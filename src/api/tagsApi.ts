@@ -22,11 +22,4 @@ export const tagsApi = {
         const res = await api.delete<DeleteTagApiArg, AxiosResponse<DeleteTagApiResponse>>(`/tags/${params.tagId}`);
         return res.data;
     },
-    endpoints: {
-        getTags: { providesTags: ["Tag"] },
-        getTag: { providesTags: ["Tag"] },
-        createTag: { invalidatesTags: ["Tag"] },
-        updateTag: { invalidatesTags: ["Tag"] },
-        deleteTag: { invalidatesTags: ["Tag"] },
-    }
 }

@@ -9,7 +9,7 @@ export const StyledMapContentTags = styled(StyledBox)({
 type StyledTagType = {
     bgColor?: Property.BackgroundColor,
     chips?: boolean,
-    checked?: boolean,
+    isActive?: boolean,
     small?: boolean
 
 }
@@ -19,8 +19,9 @@ export const StyledTag = styled(StyledBox)<StyledTagType>(({ theme,...props }) =
     width: 'min-content',
     whiteSpace: 'nowrap',
     alignItems: 'center',
-    backgroundColor: props.bgColor || 'rgba(0, 0, 0, 0.1)',
-    padding: '2px 15px',
+    backgroundColor: props.bgColor || 'rgba(0, 0, 0, 0.07)',
+    padding: '6px 15px',
+    fontSize: '0.8rem',
     borderRadius: '20px',
     svg: {
         opacity: 0.8,
@@ -29,12 +30,12 @@ export const StyledTag = styled(StyledBox)<StyledTagType>(({ theme,...props }) =
         cursor: 'pointer',
         border: '1px solid transparent',
         '&:hover': {
-            opacity: 0.7,
+            transform: 'scale(0.95)',
         },
     },
-    ...props.checked && {
-        boxShadow: 'inset 0 0 0 50px rgba(255, 255, 255, 0.3)',
-        border: '1px solid rgba(0, 0, 0, 0.3)',
+    ...props.isActive && {
+        backgroundColor: theme.colors.brandColor,
+        color: theme.colors.brandColorContrastText
     },
     ...props.small && {
         fontSize: `calc(${ theme.font.fontSize } - 2px)`,

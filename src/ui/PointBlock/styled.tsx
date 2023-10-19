@@ -20,18 +20,11 @@ export const StyledPointBlockContainer = styled(StyledBox)<PointBlockContainerPr
     borderRadius: 10,
     padding: 15,
     width: props.width || 250,
-    zIndex: theme.order.other,
+    zIndex: theme.order.popup,
     color: theme.colors.textOnSecondary,
     fontSize: theme.font.fontSize,
     transition: '0.2s',
     pointerEvents: "initial",
 }))
-export const StyledPointBlockHeader = styled(StyledBox)({
-    marginBottom: 15
-})
-
-export const StyledPointBlockBody = styled(StyledBox)({
-    gap: 20
-})
 
 export const StyledPointBlockFooter = styled(StyledBox)({});

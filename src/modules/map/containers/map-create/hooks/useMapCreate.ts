@@ -1,4 +1,4 @@
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { Map, Tag } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -9,7 +9,7 @@ import {
     selectMapTags,
     setMapImage,
     setMapName,
-    setMapTags,
+    setMapTagIds,
 } from '@/modules/map/containers/map-create/slice';
 import { useCallback, useMemo } from 'react';
 
@@ -19,8 +19,8 @@ export const useMapCreate = () => {
     const image = useAppSelector(selectMapImage);
     const tags = useAppSelector(selectMapTags);
 
-    const onTagsChange = useCallback((tags: Map['tags']): void => {
-        dispatch(setMapTags(tags));
+    const onTagsChange = useCallback((tags: Tag['id'][]): void => {
+        dispatch(setMapTagIds(tags));
     }, []);
 
     const onImageChange = useCallback((image: string): void => {
@@ -36,6 +36,7 @@ export const useMapCreate = () => {
         if (nameLength && nameLength < 10) {
             dispatch(createMapThunk());
             dispatch(setMapName(''));
+            dispatch(setMapTagIds([]));
         } else {
             dispatch(setAppMessage({severity: 'error', text: 'Некорректный номер карты'}))
         }

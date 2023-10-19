@@ -19,7 +19,7 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     justify = "center",
     bgColor = theme.colors.brandColor,
     size = "md",
-    borderRadius = "15px",
+    borderRadius = "20px",
     width = "min-content",
     margin = "",
     disabled
