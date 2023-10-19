@@ -10,6 +10,7 @@ export const DefaultTheme = {
         primary: '#2b2b2b',
         primaryLight: '#383838',
         primaryLighter: '#3d3d3d',
+        primaryAccent: 'rgba(255,255,255,0.08)',
         textOnPrimary: '#fff',
 
         secondary: '#fff',

@@ -52,7 +52,7 @@ export const MiniMapImages = () => {
                     <StyledMiniMapImageContainer
                         key={item.id ? `${item.id + index}` : index}
                         onClick={(e) => onMapClick(e, item)}
-                        isActive={activeMapIdentifier === item.createdUtcDate}
+                        isActive={activeMapIdentifier === item.user?.id}
                         username={item.user?.username}
                         isVisible
                     >

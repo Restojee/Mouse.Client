@@ -12,16 +12,14 @@ import {
 } from '@/modules/map/containers/map-content/slice';
 import {
     addCompletedMapThunk,
-    deleteCompletedMapThunk,
+    deleteCompletedMapThunk, selectActiveMapIdentifier,
     selectCompletedMaps,
-    selectIsCompletedModalOpen,
+    selectIsCompletedModalOpen, setActiveMapIdentifier,
     setIsCompletedMapModalOpen,
 } from '../slice';
 
 export const useCompletedMap = (mapId?: Map['id']) => {
     const dispatch = useAppDispatch();
-
-    const [activeMapIdentifier, setActiveMapIdentifier] = useState<Map['createdUtcDate'] | null>(null);
 
     const isCompletedMapModalOpen = useAppSelector(selectIsCompletedModalOpen);
     const maps = useAppSelector(selectCompletedMaps);
@@ -29,6 +27,7 @@ export const useCompletedMap = (mapId?: Map['id']) => {
     const initialMapContent = useAppSelector(selectInitialMapContent);
     const currentMapContent = useAppSelector(selectCurrentMapContent);
     const isInitialMap = useAppSelector(selectIsInitialMap);
+    const activeMapIdentifier = useAppSelector(selectActiveMapIdentifier);
 
     const isMyMap = currentMapContent?.user?.id === userId;
 
@@ -44,12 +43,12 @@ export const useCompletedMap = (mapId?: Map['id']) => {
         if (map) {
             dispatch(setIsInitialMap(false));
             dispatch(setCurrentMapContent(map));
-            setActiveMapIdentifier(map.createdUtcDate);
+            dispatch(setActiveMapIdentifier(map.user?.id));
         }
     }, []);
 
     const onInitialMapClick = useCallback(() => {
-        setActiveMapIdentifier(null);
+        dispatch(setActiveMapIdentifier(null));
         dispatch(setIsInitialMap(true));
         dispatch(setCurrentMapContent(initialMapContent));
     }, [initialMapContent]);

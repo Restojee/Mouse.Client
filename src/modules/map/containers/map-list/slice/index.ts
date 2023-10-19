@@ -63,6 +63,14 @@ const slice = createSlice({
         deleteMap: (state, action: PayloadAction<Map['id']>) => {
             state.records = state.records.filter(el => el.id !== action.payload);
         },
+        setMapImageById: (state, action: PayloadAction<{mapId: Map['id'], updatedMap: Map}>) => {
+            state.records = state.records.map((map) => {
+                if (map.id === action.payload.mapId) {
+                    return action.payload.updatedMap;
+                }
+                return map;
+            });
+        },
     },
     extraReducers: builder => {
         builder
@@ -103,5 +111,6 @@ export const {
     setMaps,
     addMap,
     deleteMap,
+    setMapImageById
 } = slice.actions;
 export const mapsReducer = slice.reducer;

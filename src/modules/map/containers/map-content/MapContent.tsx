@@ -3,6 +3,7 @@ import { getMapImageLink } from '@/common/utils';
 import { formatDateTime } from '@/common/utils/formatDateTime';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppTheme } from '@/hooks/useAppTheme';
+import { setActiveMapIdentifier } from '@/modules/map/containers/map-content/containers/completed-images/slice';
 import { setSelectedTagIds } from '@/modules/map/containers/map-content/slice';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
 import { ModalCloseIcon } from '@/ui/ModalCloseIcon/ModalCloseIcon';
@@ -43,6 +44,7 @@ export const MapContent = ({ map }: MapContentPropsType) => {
     useEffect(() => {
         return () => {
             dispatch(setSelectedTagIds([]))
+            dispatch(setActiveMapIdentifier(null));
         }
     }, [])
 

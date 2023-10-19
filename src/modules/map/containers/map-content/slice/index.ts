@@ -10,7 +10,7 @@ import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
 import { gatherValuesByKey } from '@/common/utils/getValuesByKey';
-import { deleteMap } from '@/modules/map/containers/map-list/slice';
+import { deleteMap, setMapImageById } from '@/modules/map/containers/map-list/slice';
 import { setTagModalType } from '@/modules/tag';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -58,7 +58,11 @@ export const updateMapImageThunk = createAsyncThunk('map/update-image', async (a
         if (file && arg.mapId) {
             const validArg: UpdateMapImageApiArg = { mapId: arg.mapId, body: { file } };
             const map = await mapsApi.updateMapImage(validArg);
-            thunkAPI.dispatch(getMapByIdThunk({ mapId: arg.mapId }));
+            const updatedMap = await thunkAPI.dispatch(getMapByIdThunk({ mapId: arg.mapId }));
+
+            if (updatedMap.payload) {
+                thunkAPI.dispatch(setMapImageById({mapId: arg.mapId, updatedMap: updatedMap.payload as Map}))
+            }
             return map;
         }
     } catch (error) {

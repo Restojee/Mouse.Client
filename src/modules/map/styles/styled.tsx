@@ -26,14 +26,14 @@ export const StyledMapContentMain = styled.div(({theme}) => ({
 
 export const StyledMapContentNoteForm = styled(StyledTextarea)(({theme}) => ({
     marginBottom: 'auto',
-    backgroundColor: theme.colors.primaryLighter,
+    backgroundColor: theme.colors.primaryAccent,
     "&:hover": {
         opacity: 0.8,
-        backgroundColor: theme.colors.primaryLighter,
+        backgroundColor: theme.colors.primaryAccent,
     },
     "&:focus": {
         opacity: 0.8,
-        backgroundColor: theme.colors.primaryLighter,
+        backgroundColor: theme.colors.primaryAccent,
     },
 }))
 

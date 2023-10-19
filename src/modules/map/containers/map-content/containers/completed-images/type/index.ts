@@ -1,6 +1,7 @@
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { Map, User } from '@/api/codegen/genMouseMapsApi';
 
 export type MapCompletedStateType = {
     isModalOpen: boolean;
-    completedMapsList: Map[]
+    completedMapsList: Map[];
+    activeMapIdentifier: User['id'] | null
 }
