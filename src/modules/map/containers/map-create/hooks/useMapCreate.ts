@@ -3,10 +3,10 @@ import { setAppMessage } from '@/bll/appReducer';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
-    createMapThunk,
+    createMapThunk, selectCompletedMapImage,
     selectMapImage,
     selectMapName,
-    selectMapTags,
+    selectMapTags, setCompletedMapImage,
     setMapImage,
     setMapName,
     setMapTagIds,
@@ -17,6 +17,7 @@ export const useMapCreate = () => {
     const dispatch = useAppDispatch();
     const name = useAppSelector(selectMapName);
     const image = useAppSelector(selectMapImage);
+    const completedMapImage = useAppSelector(selectCompletedMapImage);
     const tags = useAppSelector(selectMapTags);
 
     const onTagsChange = useCallback((tags: Tag['id'][]): void => {
@@ -27,6 +28,10 @@ export const useMapCreate = () => {
         dispatch(setMapImage(image));
     }, []);
 
+    const onCompletedMapImageChange = useCallback((image: string): void => {
+        dispatch(setCompletedMapImage(image));
+    }, []);
+
     const onNameChange = useCallback((name: Map['name']): void => {
         dispatch(setMapName(name));
     }, []);
@@ -35,6 +40,8 @@ export const useMapCreate = () => {
         const nameLength = name?.trim().length
         if (nameLength && nameLength < 10) {
             dispatch(createMapThunk());
+            dispatch(setMapImage(''));
+            dispatch(setCompletedMapImage(''));
             dispatch(setMapName(''));
             dispatch(setMapTagIds([]));
         } else {
@@ -49,10 +56,12 @@ export const useMapCreate = () => {
     return {
         name,
         image,
+        completedMapImage,
         tags,
         setName: onNameChange,
         setImage: onImageChange,
         setTags: onTagsChange,
+        setCompletedMapImage: onCompletedMapImageChange,
         onMapCreate,
         isValid,
     };

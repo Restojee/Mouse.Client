@@ -1,4 +1,5 @@
-import { StyledImageFormContainer, StyledImageFormLink } from '@/ui/ImageForm/ImageFormElements';
+import { Display } from '@/ui/Display';
+import { StyledImageFormContainer, StyledImageFormLink, StyledImageHover } from '@/ui/ImageForm/ImageFormElements';
 import { Property } from 'csstype';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -115,6 +116,11 @@ export const ImageForm = (props: ImageFormPropsType) => {
                     <span> перетащите или вставьте из буфера обмена (Ctrl+V)</span>
                 </span>
             )}
+            <Display condition={props.value}>
+                <StyledImageHover>
+                    Изменить скрин
+                </StyledImageHover>
+            </Display>
         </StyledImageFormContainer>
     );
 };

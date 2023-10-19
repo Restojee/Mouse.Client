@@ -5,10 +5,7 @@ export const StyledMapCardBody = styled.div({
     justifyContent: "center",
     alignItems: "center",
     height: "150px",
-    img: {
-        height: "100%",
-        width: "100%",
-        objectFit: "cover",
-        objectPosition: "center"
+    span: {
+        height: '100%!important'
     }
 })

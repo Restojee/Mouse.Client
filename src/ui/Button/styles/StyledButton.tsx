@@ -7,6 +7,7 @@ export type StyledButtonProps = {
     fontSize?: Property.FontSize;
     width?: Property.Width;
     bgColor?: Property.BackgroundColor;
+    color?: Property.Color;
     margin?: string | number;
     size?: 'sm' | 'md' | 'lg';
     isWithError?: boolean;
@@ -19,6 +20,7 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     justify = "center",
     bgColor = theme.colors.brandColor,
     size = "md",
+    color = "#fff",
     borderRadius = "20px",
     width = "min-content",
     margin = "",
@@ -31,7 +33,7 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    color: "#fff",
+    color: color,
     border: "none",
     whiteSpace: "nowrap",
     textAlign: "center",

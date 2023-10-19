@@ -38,7 +38,7 @@ export const StyledTag = styled(StyledBox)<StyledTagType>(({ theme,...props }) =
         color: theme.colors.brandColorContrastText
     },
     ...props.small && {
-        fontSize: `calc(${ theme.font.fontSize } - 2px)`,
-        padding: '3px 10px',
+        fontSize: '0.7rem',
+        padding: '4px 10px',
     },
 }))

@@ -56,6 +56,7 @@ export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props 
     textAlign: props.textAlign,
     fontSize: props.fontSize,
     fontWeight: props.fontWeight,
+    color: props.color,
     borderRadius: props.borderRadius,
     maxWidth: props.maxWidth,
     maxHeight: props.maxHeight,

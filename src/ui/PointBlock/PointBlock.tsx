@@ -10,7 +10,7 @@ import {
 type PointBlockViewPropsType = {
     header: string,
     children: React.ReactNode,
-    width: Property.Width,
+    width: Property.Width<number>,
     left: Property.Left,
     right: Property.Right,
     bottom: Property.Bottom,

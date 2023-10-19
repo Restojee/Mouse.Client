@@ -39,7 +39,7 @@ export const MiniMapImages = () => {
             <StyledBox
                 minHeight={MINI_IMAGES_HEIGHT}
                 overflow={'auto'}
-                gap={5}
+                gap={10}
             >
                 <StyledMiniMapImageContainer
                     onClick={onInitialMapClick}

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { DEFAULT_MAP_IMAGE } from '@/common/contants';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMap } from '@/modules/map/common';
@@ -15,7 +16,6 @@ import { CopyIcon } from '@/svg/CopyIcon';
 import { Button } from '@/ui/Button/Button';
 import { IconButton } from '@/ui/Button/IconButton';
 import Image from 'next/image';
-import { useState } from 'react';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 
 type MapCardProps = {
@@ -75,8 +75,8 @@ export const MapCard = (props: MapCardProps) => {
                     alt=" "
                     objectFit={'cover'}
                     objectPosition={'center'}
-                    width={500}
-                    height={350}
+                    width={330}
+                    height={150}
                 />
             </StyledMapCardBody>
             <StyledMapCardFooter justify="space-between">

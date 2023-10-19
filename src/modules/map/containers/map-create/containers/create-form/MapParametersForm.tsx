@@ -1,3 +1,5 @@
+import { Tab } from '@/ui/Tabs/Tab';
+import { Tabs } from '@/ui/Tabs/Tabs';
 import React, { useMemo, useState } from 'react';
 import { useMapCreate } from '@/modules/map/containers/map-create/hooks/useMapCreate';
 import { useTag } from '@/modules/tag/hooks/useTag';
@@ -11,16 +13,20 @@ import { ImageForm } from '@/ui/ImageForm/ImageForm';
 import { StyledTag } from '@/ui/Tag/styled';
 
 export const MapParametersForm = () => {
-    const [mapImage, setMapImage] = useState<string | null>(null);
+
+    const [currentTab, setCurrentTab] = useState<'map' | 'completed'>('map');
 
     const {
+        image,
+        completedMapImage,
         setImage,
+        setCompletedMapImage,
     } = useMapCreate();
 
     const {
         tagsList,
         onOpenModal,
-        selectedIdForCreateMap
+        selectedIdForCreateMap,
     } = useTag();
 
     const selectedTags = useMemo(() => {
@@ -31,16 +37,11 @@ export const MapParametersForm = () => {
         onOpenModal('update');
     };
 
-    const onChangePackImage = (file: string) => {
-        setMapImage(file);
-        setImage(file);
-    };
-
     return (
         <PointBlock
             centeredTitle
             header="Доп. параметры карты"
-            width="230px"
+            width={278}
             bottom="60px"
         >
             <StyledBox
@@ -48,25 +49,52 @@ export const MapParametersForm = () => {
                 gap="15px"
                 direction="column"
             >
-                <ImageForm
-                    fileType="image"
-                    onChange={onChangePackImage}
-                    value={mapImage}
-                />
-                <StyledBox wrap={'wrap'} gap={5}>
+                <Tabs>
+                    <Tab
+                        onClick={() => setCurrentTab('map')}
+                        isActive={currentTab === 'map'}
+                        label={'Обложка'}
+                    />
+                    <Tab
+                        onClick={() => setCurrentTab('completed')}
+                        isActive={currentTab === 'completed'}
+                        label={'Постройка'}
+                    />
+                </Tabs>
+                <Display condition={currentTab === 'map'}>
+                    <ImageForm
+                        fileType="image"
+                        onChange={setImage}
+                        value={image || null}
+                    />
+                </Display>
+                <Display condition={currentTab === 'completed'}>
+                    <ImageForm
+                        fileType="image"
+                        onChange={setCompletedMapImage}
+                        value={completedMapImage || null}
+                    />
+                </Display>
+                <StyledBox
+                    maxHeight={'150px'}
+                    wrap={'wrap'}
+                    gap={5}
+                    overflow={'auto'}
+                >
                     <Display condition={selectedTags.length}>
                         <>
                             <Typography>Теги: </Typography>
                             {selectedTags?.map(tag => (
                                 <StyledTag
                                     key={tag.id}
-                                    small>
+                                    small
+                                >
                                     {tag.name}
                                 </StyledTag>
                             ))}
                         </>
                     </Display>
-                    <StyledBox margin={'10px auto 0 auto'}>
+                    <StyledBox margin={selectedTags.length ? 'initial' : '10px auto 0 auto'}>
                         <Button
                             onClick={onOpenModalHandler}
                             size={'sm'}

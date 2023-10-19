@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsImageFetching } from '@/modules/map/containers/map-content/slice';
 import { StyledBox } from '@/ui/Box';
@@ -15,7 +15,13 @@ type MapContentPreviewPropsType = {
 }
 export const Preview = ({ image }: MapContentPreviewPropsType) => {
     const theme = useAppTheme();
-    const isImageLoading = useAppSelector(selectIsImageFetching)
+    const isImageLoading = useAppSelector(selectIsImageFetching);
+    const [isLoad, setIsLoad] = useState(true);
+
+    const onLoadHandler = () => {
+        setIsLoad(false)
+    };
+
 
     return (
         <StyledMapContentPreview
@@ -35,10 +41,11 @@ export const Preview = ({ image }: MapContentPreviewPropsType) => {
                     objectFit={'cover'}
                     objectPosition={'center'}
                     alt={'map'}
+                    onLoad={onLoadHandler}
                     priority
                 />
             </StyledBox>
-            <BoxLoader isLoading={isImageLoading}/>
+            <BoxLoader isLoading={isImageLoading || isLoad}/>
         </StyledMapContentPreview>
     );
 };
