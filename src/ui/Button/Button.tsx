@@ -14,7 +14,7 @@ export type ButtonProps = ButtonHTMLAttributes<any> & {
     onClick?: () => void;
     children?: ReactElement;
     bgColor?: Property.BackgroundColor;
-    borderRadius?: Property.BorderRadius<number>;
+    borderRadius?: Property.BorderRadius;
     color?: Property.Color;
 }
 export const Button = (props: ButtonProps & StyledButtonProps) => {
