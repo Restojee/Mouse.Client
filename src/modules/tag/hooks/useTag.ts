@@ -37,18 +37,22 @@ export const useTag = () => {
         }
     }, []);
 
-    const onTagDelete = useCallback((tagId: Tag['id'] | null): void => {
-        if (tagId) {
-            dispatch(deleteTagThunk({ tagId }));
-        }
-    }, []);
-
     const onOpenModal = useCallback((modalType: ModalType): void => {
         dispatch(setTagModalType(modalType));
     }, []);
 
     const onCloseModal = useCallback((): void => {
         dispatch(setTagModalType(null));
+    }, []);
+
+    const onTagDelete = useCallback(async (tagId: Tag['id'] | null): Promise<boolean> => {
+        if (tagId) {
+            const res = await dispatch(deleteTagThunk({ tagId }))
+            if (res.payload) {
+                onCloseModal()
+            }
+        }
+        return false
     }, []);
 
     const updateMapTags = useCallback((): void => {

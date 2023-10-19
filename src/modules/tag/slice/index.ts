@@ -24,8 +24,10 @@ export const deleteTagThunk = createAsyncThunk('tag/delete', async (arg: DeleteT
         const tags = await tagsApi.getTags();
         thunkAPI.dispatch(setTags(tags));
         thunkAPI.dispatch(setAppMessage({text: 'Тег успешно удален', severity: 'success'}));
+        return thunkAPI.fulfillWithValue(true)
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({text: 'Ошибка удаления тега', severity: 'error'}));
+        return thunkAPI.rejectWithValue(false)
     }
 });
 

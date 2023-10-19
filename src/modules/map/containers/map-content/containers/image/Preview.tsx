@@ -16,12 +16,6 @@ type MapContentPreviewPropsType = {
 export const Preview = ({ image }: MapContentPreviewPropsType) => {
     const theme = useAppTheme();
     const isImageLoading = useAppSelector(selectIsImageFetching);
-    const [isLoad, setIsLoad] = useState(true);
-
-    const onLoadHandler = () => {
-        setIsLoad(false)
-    };
-
 
     return (
         <StyledMapContentPreview
@@ -41,11 +35,10 @@ export const Preview = ({ image }: MapContentPreviewPropsType) => {
                     objectFit={'cover'}
                     objectPosition={'center'}
                     alt={'map'}
-                    onLoad={onLoadHandler}
                     priority
                 />
             </StyledBox>
-            <BoxLoader isLoading={isImageLoading || isLoad}/>
+            <BoxLoader isLoading={isImageLoading}/>
         </StyledMapContentPreview>
     );
 };
