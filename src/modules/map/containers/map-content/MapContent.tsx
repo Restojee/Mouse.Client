@@ -1,15 +1,11 @@
+import React, { useCallback, useMemo } from 'react';
+import { useMap } from '@/modules/map/common';
 import { IS_TABLET } from '@/common/constants';
 import { getMapImageLink } from '@/common/utils';
 import { formatDateTime } from '@/common/utils/formatDateTime';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppTheme } from '@/hooks/useAppTheme';
-import { setActiveMapIdentifier } from '@/modules/map/containers/map-content/containers/completed-images/slice';
-import { setSelectedTagIds } from '@/modules/map/containers/map-content/slice';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
 import { ModalCloseIcon } from '@/ui/ModalCloseIcon/ModalCloseIcon';
-import React, { useEffect, useMemo } from 'react';
-import { Map } from '@/api/codegen/genMouseMapsApi';
-import { mapsData } from '@/moc/mapsMoc';
 import { SidebarIcons } from './containers/actions/SidebarIcons';
 import { SidebarComments } from './containers/comments/SidebarComments';
 import { MiniMapImages } from './containers/completed-images/MiniMapImages';
@@ -21,32 +17,26 @@ import { SidebarProfile } from './components/sidebar-profile/SidebarProfile';
 import { StyledMapContentMain, StyledMapContentSidebar } from '../../styles/styled';
 import { Paper } from '@/ui/Paper';
 
-type MapContentPropsType = {
-    map: Map | null;
-}
-export const MapContent = ({ map }: MapContentPropsType) => {
-    const dispatch = useAppDispatch();
+// eslint-disable-next-line react/display-name
+export const MapContent = React.memo(() => {
     const theme = useAppTheme();
-    const {closeMap} = useMapView()
-    const completedMaps = mapsData;
+    const { closeMap } = useMapView();
+    const { map } = useMap();
 
-    const fixEventPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
+    const fixEventPropagation = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-    };
+    }, []);
 
     const dateTime = useMemo(() => {
-        if(map) {
-            return formatDateTime(map?.createdUtcDate)
+        if (map) {
+            return formatDateTime(map?.createdUtcDate);
         }
-        return ''
-    }, [map])
+        return '';
+    }, [map]);
 
-    useEffect(() => {
-        return () => {
-            dispatch(setSelectedTagIds([]))
-            dispatch(setActiveMapIdentifier(null));
-        }
-    }, [])
+    const mapImageLink = useMemo(() => {
+        return getMapImageLink(map?.image);
+    }, [map?.image]);
 
     return (
         <Paper
@@ -54,19 +44,19 @@ export const MapContent = ({ map }: MapContentPropsType) => {
             align={'flex-start'}
             padding={0}
             bgColor={theme.colors.primary}
-            direction={!IS_TABLET ?'row' : 'column'}
+            direction={!IS_TABLET ? 'row' : 'column'}
             maxWidth={1200}
             overflow={'auto'}
         >
             <StyledMapContentMain>
                 <Header
-                    completeCount={completedMaps.length}
-                    viewCount={completedMaps.length}
-                    commentsCount={completedMaps.length}
-                    map={map}
+                    completeCount={1}
+                    viewCount={2}
+                    commentsCount={3}
+                    title={map?.name}
                 />
-                <Preview image={getMapImageLink(map?.image)}/>
-                <MiniMapImages />
+                <Preview image={mapImageLink}/>
+                <MiniMapImages/>
                 <Note/>
                 <Tags tags={map?.tags}/>
             </StyledMapContentMain>
@@ -84,5 +74,5 @@ export const MapContent = ({ map }: MapContentPropsType) => {
             </StyledMapContentSidebar>
         </Paper>
     );
-};
+});
 

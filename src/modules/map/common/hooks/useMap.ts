@@ -5,7 +5,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
     addFavorite,
-    deleteMapThunk,
+    deleteMapThunk, selectCurrentMapContent,
     selectIsMapImageModalOpen, setIsMapImageModalOpen,
     updateMapImageThunk,
 } from '@/modules/map/containers/map-content/slice';
@@ -17,15 +17,16 @@ export const useMap = (mapId?: Map['id']) => {
     const router = useRouter();
 
     const isMapImageModalOpen = useAppSelector(selectIsMapImageModalOpen);
+    const map = useAppSelector(selectCurrentMapContent);
 
-    const onTextCopy = async (text: string) => {
+    const onTextCopy = useCallback(async (text: string) => {
         try {
             await navigator.clipboard.writeText(text);
             dispatch(setAppMessage({ severity: 'success', text: 'Скопировано' }));
         } catch (error) {
             dispatch(setAppMessage({ severity: 'error', text: 'Ошибка копирования' }));
         }
-    };
+    }, []);
 
     const onAddMapFavorite = useCallback((): void => {
         if (mapId) {
@@ -77,6 +78,7 @@ export const useMap = (mapId?: Map['id']) => {
     }, []);
 
     return {
+        map,
         isMapImageModalOpen,
         onMapDelete,
         onAddMapFavorite,

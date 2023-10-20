@@ -1,7 +1,12 @@
 import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
 import { setIsCommentsInitialized } from '@/modules/map/containers/map-content/containers/comments/slice';
+import { setActiveMapIdentifier } from '@/modules/map/containers/map-content/containers/completed-images/slice';
 import { useCallback } from 'react';
-import { setCurrentMapContent, setInitialMapContent } from '@/modules/map/containers/map-content/slice';
+import {
+    setCurrentMapContent,
+    setInitialMapContent, setIsInitialMap, setIsMapContentImageFetching,
+    setSelectedTagIds,
+} from '@/modules/map/containers/map-content/slice';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { routes } from '@/common/routes';
@@ -31,6 +36,10 @@ export const useMapView = () => {
     }, [mapId, isAuth]);
 
     const closeMap = useCallback(async () => {
+        dispatch(setSelectedTagIds([]))
+        dispatch(setActiveMapIdentifier(null));
+        dispatch(setIsInitialMap(true));
+        dispatch(setIsMapContentImageFetching(true));
         dispatch(setCurrentMapContent(null));
         dispatch(setInitialMapContent(null));
         dispatch(setIsCommentsInitialized(false));

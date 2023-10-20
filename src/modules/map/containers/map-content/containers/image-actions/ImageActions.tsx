@@ -20,6 +20,8 @@ export const ImageActions = () => {
         deleteCompletedMap,
     } = useCompletedMap(mapId);
 
+    console.log(isInitialMap)
+
     return (
         <StyledActionsContainer>
             <Display condition={isInitialMap}>

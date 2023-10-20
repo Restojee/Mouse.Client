@@ -11,14 +11,14 @@ type MapContentHeaderPropsType = {
     completeCount: number;
     viewCount: number;
     commentsCount: number;
-    map?: Map | null
+    title?: Map['name'];
 }
 export const Header = (props: MapContentHeaderPropsType) => {
     const {
         completeCount,
         viewCount,
         commentsCount,
-        map,
+        title,
     } = props;
 
     const {onMapNameCopy} = useMap()
@@ -30,14 +30,14 @@ export const Header = (props: MapContentHeaderPropsType) => {
     };
 
     const onCopyClickHandler = async () => {
-        await onMapNameCopy(map?.name)
+        await onMapNameCopy(title)
     }
 
     return (
         <StyledBox justify={'space-between'} align={'center'}>
             <StyledBox align={'center'} gap={10}>
                 <Typography fontSize={'1.1rem'}>
-                    !map {map?.name}
+                    !map {title}
                 </Typography>
                 <IconButton opacity="0.6" onClick={onCopyClickHandler}>
                     <CopyIcon/>

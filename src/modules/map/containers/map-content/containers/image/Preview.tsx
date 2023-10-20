@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsImageFetching } from '@/modules/map/containers/map-content/slice';
 import { StyledBox } from '@/ui/Box';
@@ -13,7 +13,8 @@ import { StyledMapContentPreview } from '@/ui/Message/styled';
 type MapContentPreviewPropsType = {
     image: Map['image']
 }
-export const Preview = ({ image }: MapContentPreviewPropsType) => {
+// eslint-disable-next-line react/display-name
+export const Preview = React.memo(({ image }: MapContentPreviewPropsType) => {
     const theme = useAppTheme();
     const isImageLoading = useAppSelector(selectIsImageFetching);
 
@@ -41,5 +42,5 @@ export const Preview = ({ image }: MapContentPreviewPropsType) => {
             <BoxLoader isLoading={isImageLoading}/>
         </StyledMapContentPreview>
     );
-};
+});
 

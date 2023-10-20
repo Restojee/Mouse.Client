@@ -119,6 +119,9 @@ const slice = createSlice({
         setSelectedTagIds: (state, action: PayloadAction<number[]>) => {
             state.selectedModalTagIds = action.payload;
         },
+        setIsMapContentImageFetching: (state, action: PayloadAction<boolean>) => {
+            state.isImageFetching = action.payload;
+        },
         toggleSelectedTagById: (state, action: PayloadAction<number>) => {
             const isAlreadySelected = state.selectedModalTagIds.includes(action.payload);
 
@@ -162,6 +165,7 @@ export const {
     setIsMapImageModalOpen,
     toggleSelectedTagById,
     setMapContentTags,
-    setSelectedTagIds
+    setSelectedTagIds,
+    setIsMapContentImageFetching
 } = slice.actions;
 export const mapReducer = slice.reducer;

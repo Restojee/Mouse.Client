@@ -1,18 +1,15 @@
 import React, { useCallback, useEffect } from 'react';
 import { useMap } from '@/modules/map/common';
 import { useCompletedMap, } from '../map-content/containers/completed-images/hooks/useCompletedMap';
-import { getMapByIdThunk, selectCurrentMapContent } from '../map-content/slice';
+import { getMapByIdThunk } from '../map-content/slice';
 import { ImageUploadModal } from '@/ui/ImageUploadModal/ImageUploadModal';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useAppSelector } from '@/hooks/useAppSelector';
 import { useMapView } from './hooks/useMapView';
 import { MapContent } from '../map-content';
 import { StyledModalWrapper } from '@/ui/Modal/styled';
 
 const MapViewModal = () => {
     const dispatch = useAppDispatch();
-
-    const map = useAppSelector(selectCurrentMapContent);
 
     const {
         mapId,
@@ -50,7 +47,7 @@ const MapViewModal = () => {
     return (
         <>
             <StyledModalWrapper onClick={closeMap}>
-                <MapContent map={map}/>
+                <MapContent />
             </StyledModalWrapper>
             <ImageUploadModal
                 title={'Обновить обложку карты'}
