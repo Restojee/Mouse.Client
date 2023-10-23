@@ -17,13 +17,8 @@ jobs:
 
       - name: Clean docker images
         run: |
-          docker compose down |
           docker system prune --all --force
-
-      - name: Build docker container
-        run: |
-          docker compose build --no-cache
 
       - name: Start docker container
         run: |
-          docker compose up -d --remove-orphans
+          docker compose up -d --build
