@@ -1,17 +1,19 @@
 import { Tag } from '@/api/codegen/genMouseMapsApi';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
 import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledNavLinkSection } from '@/layout/navigation/styles/StyledNavLinkSection';
 import { SidebarSection } from '@/layout/sidebar/SidebarSection';
 import { NavLink } from '@/layout/navigation/NavLink';
+import { getTagsThunk } from '@/modules/tag/slice';
 import { CloseIcon } from '@/svg/CloseIcon';
 import { AddIcon } from '@/svg/AddIcon';
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display';
 import { Modal } from '@/ui/Modal/Modal';
 import { ScrollBox } from '@/ui/ScrollBox/ScrollBox';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type TagsNavigationSectionProps = {
     isOpen: boolean;
@@ -26,6 +28,7 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
         tagsList,
     } = useTag();
 
+    const dispatch = useAppDispatch();
     const isAuth = useAppSelector(selectIsAuth);
     const [tagId, setTagId] = useState<Tag['id'] | null>(null);
 
@@ -41,6 +44,10 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
             onOpenModal('create');
         }
     };
+
+    useEffect(() => {
+        dispatch(getTagsThunk());
+    }, []);
 
     if (props.isOpen) {
         return (

@@ -34,7 +34,6 @@ export const onOpenMapContentThunk = createAsyncThunk('map/open-map', async (arg
             const mapId = arg.mapId;
             thunkAPI.dispatch(getMapByIdThunk({mapId}));
             thunkAPI.dispatch(getCompletedMapsByMapThunk({ mapId }));
-            thunkAPI.dispatch(getTagsThunk());
             thunkAPI.dispatch(getMapCommentsThunk({ mapId }));
         }
     } catch (error) {
