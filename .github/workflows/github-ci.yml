@@ -15,6 +15,16 @@ jobs:
       - name: Create .env
         run: echo "${{ secrets.PROD_ENV_FILE }}" > .env
 
-      - name: Rebuild and start docker container
+      - name: Clean docker images
         run: |
-          docker compose up -d --build
+          docker compose down |
+          docker compose rm -f |
+          docker image prune --all --force
+
+      - name: Build docker container
+        run: |
+          docker compose build --no-cache
+
+      - name: Start docker container
+        run: |
+          docker compose up -d --remove-orphans
