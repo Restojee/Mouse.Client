@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { getAppVersion } from '@/common/utils';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
-import { getTagsThunk } from '@/modules/tag';
 import { CreateTagPopup } from '@/modules/tag/containers/create-tag-popup/CreateTagPopup';
 import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledBox } from '@/ui/Box';
@@ -19,7 +17,6 @@ import { MapsByCategoryNavigation } from '@/modules/map/containers/map-navigatio
 const appVersion = getAppVersion()
 
 export const Sidebar = () => {
-    const dispatch = useAppDispatch();
     const [isOpen, setIsOpen] = React.useState(false);
 
     const isAuth = useAppSelector(selectIsAuth);
@@ -29,7 +26,6 @@ export const Sidebar = () => {
     } = useTag()
 
     useEffect(() => {
-        dispatch(getTagsThunk());
         setTimeout(() => {
             setIsOpen(window.innerWidth > 900)
         }, 200)

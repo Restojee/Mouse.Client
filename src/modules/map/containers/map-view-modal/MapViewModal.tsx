@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useMap } from '@/modules/map/common';
 import { useCompletedMap, } from '../map-content/containers/completed-images/hooks/useCompletedMap';
-import { getMapByIdThunk } from '../map-content/slice';
+import { onOpenMapContentThunk } from '../map-content/slice';
 import { ImageUploadModal } from '@/ui/ImageUploadModal/ImageUploadModal';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useMapView } from './hooks/useMapView';
@@ -40,7 +40,7 @@ const MapViewModal = () => {
 
     useEffect(() => {
         if (mapId) {
-            dispatch(getMapByIdThunk({ mapId }));
+            dispatch(onOpenMapContentThunk({ mapId }))
         }
     }, [mapId]);
 

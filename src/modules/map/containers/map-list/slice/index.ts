@@ -6,6 +6,7 @@ import {
 } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
+import { getCompletedMapsByMapThunk } from '@/modules/map/containers/map-content/containers/completed-images/slice';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MapsStateType } from '../types';
@@ -32,7 +33,7 @@ export const getFavoriteMapsThunk = createAsyncThunk('map/get-favorites', async 
     }
 });
 
-export const getCompletedMapsThunk = createAsyncThunk('map/get-completed', async (arg: GetCompletedMapsByUserApiArg, thunkAPI) => {
+export const getCompletedMapsByUserIdThunk = createAsyncThunk('map/get-completed', async (arg: GetCompletedMapsByUserApiArg, thunkAPI) => {
     try {
         const maps = await mapsApi.getCompletedByUserId(arg);
         thunkAPI.dispatch(setMaps(maps.records));
@@ -80,7 +81,7 @@ const slice = createSlice({
             .addCase(getFavoriteMapsThunk.pending, (state) => {
                 state.isMapsFetching = true;
             })
-            .addCase(getCompletedMapsThunk.pending, (state) => {
+            .addCase(getCompletedMapsByUserIdThunk.pending, (state) => {
                 state.isMapsFetching = true;
             })
             .addCase(getMapsThunk.fulfilled, (state) => {
@@ -89,7 +90,7 @@ const slice = createSlice({
             .addCase(getFavoriteMapsThunk.fulfilled, (state) => {
                 state.isMapsFetching = false;
             })
-            .addCase(getCompletedMapsThunk.fulfilled, (state) => {
+            .addCase(getCompletedMapsByUserIdThunk.fulfilled, (state) => {
                 state.isMapsFetching = false;
             })
             .addCase(getMapsThunk.rejected, (state) => {
@@ -98,7 +99,7 @@ const slice = createSlice({
             .addCase(getFavoriteMapsThunk.rejected, (state) => {
                 state.isMapsFetching = false;
             })
-            .addCase(getCompletedMapsThunk.rejected, (state) => {
+            .addCase(getCompletedMapsByMapThunk.rejected, (state) => {
                 state.isMapsFetching = false;
             });
     },

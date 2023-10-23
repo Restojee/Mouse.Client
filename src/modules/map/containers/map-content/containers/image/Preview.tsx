@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { selectIsImageFetching } from '@/modules/map/containers/map-content/slice';
+import { PreviewImage } from './components/PreviewImage';
+import { selectIsMapFetching } from '@/modules/map/containers/map-content/slice';
 import { StyledBox } from '@/ui/Box';
 import { BoxLoader } from '@/ui/BoxLoader/BoxLoader';
-import Image from 'next/image';
+import { ImageLoaderProps } from 'next/image';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { Map } from '@/api/codegen/genMouseMapsApi';
-import { DEFAULT_MAP_IMAGE } from '@/common/contants';
 import { ImageActions } from '../image-actions/ImageActions';
 import { StyledMapContentPreview } from '@/ui/Message/styled';
 
@@ -16,7 +16,16 @@ type MapContentPreviewPropsType = {
 // eslint-disable-next-line react/display-name
 export const Preview = React.memo(({ image }: MapContentPreviewPropsType) => {
     const theme = useAppTheme();
-    const isImageLoading = useAppSelector(selectIsImageFetching);
+    const [isLoading, setIsLoading] = useState(true);
+    const isMapFetching = useAppSelector(selectIsMapFetching);
+
+    const onLoadingHandler = useCallback(({ width, src }: ImageLoaderProps) => {
+        return src + '?w=' + width;
+    }, [image]);
+
+    useEffect(() => {
+        setIsLoading(true)
+    }, [image]);
 
     return (
         <StyledMapContentPreview
@@ -26,20 +35,17 @@ export const Preview = React.memo(({ image }: MapContentPreviewPropsType) => {
         >
             <ImageActions/>
             <StyledBox
-                opacity={isImageLoading ? 0 : 1}
+                opacity={isLoading ? 0 : 1}
                 transition={'0.2s'}
             >
-                <Image
-                    src={image || DEFAULT_MAP_IMAGE}
-                    width={800}
-                    height={400}
-                    objectFit={'cover'}
-                    objectPosition={'center'}
-                    alt={'map'}
-                    priority
+                <PreviewImage
+                    isMapFetching={isMapFetching}
+                    setIsLoading={setIsLoading}
+                    image={image}
+                    onLoadingHandler={onLoadingHandler}
                 />
             </StyledBox>
-            <BoxLoader isLoading={isImageLoading}/>
+            <BoxLoader isLoading={isMapFetching || isLoading}/>
         </StyledMapContentPreview>
     );
 });

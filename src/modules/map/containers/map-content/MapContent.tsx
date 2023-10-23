@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
+import { useCompletedMap } from './containers/completed-images/hooks/useCompletedMap';
 import { useMap } from '@/modules/map/common';
-import { IS_TABLET } from '@/common/constants';
-import { getMapImageLink } from '@/common/utils';
 import { formatDateTime } from '@/common/utils/formatDateTime';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
@@ -22,6 +21,7 @@ export const MapContent = React.memo(() => {
     const theme = useAppTheme();
     const { closeMap } = useMapView();
     const { map } = useMap();
+    const { activeMapCompleted } = useCompletedMap();
 
     const fixEventPropagation = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -29,14 +29,11 @@ export const MapContent = React.memo(() => {
 
     const dateTime = useMemo(() => {
         if (map) {
-            return formatDateTime(map?.createdUtcDate);
+            const dateTime = activeMapCompleted?.createdUtcDate || map?.createdUtcDate;
+            return formatDateTime(dateTime);
         }
         return '';
-    }, [map]);
-
-    const mapImageLink = useMemo(() => {
-        return getMapImageLink(map?.image);
-    }, [map?.image]);
+    }, [map?.createdUtcDate, activeMapCompleted?.createdUtcDate]);
 
     return (
         <Paper
@@ -44,7 +41,7 @@ export const MapContent = React.memo(() => {
             align={'flex-start'}
             padding={0}
             bgColor={theme.colors.primary}
-            direction={!IS_TABLET ? 'row' : 'column'}
+            direction={window.innerWidth > 760 ? 'row' : 'column'}
             maxWidth={1200}
             overflow={'auto'}
         >
@@ -55,7 +52,7 @@ export const MapContent = React.memo(() => {
                     commentsCount={3}
                     title={map?.name}
                 />
-                <Preview image={mapImageLink}/>
+                <Preview image={activeMapCompleted?.image || map?.image}/>
                 <MiniMapImages/>
                 <Note/>
                 <Tags tags={map?.tags}/>
@@ -66,7 +63,7 @@ export const MapContent = React.memo(() => {
                     onClick={closeMap}
                 />
                 <SidebarProfile
-                    user={map?.user}
+                    user={activeMapCompleted?.user || map?.user}
                     date={dateTime}
                 />
                 <SidebarIcons mapId={map?.id}/>

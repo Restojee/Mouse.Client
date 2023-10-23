@@ -1,4 +1,4 @@
-import { DEFAULT_MAP_IMAGE } from '@/common/contants';
+import { DEFAULT_MAP_IMAGE } from '@/common/constants';
 import packageJson from '../../../package.json';
 
 export const getMapImageLink = (link: string | null | undefined) => {

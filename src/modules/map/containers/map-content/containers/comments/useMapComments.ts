@@ -36,10 +36,6 @@ export const useMapComments = () => {
         }
     }, [commentText]);
 
-    const clearComments = useCallback(() => {
-        dispatch(setComments([]));
-    }, []);
-
     const onInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.currentTarget.value;
         setCommentText(text);
@@ -56,10 +52,6 @@ export const useMapComments = () => {
     }, [onCommentAdd]);
 
     useEffect(() => {
-        dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
-    }, [mapId]);
-
-    useEffect(() => {
         if (mapId) {
             const id = setInterval(() => {
                 dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
@@ -74,7 +66,6 @@ export const useMapComments = () => {
         comments,
         commentText,
         onCommentAdd,
-        clearComments,
         onInputChange,
         onInputKeyUp,
         isCommentsInitialized,

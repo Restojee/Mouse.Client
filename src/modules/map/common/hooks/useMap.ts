@@ -5,8 +5,10 @@ import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
     addFavorite,
-    deleteMapThunk, selectCurrentMapContent,
-    selectIsMapImageModalOpen, setIsMapImageModalOpen,
+    deleteMapThunk,
+    selectIsMapImageModalOpen,
+    selectMapContent,
+    setIsMapImageModalOpen,
     updateMapImageThunk,
 } from '@/modules/map/containers/map-content/slice';
 import { useRouter } from 'next/router';
@@ -17,16 +19,7 @@ export const useMap = (mapId?: Map['id']) => {
     const router = useRouter();
 
     const isMapImageModalOpen = useAppSelector(selectIsMapImageModalOpen);
-    const map = useAppSelector(selectCurrentMapContent);
-
-    const onTextCopy = useCallback(async (text: string) => {
-        try {
-            await navigator.clipboard.writeText(text);
-            dispatch(setAppMessage({ severity: 'success', text: 'Скопировано' }));
-        } catch (error) {
-            dispatch(setAppMessage({ severity: 'error', text: 'Ошибка копирования' }));
-        }
-    }, []);
+    const map = useAppSelector(selectMapContent);
 
     const onAddMapFavorite = useCallback((): void => {
         if (mapId) {
@@ -44,19 +37,21 @@ export const useMap = (mapId?: Map['id']) => {
         }
     }, [mapId]);
 
-    const onMapImageUpdate = useCallback(async (file: string): Promise<boolean> => {
-        try {
-            if (mapId) {
-                const res = await dispatch(updateMapImageThunk({ mapId,  file }));
-                dispatch(setAppMessage({ severity: 'success', text: 'Обложка обновлена' }));
-                return Boolean(res.payload);
-            }
-        } catch (error) {
-            dispatch(setAppMessage({ severity: 'error', text: 'Ошибка обновления обложки' }));
-            return false;
+    const onMapImageUpdate = useCallback(async (file: string) => {
+        if (mapId) {
+            const res = await dispatch(updateMapImageThunk({ mapId,  file }));
+            return res.payload;
         }
-        return false;
     }, [mapId]);
+
+    const onTextCopy = useCallback(async (text: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            dispatch(setAppMessage({ severity: 'success', text: 'Скопировано' }));
+        } catch (error) {
+            dispatch(setAppMessage({ severity: 'error', text: 'Ошибка копирования' }));
+        }
+    }, []);
 
     const onMapShare = useCallback(async (): Promise<void> => {
         const text = window.location.href;
@@ -65,7 +60,6 @@ export const useMap = (mapId?: Map['id']) => {
 
     const onMapNameCopy = useCallback(async (name: Map['name']): Promise<void> => {
         const text = `!map ${name}`;
-
         await onTextCopy(text);
     }, [mapId]);
 

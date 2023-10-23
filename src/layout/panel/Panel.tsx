@@ -53,7 +53,7 @@ export const Panel = (props: PanelProps) => {
                     </StyledNavLinkSection>
                 }
             />
-            <Avatar size={46} image={avatar} username={userData?.username} />
+            <Avatar size={40} image={avatar} username={userData?.username} />
             { tabsData.map(el => (
                 <NavLink
                     key={ el.tab }

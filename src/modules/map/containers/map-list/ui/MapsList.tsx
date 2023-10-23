@@ -5,9 +5,10 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
-    getCompletedMapsThunk,
+    getCompletedMapsByUserIdThunk,
     getFavoriteMapsThunk,
-    getMapsThunk, selectIsMapsFetching,
+    selectIsMapsFetching,
+    getMapsThunk,
     selectMaps,
 } from '@/modules/map/containers/map-list/slice';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
@@ -41,7 +42,7 @@ export const MapsList = () => {
                 dispatch(getFavoriteMapsThunk({ page: 0, size: 100, userId }));
                 break;
             case 'completed':
-                dispatch(getCompletedMapsThunk({ userId }));
+                dispatch(getCompletedMapsByUserIdThunk({ userId }));
                 break;
             default:
                 dispatch(getMapsThunk({ page: 0, size: 100 }));

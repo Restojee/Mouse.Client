@@ -1,20 +1,16 @@
-import React, { useCallback, useState } from 'react';
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import React, { useCallback } from 'react';
+import { selectMapContent } from '@/modules/map/containers/map-content/slice';
+import { Map, MapCompleted } from '@/api/codegen/genMouseMapsApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectCurrentUserId } from '@/modules/auth/slice';
 import {
-    selectCurrentMapContent,
-    selectInitialMapContent,
-    selectIsInitialMap,
-    setCurrentMapContent,
-    setIsInitialMap,
-} from '@/modules/map/containers/map-content/slice';
-import {
     addCompletedMapThunk,
-    deleteCompletedMapThunk, selectActiveMapIdentifier,
+    deleteCompletedMapThunk,
+    selectActiveMapCompleted,
     selectCompletedMaps,
-    selectIsCompletedModalOpen, setActiveMapIdentifier,
+    selectIsCompletedModalOpen,
+    setActiveMapCompletedById,
     setIsCompletedMapModalOpen,
 } from '../slice';
 
@@ -24,14 +20,12 @@ export const useCompletedMap = (mapId?: Map['id']) => {
     const isCompletedMapModalOpen = useAppSelector(selectIsCompletedModalOpen);
     const maps = useAppSelector(selectCompletedMaps);
     const userId = useAppSelector(selectCurrentUserId);
-    const initialMapContent = useAppSelector(selectInitialMapContent);
-    const currentMapContent = useAppSelector(selectCurrentMapContent);
-    const isInitialMap = useAppSelector(selectIsInitialMap);
-    const activeMapIdentifier = useAppSelector(selectActiveMapIdentifier);
+    const mapContent = useAppSelector(selectMapContent);
+    const activeMapCompleted = useAppSelector(selectActiveMapCompleted);
 
-    const isMyMap = currentMapContent?.user?.id === userId;
+    const isMyMap = mapContent?.user?.id === userId;
 
-    const onMapClick = useCallback((e?: React.MouseEvent<HTMLDivElement>, map?: Map) => {
+    const onMapClick = useCallback((e?: React.MouseEvent<HTMLDivElement>, id?: MapCompleted['user']['id'] | null) => {
         const currentElement: HTMLDivElement | undefined = e?.currentTarget;
         if (currentElement) {
             currentElement.scrollIntoView({
@@ -40,18 +34,8 @@ export const useCompletedMap = (mapId?: Map['id']) => {
                 inline: 'center',
             });
         }
-        if (map) {
-            dispatch(setIsInitialMap(false));
-            dispatch(setCurrentMapContent(map));
-            dispatch(setActiveMapIdentifier(map.user?.id));
-        }
+        dispatch(setActiveMapCompletedById(id));
     }, []);
-
-    const onInitialMapClick = useCallback(() => {
-        dispatch(setActiveMapIdentifier(null));
-        dispatch(setIsInitialMap(true));
-        dispatch(setCurrentMapContent(initialMapContent));
-    }, [initialMapContent]);
 
     const addCompletedMap = useCallback(async (mapId: Map['id'], file: string) => {
         if (mapId && file) {
@@ -62,9 +46,8 @@ export const useCompletedMap = (mapId?: Map['id']) => {
     const deleteCompletedMap = useCallback(() => {
         if (mapId) {
             dispatch(deleteCompletedMapThunk({ mapId }));
-            onInitialMapClick();
         }
-    }, [mapId, onInitialMapClick]);
+    }, [mapId]);
 
     const onCompletedMapModalClose = useCallback(() => {
         dispatch(setIsCompletedMapModalOpen(false));
@@ -78,11 +61,9 @@ export const useCompletedMap = (mapId?: Map['id']) => {
         maps,
         isMyMap,
         onMapClick,
-        isInitialMap,
         addCompletedMap,
-        onInitialMapClick,
         deleteCompletedMap,
-        activeMapIdentifier,
+        activeMapCompleted,
         isCompletedMapModalOpen,
         onCompletedMapModalOpen,
         onCompletedMapModalClose,

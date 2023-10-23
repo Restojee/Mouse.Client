@@ -1,12 +1,6 @@
-import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
-import { setIsCommentsInitialized } from '@/modules/map/containers/map-content/containers/comments/slice';
-import { setActiveMapIdentifier } from '@/modules/map/containers/map-content/containers/completed-images/slice';
 import { useCallback } from 'react';
-import {
-    setCurrentMapContent,
-    setInitialMapContent, setIsInitialMap, setIsMapContentImageFetching,
-    setSelectedTagIds,
-} from '@/modules/map/containers/map-content/slice';
+import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
+import { onCloseMapContentThunk } from '@/modules/map/containers/map-content/slice';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { routes } from '@/common/routes';
@@ -25,25 +19,22 @@ export const useMapView = () => {
     const id = Number(mapId);
 
     const openMap = useCallback(async (id: Map['id']): Promise<void> => {
-        if (id && isAuth) {
+        try {
+            if (!id || !isAuth) {
+                throw new Error('Ошибка открытия карты');
+            }
             await router.push({
                 pathname: router.pathname,
                 query: { mapId: id },
             });
-        } else {
+        } catch (err) {
             dispatch(setAppMessage({ severity: 'error', text: 'Ошибка открытия карты' }));
         }
     }, [mapId, isAuth]);
 
     const closeMap = useCallback(async () => {
-        dispatch(setSelectedTagIds([]))
-        dispatch(setActiveMapIdentifier(null));
-        dispatch(setIsInitialMap(true));
-        dispatch(setIsMapContentImageFetching(true));
-        dispatch(setCurrentMapContent(null));
-        dispatch(setInitialMapContent(null));
-        dispatch(setIsCommentsInitialized(false));
         await router.push(routes.MAPS);
+        await dispatch(onCloseMapContentThunk());
     }, [router]);
 
     useGlobalKeyDown(async (e) => {

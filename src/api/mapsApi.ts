@@ -34,8 +34,8 @@ export const mapsApi = {
         const res = await api.get<GetMapsApiArg, AxiosResponse<GetMapsApiResponse>>('/maps/collect', { params });
         return res.data;
     },
-    getMapsById: async (params: GetMapApiArg) => {
-        const res = await api.get<GetMapApiArg, AxiosResponse<GetMapApiResponse>>(`/maps/one/by-id/${params.mapId}`);
+    getMapsById: async (params: GetMapApiArg, signal?: AbortSignal) => {
+        const res = await api.get<GetMapApiArg, AxiosResponse<GetMapApiResponse>>(`/maps/one/by-id/${params.mapId}`, {signal});
         return res.data;
     },
     createMap: async (body: CreateMapRequest) => {

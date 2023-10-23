@@ -91,7 +91,7 @@ export type GetCompletedMapsByMapApiArg = {
   mapId?: number;
 };
 
-export type GetCompletedMapsByMapApiResponse = /** status 200 OK */ Map[];
+export type GetCompletedMapsByMapApiResponse = /** status 200 OK */ MapCompleted[];
 
 export type GetMapsApiResponse = /** status 200 OK */ {
   records: Map[];
@@ -159,6 +159,12 @@ export type User = {
   avatar?: string;
   username?: string;
 };
+export type MapCompleted = {
+  user: User;
+  image: Map['image'];
+  createdUtcDate: Map['createdUtcDate'];
+  modifiedUtcDate: Map['modifiedUtcDate']
+}
 export type Map = {
   id?: number;
   name?: string;

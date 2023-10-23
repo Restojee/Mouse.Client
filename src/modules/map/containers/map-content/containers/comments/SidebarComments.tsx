@@ -20,7 +20,6 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
         onCommentAdd,
         onInputChange,
         onInputKeyUp,
-        clearComments,
         isCommentsInitialized,
         isCommentCreateFetching
     } = useMapComments();
@@ -69,10 +68,7 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
 
     useEffect(() => {
         scrollToBottomHandler();
-        return () => {
-            clearComments()
-        }
-    }, [clearComments]);
+    }, []);
 
     return (
         <StyledBox

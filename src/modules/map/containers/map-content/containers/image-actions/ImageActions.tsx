@@ -16,20 +16,18 @@ export const ImageActions = () => {
 
     const {
         isMyMap,
-        isInitialMap,
+        activeMapCompleted,
         deleteCompletedMap,
     } = useCompletedMap(mapId);
 
-    console.log(isInitialMap)
-
     return (
         <StyledActionsContainer>
-            <Display condition={isInitialMap}>
+            <Display condition={Boolean(!activeMapCompleted)}>
                 <IconButton onClick={onMapImageModalOpen} isStylized>
                     <EditFillIcon/>
                 </IconButton>
             </Display>
-            <Display condition={isMyMap && !isInitialMap}>
+            <Display condition={isMyMap && Boolean(activeMapCompleted)}>
                 <IconButton onClick={deleteCompletedMap} isStylized>
                     <DeleteIcon/>
                 </IconButton>

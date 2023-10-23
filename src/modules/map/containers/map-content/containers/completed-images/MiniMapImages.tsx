@@ -1,9 +1,4 @@
-import { useAppDispatch } from '@/hooks/useAppDispatch';
-import {
-    getCompletedMapsThunk,
-    setCompletedMaps,
-} from '@/modules/map/containers/map-content/containers/completed-images/slice';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { getMapImageLink } from '@/common/utils';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
@@ -14,21 +9,12 @@ import { StyledBox } from '@/ui/Box';
 
 export const MiniMapImages = () => {
     const { mapId } = useMapView();
-    const dispatch = useAppDispatch();
 
     const {
         maps,
         onMapClick,
-        onInitialMapClick,
-        activeMapIdentifier
+        activeMapCompleted
     } = useCompletedMap(mapId);
-
-    useEffect(() => {
-        dispatch(getCompletedMapsThunk({ mapId }));
-        return () => {
-            dispatch(setCompletedMaps([]))
-        }
-    }, [mapId]);
 
     if (!maps?.length) {
         return null;
@@ -42,17 +28,17 @@ export const MiniMapImages = () => {
                 gap={10}
             >
                 <StyledMiniMapImageContainer
-                    onClick={onInitialMapClick}
-                    isActive={activeMapIdentifier === null}
+                    onClick={(e) => onMapClick(e, null)}
+                    isActive={!activeMapCompleted}
                     username="Карта"
                 >
                     Карта
                 </StyledMiniMapImageContainer>
                 {maps?.map((item, index) => (
                     <StyledMiniMapImageContainer
-                        key={item.id ? `${item.id + index}` : index}
-                        onClick={(e) => onMapClick(e, item)}
-                        isActive={activeMapIdentifier === item.user?.id}
+                        key={item.createdUtcDate}
+                        onClick={(e) => onMapClick(e, item.user?.id)}
+                        isActive={activeMapCompleted?.user.id === item.user?.id}
                         username={item.user?.username}
                         isVisible
                     >

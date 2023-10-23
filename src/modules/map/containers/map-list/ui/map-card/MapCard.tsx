@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { DEFAULT_MAP_IMAGE } from '@/common/contants';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMap } from '@/modules/map/common';
 import { StyledMapCard } from '@/modules/map/styles/StyledMapCard';
@@ -23,7 +22,7 @@ type MapCardProps = {
     label?: string | null;
     addedCount?: number;
     commentsCount?: number;
-    image?: string | null;
+    image: string;
     onClick?: (id: Map['id']) => void;
 }
 export const MapCard = (props: MapCardProps) => {
@@ -71,7 +70,7 @@ export const MapCard = (props: MapCardProps) => {
                     />
                 </StyledMapCardButton>
                 <Image
-                    src={image || DEFAULT_MAP_IMAGE}
+                    src={image}
                     alt=" "
                     objectFit={'cover'}
                     objectPosition={'center'}
