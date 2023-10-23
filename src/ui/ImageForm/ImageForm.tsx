@@ -1,13 +1,17 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
-import { StyledImageFormContainer, StyledImageFormLink } from '@/ui/ImageForm/ImageFormElements';
+import { Display } from '@/ui/Display';
+import { StyledImageFormContainer, StyledImageFormLink, StyledImageHover } from '@/ui/ImageForm/ImageFormElements';
+import { Property } from 'csstype';
+import React, { useEffect, useRef, useState } from 'react';
 
 type ImageFormPropsType = {
     placeholder?: string;
-    onClick?: (file: Blob) => void;
+    onClick?: (file: string) => void;
     name?: string;
-    onChange: (file: Blob) => void;
-    value: Blob | null;
+    onChange: (file: string) => void;
+    value: string | null;
     fileType?: 'image';
+    width?: Property.Width<number>;
+    height?: Property.Height<number>;
 };
 export const ImageForm = (props: ImageFormPropsType) => {
 
@@ -22,33 +26,45 @@ export const ImageForm = (props: ImageFormPropsType) => {
         inputFile.current?.click();
     };
 
-    const convertFileToBlob = (file: File, callBack: (value: Blob) => void): void => {
+    const convertFileToDataUrl = (file: File, callback: (result: string | void) => void): string | void => {
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            const arrayBuffer = e.target?.result as ArrayBuffer;
-            const blob = new Blob([arrayBuffer], { type: file.type });
-            callBack(blob);
+            const dataUrl = e.target?.result;
+            if (typeof dataUrl === 'string') {
+                callback(dataUrl);
+            }
         };
 
-        reader.readAsArrayBuffer(file);
-    }
+        reader.readAsDataURL(file);
+    };
 
     const uploadFile = (files: FileList | null) => {
         if (files && files.length) {
             const file = files[0];
-            convertFileToBlob(file, (blob: Blob) => {
-                props.onChange(blob);
+            convertFileToDataUrl(file, (convertedFile) => {
+                if (convertedFile) {
+                    props.onChange(convertedFile);
+                }
             });
         }
     };
-    const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+
+    const uploadHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const files = e.target.files;
 
         if (files) {
             uploadFile(files);
         }
     };
+
+    function onPasteHandler(e: ClipboardEvent): any {
+        const files = e.clipboardData?.files;
+        if (files) {
+            uploadFile(files);
+        }
+    };
+
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setDrag(true);
@@ -66,6 +82,14 @@ export const ImageForm = (props: ImageFormPropsType) => {
         uploadFile(files);
     };
 
+    useEffect(() => {
+        document.addEventListener('paste', onPasteHandler);
+
+        return () => {
+            document.removeEventListener('paste', onPasteHandler);
+        };
+    });
+
     return (
         <StyledImageFormContainer
             onClick={onClickHandler}
@@ -73,8 +97,10 @@ export const ImageForm = (props: ImageFormPropsType) => {
             onDragLeave={(e) => dragLeaveHandler(e)}
             onDragOver={(e) => dragStartHandler(e)}
             onDrop={(e) => onDropHandler(e)}
-            image={props.value && URL.createObjectURL(props.value)}
+            image={props.value}
             isDrag={drag}
+            width={props.width}
+            height={props.height}
         >
             <input
                 accept={props.fileType && inputAccept[props.fileType]}
@@ -85,11 +111,16 @@ export const ImageForm = (props: ImageFormPropsType) => {
                 style={{ display: 'none' }}
             />
             {!props.value && (
-                <>
-                    <StyledImageFormLink>Загрузите,</StyledImageFormLink>
-                    <span> перетащите изображение или вставьте из буфера (Ctrl+V)</span>
-                </>
+                <span>
+                    <StyledImageFormLink>Загрузите скрин,</StyledImageFormLink>
+                    <span> перетащите или вставьте из буфера обмена (Ctrl+V)</span>
+                </span>
             )}
+            <Display condition={props.value}>
+                <StyledImageHover>
+                    Изменить скрин
+                </StyledImageHover>
+            </Display>
         </StyledImageFormContainer>
     );
 };

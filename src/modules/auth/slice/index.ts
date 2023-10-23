@@ -1,6 +1,5 @@
 import { authApi } from '@/api/authApi';
 import { User } from '@/api/codegen/genMouseMapsApi';
-import { setAppMessage } from '@/bll/appReducer';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthStateType } from '../types';
@@ -11,15 +10,16 @@ export const refreshThunk = createAsyncThunk('refresh', async (arg, thunkAPI) =>
 
 export const getCurrentUserThunk = createAsyncThunk('current-user', async (arg, thunkAPI) => {
     try {
+        const state = thunkAPI.getState() as RootState;
+        const currentUser = state.auth.user;
         const res = await authApi.getCurrentUser();
-
-        if (res.id) {
+        if (res.id && res.id !== currentUser?.id) {
             thunkAPI.dispatch(setAuthStatus('authenticated'));
             thunkAPI.dispatch(setCurrentUser(res));
         }
     } catch (error) {
-        thunkAPI.dispatch(setAuthStatus('unauthenticated'))
-        thunkAPI.dispatch(setCurrentUser(null))
+        thunkAPI.dispatch(setAuthStatus('unauthenticated'));
+        thunkAPI.dispatch(setCurrentUser(null));
     }
 });
 
@@ -47,12 +47,13 @@ const slice = createSlice({
                 state.isAuth = false;
                 state.user = null;
                 state.status = 'unauthenticated';
-            })
+            });
     },
 });
 
 export const selectIsAuth = (state: RootState) => state.auth?.isAuth;
 export const selectCurrentUser = (state: RootState) => state.auth.user;
+export const selectCurrentUserId = (state: RootState) => state.auth.user?.id;
 
 export const {
     setAuthStatus,

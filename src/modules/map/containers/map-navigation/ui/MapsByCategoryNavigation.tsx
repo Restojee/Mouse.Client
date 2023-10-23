@@ -1,3 +1,4 @@
+import { useMapNavigation } from '../hooks/useMapNavigation';
 import { StyledBox } from "@/ui/Box";
 import { SidebarSection } from "@/layout/sidebar/SidebarSection";
 import { NavLink } from "@/layout/navigation/NavLink";
@@ -8,6 +9,11 @@ type MapsByCategoryNavigationSectionProps = {
     isOpen: boolean
 }
 export function MapsByCategoryNavigation(props: MapsByCategoryNavigationSectionProps) {
+
+    const {
+        navigateTo
+    } = useMapNavigation();
+
     return (
         <StyledBox
             transition="0.3s"
@@ -19,6 +25,7 @@ export function MapsByCategoryNavigation(props: MapsByCategoryNavigationSectionP
                 isOpen={ props.isOpen }
             />
             <NavLink
+                onClick={()=> navigateTo('')}
                 label="Все карты"
                 prepend={(
                     <StyledNavLinkSection isOpen={ props.isOpen }>

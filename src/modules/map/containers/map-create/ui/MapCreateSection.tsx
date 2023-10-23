@@ -11,14 +11,17 @@ import PagePanelItem from '@/layout/page/PagePanelItem';
 
 export const MapCreateSection = () => {
     const theme = useAppTheme();
+
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isContentVisible, setIsContentVisible] = useState(false);
 
-    const isAuth = useAppSelector(selectIsAuth)
+    const isAuth = useAppSelector(selectIsAuth);
 
     const {
+        name,
+        setName,
         onMapCreate,
-    } = useMapCreate()
+    } = useMapCreate();
 
     const { isValid } = useMapCreate();
 
@@ -29,12 +32,12 @@ export const MapCreateSection = () => {
 
     const onIconClickHandler = async () => {
         if (isContentVisible) {
-            await onSubmitHandler()
+            await onSubmitHandler();
         } else {
-            setIsContentVisible(true)
+            setIsContentVisible(true);
         }
-        setIsPopupOpen(false)
-    }
+        setIsPopupOpen(false);
+    };
 
     return (
         <PagePanelItem
@@ -44,8 +47,11 @@ export const MapCreateSection = () => {
             onClick={onIconClickHandler}
             content={
                 <MapCreatePopup
+                    name={name}
+                    setName={setName}
                     isVisible={isPopupOpen}
-                    onClickCreate={() => setIsPopupOpen(!isPopupOpen)}
+                    onImagePopupToggle={() => setIsPopupOpen(!isPopupOpen)}
+                    onMapCreate={onSubmitHandler}
                 />
             }
         >

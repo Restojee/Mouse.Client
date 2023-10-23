@@ -1,4 +1,5 @@
-import { Suspense } from 'react';
+import { Property } from 'csstype';
+import { ReactNode, Suspense } from 'react';
 import { AsyncModalContent } from './AsyncModalContent';
 
 export type ModalPropsType = {
@@ -6,6 +7,9 @@ export type ModalPropsType = {
     onClose: () => void;
     onAccess: () => void;
     text?: string;
+    title?: string;
+    width?: Property.Width<number>;
+    children?: ReactNode;
 }
 export const Modal = ({ isOpen, ...props }: ModalPropsType) => {
 

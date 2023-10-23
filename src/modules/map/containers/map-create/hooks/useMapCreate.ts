@@ -1,14 +1,15 @@
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { Map, Tag } from '@/api/codegen/genMouseMapsApi';
+import { setAppMessage } from '@/bll/appReducer';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
-    createMapThunk,
+    createMapThunk, selectCompletedMapImage,
     selectMapImage,
     selectMapName,
-    selectMapTags,
+    selectMapTags, setCompletedMapImage,
     setMapImage,
     setMapName,
-    setMapTags,
+    setMapTagIds,
 } from '@/modules/map/containers/map-create/slice';
 import { useCallback, useMemo } from 'react';
 
@@ -16,14 +17,19 @@ export const useMapCreate = () => {
     const dispatch = useAppDispatch();
     const name = useAppSelector(selectMapName);
     const image = useAppSelector(selectMapImage);
+    const completedMapImage = useAppSelector(selectCompletedMapImage);
     const tags = useAppSelector(selectMapTags);
 
-    const onTagsChange = useCallback((tags: Map['tags']): void => {
-        dispatch(setMapTags(tags));
+    const onTagsChange = useCallback((tags: Tag['id'][]): void => {
+        dispatch(setMapTagIds(tags));
     }, []);
 
-    const onImageChange = useCallback((image: Blob): void => {
+    const onImageChange = useCallback((image: string): void => {
         dispatch(setMapImage(image));
+    }, []);
+
+    const onCompletedMapImageChange = useCallback((image: string): void => {
+        dispatch(setCompletedMapImage(image));
     }, []);
 
     const onNameChange = useCallback((name: Map['name']): void => {
@@ -31,8 +37,17 @@ export const useMapCreate = () => {
     }, []);
 
     const onMapCreate = useCallback(async (): Promise<void> => {
-        dispatch(createMapThunk());
-    }, []);
+        const nameLength = name?.trim().length
+        if (nameLength && nameLength < 10) {
+            dispatch(createMapThunk());
+            dispatch(setMapImage(''));
+            dispatch(setCompletedMapImage(''));
+            dispatch(setMapName(''));
+            dispatch(setMapTagIds([]));
+        } else {
+            dispatch(setAppMessage({severity: 'error', text: 'Некорректный номер карты'}))
+        }
+    }, [name]);
 
     const isValid = useMemo((): boolean => {
         return name ? name.trim().length > 1 : false;
@@ -41,10 +56,12 @@ export const useMapCreate = () => {
     return {
         name,
         image,
+        completedMapImage,
         tags,
         setName: onNameChange,
         setImage: onImageChange,
         setTags: onTagsChange,
+        setCompletedMapImage: onCompletedMapImageChange,
         onMapCreate,
         isValid,
     };

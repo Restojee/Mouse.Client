@@ -1,3 +1,4 @@
+import { IS_TABLET } from '@/common/constants/breakpoints';
 import styled from "styled-components";
 import { StyledBox } from "@/ui/Box";
 import { StyledTextarea } from "@/ui/Textarea/styled";
@@ -9,24 +10,30 @@ export const StyledMapContentMain = styled.div(({theme}) => ({
     minHeight: "100%",
     overflow: "auto",
     color: theme.colors.textOnPrimary,
-    padding: 20,
+    padding: '20px 20px 40px 20px',
     borderRadius: "inherit",
     flexGrow: 1,
     "::placeholder": {
         color: "rgba(255, 255, 255, 0.5)",
     },
+    ...IS_TABLET && {
+        minHeight: 'auto',
+        overflow: "initial",
+        maxWidth: '100%',
+        padding: '20px 10px',
+    }
 }))
 
 export const StyledMapContentNoteForm = styled(StyledTextarea)(({theme}) => ({
-    marginTop: 'auto',
-    backgroundColor: theme.colors.primaryLighter,
+    marginBottom: 'auto',
+    backgroundColor: theme.colors.primaryAccent,
     "&:hover": {
         opacity: 0.8,
-        backgroundColor: theme.colors.primaryLighter,
+        backgroundColor: theme.colors.primaryAccent,
     },
     "&:focus": {
         opacity: 0.8,
-        backgroundColor: theme.colors.primaryLighter,
+        backgroundColor: theme.colors.primaryAccent,
     },
 }))
 
@@ -48,6 +55,11 @@ export const StyledMapContentSidebar = styled.div(({theme}) => ({
         maxWidth: "300px",
         minWidth: "300px",
     },
+    ...IS_TABLET && {
+        maxWidth: 'none!important',
+        minWidth: 'none!important',
+        minHeight: '96vh',
+    }
 }))
 
 export const StyledContentSidebarBodyIcon = styled.div({
@@ -96,6 +108,9 @@ export const StyledContentSidebarBodyIcon = styled.div({
         "&::before": {
             transform: "scale(1.3)"
         }
+    },
+    ...IS_TABLET && {
+        padding: '20px 0'
     }
 })
 

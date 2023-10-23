@@ -13,7 +13,9 @@ export type ButtonProps = ButtonHTMLAttributes<any> & {
     type?: 'button' | 'submit';
     onClick?: () => void;
     children?: ReactElement;
-    bgColor?: Property.BackgroundColor
+    bgColor?: Property.BackgroundColor;
+    borderRadius?: Property.BorderRadius;
+    color?: Property.Color;
 }
 export const Button = (props: ButtonProps & StyledButtonProps) => {
 

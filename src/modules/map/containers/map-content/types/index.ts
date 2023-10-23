@@ -2,5 +2,12 @@ import { Map } from '@/api/codegen/genMouseMapsApi';
 
 export type MapContentStateType = {
     mapContent: Map | null;
-    isTagsModalOpen: boolean;
+    isMapImageModalOpen: boolean,
+    isMapFetching: boolean;
+    selectedModalTagIds: number[];
+}
+
+export type UpdateMapImageThunkArgType = {
+    mapId: Map['id'];
+    file: string;
 }

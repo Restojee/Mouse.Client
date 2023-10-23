@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-
 export type TThemes = "light" | "dark";
 
 type TAppMessage = {

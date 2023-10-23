@@ -1,67 +1,75 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { shallowEqual } from 'react-redux';
 import {
     addMapCommentsThunk,
     getMapCommentsThunk,
+    selectIsCommentCreateFetching,
+    selectIsCommentsInitialized,
     selectMapComments,
+    setComments,
 } from './slice';
 import { useRouter } from 'next/router';
-import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
+import { Map } from '@/api/codegen/genMouseMapsApi';
 
 export const useMapComments = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const comments = useAppSelector(selectMapComments);
+    const comments = useAppSelector(selectMapComments, shallowEqual);
+    const isCommentsInitialized = useAppSelector(selectIsCommentsInitialized);
+    const isCommentCreateFetching = useAppSelector(selectIsCommentCreateFetching);
 
     const [commentText, setCommentText] = useState('');
 
-    const { id } = router.query;
+    const { mapId } = router.query;
 
-    const onCommentAdd = useCallback((mapId: Map['id']): void => {
+    const onCommentAdd = useCallback(async (mapId: Map['id']): Promise<void> => {
         const messageText = String(commentText).trim();
 
         if (messageText.length) {
-            dispatch(addMapCommentsThunk({ mapId, text: commentText }));
-            setCommentText('');
+            const res = await dispatch(addMapCommentsThunk({ mapId, text: commentText }));
+            if (res.payload) {
+                setCommentText('');
+            }
         }
     }, [commentText]);
 
-    const onCommentDelete = useCallback((id: Comment['id']): void => {
-        alert('удаление коммента пока не работает');
-    }, []);
-
-    const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const onInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.currentTarget.value;
         setCommentText(text);
-    };
+    }, []);
 
-    const onInputKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>, mapId: Map['id']): void => {
+    const onInputKeyUp = useCallback(async (e: React.KeyboardEvent<HTMLTextAreaElement>, mapId: Map['id']): Promise<void> => {
         if (e.ctrlKey || e.shiftKey) {
             return;
         }
 
         if (e.key === 'Enter') {
-            e.preventDefault();
-            onCommentAdd(mapId);
+            await onCommentAdd(mapId);
         }
-    };
+    }, [onCommentAdd]);
 
     useEffect(() => {
-        if (id) {
-            const mapId = Number(id);
-            dispatch(getMapCommentsThunk({ mapId }));
+        if (mapId) {
+            const id = setInterval(() => {
+                dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
+            }, 5000);
+            return () => {
+                clearInterval(id);
+            };
         }
-    }, [id]);
+    }, [mapId]);
 
     return {
         comments,
         commentText,
         onCommentAdd,
-        onCommentDelete,
         onInputChange,
-        onInputKeyDown,
+        onInputKeyUp,
+        isCommentsInitialized,
+        isCommentCreateFetching,
     };
 };
 

@@ -1,15 +1,15 @@
 import styled, { CSSObject } from 'styled-components';
 import { Property } from "csstype";
 
-
 type StyledIconButtonPropsType = {
     opacity?: Property.Opacity,
     margin?: Property.Margin,
     padding?: Property.Padding,
     right?: Property.Right,
-    isAdmin?: boolean
+    isAdmin?: boolean,
+    isStylized?: boolean,
 }
-export const IconButton = styled.button<StyledIconButtonPropsType>(props => ({
+export const IconButton = styled.button<StyledIconButtonPropsType>(({ theme, ...props }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -29,5 +29,11 @@ export const IconButton = styled.button<StyledIconButtonPropsType>(props => ({
     ...props.disabled && {
         opacity: 0.5,
         pointerEvents: 'none'
-    }
+    },
+    ...props.isStylized && {
+        borderRadius: '50%',
+        height: 'min-content',
+        padding: 5,
+        backgroundColor: theme.colors.secondaryAccent
+    } as CSSObject
 }))

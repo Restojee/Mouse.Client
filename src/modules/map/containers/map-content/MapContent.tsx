@@ -1,13 +1,10 @@
-import { getMapImageLink } from '@/common/utils';
+import React, { useCallback, useMemo } from 'react';
+import { useCompletedMap } from './containers/completed-images/hooks/useCompletedMap';
+import { useMap } from '@/modules/map/common';
+import { formatDateTime } from '@/common/utils/formatDateTime';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
-import { CloseIcon } from '@/svg/CloseIcon';
-import { StyledBox } from '@/ui/Box';
-import { IconButton } from '@/ui/Button/IconButton';
 import { ModalCloseIcon } from '@/ui/ModalCloseIcon/ModalCloseIcon';
-import React from 'react';
-import { Comment, Map } from '@/api/codegen/genMouseMapsApi';
-import { mapsData } from '@/moc/mapsMoc';
 import { SidebarIcons } from './containers/actions/SidebarIcons';
 import { SidebarComments } from './containers/comments/SidebarComments';
 import { MiniMapImages } from './containers/completed-images/MiniMapImages';
@@ -19,17 +16,24 @@ import { SidebarProfile } from './components/sidebar-profile/SidebarProfile';
 import { StyledMapContentMain, StyledMapContentSidebar } from '../../styles/styled';
 import { Paper } from '@/ui/Paper';
 
-type MapContentPropsType = {
-    map: Map | null;
-}
-export const MapContent = ({ map }: MapContentPropsType) => {
+// eslint-disable-next-line react/display-name
+export const MapContent = React.memo(() => {
     const theme = useAppTheme();
-    const {closeMap} = useMapView()
-    const completedMaps = mapsData;
+    const { closeMap } = useMapView();
+    const { map } = useMap();
+    const { activeMapCompleted } = useCompletedMap();
 
-    const fixEventPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
+    const fixEventPropagation = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-    };
+    }, []);
+
+    const dateTime = useMemo(() => {
+        if (map) {
+            const dateTime = activeMapCompleted?.createdUtcDate || map?.createdUtcDate;
+            return formatDateTime(dateTime);
+        }
+        return '';
+    }, [map?.createdUtcDate, activeMapCompleted?.createdUtcDate]);
 
     return (
         <Paper
@@ -37,21 +41,21 @@ export const MapContent = ({ map }: MapContentPropsType) => {
             align={'flex-start'}
             padding={0}
             bgColor={theme.colors.primary}
-            direction={'row'}
+            direction={window.innerWidth > 760 ? 'row' : 'column'}
             maxWidth={1200}
             overflow={'auto'}
         >
             <StyledMapContentMain>
                 <Header
-                    completeCount={completedMaps.length}
-                    viewCount={completedMaps.length}
-                    commentsCount={completedMaps.length}
-                    map={map}
+                    completeCount={1}
+                    viewCount={2}
+                    commentsCount={3}
+                    title={map?.name}
                 />
-                <Preview image={getMapImageLink(map?.image)}/>
-                <MiniMapImages maps={completedMaps}/>
-                <Tags tags={map?.tags}/>
+                <Preview image={activeMapCompleted?.image || map?.image}/>
+                <MiniMapImages/>
                 <Note/>
+                <Tags tags={map?.tags}/>
             </StyledMapContentMain>
             <StyledMapContentSidebar>
                 <ModalCloseIcon
@@ -59,13 +63,13 @@ export const MapContent = ({ map }: MapContentPropsType) => {
                     onClick={closeMap}
                 />
                 <SidebarProfile
-                    user={map?.user}
-                    date={'01.01.2000'}
+                    user={activeMapCompleted?.user || map?.user}
+                    date={dateTime}
                 />
                 <SidebarIcons mapId={map?.id}/>
                 <SidebarComments mapId={map?.id}/>
             </StyledMapContentSidebar>
         </Paper>
     );
-};
+});
 

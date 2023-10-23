@@ -1,4 +1,3 @@
-import { DEFAULT_USER_IMAGE } from '@/common/contants';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { NavLink } from "@/layout/navigation/NavLink";
 import { selectCurrentUser, selectIsAuth } from '@/modules/auth/slice';
@@ -35,25 +34,26 @@ export const Panel = (props: PanelProps) => {
     const userData = useAppSelector(selectCurrentUser);
 
     const onTabClickHandler = (tab: TabsType) => {
-        props.setActiveTab(tab)
-        props.setIsOpen(true)
-        if(props.activeTab === tab && props.isOpen) props.setIsOpen(false)
+        alert('Пока не работает')
+        // props.setActiveTab(tab)
+        // props.setIsOpen(true)
+        // if(props.activeTab === tab && props.isOpen) props.setIsOpen(false)
     }
 
-    const avatar = userData?.avatar || DEFAULT_USER_IMAGE
+    const avatar = userData?.avatar
 
     return (
         <StyledPanel>
             <NavLink
                 isDisabled={!isAuth}
-                onClick={() => props.setIsOpen(!props.isOpen)}
+                onClick={() => alert('Пока не работает')}
                 prepend={
                     <StyledNavLinkSection>
                         <BurgerIcon />
                     </StyledNavLinkSection>
                 }
             />
-            <Avatar size={46} image={avatar} />
+            <Avatar size={40} image={avatar} username={userData?.username} />
             { tabsData.map(el => (
                 <NavLink
                     key={ el.tab }
@@ -71,6 +71,7 @@ export const Panel = (props: PanelProps) => {
                 />
             )) }
             <NavLink
+                onClick={() => alert('Не готово ( ´･･)ﾉ(._.`)')}
                 border
                 label="Сменить тему"
                 prepend={(

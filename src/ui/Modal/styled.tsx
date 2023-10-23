@@ -1,6 +1,8 @@
+import { IS_TABLET } from '@/common/constants/breakpoints';
+import { StyledBox } from '@/ui/Box';
 import styled from "styled-components";
 
-export const StyledModalWrapper = styled.div(({theme}) => ({
+export const StyledModalWrapper = styled(StyledBox)(({theme}) => ({
     position: "fixed",
     display: "flex",
     justifyContent: "center",
@@ -12,7 +14,10 @@ export const StyledModalWrapper = styled.div(({theme}) => ({
     left: 0,
     bottom: 0,
     zIndex: theme.order.modal,
-    padding: 40
+    padding: 40,
+    ...IS_TABLET && {
+        padding: 10
+    }
 }))
 
 

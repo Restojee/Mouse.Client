@@ -1,6 +1,7 @@
+import { BoxLoader } from '@/ui/BoxLoader/BoxLoader';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
-import React, { useCallback } from 'react';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { useMapComments } from './useMapComments';
 import { useUserActions } from '@/modules/user/utils/useUserActions';
@@ -16,35 +17,58 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
     const {
         comments,
         commentText,
-        onCommentDelete,
         onCommentAdd,
         onInputChange,
-        onInputKeyDown,
+        onInputKeyUp,
+        isCommentsInitialized,
+        isCommentCreateFetching
     } = useMapComments();
-
-    const isAuth = useAppSelector(selectIsAuth);
 
     const {
         onUsernameClick,
     } = useUserActions();
 
-    const onDeleteHandler = useCallback((id: number) => {
-        onCommentDelete(id);
-    }, [onCommentDelete]);
+    const isAuth = useAppSelector(selectIsAuth);
 
-    const onCommentAddHandler = useCallback(() => {
-        onCommentAdd(mapId);
+    const scrollToBottomRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottomHandler = (isNotSmooth?: boolean) => {
+        const ref = scrollToBottomRef.current;
+        const timeout = isNotSmooth ? 0 : 200
+
+        if (ref) {
+            setTimeout(() => {
+                ref.scrollTo({
+                    top: ref.scrollHeight ,
+                    behavior: isNotSmooth ? undefined : 'smooth',
+                });
+            }, timeout)
+        }
+    };
+
+    const onFocusHandler = useCallback(async () => {
+        scrollToBottomHandler();
+    }, []);
+
+    const onCommentAddHandler = useCallback(async () => {
+        await onCommentAdd(mapId);
     }, [onCommentAdd, mapId]);
 
-    const onInputKeyDownHandler = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        onInputKeyDown(e, mapId);
-    }, [onInputKeyDown, mapId]);
+    const onInputKeyUpHandler = useCallback(async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        await onInputKeyUp(e, mapId);
+    }, [onInputKeyUp, mapId]);
 
     const onUsernameClickHandler = useCallback((id: number) => {
         onUsernameClick(id);
     }, [onUsernameClick]);
 
-    console.log(isAuth, 'auth')
+    useEffect(() => {
+        scrollToBottomHandler(true);
+    }, [comments?.length]);
+
+    useEffect(() => {
+        scrollToBottomHandler();
+    }, []);
 
     return (
         <StyledBox
@@ -52,9 +76,11 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
             grow={1}
             direction={'column'}
             overflow={'hidden'}
+            position={'relative'}
         >
             <Display condition={comments?.length}>
                 <StyledBox
+                    ref={scrollToBottomRef}
                     gap={10}
                     direction={'column'}
                     overflow={'auto'}
@@ -64,14 +90,16 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
                         <Message
                             key={mapComment.id}
                             comment={mapComment}
-                            onDelete={onDeleteHandler}
                             onUsernameClick={onUsernameClickHandler}
                         />
                     ))}
                 </StyledBox>
             </Display>
-            <Display condition={!comments?.length}>
+            <BoxLoader isLoading={!isCommentsInitialized}/>
+            <Display condition={!comments?.length && isCommentsInitialized}>
                 <StyledBox
+                    align={'center'}
+                    grow={1}
                     margin={'auto'}
                     textAlign={'center'}
                     opacity={0.4}
@@ -80,10 +108,12 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
                 </StyledBox>
             </Display>
             <MessageSendFormContainer
+                isFetching={isCommentCreateFetching}
                 disabled={!isAuth}
                 value={commentText}
+                onFocus={onFocusHandler}
                 onChange={onInputChange}
-                onKeyDown={onInputKeyDownHandler}
+                onKeyUp={onInputKeyUpHandler}
                 onSendClick={onCommentAddHandler}
             />
         </StyledBox>

@@ -2,7 +2,15 @@ import { Map } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { routes } from '@/common/routes';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { deleteMapsThunk } from '@/modules/map/containers/map-content/slice';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import {
+    addFavorite,
+    deleteMapThunk,
+    selectIsMapImageModalOpen,
+    selectMapContent,
+    setIsMapImageModalOpen,
+    updateMapImageThunk,
+} from '@/modules/map/containers/map-content/slice';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
@@ -10,55 +18,69 @@ export const useMap = (mapId?: Map['id']) => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const onAddMapComplete = () => {
-        alert('добавление прохождения карты пока не работает');
-    };
+    const isMapImageModalOpen = useAppSelector(selectIsMapImageModalOpen);
+    const map = useAppSelector(selectMapContent);
 
-    const onAddMap = (): void => {
-        alert('добавление карты пока не работает');
-    };
-
-    const onAddMapFavorite = (): void => {
-        alert('добавление карты в избранное пока не работает');
-    };
-
-    const onMapShare = (): void => {
-        alert('кнопка поделиться пока не работает');
-    };
+    const onAddMapFavorite = useCallback((): void => {
+        if (mapId) {
+            dispatch(addFavorite({ mapId }));
+        }
+    }, [mapId]);
 
     const onMapDelete = useCallback(async (): Promise<void> => {
         if (mapId) {
-            const res = await dispatch(deleteMapsThunk({ mapId }));
+            const res = await dispatch(deleteMapThunk({ mapId }));
 
             if (res.payload) {
-                await router.push({
-                    pathname: routes.MAPS,
-                    query: {},
-                });
+                await router.push({ pathname: routes.MAPS, query: {} });
             }
         }
-
-
     }, [mapId]);
 
-    const onMapNameCopy = async (name: Map['name']): Promise<void> => {
-        const text = `!map ${name}`;
+    const onMapImageUpdate = useCallback(async (file: string) => {
+        if (mapId) {
+            const res = await dispatch(updateMapImageThunk({ mapId,  file }));
+            return res.payload;
+        }
+    }, [mapId]);
 
+    const onTextCopy = useCallback(async (text: string) => {
         try {
             await navigator.clipboard.writeText(text);
-            dispatch(setAppMessage({severity: 'success', text: 'Скопировано'}))
+            dispatch(setAppMessage({ severity: 'success', text: 'Скопировано' }));
         } catch (error) {
-            dispatch(setAppMessage({severity: 'error', text: 'Ошибка копирования'}))
+            dispatch(setAppMessage({ severity: 'error', text: 'Ошибка копирования' }));
         }
-    };
+    }, []);
+
+    const onMapShare = useCallback(async (): Promise<void> => {
+        const text = window.location.href;
+        await onTextCopy(text);
+    }, [mapId]);
+
+    const onMapNameCopy = useCallback(async (name: Map['name']): Promise<void> => {
+        const text = `!map ${name}`;
+        await onTextCopy(text);
+    }, [mapId]);
+
+    const onMapImageModalOpen = useCallback(() => {
+        dispatch(setIsMapImageModalOpen(true));
+    }, []);
+
+    const onMapImageModalClose = useCallback(() => {
+        dispatch(setIsMapImageModalOpen(false));
+    }, []);
 
     return {
-        onAddMapComplete,
+        map,
+        isMapImageModalOpen,
         onMapDelete,
         onAddMapFavorite,
         onMapShare,
-        onAddMap,
         onMapNameCopy,
+        onMapImageUpdate,
+        onMapImageModalOpen,
+        onMapImageModalClose,
     };
 };
 

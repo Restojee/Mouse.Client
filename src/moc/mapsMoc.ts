@@ -43,6 +43,8 @@ export const mapsData: Map[] = [
         image: '',
         description: 'awdawdwa',
         tags: TAGS_COLLECTION,
+        modifiedUtcDate:'2023-10-16T06:54:58.405955',
+        createdUtcDate:'2023-10-16T06:54:58.405955'
     },
     {
         id: 2,
@@ -54,123 +56,7 @@ export const mapsData: Map[] = [
         image: '',
         description: 'awdawdwa',
         tags: TAGS_COLLECTION,
-    },
-    {
-        id: 3,
-        user: {
-            id: 1,
-            username: 'Code001',
-        },
-        name: '@123456',
-        image: '',
-        description: 'awdawdwa',
-        tags: TAGS_COLLECTION,
-    },
-    {
-        id: 4,
-        user: {
-            id: 1,
-            username: 'Code001',
-        },
-        name: 'Карта 1',
-        image: '',
-        description: 'awdawdwa',
-        tags: TAGS_COLLECTION,
-    },
-    {
-        id: 5,
-        user: {
-            id: 1,
-            username: 'Code001',
-        },
-        name: '@123456',
-        image: '',
-        description: 'awdawdwa',
-        tags: TAGS_COLLECTION,
-    },
-    {
-        id: 6,
-        user: {
-            id: 1,
-            username: 'Code001',
-        },
-        name: '@123456',
-        image: '',
-        description: 'awdawdwa',
-        tags: TAGS_COLLECTION,
-    },
-    {
-        id: 7,
-        user: {
-            id: 1,
-            username: 'Code001',
-        },
-        name: '@123456',
-        image: '',
-        description: 'awdawdwa',
-        tags: TAGS_COLLECTION,
-    },
-];
-
-export const MAP_COMMENT_COLLECTION: Comment[] = [
-    {
-        id: 1,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 2,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 3,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 4,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 5,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 6,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 7,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 8,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 9,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 10,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 11,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
-    },
-    {
-        id: 12,
-        user: USER_COLLECTION[0],
-        text: 'Lorem ipsum dolor sit amet',
+        modifiedUtcDate:'2023-10-16T06:54:58.405955',
+        createdUtcDate:'2023-10-16T06:54:58.405955'
     },
 ];

@@ -1,23 +1,32 @@
 import { MapParametersForm } from '../containers/create-form/MapParametersForm';
-import { useMapCreate } from '../hooks/useMapCreate';
 import { Input } from '@/ui/Input';
 import { StyledBox } from '@/ui/Box';
 import { AddImageIcon } from '@/svg/AddImageIcon';
 
 type Props = {
+    name: string;
+    setName: (name: string) => void;
     isVisible: boolean;
-    onClickCreate: () => void;
+    onImagePopupToggle: () => void;
+    onMapCreate: () => void;
 }
 export const MapCreatePopup = (props: Partial<Props>) => {
-    const { isVisible = true, onClickCreate } = props;
     const {
         name,
         setName,
-    } = useMapCreate();
+        onMapCreate,
+        isVisible = true,
+        onImagePopupToggle,
+    } = props;
 
     const onNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const text = e.currentTarget.value;
-        setName(text);
+        setName?.(text);
+    };
+    const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && onMapCreate) {
+            onMapCreate();
+        }
     };
 
     return (
@@ -25,12 +34,13 @@ export const MapCreatePopup = (props: Partial<Props>) => {
             position={'relative'}
         >
             <Input
-                onChange={onNameChangeHandler}
                 value={name}
+                onKeyDown={onKeyDownHandler}
+                onChange={onNameChangeHandler}
                 placeholder="Номер карты @123456"
                 inputAppend={
                     <AddImageIcon
-                        onClick={onClickCreate}
+                        onClick={onImagePopupToggle}
                         color="gray"
                     />
                 }

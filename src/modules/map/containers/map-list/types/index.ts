@@ -1,5 +1,5 @@
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { GetMapsApiResponse } from '@/api/codegen/genMouseMapsApi';
 
-export type MapsStateType = {
-    mapsList: Map[];
+export type MapsStateType = GetMapsApiResponse & {
+    isMapsFetching: boolean;
 }

@@ -3,16 +3,19 @@ import { ThemeKey } from "@/layout/theme/types";
 export const DefaultTheme = {
     colors: {
         brandColor: '#e96b6b',
+        brandColorContrastText: '#ffffff',
         selection: '#e96b6b',
 
         primaryDark: '#3d3d3d',
         primary: '#2b2b2b',
         primaryLight: '#383838',
         primaryLighter: '#3d3d3d',
+        primaryAccent: 'rgba(255,255,255,0.08)',
         textOnPrimary: '#fff',
 
         secondary: '#fff',
-        secondaryDark: '#F6F6F6',
+        secondaryDark: '#f3f3f3',
+        secondaryAccent: 'rgba(0,0,0,0.28)',
         textOnSecondary: '#000',
         iconOnSecondary: '#939393',
 
@@ -83,12 +86,12 @@ export const DefaultTheme = {
                 svg: { width: '12px', height: '12px' },
             },
             md: {
-                padding: '7px 15px',
-                fontSize: '14px',
+                padding: '4px 15px',
+                fontSize: '0.8rem',
                 svg: { width: '14px', height: '14px' },
             },
             lg: {
-                padding: '10px 20px',
+                padding: '8px 20px',
                 fontSize: '14px',
                 svg: { width: '14px', height: '14px' },
             },
@@ -97,6 +100,7 @@ export const DefaultTheme = {
 
     order: {
         other: 1,
+        popup: 3,
         leftSidebar: 5,
         rightSidebar: 5,
         megaShadow: 10,

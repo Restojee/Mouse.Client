@@ -1,4 +1,6 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
+import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
+import { onCloseMapContentThunk } from '@/modules/map/containers/map-content/slice';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { routes } from '@/common/routes';
@@ -12,24 +14,34 @@ export const useMapView = () => {
     const router = useRouter();
     const { mapId } = router.query;
 
-    const isAuth = useAppSelector(selectIsAuth)
+    const isAuth = useAppSelector(selectIsAuth);
 
     const id = Number(mapId);
 
-    const openMap = useCallback(async (id: Map['id']) => {
-        if (id && isAuth) {
+    const openMap = useCallback(async (id: Map['id']): Promise<void> => {
+        try {
+            if (!id || !isAuth) {
+                throw new Error('Ошибка открытия карты');
+            }
             await router.push({
                 pathname: router.pathname,
                 query: { mapId: id },
             });
-        } else {
-            dispatch(setAppMessage({severity: 'error', text: 'Ошибка открытия карты'}))
+        } catch (err) {
+            dispatch(setAppMessage({ severity: 'error', text: 'Ошибка открытия карты' }));
         }
     }, [mapId, isAuth]);
 
     const closeMap = useCallback(async () => {
         await router.push(routes.MAPS);
+        await dispatch(onCloseMapContentThunk());
     }, [router]);
+
+    useGlobalKeyDown(async (e) => {
+        if (e.key === 'Escape') {
+            await closeMap();
+        }
+    });
 
     return {
         mapId: id,

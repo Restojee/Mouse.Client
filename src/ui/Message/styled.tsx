@@ -1,6 +1,18 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { StyledTextarea } from '@/ui/Textarea/styled';
 import { Property } from 'csstype';
+
+const moveLeftRight = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
 
 export const StyledMessageText = styled.div({
     wordBreak: 'break-word',
@@ -24,21 +36,32 @@ export const StyledMessageSendFormTextarea = styled(StyledTextarea)<{ bgColor?: 
         },
     }));
 
-export const StyledMessageSendFormIcon = styled.div({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '10px',
-    cursor: 'pointer',
-    transition: '0.1s',
-    transitionProperty: 'transform',
-    '&:hover': {
-        transform: 'translateX(5px)',
-    },
-    '&:active': {
-        transform: 'translateX(5px) scale(1.1)',
-    },
-});
+export const StyledMessageSendFormIcon = styled.div<{ isFetching: boolean, isDisabled: boolean }>((props) => css`
+  ${props.isFetching && css`
+    animation: ${moveLeftRight} 2s linear infinite;
+    pointer-events: none;
+    opacity: 0.3;
+  `}  
+  ${props.isDisabled && css`
+    pointer-events: none;
+    opacity: 0.3;
+  `}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.1s;
+  transition-property: transform, opacity;
+
+  &:hover {
+    transform: translateX(5px);
+  }
+
+  &:active {
+    transform: translateX(5px) scale(1.1);
+  }
+`);
 
 type StyledImageContainerPropsType = {
     borderRadius?: Property.BorderRadius,
@@ -50,6 +73,9 @@ type StyledImageContainerPropsType = {
 }
 export const StyledMapContentPreview = styled.div<StyledImageContainerPropsType>((props) => ({
     display: 'flex',
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: props.borderRadius || 'inherit',
     margin: props.margin,
     width: props.width,
