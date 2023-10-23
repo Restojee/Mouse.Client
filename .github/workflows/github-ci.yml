@@ -18,8 +18,7 @@ jobs:
       - name: Clean docker images
         run: |
           docker compose down |
-          docker compose rm -f |
-          docker image prune --all --force
+          docker system prune --all --force
 
       - name: Build docker container
         run: |
