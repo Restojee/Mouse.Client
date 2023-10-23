@@ -1,4 +1,4 @@
-import { IS_TABLET } from '@/common/constants';
+import { IS_TABLET } from '@/common/constants/breakpoints';
 import { StyledBox } from '@/ui/Box';
 import styled from "styled-components";
 
