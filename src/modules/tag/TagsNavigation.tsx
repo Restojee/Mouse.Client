@@ -1,7 +1,9 @@
 import { Tag } from '@/api/codegen/genMouseMapsApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import useQueryParams from '@/hooks/useQueryParams';
 import { selectIsAuth } from '@/modules/auth/slice';
+import { selectFilter } from '@/modules/map/containers/map-list/slice';
 import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledNavLinkSection } from '@/layout/navigation/styles/StyledNavLinkSection';
 import { SidebarSection } from '@/layout/sidebar/SidebarSection';
@@ -28,9 +30,24 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
         tagsList,
     } = useTag();
 
+    const { updateFilter } = useQueryParams();
+
     const dispatch = useAppDispatch();
     const isAuth = useAppSelector(selectIsAuth);
+    const filter = useAppSelector(selectFilter);
     const [tagId, setTagId] = useState<Tag['id'] | null>(null);
+
+    const onTagClickHandler = (id: Tag['id']) => {
+        if (filter.tagIds?.includes(id)) {
+            updateFilter({ tagIds: filter.tagIds?.filter(el => id !== el) });
+            return;
+        } else if (filter.tagIds) {
+            updateFilter({ tagIds: [...filter.tagIds, id] });
+            return;
+        } else {
+            updateFilter({ tagIds: [id] });
+        }
+    };
 
     const onTagDeleteHandler = (id: Tag['id']) => {
         setTagId(id);
@@ -76,7 +93,8 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                         <NavLink
                             key={el.id}
                             label={el.name}
-                            isChecked={false}
+                            onClick={() => onTagClickHandler(el.id)}
+                            isChecked={filter.tagIds?.includes(el.id)}
                             append={(
                                 <Display condition={isAuth}>
                                     <StyledNavLinkSection onClick={() => onTagDeleteHandler(el.id)}>

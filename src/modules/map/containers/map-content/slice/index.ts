@@ -20,7 +20,7 @@ import {
     setCompletedMaps,
 } from '../containers/completed-images/slice';
 import { deleteMap, setMapImageById } from '@/modules/map/containers/map-list/slice';
-import { getTagsThunk, setTagModalType } from '@/modules/tag';
+import { setTagModalType } from '@/modules/tag';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MapContentStateType, UpdateMapImageThunkArgType } from '../types';

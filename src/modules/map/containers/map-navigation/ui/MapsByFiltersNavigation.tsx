@@ -27,7 +27,7 @@ export function MapsByFiltersNavigation(props: MapsByFiltersNavigationSectionPro
             />
             {navItems.map(({ label, IconComponent, query }) => (
                 <NavLink
-                    key={query}
+                    key={label}
                     onClick={() => navigateTo(query)}
                     label={label}
                     prepend={(

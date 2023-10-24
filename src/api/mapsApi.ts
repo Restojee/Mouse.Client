@@ -1,52 +1,28 @@
 import { AxiosResponse } from 'axios';
 import api from '@/api/coreMapsApi';
-import {
-    AddCompletedMapApiArg,
-    AddCompletedMapApiResponse,
-    AddFavoriteMapApiArg,
-    AddFavoriteMapApiResponse,
-    CreateMapApiResponse,
-    CreateMapRequest,
-    DeleteMapApiArg,
-    DeleteMapApiResponse,
-    GetCompletedMapsByMapApiArg,
-    GetCompletedMapsByMapApiResponse,
-    GetCompletedMapsByUserApiArg,
-    GetCompletedMapsByUserApiResponse,
-    GetFavoriteMapsByUserApiArg,
-    GetFavoriteMapsByUserApiResponse,
-    GetMapApiArg,
-    GetMapApiResponse,
-    GetMapsApiArg, GetMapsApiResponse,
-    RemoveCompletedMapApiArg,
-    RemoveCompletedMapApiResponse,
-    RemoveFavoriteMapApiArg,
-    RemoveFavoriteMapApiResponse,
-    SetMapsTagApiArg,
-    SetMapsTagApiResponse,
-    UpdateMapImageApiArg,
-    UpdateMapImageApiResponse,
-} from '@/api/codegen/genMouseMapsApi';
+import * as apiTypes from '@/api/codegen/genMouseMapsApi';
 import queryString from 'query-string';
 
 export const mapsApi = {
-    getMaps: async (params: GetMapsApiArg) => {
-        const res = await api.get<GetMapsApiArg, AxiosResponse<GetMapsApiResponse>>('/maps/collect', { params });
+    getMaps: async (params: apiTypes.GetMapsApiArg) => {
+        let query = queryString.stringify(params)
+
+        const res = await api.get<apiTypes.GetMapsApiArg, AxiosResponse<apiTypes.GetMapsApiResponse>>(`/maps/collect/by-filter?${query}`);
         return res.data;
     },
-    getMapsById: async (params: GetMapApiArg, signal?: AbortSignal) => {
-        const res = await api.get<GetMapApiArg, AxiosResponse<GetMapApiResponse>>(`/maps/one/by-id/${params.mapId}`, {signal});
+    getMapsById: async (params: apiTypes.GetMapApiArg, signal?: AbortSignal) => {
+        const res = await api.get<apiTypes.GetMapApiArg, AxiosResponse<apiTypes.GetMapApiResponse>>(`/maps/one/by-id/${params.mapId}`, { signal });
         return res.data;
     },
-    createMap: async (body: CreateMapRequest) => {
-        const res = await api.post<CreateMapRequest, AxiosResponse<CreateMapApiResponse>>('/maps/create', body);
+    createMap: async (body: apiTypes.CreateMapRequest) => {
+        const res = await api.post<apiTypes.CreateMapRequest, AxiosResponse<apiTypes.CreateMapApiResponse>>('/maps/create', body);
         return res.data;
     },
-    updateMapImage: async (arg: UpdateMapImageApiArg) => {
+    updateMapImage: async (arg: apiTypes.UpdateMapImageApiArg) => {
         const formData = new FormData();
         formData.append('file', arg.body.file, 'filename.png');
 
-        const res = await api.put<UpdateMapImageApiArg, AxiosResponse<UpdateMapImageApiResponse>>(
+        const res = await api.put<apiTypes.UpdateMapImageApiArg, AxiosResponse<apiTypes.UpdateMapImageApiResponse>>(
             `/maps/update-image/${arg.mapId}`,
             formData,
             { headers: { 'Content-Type': 'multipart/form-data' } },
@@ -54,25 +30,25 @@ export const mapsApi = {
 
         return res.data;
     },
-    deleteMap: async (params: DeleteMapApiArg) => {
-        const res = await api.delete<DeleteMapApiArg, AxiosResponse<DeleteMapApiResponse>>(`/maps/remove`, { params });
+    deleteMap: async (params: apiTypes.DeleteMapApiArg) => {
+        const res = await api.delete<apiTypes.DeleteMapApiArg, AxiosResponse<apiTypes.DeleteMapApiResponse>>(`/maps/remove`, { params });
         return res.data;
     },
-    setMapsTag: async (body: SetMapsTagApiArg) => {
-        const query = queryString.stringify({tagIds: body.tagIds, mapId: body.mapId})
+    setMapsTag: async (body: apiTypes.SetMapsTagApiArg) => {
+        const query = queryString.stringify({ tagIds: body.tagIds, mapId: body.mapId });
 
-        const res = await api.put<SetMapsTagApiArg, AxiosResponse<SetMapsTagApiResponse>>('/maps/set-tags', query);
+        const res = await api.put<apiTypes.SetMapsTagApiArg, AxiosResponse<apiTypes.SetMapsTagApiResponse>>('/maps/set-tags', query);
         return res.data;
     },
-    getCompletedByMapId: async (params: GetCompletedMapsByMapApiArg) => {
-        const res = await api.get<GetCompletedMapsByMapApiArg, AxiosResponse<GetCompletedMapsByMapApiResponse>>(`/maps/completed/collect/by-map`, { params });
+    getCompletedByMapId: async (params: apiTypes.GetCompletedMapsByMapApiArg) => {
+        const res = await api.get<apiTypes.GetCompletedMapsByMapApiArg, AxiosResponse<apiTypes.GetCompletedMapsByMapApiResponse>>(`/maps/completed/collect/by-map`, { params });
         return res.data;
     },
-    addCompletedMap: async (arg: AddCompletedMapApiArg) => {
+    addCompletedMap: async (arg: apiTypes.AddCompletedMapApiArg) => {
         const formData = new FormData();
         formData.append('file', arg.body.file, 'filename.png');
 
-        const res = await api.post<AddCompletedMapApiArg, AxiosResponse<AddCompletedMapApiResponse>>(
+        const res = await api.post<apiTypes.AddCompletedMapApiArg, AxiosResponse<apiTypes.AddCompletedMapApiResponse>>(
             `/maps/${arg.mapId}/completed/create`,
             formData,
             { headers: { 'Content-Type': 'multipart/form-data' } },
@@ -80,24 +56,16 @@ export const mapsApi = {
 
         return res.data;
     },
-    getCompletedByUserId: async (params: GetCompletedMapsByUserApiArg) => {
-        const res = await api.get<GetCompletedMapsByUserApiArg, AxiosResponse<GetCompletedMapsByUserApiResponse>>(`/maps/completed/collect/by-user`, { params });
+    removeCompletedMap: async (params: apiTypes.RemoveCompletedMapApiArg) => {
+        const res = await api.delete<apiTypes.RemoveCompletedMapApiArg, AxiosResponse<apiTypes.RemoveCompletedMapApiResponse>>(`/maps/${params.mapId}/completed/remove`);
         return res.data;
     },
-    removeCompletedMap: async (params: RemoveCompletedMapApiArg) => {
-        const res = await api.delete<RemoveCompletedMapApiArg, AxiosResponse<RemoveCompletedMapApiResponse>>(`/maps/${params.mapId}/completed/remove`);
+    addFavorite: async (params: apiTypes.AddFavoriteMapApiArg) => {
+        const res = await api.post<apiTypes.AddFavoriteMapApiArg, AxiosResponse<apiTypes.AddFavoriteMapApiResponse>>(`/maps/${params.mapId}/favorites/create`);
         return res.data;
     },
-    getFavorites: async (params: GetFavoriteMapsByUserApiArg) => {
-        const res = await api.get<GetFavoriteMapsByUserApiArg, AxiosResponse<GetFavoriteMapsByUserApiResponse>>(`/maps/favorites/collect/by-user`, { params });
-        return res.data;
-    },
-    addFavorite: async (params: AddFavoriteMapApiArg) => {
-        const res = await api.post<AddFavoriteMapApiArg, AxiosResponse<AddFavoriteMapApiResponse>>(`/maps/${params.mapId}/favorites/create`);
-        return res.data;
-    },
-    removeFavorite: async (params: RemoveFavoriteMapApiArg) => {
-        const res = await api.delete<RemoveFavoriteMapApiArg, AxiosResponse<RemoveFavoriteMapApiResponse>>(`/maps/${params.mapId}/favorites/remove`);
+    removeFavorite: async (params: apiTypes.RemoveFavoriteMapApiArg) => {
+        const res = await api.delete<apiTypes.RemoveFavoriteMapApiArg, AxiosResponse<apiTypes.RemoveFavoriteMapApiResponse>>(`/maps/${params.mapId}/favorites/remove`);
         return res.data;
     },
 };

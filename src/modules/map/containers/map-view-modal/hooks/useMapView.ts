@@ -3,7 +3,6 @@ import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
 import { onCloseMapContentThunk } from '@/modules/map/containers/map-content/slice';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
-import { routes } from '@/common/routes';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
@@ -33,7 +32,7 @@ export const useMapView = () => {
     }, [mapId, isAuth]);
 
     const closeMap = useCallback(async () => {
-        await router.push(routes.MAPS);
+        router.back();
         await dispatch(onCloseMapContentThunk());
     }, [router]);
 

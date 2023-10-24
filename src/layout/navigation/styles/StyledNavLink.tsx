@@ -28,8 +28,10 @@ export const StyledNavLink = styled.div<Props>(({
     position: 'relative',
     whiteSpace: 'nowrap',
     gap: gap,
+    border: '1px solid transparent',
     margin: margin,
     justifyContent: justifyContent,
+    transitionProperty: 'background-color',
     transition: '0.5s',
 
     svg: {
@@ -55,7 +57,8 @@ export const StyledNavLink = styled.div<Props>(({
     ...!isDisabled && {
         cursor: 'pointer',
         ...isChecked && {
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
         },
         '&:hover': {
             backgroundColor: isOpen ? `rgba(255, 255, 255, 0.05)` : `rgba(255, 255, 255, 0.1)`,

@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { MapsQueryParams } from '@/modules/map/containers/map-list/containers/maps-query-params/MapsQueryParams';
 import { TagsModal } from '@/modules/tag/containers/tags-modal/TagsModal';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
 import { Display } from '@/ui/Display';
@@ -14,6 +15,7 @@ export default function Maps() {
         // eslint-disable-next-line react/jsx-no-undef
         <MapPageContainer>
             <MetaTags title={'Maps'}/>
+            <MapsQueryParams/>
             <MapsList/>
             <Display condition={mapId}>
                 <Suspense fallback={null}>
