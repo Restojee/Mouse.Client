@@ -15,7 +15,7 @@ import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display';
 import { Modal } from '@/ui/Modal/Modal';
 import { ScrollBox } from '@/ui/ScrollBox/ScrollBox';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type TagsNavigationSectionProps = {
     isOpen: boolean;
@@ -49,7 +49,8 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
         }
     };
 
-    const onTagDeleteHandler = (id: Tag['id']) => {
+    const onTagDeleteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: Tag['id']) => {
+        e.stopPropagation();
         setTagId(id);
         onOpenModal('delete');
     };
@@ -97,7 +98,7 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                             isChecked={filter.tagIds?.includes(el.id)}
                             append={(
                                 <Display condition={isAuth}>
-                                    <StyledNavLinkSection onClick={() => onTagDeleteHandler(el.id)}>
+                                    <StyledNavLinkSection onClick={(e) => onTagDeleteHandler(e, el.id)}>
                                         <CloseIcon/>
                                     </StyledNavLinkSection>
                                 </Display>

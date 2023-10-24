@@ -55,9 +55,9 @@ export const StyledDrawerBlock = styled.div(({ theme }) => ({
     display: "flex",
     flexDirection: 'column',
     backgroundColor: theme.colors.secondary,
-    borderRadius: 10,
+    borderRadius: theme.blockSettings.siteBorder,
     gap: 20,
-    padding: 10,
+    padding: 15,
     '@media all and (max-width: 1140px)': {
         backgroundColor: 'rgba(0, 0, 0, 0.05)'
     }

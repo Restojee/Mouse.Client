@@ -10,7 +10,7 @@ type DefaultProps = {
 }
 export const LayoutDefault: React.FC<DefaultProps> = (props) => {
     const [isOpen, setIsOpen] = React.useState(false);
-    const [ activeTab, setActiveTab ] = React.useState<TabsType>('notifications')
+    const [ activeTab, setActiveTab ] = React.useState<TabsType>('chat')
 
     return (
         <StyledLayout>

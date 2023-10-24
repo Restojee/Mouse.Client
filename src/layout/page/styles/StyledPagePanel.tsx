@@ -9,6 +9,7 @@ export const StyledPagePanel = styled.div<Partial<Props>>(props => ({
     alignItems: "center",
     justifyContent: "space-between",
     padding: "10px",
+    minHeight: "50px",
     height: "50px",
     width: "100%",
     ...props.top && {

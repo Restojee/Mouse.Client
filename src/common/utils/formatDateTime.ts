@@ -29,12 +29,10 @@ export const formatDateTime = (utcDate: string | null): string => {
         return date.format('сегодня в HH:mm');
     } else if (date.isSame(now.subtract(1, 'day'), 'day')) {
         return `вчера в ${date.format('HH:mm')}`;
-    } else if (diffDays <= 2) {
+    } else if (diffDays >= 2) {
         return `${date.format('D MMM')} в ${date.format('HH:mm')}`;
-    } else if (date.year() !== now.year()) {
-        return date.format('D MMM YYYY в HH:mm');
     } else {
-        return 'Больше года назад';
+        return date.format('D MMM YYYY в HH:mm');
     }
 }
 

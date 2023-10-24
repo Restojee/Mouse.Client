@@ -17,7 +17,7 @@ export const getMapsThunk = createAsyncThunk('map/get', async (arg, { getState, 
         dispatch(setMaps(mapsData));
         return mapsData;
     } catch (error) {
-        dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки карт: ${Error}` }));
+        dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки карт` }));
     }
 });
 
@@ -28,7 +28,7 @@ const initialState: MapsStateType = {
         size: 100,
         page: 0,
         sortBy: 'DATE',
-        sortDirection: 'ASC',
+        sortDirection: 'DESC',
     },
 };
 

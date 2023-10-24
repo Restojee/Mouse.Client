@@ -22,6 +22,7 @@ export const DefaultTheme = {
         neutral: '#F3F2F5',
 
         mapBackground: '#6b7494',
+        mapBackgroundLight: '#a7acc7',
 
         default: {
             paper: '#FFFFFF'

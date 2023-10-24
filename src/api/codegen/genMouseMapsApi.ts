@@ -51,6 +51,8 @@ export type CreateCommentApiResponse = /** status 200 OK */ Comment;
 export type CreateCommentApiArg = {
   createCommentRequest: CreateCommentRequest;
 };
+export type GetUsersApiResponse = /** status 200 OK */ User[];
+export type GetUsersApiArg = void;
 export type GetCurrentUserApiResponse = /** status 200 OK */ User;
 export type GetCurrentUserApiArg = void;
 export type GetTagApiResponse = /** status 200 OK */ Tag;

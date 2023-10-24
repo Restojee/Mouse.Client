@@ -35,7 +35,8 @@ export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
             width={size}
             height={size}
             minWidth={size}
-            bgColor={theme.colors.secondaryDark}
+            bgColor={theme.colors.mapBackgroundLight}
+            color={'#fff'}
         >
             <Display condition={image}>
                 <Image

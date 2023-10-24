@@ -8,14 +8,14 @@ export const useMapNavigation = () => {
     const queryParams = useQueryParams();
     const userId = useAppSelector(selectCurrentUserId);
 
-    const navigateTo = useCallback(async (query: Partial<GetMapsApiArg>) => {
-        if (query.isCompleted) {
+    const navigateTo = useCallback(async (query?: Partial<GetMapsApiArg> )  => {
+        if (query?.isCompleted) {
             await queryParams.updateFilter({ ...query, userId, isFavorite: undefined });
             return;
-        } else if (query.isFavorite) {
+        } else if (query?.isFavorite) {
             await queryParams.updateFilter({ ...query, userId, isCompleted: undefined });
             return;
-        } else if (query.isCompleted === false) {
+        } else if (query?.isCompleted === false) {
             await queryParams.updateFilter({ ...query, userId, isFavorite: undefined });
             return;
         } else {
@@ -25,6 +25,7 @@ export const useMapNavigation = () => {
     }, [queryParams.updateQuery, queryParams.removeQuery, userId]);
 
     return {
+        filters: queryParams.filter,
         navigateTo,
     };
 };

@@ -1,4 +1,6 @@
-import React, { Suspense } from 'react';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { getUsersThunk } from '@/modules/user/slice';
+import React, { Suspense, useEffect } from 'react';
 import { MapsQueryParams } from '@/modules/map/containers/map-list/containers/maps-query-params/MapsQueryParams';
 import { TagsModal } from '@/modules/tag/containers/tags-modal/TagsModal';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
@@ -10,6 +12,11 @@ import { MetaTags } from '@/ui/MetaTags/MetaTags';
 
 export default function Maps() {
     const { mapId } = useMapView();
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(getUsersThunk());
+    }, []);
 
     return (
         // eslint-disable-next-line react/jsx-no-undef

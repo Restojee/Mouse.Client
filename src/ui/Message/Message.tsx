@@ -1,6 +1,7 @@
 import { formatDateTime } from '@/common/utils/formatDateTime';
 import { Avatar } from '@/ui/Avatar';
 import { Display } from '@/ui/Display';
+import { Property } from 'csstype';
 import React, { useMemo } from 'react';
 import { Comment } from '@/api/codegen/genMouseMapsApi';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -16,11 +17,13 @@ type PropsType = {
     comment: Comment,
     onDelete?: (id: number) => void
     onUsernameClick?: (id: number) => void
+    padding?: Property.Padding;
 }
 export const Message = (props: PropsType) => {
     const {
         comment,
         onDelete,
+        padding,
         onUsernameClick,
     } = props;
 
@@ -46,8 +49,8 @@ export const Message = (props: PropsType) => {
         <StyledBox
             maxWidth={'100%'}
             bgColor={theme.colors.secondary}
-            borderRadius={'10px'}
-            padding={'0 10px'}
+            borderRadius={'15px'}
+            padding={padding || '0 10px'}
             gap={15}
         >
             <Avatar

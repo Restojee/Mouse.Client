@@ -1,3 +1,4 @@
+import { Chat } from '@/layout/drawer/Chat/Chat';
 import {ReactNode} from "react";
 import {TabsType} from "@/layout/panel/Panel";
 import {Notifications} from "@/layout/drawer/Notifications/Notifications";
@@ -21,23 +22,23 @@ const getTabsContent = (tab: TabsType): ReactNode => {
     const tabs: TabsContentType[] = [
         {
             component: <Notifications />,
-            tab: 'notifications',
+            tab: '',
         },
         {
             component: <Info />,
-            tab: 'info',
+            tab: '',
         },
         {
             component: <Statistic />,
             tab: 'statistic',
         },
         {
-            component: <>Чат</>,
+            component: <Chat/>,
             tab: 'chat',
         },
         {
             component: <>Настройки</>,
-            tab: 'settings',
+            tab: '',
         }
     ]
 
@@ -46,5 +47,5 @@ const getTabsContent = (tab: TabsType): ReactNode => {
 
 type TabsContentType = {
     component: ReactNode,
-    tab: TabsType,
+    tab: TabsType | '',
 }

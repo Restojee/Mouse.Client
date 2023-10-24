@@ -34,7 +34,7 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg, thunkAP
         thunkAPI.dispatch(addMap(map))
         thunkAPI.dispatch(setAppMessage({severity: 'success', text: `Карта добавлена`}))
     } catch (error) {
-        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка добавления: ${error}`}))
+        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка добавления`}))
     }
 });
 

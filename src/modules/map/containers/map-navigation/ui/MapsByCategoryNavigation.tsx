@@ -9,9 +9,9 @@ type MapsByCategoryNavigationSectionProps = {
     isOpen: boolean
 }
 export function MapsByCategoryNavigation(props: MapsByCategoryNavigationSectionProps) {
-
     const {
-        navigateTo
+        filters,
+        navigateTo,
     } = useMapNavigation();
 
     return (
@@ -25,7 +25,8 @@ export function MapsByCategoryNavigation(props: MapsByCategoryNavigationSectionP
                 isOpen={ props.isOpen }
             />
             <NavLink
-                onClick={()=> navigateTo('')}
+                onClick={()=> navigateTo({})}
+                isChecked={!filters.userId}
                 label="Все карты"
                 prepend={(
                     <StyledNavLinkSection isOpen={ props.isOpen }>
