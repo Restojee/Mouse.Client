@@ -32,7 +32,7 @@ export const onOpenMapContentThunk = createAsyncThunk('map/open-map', async (arg
     try {
         if (arg?.mapId) {
             const mapId = arg.mapId;
-            thunkAPI.dispatch(getMapByIdThunk({mapId}));
+            thunkAPI.dispatch(getMapByIdThunk({ mapId }));
             thunkAPI.dispatch(getCompletedMapsByMapThunk({ mapId }));
             thunkAPI.dispatch(getMapCommentsThunk({ mapId }));
         }
@@ -82,8 +82,11 @@ export const addFavorite = createAsyncThunk('map/favorite', async (arg: AddFavor
 
 export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: GetMapApiArg, thunkAPI) => {
     try {
-        const map = await mapsApi.getMapsById({mapId:arg.mapId}, mapByIdAbortController.signal);
+        const map = await mapsApi.getMapsById({ mapId: arg.mapId }, mapByIdAbortController.signal);
+        const tagIds = map.tags?.map(el => el.id as number) || [];
         thunkAPI.dispatch(setMapContent(map));
+
+        thunkAPI.dispatch(setSelectedTagIds(tagIds));
         return thunkAPI.fulfillWithValue(map);
 
     } catch (error) {
@@ -118,6 +121,7 @@ export const updateMapTagsThunk = createAsyncThunk('tag/set-map-tags', async (ma
         if (tagIds) {
             const map = await mapsApi.setMapsTag({ mapId, tagIds });
             thunkAPI.dispatch(setTagModalType(null));
+            thunkAPI.dispatch(setMapContentTags(map.tags || []));
         }
         thunkAPI.dispatch(setAppMessage({ text: 'Теги успешно добавлены', severity: 'success' }));
     } catch (error) {
@@ -158,8 +162,8 @@ const slice = createSlice({
             }
         },
         setMapContentTags: (state, action: PayloadAction<Tag[]>) => {
-            if (state.mapContent) {
-                state.mapContent = { ...state.mapContent, tags: action.payload };
+            if (state.mapContent?.tags) {
+                state.mapContent.tags = action.payload;
             }
         },
     },
@@ -188,5 +192,6 @@ export const {
     toggleSelectedTagById,
     setSelectedTagIds,
     setIsMapContentImageFetching,
+    setMapContentTags,
 } = slice.actions;
 export const mapReducer = slice.reducer;

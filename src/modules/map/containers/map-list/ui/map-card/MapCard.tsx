@@ -1,3 +1,8 @@
+import {
+    useCompletedMap
+} from '@/modules/map/containers/map-content/containers/completed-images/hooks/useCompletedMap';
+import { ImageIcon } from '@/svg/ImageIcon';
+import { Display } from '@/ui/Display';
 import { useState } from 'react';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMap } from '@/modules/map/common';
@@ -34,7 +39,7 @@ export const MapCard = (props: MapCardProps) => {
         onAddMapFavorite
     } = useMap(props.id);
 
-    const onIconsClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const onIconsClick = async (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         if (props.label) {
             await onMapNameCopy(props.label);
@@ -53,10 +58,10 @@ export const MapCard = (props: MapCardProps) => {
             onMouseLeave={() => setIsMapHover(false)}
             onMouseEnter={() => setIsMapHover(true)}
         >
-            <StyledMapCardHeader>
-                <Typography>{label}</Typography>
-                <IconButton onClick={onIconsClick}>
-                    <CopyIcon/>
+            <StyledMapCardHeader onClick={onIconsClick}>
+                <Typography fontSize={'0.8rem'}>{label}</Typography>
+                <IconButton>
+                    <CopyIcon size={20}/>
                 </IconButton>
             </StyledMapCardHeader>
             <StyledMapCardBody>
@@ -72,15 +77,18 @@ export const MapCard = (props: MapCardProps) => {
                 <Image
                     src={image}
                     alt=" "
-                    objectFit={'cover'}
+                    objectFit={'contain'}
                     objectPosition={'center'}
                     width={330}
                     height={150}
                 />
             </StyledMapCardBody>
-            <StyledMapCardFooter justify="space-between">
+            <StyledMapCardFooter
+                isMapHover={isMapHover}
+                justify="space-between"
+            >
                 <StyledBox gap={'10px'} justify="flex-start">
-                    {/*<IconButton onClick={onIconsClick}>*/}
+                    {/*<IconButton onClick={onCompletedMapModalOpen}>*/}
                     {/*    <ImageIcon />*/}
                     {/*</IconButton>*/}
                     <IconButton onClick={onAddMapFavorite}>

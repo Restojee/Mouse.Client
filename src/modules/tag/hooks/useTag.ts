@@ -24,12 +24,12 @@ export const useTag = () => {
 
     const { mapId } = router.query;
 
-    const [selectedTagIdsForCreateMap, setSelectedTagIdsForCreateMap] = useState<Tag['id'][]>([]);
-
     const modalType = useAppSelector(selectTagModalType);
     const selectedTagIds = useAppSelector(selectSelectedTagIds);
     const selectedIdForCreateMap = useAppSelector(selectMapTags);
     const tagsList = useAppSelector(selectTags);
+
+    const [selectedTagIdsForCreateMap, setSelectedTagIdsForCreateMap] = useState<Tag['id'][]>(selectedTagIds || []);
 
     const onTagCreate = useCallback(async (name: string) => {
         if (name.trim().length) {
