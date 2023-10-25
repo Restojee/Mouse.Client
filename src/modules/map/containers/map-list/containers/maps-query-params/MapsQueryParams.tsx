@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 import React, { useEffect } from 'react';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useRouter } from 'next/router';
@@ -13,8 +14,8 @@ export const MapsQueryParams = React.memo(() => {
     } = useQueryParams();
 
     useEffect(() => {
-        if (router.isReady) {
-            updateFilter(router.query);
+        if (router.isReady && router.query.filter) {
+            updateFilter(queryString.parse(router.query.filter as string));
         }
     }, [router.isReady]);
 
