@@ -19,7 +19,7 @@ export const useMapNavigation = () => {
             await queryParams.updateFilter({ ...query, userId, isFavorite: undefined });
             return;
         } else {
-            await queryParams.removeQuery(['isCompleted', 'isFavorite', 'userId']);
+            await queryParams.removeQuery(['isCompleted', 'isFavorite', 'userId', 'name']);
             return;
         }
     }, [queryParams.updateQuery, queryParams.removeQuery, userId]);

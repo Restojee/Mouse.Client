@@ -20,6 +20,15 @@ export const getMapsThunk = createAsyncThunk('map/get', async (arg, { getState, 
         dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки карт` }));
     }
 });
+export const getMapByNameThunk = createAsyncThunk('map/get-by-name', async (arg: {name: string}, thunkAPI) => {
+    try {
+        const mapsData = await mapsApi.getMaps({name: arg.name, page: 0, size: 1, sortBy: 'DATE', sortDirection: 'DESC'});
+        const map = mapsData.records[0]
+        return thunkAPI.fulfillWithValue(map);
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 const initialState: MapsStateType = {
     isMapsFetching: true,
@@ -56,7 +65,6 @@ const slice = createSlice({
         },
         updateFilter: (state, action: PayloadAction<Partial<GetMapsApiArg>>) => {
             let newFilter = { ...state.filter, ...parseObjectValues(action.payload) };
-
             if (Array.isArray(newFilter.tagIds)) {
                 newFilter.tagIds = newFilter.tagIds.map(id => Number(id));
             } else if (newFilter.tagIds && !isNaN(newFilter.tagIds)) {

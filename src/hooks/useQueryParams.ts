@@ -1,7 +1,7 @@
 import { GetMapsApiArg } from '@/api/codegen/genMouseMapsApi';
 import { removeKeysFromObject } from '@/common/utils/removeKeysFromObject';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectFilter, setFilter, updateFilter as updateStateFilter } from '@/modules/map/containers/map-list/slice';
 import { useRouter } from 'next/router';
@@ -12,6 +12,10 @@ const useQueryParams = () => {
     const dispatch = useAppDispatch();
 
     const filter = useAppSelector(selectFilter);
+
+    const query = useMemo((): Partial<GetMapsApiArg> => {
+        return queryString.parse(router.query.filter as string) as Partial<GetMapsApiArg>
+    }, [router.query])
 
     const updateQuery = useCallback(async () => {
         await router.push({ query: { filter: queryString.stringify(filter, { skipEmptyString: true }) } });
@@ -28,6 +32,7 @@ const useQueryParams = () => {
 
     return {
         filter,
+        query,
         updateFilter,
         updateQuery,
         removeQuery,

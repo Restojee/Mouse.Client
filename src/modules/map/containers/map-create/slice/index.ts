@@ -2,39 +2,52 @@ import { Map, Tag } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
-import { addMap } from '@/modules/map/containers/map-list/slice';
+import { getMapsThunk } from '@/modules/map/containers/map-list/slice';
 import { RootState } from '@/store';
 import { MapCreateFormType } from '../containers/create-form/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export const createMapThunk = createAsyncThunk('map/create', async (arg, thunkAPI) => {
+export const createMapThunk = createAsyncThunk('map/create', async (arg: {id: Map['id']}, thunkAPI) => {
     try {
         const state = thunkAPI.getState() as RootState;
         const name = selectMapName(state);
         const image = selectMapImage(state);
         const completedMapImage = selectCompletedMapImage(state);
         const tags = selectMapTags(state);
-        let map = await mapsApi.createMap({ name });
 
-        if (map.id && tags) {
-            await mapsApi.setMapsTag({ mapId: map.id, tagIds: tags as number[]});
-            thunkAPI.dispatch(setMapTagIds([]))
+        let mapId: Map['id'] = arg.id;
+        let createdMap: Map;
+
+        if (!mapId) {
+            createdMap = await mapsApi.createMap({ name });
+            mapId = createdMap.id
         }
 
-        if (map.id && image) {
-            const file = convertDataUrlToBlob(image)
-            map = await mapsApi.updateMapImage({ mapId: map.id, body: { file } });
+        if (mapId && tags) {
+            await mapsApi.setMapsTag({ mapId, tagIds: tags as number[] });
+            thunkAPI.dispatch(setMapTagIds([]));
         }
 
-        if (map.id && completedMapImage) {
-            const file = convertDataUrlToBlob(completedMapImage)
-            await mapsApi.addCompletedMap({ mapId: map.id, body: { file } });
+        if (mapId && image) {
+            const file = convertDataUrlToBlob(image);
+            createdMap = await mapsApi.updateMapImage({ mapId, body: { file } });
         }
 
-        thunkAPI.dispatch(addMap(map))
-        thunkAPI.dispatch(setAppMessage({severity: 'success', text: `Карта добавлена`}))
+        if (mapId && completedMapImage) {
+            const file = convertDataUrlToBlob(completedMapImage);
+            await mapsApi.addCompletedMap({ mapId, body: { file } });
+        }
+
+        thunkAPI.dispatch(getMapsThunk())
+
+        if(arg.id) {
+            thunkAPI.dispatch(setAppMessage({ severity: 'success', text: `Существующая карта обновлена` }));
+        } else {
+            thunkAPI.dispatch(setAppMessage({ severity: 'success', text: `Карта добавлена` }));
+        }
+        return thunkAPI.fulfillWithValue(true);
     } catch (error) {
-        thunkAPI.dispatch(setAppMessage({severity: 'error', text: `Ошибка добавления`}))
+        thunkAPI.dispatch(setAppMessage({ severity: 'error', text: `Ошибка добавления` }));
     }
 });
 
@@ -70,7 +83,7 @@ export const {
     setMapName,
     setMapImage,
     setMapTagIds,
-    setCompletedMapImage
+    setCompletedMapImage,
 } = slice.actions;
 
 export const mapCreateReducer = slice.reducer;
