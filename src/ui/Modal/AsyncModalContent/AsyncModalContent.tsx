@@ -1,9 +1,7 @@
-import { useAppSelector } from '@/hooks/useAppSelector';
-import { selectIsAuth } from '@/modules/auth/slice';
+import React from 'react';
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display';
 import { Paper } from '@/ui/Paper';
-import React from 'react';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { Button } from '@/ui/Button';
 import { StyledCardActions } from '@/ui/Form/styled';

@@ -1,6 +1,5 @@
-import { formatDateTime } from '@/common/utils/formatDateTime';
-import { Display } from '@/ui/Display';
 import React, { useState } from 'react';
+import { formatDateTime } from '@/common/utils/formatDateTime';
 import { Tip } from '@/api/codegen/genMouseMapsApi';
 import { StyledInfoBlock, StyledInfoTitle } from '@/layout/drawer/Info/styled';
 import { CloseIcon } from '@/svg/CloseIcon';
