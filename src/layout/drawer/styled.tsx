@@ -5,6 +5,7 @@ export const StyledDrawer = styled.div<{ isOpen: boolean }>(({ theme }) => ({
     flexDirection: "column",
     backgroundColor: theme.colors.secondaryDark,
     height: "100%",
+    position: 'relative',
     padding: 0,
     width: theme.sizes.rightSidebar.width,
     borderLeft: "1px solid rgba(0, 0, 0, 0.1)",
@@ -37,6 +38,11 @@ export const StyledDrawerContent = styled.div({
 });
 
 export const StyledDrawerHeader = styled.div(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyItems: 'center',
+    gap: 10,
+    margin: '0 auto',
     padding: "20px",
     backgroundColor: theme.colors.secondaryDark,
     borderRadius: "inherit",

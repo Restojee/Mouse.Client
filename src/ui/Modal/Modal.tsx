@@ -5,7 +5,7 @@ import { AsyncModalContent } from './AsyncModalContent';
 export type ModalPropsType = {
     isOpen?: boolean;
     onClose: () => void;
-    onAccess: () => void;
+    onAccess?: () => void;
     text?: string;
     title?: string;
     width?: Property.Width<number>;

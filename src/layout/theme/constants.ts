@@ -14,6 +14,7 @@ export const DefaultTheme = {
         textOnPrimary: '#fff',
 
         secondary: '#fff',
+        secondaryDarker: '#eaeaea',
         secondaryDark: '#f3f3f3',
         secondaryAccent: 'rgba(0,0,0,0.28)',
         textOnSecondary: '#000',

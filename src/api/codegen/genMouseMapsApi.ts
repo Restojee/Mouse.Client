@@ -25,9 +25,7 @@ export type SetMapsTagApiArg = {
   tagIds?: number[];
 };
 export type UpdateTipApiResponse = /** status 200 OK */ Tip;
-export type UpdateTipApiArg = {
-  updateTipRequest: UpdateTipRequest;
-};
+export type UpdateTipApiArg = UpdateTipRequest;
 export type AddFavoriteMapApiResponse = /** status 200 OK */ string;
 export type AddFavoriteMapApiArg = {
   mapId: number;
@@ -44,9 +42,7 @@ export type CreateMapApiArg = {
   createMapRequest: CreateMapRequest;
 };
 export type CreateTipApiResponse = /** status 200 OK */ Tip;
-export type CreateTipApiArg = {
-  createTipRequest: CreateTipRequest;
-};
+export type CreateTipApiArg = CreateTipRequest;
 export type CreateCommentApiResponse = /** status 200 OK */ Comment;
 export type CreateCommentApiArg = {
   createCommentRequest: CreateCommentRequest;
@@ -169,6 +165,8 @@ export type Tip = {
   id?: number;
   title?: string;
   text?: string;
+  createdUtcDate: string | null;
+  modifiedUtcDate: string | null;
   user?: User;
 };
 export type UpdateTipRequest = {

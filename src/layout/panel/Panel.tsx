@@ -60,7 +60,7 @@ export const Panel = (props: PanelProps) => {
             {tabsData.map((el, index) => (
                 <NavLink
                     key={index}
-                    isDisabled={el.isNeedAuth && !isAuth}
+                    isDisabled={(el.isNeedAuth && !isAuth) || !el.tab}
                     label={el.label}
                     isChecked={el.tab === props.activeTab}
                     onClick={() => onTabClickHandler(el.tab)}
@@ -76,6 +76,7 @@ export const Panel = (props: PanelProps) => {
             <NavLink
                 onClick={() => alert('Не готово ( ´･･)ﾉ(._.`)')}
                 border
+                isDisabled={true}
                 label="Сменить тему"
                 prepend={(
                     <StyledNavLinkSection>
@@ -110,11 +111,37 @@ export const Panel = (props: PanelProps) => {
 };
 
 export const tabsData: TabsDataType[] = [
-    { label: 'Уведомления', isNeedAuth: true, tab: null, border: true, icon: <NotificationsIcon/> },
-    { label: 'Полезная инфа', isNeedAuth: true, tab: null, icon: <PaperIcon/> },
-    { label: 'Статистика', isNeedAuth: true, tab: 'statistic', icon: <ChartIcon/> },
-    { label: 'Чат', isNeedAuth: true, tab: 'chat', icon: <ChatFillIcon/> },
-    { label: 'Настройки', isNeedAuth: true, tab: null, icon: <SettingsIcon/>, margin: 'auto 0 0 0' },
+    {
+        label: 'Уведомления',
+        isNeedAuth: true,
+        tab: null,
+        border: true,
+        icon: <NotificationsIcon/>,
+    },
+    {
+        label: 'Полезная инфа',
+        tab: 'info',
+        isNeedAuth: true,
+        icon: <PaperIcon/>,
+    },
+    {
+        label: 'Статистика',
+        tab: 'statistic',
+        icon: <ChartIcon/>,
+    },
+    {
+        label: 'Чат',
+        isNeedAuth: true,
+        tab: 'chat',
+        icon: <ChatFillIcon/>,
+    },
+    {
+        label: 'Настройки',
+        isNeedAuth: true,
+        tab: null,
+        icon: <SettingsIcon/>,
+        margin: 'auto 0 0 0',
+    },
 
 ];
 

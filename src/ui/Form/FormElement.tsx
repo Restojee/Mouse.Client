@@ -7,7 +7,6 @@ import {
 } from '@/ui/Form/styled';
 import { DefaultInputType } from '@/ui/Input/Input';
 import { Property } from "csstype";
-import { StyledTextarea } from "../Textarea/styled";
 import React, { ChangeEvent } from "react";
 
 type PropsType = DefaultInputType & {
@@ -20,11 +19,9 @@ type PropsType = DefaultInputType & {
     inputPrepend: React.ReactNode,
     inputAppend: React.ReactNode,
     searchForm: boolean,
-    textarea: boolean,
 }
 export default function FormElement(props: Partial<PropsType>) {
     const {
-        textarea,
         searchForm,
         bgColor,
         inputAppend,
@@ -54,24 +51,20 @@ export default function FormElement(props: Partial<PropsType>) {
                     { title }
                 </StyledFormElementHeader>
             }
-            { textarea &&
-                <StyledTextarea />
-            }
-            { textarea || (
-                <StyledInputWrapper bgColor={ bgColor }>
-                    { inputPrepend && (
-                        <StyledInputIcon left>
-                            { inputPrepend }
-                        </StyledInputIcon>
-                    ) }
-                    <StyledInput {...inputProps}/>
-                    { props.inputAppend && (
-                        <StyledInputIcon right>
-                            { inputAppend }
-                        </StyledInputIcon>
-                    ) }
-                </StyledInputWrapper>
-            )}
+
+            <StyledInputWrapper bgColor={ bgColor }>
+                { inputPrepend && (
+                    <StyledInputIcon left>
+                        { inputPrepend }
+                    </StyledInputIcon>
+                ) }
+                <StyledInput {...inputProps}/>
+                { props.inputAppend && (
+                    <StyledInputIcon right>
+                        { inputAppend }
+                    </StyledInputIcon>
+                ) }
+            </StyledInputWrapper>
         </StyledFormElementContainer>
     );
 }

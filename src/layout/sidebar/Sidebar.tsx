@@ -14,7 +14,7 @@ import { TagsNavigation } from '@/modules/tag/TagsNavigation';
 import { MapsByFiltersNavigation } from '@/modules/map/containers/map-navigation/ui/MapsByFiltersNavigation';
 import { MapsByCategoryNavigation } from '@/modules/map/containers/map-navigation/ui/MapsByCategoryNavigation';
 
-const appVersion = getAppVersion()
+const appVersion = getAppVersion();
 
 export const Sidebar = () => {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -22,13 +22,13 @@ export const Sidebar = () => {
     const isAuth = useAppSelector(selectIsAuth);
     const {
         modalType,
-        onCloseModal
-    } = useTag()
+        onCloseModal,
+    } = useTag();
 
     useEffect(() => {
         setTimeout(() => {
-            setIsOpen(window.innerWidth > 900)
-        }, 200)
+            setIsOpen(window.innerWidth > 900);
+        }, 200);
     }, []);
 
     return (
@@ -54,17 +54,15 @@ export const Sidebar = () => {
             <StyledBox direction={'column'} overflow={'hidden'} grow={1}>
                 <TagsNavigation isOpen={isOpen}/>
                 <StyledSidebarLogo isOpen={isOpen}>
-                    Maps
+                    OnlyPlanks
                 </StyledSidebarLogo>
-                <Display condition={isOpen}>
-                    <StyledBox
-                        opacity={0.6}
-                        textAlign={'center'}
-                        margin={'5px auto 0 auto'}
-                    >
-                        {appVersion}
-                    </StyledBox>
-                </Display>
+                <StyledBox
+                    opacity={isOpen ? 0.6 : 0}
+                    textAlign={'center'}
+                    margin={'5px auto 0 auto'}
+                >
+                    {appVersion}
+                </StyledBox>
             </StyledBox>
         </StyledSidebar>
     );

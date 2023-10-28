@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsAuth } from '@/modules/auth/slice';
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display';
 import { Paper } from '@/ui/Paper';
@@ -16,7 +18,7 @@ const AsyncModalContent = (props: ModalPropsType) => {
         text,
         title,
         children,
-        width
+        width,
     } = props;
 
     const theme = useAppTheme();
@@ -50,6 +52,7 @@ const AsyncModalContent = (props: ModalPropsType) => {
                             onClick={onClose}
                         />
                         <Button
+                            type={'submit'}
                             size={'lg'}
                             onClick={onAccess}
                             bgColor={theme.colors.status.success}

@@ -26,7 +26,7 @@ const getTabsContent = (tab: TabsType): ReactNode => {
         },
         {
             component: <Info />,
-            tab: '',
+            tab: 'info',
         },
         {
             component: <Statistic />,
