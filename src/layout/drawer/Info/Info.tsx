@@ -26,7 +26,6 @@ export const Info = () => {
         onModalOpen,
         infoList,
         removeInfo,
-        updateInfo,
         isInfoFetching,
         selectInfo,
     } = useInfo();
@@ -52,9 +51,9 @@ export const Info = () => {
                     </IconButton>
                 </Display>
             </StyledDrawerHeader>
-            <Display condition={infoList.length}>
+            <Display condition={infoList?.length}>
                 <StyledInfoList>
-                    {infoList.map((info) => (
+                    {infoList?.map((info) => (
                         <InfoItem
                             key={info.id}
                             info={info}
@@ -64,7 +63,7 @@ export const Info = () => {
                     ))}
                 </StyledInfoList>
             </Display>
-            <Display condition={!infoList.length && !isInfoFetching}>
+            <Display condition={!infoList?.length && !isInfoFetching}>
                 <StyledBox margin={'auto'}>
                     Полезной инфы еще нет.
                 </StyledBox>

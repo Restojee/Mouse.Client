@@ -1,11 +1,27 @@
 import { authApi } from '@/api/authApi';
-import { User } from '@/api/codegen/genMouseMapsApi';
+import { LoginRequest, User } from '@/api/codegen/genMouseMapsApi';
+import { accessTokenProvider, refreshTokenProvider } from '@/services';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthStateType } from '../types';
 
 export const refreshThunk = createAsyncThunk('refresh', async (arg, thunkAPI) => {
 
+});
+
+export const loginThunk = createAsyncThunk('auth/login', async (arg: LoginRequest, thunkAPI) => {
+    try {
+        const res = await authApi.login(arg);
+        if (res.user.id) {
+            thunkAPI.dispatch(setCurrentUser(res.user));
+            thunkAPI.dispatch(setAuthStatus('authenticated'));
+            accessTokenProvider.setToken(res.accessToken);
+            refreshTokenProvider.setToken(res.refreshToken);
+        }
+        return thunkAPI.fulfillWithValue(true);
+    } catch (err) {
+        return thunkAPI.rejectWithValue(false);
+    }
 });
 
 export const getCurrentUserThunk = createAsyncThunk('current-user', async (arg, thunkAPI) => {

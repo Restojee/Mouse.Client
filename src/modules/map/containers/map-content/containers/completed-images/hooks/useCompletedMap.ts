@@ -14,7 +14,7 @@ import {
     setIsCompletedMapModalOpen,
 } from '../slice';
 
-export const useCompletedMap = (mapId?: Map['id']) => {
+export const useCompletedMap = (levelId?: Map['id']) => {
     const dispatch = useAppDispatch();
 
     const isCompletedMapModalOpen = useAppSelector(selectIsCompletedModalOpen);
@@ -37,17 +37,17 @@ export const useCompletedMap = (mapId?: Map['id']) => {
         dispatch(setActiveMapCompletedById(id));
     }, []);
 
-    const addCompletedMap = useCallback(async (mapId: Map['id'], file: string) => {
-        if (mapId && file) {
-            return dispatch(addCompletedMapThunk({ mapId, file }));
+    const addCompletedMap = useCallback(async (levelId: Map['id'], file: string) => {
+        if (levelId && file) {
+            return dispatch(addCompletedMapThunk({ levelId, file }));
         }
     }, []);
 
     const deleteCompletedMap = useCallback(() => {
-        if (mapId) {
-            dispatch(deleteCompletedMapThunk({ mapId }));
+        if (levelId) {
+            dispatch(deleteCompletedMapThunk({ levelId }));
         }
-    }, [mapId]);
+    }, [levelId]);
 
     const onCompletedMapModalClose = useCallback(() => {
         dispatch(setIsCompletedMapModalOpen(false));

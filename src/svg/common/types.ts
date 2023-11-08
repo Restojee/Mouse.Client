@@ -1,7 +1,7 @@
 type SvgIconProps = {
     size: string | number,
     height: string,
-    color: string,
+    color: string | undefined,
     rotate: string,
     onClick: () => void
 }

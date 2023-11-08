@@ -1,8 +1,7 @@
-import { Tip } from '@/api/codegen/genMouseMapsApi';
+import { GetTipApiResponse, Tip } from '@/api/codegen/genMouseMapsApi';
 
 export type InfoStateType = {
-    infoList: Tip[];
-    count: number | null;
+    info: GetTipApiResponse | null;
     isCreateModalOpen: boolean;
     isInfoFetching: boolean;
     selectedInfo: Tip | null;

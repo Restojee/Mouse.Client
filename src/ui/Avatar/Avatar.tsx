@@ -30,7 +30,7 @@ export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
             justify={'center'}
             fontSize={'1.2rem'}
             fontWeight={500}
-            borderRadius={50}
+            borderRadius={'50%'}
             overflow={'hidden'}
             width={size}
             height={size}
@@ -43,6 +43,8 @@ export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
                     src={image || ''}
                     width={size}
                     height={size}
+                    objectFit={'cover'}
+                    objectPosition={'center'}
                 />
             </Display>
             <Display condition={!image}>

@@ -1,40 +1,53 @@
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utcPlugin from 'dayjs/plugin/utc';
-import 'dayjs/locale/ru'
+import 'dayjs/locale/ru';
 
 dayjs.locale('ru');
 dayjs.extend(timezone);
 dayjs.extend(utcPlugin);
 
-export const formatDateTime = (utcDate: string | null): string => {
-    if(!utcDate) {
-        return 'до нашей эры'
+export const formatDateTime = (utcDate?: string | null, withoutTime?: boolean): string => {
+    if (!utcDate) {
+        return 'до нашей эры';
     }
+
     const now = dayjs().tz();
     const date = dayjs.utc(utcDate).tz();
 
     const diffSeconds = now.diff(date, 'second');
     const diffMinutes = now.diff(date, 'minute');
     const diffDays = now.diff(date, 'day');
+    const diffYear = now.diff(date, 'year');
 
-    if(diffSeconds <= 0) {
+    if (diffSeconds <= 0) {
         return `сейчас`;
-    }
-    else if (diffMinutes < 1) {
+    } else if (diffMinutes < 1) {
         return `${diffSeconds} секунд${getSuffix(diffSeconds)} назад`;
     } else if (diffMinutes < 60) {
         return `${diffMinutes} минут${getSuffix(diffMinutes)} назад`;
     } else if (date.isSame(now, 'day')) {
-        return date.format('сегодня в HH:mm');
+        return withoutTime
+            ? date.format('сегодня')
+            : date.format('сегодня в HH:mm');
     } else if (date.isSame(now.subtract(1, 'day'), 'day')) {
-        return `вчера в ${date.format('HH:mm')}`;
+        return withoutTime
+            ? 'вчера'
+            : `вчера в ${date.format('HH:mm')}`;
     } else if (diffDays >= 2) {
-        return `${date.format('D MMM')} в ${date.format('HH:mm')}`;
+        return withoutTime
+            ? date.format('D MMMM')
+            : `${date.format('D MMM в HH:mm')}`;
+    } else if (diffYear) {
+        return withoutTime
+            ? date.format('D MMM YYYY')
+            : date.format('D MMM YYYY в HH:mm');
     } else {
-        return date.format('D MMM YYYY в HH:mm');
+        return withoutTime
+            ? date.format('D MMMM')
+            : date.format('D MMM в HH:mm');
     }
-}
+};
 
 function getSuffix(num: number): string {
     if (num >= 11 && num <= 19) {

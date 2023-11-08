@@ -15,27 +15,27 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg: {id: Ma
         const completedMapImage = selectCompletedMapImage(state);
         const tags = selectMapTags(state);
 
-        let mapId: Map['id'] = arg.id;
+        let levelId: Map['id'] = arg.id;
         let createdMap: Map;
 
-        if (!mapId) {
+        if (!levelId) {
             createdMap = await mapsApi.createMap({ name });
-            mapId = createdMap.id
+            levelId = createdMap.id
         }
 
-        if (mapId && tags) {
-            await mapsApi.setMapsTag({ mapId, tagIds: tags as number[] });
+        if (levelId && tags) {
+            await mapsApi.setMapsTag({ levelId, tagIds: tags as number[] });
             thunkAPI.dispatch(setMapTagIds([]));
         }
 
-        if (mapId && image) {
+        if (levelId && image) {
             const file = convertDataUrlToBlob(image);
-            createdMap = await mapsApi.updateMapImage({ mapId, body: { file } });
+            createdMap = await mapsApi.updateMapImage({ levelId, body: { file } });
         }
 
-        if (mapId && completedMapImage) {
+        if (levelId && completedMapImage) {
             const file = convertDataUrlToBlob(completedMapImage);
-            await mapsApi.addCompletedMap({ mapId, body: { file } });
+            await mapsApi.addCompletedMap({ levelId, body: { file } });
         }
 
         thunkAPI.dispatch(getMapsThunk())

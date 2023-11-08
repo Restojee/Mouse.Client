@@ -1,5 +1,7 @@
+import { getMapImageLink } from '@/common/utils';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { NavLink } from '@/layout/navigation/NavLink';
+import { useLogin } from '@/modules/auth/hooks/useLogin';
 import { selectCurrentUser, selectIsAuth } from '@/modules/auth/slice';
 import { MoonIcon } from '@/svg/MoonIcon';
 import { StyledNavLinkSection } from '@/layout/navigation/styles/StyledNavLinkSection';
@@ -16,10 +18,6 @@ import { Display } from '@/ui/Display';
 import { ReactNode } from 'react';
 import { Property } from 'csstype';
 import { StyledPanel } from '@/layout/panel/styled';
-import {
-    signIn,
-    signOut,
-} from 'next-auth/react';
 
 export type PanelProps = {
     activeTab: string;
@@ -29,6 +27,10 @@ export type PanelProps = {
 }
 export type TabsType = 'settings' | 'notifications' | 'info' | 'statistic' | 'chat'
 export const Panel = (props: PanelProps) => {
+    const {
+        onLoginModalOpen,
+        logout
+    } = useLogin();
 
     const isAuth = useAppSelector(selectIsAuth);
     const userData = useAppSelector(selectCurrentUser);
@@ -56,7 +58,7 @@ export const Panel = (props: PanelProps) => {
                     </StyledNavLinkSection>
                 }
             />
-            <Avatar size={40} image={avatar} username={userData?.username}/>
+            <Avatar size={40} image={getMapImageLink(avatar)} username={userData?.username}/>
             {tabsData.map((el, index) => (
                 <NavLink
                     key={index}
@@ -87,7 +89,7 @@ export const Panel = (props: PanelProps) => {
             <Display condition={isAuth}>
                 <NavLink
                     label={'Выйти'}
-                    onClick={signOut}
+                    onClick={logout}
                     prepend={(
                         <StyledNavLinkSection>
                             <OutIcon color={'#e87575'}/>
@@ -98,7 +100,7 @@ export const Panel = (props: PanelProps) => {
             <Display condition={!isAuth}>
                 <NavLink
                     label={'Войти'}
-                    onClick={() => signIn('mouse-auth')}
+                    onClick={onLoginModalOpen}
                     prepend={(
                         <StyledNavLinkSection>
                             <LogInIcon/>

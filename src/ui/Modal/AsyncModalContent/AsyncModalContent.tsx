@@ -17,6 +17,7 @@ const AsyncModalContent = (props: ModalPropsType) => {
         title,
         children,
         width,
+        withoutButtons,
     } = props;
 
     const theme = useAppTheme();
@@ -44,19 +45,21 @@ const AsyncModalContent = (props: ModalPropsType) => {
                             {children}
                         </StyledBox>
                     </Display>
-                    <StyledCardActions>
-                        <Button
-                            label="Отмена"
-                            onClick={onClose}
-                        />
-                        <Button
-                            type={'submit'}
-                            size={'lg'}
-                            onClick={onAccess}
-                            bgColor={theme.colors.status.success}
-                            label="Подтвердить"
-                        />
-                    </StyledCardActions>
+                    <Display condition={!withoutButtons}>
+                        <StyledCardActions>
+                            <Button
+                                label="Отмена"
+                                onClick={onClose}
+                            />
+                            <Button
+                                type={'submit'}
+                                size={'lg'}
+                                onClick={onAccess}
+                                bgColor={theme.colors.status.success}
+                                label="Подтвердить"
+                            />
+                        </StyledCardActions>
+                    </Display>
                 </Paper>
             </StyledModalWrapper>
         </React.Fragment>

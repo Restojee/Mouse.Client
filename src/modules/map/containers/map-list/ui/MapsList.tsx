@@ -59,8 +59,9 @@ export const MapsList = () => {
                     <MapCard
                         key={map.id}
                         id={map.id}
-                        // addedCount={ 1 }
-                        // commentsCount={ 1 }
+                        completedCount={map.completedCount}
+                        commentsCount={map.commentsCount}
+                        isFavorite={map.isFavoriteByUser}
                         onClick={onMapClickHandler}
                         label={map.name}
                         image={CommonUtils.getMapImageLink(map.image)}

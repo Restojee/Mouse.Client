@@ -1,4 +1,10 @@
-import { CreateTipApiArg, RemoveTipApiArg, Tip, UpdateTipApiArg } from '@/api/codegen/genMouseMapsApi';
+import {
+    CreateTipApiArg,
+    GetTipApiResponse,
+    RemoveTipApiArg,
+    Tip,
+    UpdateTipApiArg,
+} from '@/api/codegen/genMouseMapsApi';
 import { infoApi } from '@/api/infoApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { RootState } from '@/store';
@@ -51,8 +57,7 @@ export const updateInfoThunk = createAsyncThunk('info/update', async (arg: Updat
 });
 
 const initialState: InfoStateType = {
-    infoList: [],
-    count: null,
+    info: null,
     isCreateModalOpen: false,
     isInfoFetching: true,
     selectedInfo: null,
@@ -62,8 +67,8 @@ const slice = createSlice({
     name: 'info',
     initialState,
     reducers: {
-        setInfo: (state, action: PayloadAction<Tip[]>) => {
-            state.infoList = action.payload;
+        setInfo: (state, action: PayloadAction<GetTipApiResponse>) => {
+            state.info = action.payload;
         },
         setIsCreateModalOpen: (state, action: PayloadAction<boolean>) => {
             state.isCreateModalOpen = action.payload;
@@ -86,7 +91,7 @@ const slice = createSlice({
     },
 });
 
-export const selectInfoList = (state: RootState) => state.info.infoList;
+export const selectInfoList = (state: RootState) => state.info.info?.records;
 export const selectIsInfoCreateModalOpen = (state: RootState) => state.info.isCreateModalOpen;
 export const selectIsInfoFetching = (state: RootState) => state.info.isInfoFetching;
 export const selectSelectedInfo = (state: RootState) => state.info.selectedInfo;

@@ -8,6 +8,6 @@ export const getInitials = (name: string = ''): string => {
             .join('')
             .toUpperCase();
     } else {
-        return 'A';
+        return '';
     }
 };

@@ -1,3 +1,6 @@
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsAuth } from '@/modules/auth/slice';
+import { Display } from '@/ui/Display';
 import React, { useCallback, useMemo } from 'react';
 import { useCompletedMap } from './containers/completed-images/hooks/useCompletedMap';
 import { useMap } from '@/modules/map/common';
@@ -22,6 +25,7 @@ export const MapContent = React.memo(() => {
     const { closeMap } = useMapView();
     const { map } = useMap();
     const { activeMapCompleted } = useCompletedMap();
+    const isAuth = useAppSelector(selectIsAuth);
 
     const fixEventPropagation = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -47,14 +51,16 @@ export const MapContent = React.memo(() => {
         >
             <StyledMapContentMain>
                 <Header
-                    completeCount={1}
-                    viewCount={2}
-                    commentsCount={3}
+                    completeCount={map?.completedCount}
+                    viewCount={map?.visitsCount}
+                    commentsCount={map?.commentsCount}
                     title={map?.name}
                 />
                 <Preview image={activeMapCompleted?.image || map?.image}/>
                 <MiniMapImages/>
-                <Note/>
+                <Display condition={isAuth}>
+                    <Note/>
+                </Display>
                 <Tags tags={map?.tags}/>
             </StyledMapContentMain>
             <StyledMapContentSidebar>
@@ -66,8 +72,12 @@ export const MapContent = React.memo(() => {
                     user={activeMapCompleted?.user || map?.user}
                     date={dateTime}
                 />
-                <SidebarIcons mapId={map?.id}/>
-                <SidebarComments mapId={map?.id}/>
+                <SidebarIcons
+                  levelId={map?.id}
+                  isCompleted={map?.isCompletedByUser}
+                  isFavorite={map?.isFavoriteByUser}
+                />
+                <SidebarComments levelId={map?.id}/>
             </StyledMapContentSidebar>
         </Paper>
     );

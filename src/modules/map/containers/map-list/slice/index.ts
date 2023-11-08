@@ -3,7 +3,6 @@ import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { parseObjectValues } from '@/common/utils/parseObjectValues';
 import { removeUndefinedKeys } from '@/common/utils/removeUndefinedKeys';
-import { getCompletedMapsByMapThunk } from '../../map-content/containers/completed-images/slice';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MapsStateType } from '../types';
@@ -22,7 +21,7 @@ export const getMapsThunk = createAsyncThunk('map/get', async (arg, { getState, 
 });
 export const getMapByNameThunk = createAsyncThunk('map/get-by-name', async (arg: {name: string}, thunkAPI) => {
     try {
-        const mapsData = await mapsApi.getMaps({name: arg.name, page: 0, size: 1, sortBy: 'DATE', sortDirection: 'DESC'});
+        const mapsData = await mapsApi.getMaps({name: arg.name, page: 1, size: 1, sortBy: 'DATE', sortDirection: 'DESC'});
         const map = mapsData.records[0]
         return thunkAPI.fulfillWithValue(map);
     } catch (error) {
@@ -35,9 +34,9 @@ const initialState: MapsStateType = {
     mapsData: null,
     filter: {
         size: 100,
-        page: 0,
-        sortBy: 'DATE',
-        sortDirection: 'DESC',
+        page: 1,
+        // sortBy: 'DATE',
+        // sortDirection: 'DESC',
     },
 };
 
@@ -78,10 +77,10 @@ const slice = createSlice({
                 state.mapsData.records = state.mapsData.records.filter(el => el.id !== action.payload);
             }
         },
-        setMapImageById: (state, action: PayloadAction<{ mapId: Map['id'], updatedMap: Map }>) => {
+        setMapImageById: (state, action: PayloadAction<{ levelId: Map['id'], updatedMap: Map }>) => {
             if (state.mapsData) {
                 state.mapsData.records = state.mapsData.records.map((map) => {
-                    if (map.id === action.payload.mapId) {
+                    if (map.id === action.payload.levelId) {
                         return action.payload.updatedMap;
                     }
                     return map;
@@ -100,9 +99,6 @@ const slice = createSlice({
             .addCase(getMapsThunk.rejected, (state) => {
                 state.isMapsFetching = false;
             })
-            .addCase(getCompletedMapsByMapThunk.rejected, (state) => {
-                state.isMapsFetching = false;
-            });
     },
 });
 

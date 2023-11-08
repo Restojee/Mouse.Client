@@ -34,7 +34,7 @@ export const MapParametersForm = () => {
     }, [tagsList, selectedIdForCreateMap]);
 
     const onOpenModalHandler = () => {
-        onOpenModal('update');
+        onOpenModal('tag-update');
     };
 
     return (

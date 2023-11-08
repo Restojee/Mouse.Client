@@ -2,7 +2,7 @@ import { CreateTagRequest, DeleteTagApiArg, Tag } from '@/api/codegen/genMouseMa
 import { tagsApi } from '@/api/tagsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { RootState } from '@/store';
-import { ModalType, TagsStateType } from '../types';
+import { TagModalTypes, TagsStateType } from '../types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export const createTagThunk = createAsyncThunk('tag/create', async (arg: CreateTagRequest, thunkAPI) => {
@@ -50,7 +50,7 @@ const slice = createSlice({
     name: 'tags',
     initialState,
     reducers: {
-        setTagModalType: (state, action: PayloadAction<ModalType>) => {
+        setTagModalType: (state, action: PayloadAction<TagModalTypes>) => {
             state.modalType = action.payload;
         },
         setTags: (state, action: PayloadAction<Tag[]>) => {

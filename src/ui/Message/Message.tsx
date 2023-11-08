@@ -1,3 +1,4 @@
+import { getMapImageLink } from '@/common/utils';
 import { formatDateTime } from '@/common/utils/formatDateTime';
 import { Avatar } from '@/ui/Avatar';
 import { Display } from '@/ui/Display';
@@ -54,7 +55,7 @@ export const Message = (props: PropsType) => {
             gap={15}
         >
             <Avatar
-                image={comment.user?.avatar}
+                image={getMapImageLink(comment.user?.avatar)}
                 username={comment.user?.username}
             />
             <StyledBox

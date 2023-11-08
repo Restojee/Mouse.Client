@@ -30,9 +30,9 @@ export const PreviewImage = (props: PreviewImagePropsType) => {
             onLoadingComplete={() => setIsLoading(false)}
             src={mapImage}
             loader={onLoadingHandler}
-            width={800}
+            width={700}
             height={400}
-            objectFit={'cover'}
+            objectFit={'contain'}
             objectPosition={'center'}
             alt={'map'}
             priority

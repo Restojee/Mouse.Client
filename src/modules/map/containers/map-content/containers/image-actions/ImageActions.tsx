@@ -8,7 +8,7 @@ import { DeleteIcon } from '@/svg/DeleteIcon';
 import { Display } from '@/ui/Display';
 
 export const ImageActions = () => {
-    const { mapId } = useMapView();
+    const { levelId } = useMapView();
 
     const {
         onMapImageModalOpen
@@ -18,7 +18,7 @@ export const ImageActions = () => {
         isMyMap,
         activeMapCompleted,
         deleteCompletedMap,
-    } = useCompletedMap(mapId);
+    } = useCompletedMap(levelId);
 
     return (
         <StyledActionsContainer>

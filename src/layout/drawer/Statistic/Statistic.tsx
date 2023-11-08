@@ -1,3 +1,5 @@
+import { getMapImageLink } from '@/common/utils';
+import { formatDateTime } from '@/common/utils/formatDateTime';
 import useQueryParams from '@/hooks/useQueryParams';
 import React from 'react';
 import { useUser } from '@/modules/user/hooks/useUser';
@@ -45,7 +47,7 @@ export const Statistic = () => {
                         >
                             <Avatar
                                 size={60}
-                                image={user.avatar}
+                                image={getMapImageLink(user.avatar)}
                                 username={user.username}
                             />
                             <StyledBox
@@ -57,8 +59,8 @@ export const Statistic = () => {
                                     <Typography>{user.username}</Typography>
                                 </StyledBox>
                                 <StyledBox overflow={'hidden'}>
-                                    <Typography opacity="0.5" isEllipsis>
-                                        Регистрация: До нашей эры
+                                    <Typography opacity="0.5" title={formatDateTime(user.createdUtcDate)} isEllipsis>
+                                        Регистрация: {formatDateTime(user.createdUtcDate, true)}
                                     </Typography>
                                 </StyledBox>
                             </StyledBox>

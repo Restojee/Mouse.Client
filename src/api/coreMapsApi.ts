@@ -1,17 +1,22 @@
-import axios from 'axios';
-import {getSession} from "next-auth/react";
+import axios, { InternalAxiosRequestConfig } from 'axios';
+import { accessTokenProvider } from '@/services';
 
 export const api = axios.create({
     baseURL: process.env.BASE_API_URL,
-})
-
-api.interceptors.request.use(async (config) => {
-    const session = await getSession();
-    if (session?.accessToken) {
-        config.headers.Authorization = `Bearer ${session.accessToken}`;
-    }
-
-    return config;
+    headers: {
+        Authorization: '',
+    },
 });
+
+const attachTokenToRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    const token = accessTokenProvider.getToken();
+    if (token && config.headers) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+};
+
+api.interceptors.request.use(attachTokenToRequest);
+
 
 export default api;

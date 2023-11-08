@@ -1,3 +1,4 @@
+import { RootState } from '@/store';
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type TThemes = "light" | "dark";
@@ -8,10 +9,13 @@ type TAppMessage = {
     text: string;
 };
 
+export type AppModalTypes = "login" | "user" | "tag-update"
+
 export type TAppState = {
     isInitialized: boolean;
     messages: TAppMessage[];
     isFetching: boolean;
+    modalType: AppModalTypes | null;
     currentTheme: TThemes;
 };
 
@@ -25,6 +29,7 @@ const slice = createSlice({
     initialState: {
         isInitialized: false,
         status: "idle",
+        modalType: null,
         messages: [],
         isFetching: false,
         currentTheme: "light",
@@ -41,6 +46,9 @@ const slice = createSlice({
             };
             state.messages.push(newMessage);
         },
+        setAppModalType(state, action:PayloadAction<TAppState['modalType']>) {
+           state.modalType = action.payload
+        },
         setAppLastMessage(state) {
             state.messages.splice(-1);
         },
@@ -56,6 +64,8 @@ const slice = createSlice({
     },
 });
 
+export const selectAppModalType = (state: RootState) => state.app.modalType;
+
 export const appReducer = slice.reducer;
 export const {
     setIsInitialized,
@@ -63,5 +73,6 @@ export const {
     setAppLastMessage,
     hideAppMessage,
     setIsFetching,
+    setAppModalType,
     setCurrentTheme
 } = slice.actions;

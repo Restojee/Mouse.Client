@@ -25,34 +25,38 @@ import { Map } from '@/api/codegen/genMouseMapsApi';
 type MapCardProps = {
     id: Map['id'];
     label?: string | null;
-    addedCount?: number;
+    completedCount?: number;
     commentsCount?: number;
     image: string;
+    isFavorite?: boolean;
     onClick?: (id: Map['id']) => void;
 }
 export const MapCard = (props: MapCardProps) => {
+    const {
+        id,
+        label,
+        image = '',
+        onClick,
+        commentsCount,
+        completedCount,
+        isFavorite,
+    } = props;
+
     const theme = useAppTheme();
     const [isMapHover, setIsMapHover] = useState(false);
 
     const {
         onMapNameCopy,
         onAddMapFavorite
-    } = useMap(props.id);
+    } = useMap(id);
 
     const onIconsClick = async (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        if (props.label) {
-            await onMapNameCopy(props.label);
+        if (label) {
+            await onMapNameCopy(label);
         }
     };
 
-    const {
-        label,
-        addedCount,
-        image = '',
-        onClick,
-        commentsCount,
-    } = props;
     return (
         <StyledMapCard
             onMouseLeave={() => setIsMapHover(false)}
@@ -92,13 +96,13 @@ export const MapCard = (props: MapCardProps) => {
                     {/*    <ImageIcon />*/}
                     {/*</IconButton>*/}
                     <IconButton onClick={onAddMapFavorite}>
-                        <FavoriteIcon/>
+                        <FavoriteIcon color={isFavorite ? theme.colors.brandColor : undefined}/>
                     </IconButton>
                 </StyledBox>
                 <StyledBox gap={'10px'} justify="flex-end" opacity="0.6">
                     <StyledBox gap="5px" align="center" title="Выполнений">
                         <BookCheckIcon/>
-                        <Typography>{addedCount}</Typography>
+                        <Typography>{completedCount}</Typography>
                     </StyledBox>
                     <StyledBox gap="5px" align="center" title="Комментариев">
                         <CommentIcon/>

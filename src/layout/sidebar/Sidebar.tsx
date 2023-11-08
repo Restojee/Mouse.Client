@@ -46,7 +46,7 @@ export const Sidebar = () => {
             <Display condition={isOpen}>
                 <StyledBox position={'relative'}>
                     <CreateTagPopup
-                        isVisible={(modalType === 'create') && isAuth}
+                        isVisible={(modalType === 'tag-create') && isAuth}
                         onClose={onCloseModal}
                     />
                 </StyledBox>

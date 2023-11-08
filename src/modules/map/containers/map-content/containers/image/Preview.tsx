@@ -1,3 +1,5 @@
+import { selectIsAuth } from '@/modules/auth/slice';
+import { Display } from '@/ui/Display';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { PreviewImage } from './components/PreviewImage';
@@ -18,6 +20,7 @@ export const Preview = React.memo(({ image }: MapContentPreviewPropsType) => {
     const theme = useAppTheme();
     const [isLoading, setIsLoading] = useState(true);
     const isMapFetching = useAppSelector(selectIsMapFetching);
+    const isAuth = useAppSelector(selectIsAuth);
 
     const onLoadingHandler = useCallback(({ width, src }: ImageLoaderProps) => {
         return src + '?w=' + width;
@@ -33,7 +36,9 @@ export const Preview = React.memo(({ image }: MapContentPreviewPropsType) => {
             maxHeight="400px"
             height="100%"
         >
-            <ImageActions/>
+            <Display condition={isAuth}>
+                <ImageActions/>
+            </Display>
             <StyledBox
                 opacity={isLoading ? 0 : 1}
                 transition={'0.2s'}

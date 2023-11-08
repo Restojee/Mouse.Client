@@ -5,7 +5,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
     addFavorite,
-    deleteMapThunk,
+    deleteMapThunk, removeFavorite,
     selectIsMapImageModalOpen,
     selectMapContent,
     setIsMapImageModalOpen,
@@ -14,35 +14,41 @@ import {
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
-export const useMap = (mapId?: Map['id']) => {
+export const useMap = (levelId?: Map['id']) => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
     const isMapImageModalOpen = useAppSelector(selectIsMapImageModalOpen);
     const map = useAppSelector(selectMapContent);
 
-    const onAddMapFavorite = useCallback((): void => {
-        if (mapId) {
-            dispatch(addFavorite({ mapId }));
+    const onToggleMapFavorite = useCallback((): void => {
+        if (levelId && !map?.isFavoriteByUser) {
+            dispatch(addFavorite({ levelId }));
+            return
         }
-    }, [mapId]);
+
+        if (levelId && map?.isFavoriteByUser) {
+            dispatch(removeFavorite({ levelId }))
+        }
+
+    }, [levelId, map?.isFavoriteByUser]);
 
     const onMapDelete = useCallback(async (): Promise<void> => {
-        if (mapId) {
-            const res = await dispatch(deleteMapThunk({ mapId }));
+        if (levelId) {
+            const res = await dispatch(deleteMapThunk({ levelId }));
 
             if (res.payload) {
                 await router.push({ pathname: routes.MAPS, query: {} });
             }
         }
-    }, [mapId]);
+    }, [levelId]);
 
     const onMapImageUpdate = useCallback(async (file: string) => {
-        if (mapId) {
-            const res = await dispatch(updateMapImageThunk({ mapId,  file }));
+        if (levelId) {
+            const res = await dispatch(updateMapImageThunk({ levelId,  file }));
             return res.payload;
         }
-    }, [mapId]);
+    }, [levelId]);
 
     const onTextCopy = useCallback(async (text: string) => {
         try {
@@ -56,12 +62,12 @@ export const useMap = (mapId?: Map['id']) => {
     const onMapShare = useCallback(async (): Promise<void> => {
         const text = window.location.href;
         await onTextCopy(text);
-    }, [mapId]);
+    }, [levelId]);
 
     const onMapNameCopy = useCallback(async (name: Map['name']): Promise<void> => {
         const text = `!map ${name}`;
         await onTextCopy(text);
-    }, [mapId]);
+    }, [levelId]);
 
     const onMapImageModalOpen = useCallback(() => {
         dispatch(setIsMapImageModalOpen(true));
@@ -75,7 +81,7 @@ export const useMap = (mapId?: Map['id']) => {
         map,
         isMapImageModalOpen,
         onMapDelete,
-        onAddMapFavorite,
+        onToggleMapFavorite,
         onMapShare,
         onMapNameCopy,
         onMapImageUpdate,

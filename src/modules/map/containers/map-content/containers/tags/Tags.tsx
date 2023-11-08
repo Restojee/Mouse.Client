@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsAuth } from '@/modules/auth/slice';
 import React from 'react';
 import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledBox } from '@/ui/Box';
@@ -14,13 +16,14 @@ type MapContentFooterPropsType = {
 }
 export const Tags = ({ tags }: MapContentFooterPropsType) => {
     const theme = useAppTheme();
+    const isAuth = useAppSelector(selectIsAuth);
 
     const {
         onOpenModal,
     } = useTag();
 
     const onOpenModalHandler = () => {
-        onOpenModal('update')
+        onOpenModal('tag-update')
     }
 
     return (
@@ -47,6 +50,7 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
             </Display>
             <Display condition={!tags?.length}>
                 <Button
+                    disabled={!isAuth}
                     size={'lg'}
                     onClick={onOpenModalHandler}
                     label={'Изменить теги'}

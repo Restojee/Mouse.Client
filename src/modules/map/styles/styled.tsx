@@ -62,7 +62,7 @@ export const StyledMapContentSidebar = styled.div(({theme}) => ({
     }
 }))
 
-export const StyledContentSidebarBodyIcon = styled.div({
+export const StyledContentSidebarBodyIcon = styled.div<{disabled?: boolean}>((props) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -109,10 +109,14 @@ export const StyledContentSidebarBodyIcon = styled.div({
             transform: "scale(1.3)"
         }
     },
+    ...props.disabled && {
+        opacity: 0.2,
+        pointerEvents: 'none',
+    },
     ...IS_TABLET && {
         padding: '20px 0'
     }
-})
+}))
 
 export const StyledMobileMapViewContainer = styled.div(({theme}) => ({
     display: 'flex',

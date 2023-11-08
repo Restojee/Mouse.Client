@@ -2,12 +2,12 @@ import {
     AddFavoriteMapApiArg,
     DeleteMapApiArg,
     GetMapApiArg,
-    Map,
+    Map, RemoveFavoriteMapApiArg,
     Tag,
     UpdateMapImageApiArg,
 } from '@/api/codegen/genMouseMapsApi';
 import { mapsApi } from '@/api/mapsApi';
-import { setAppMessage } from '@/bll/appReducer';
+import { setAppMessage, setAppModalType } from '@/bll/appReducer';
 import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
 import {
     getMapCommentsThunk,
@@ -15,7 +15,6 @@ import {
     setIsCommentsInitialized,
 } from '@/modules/map/containers/map-content/containers/comments/slice';
 import {
-    getCompletedMapsByMapThunk,
     setActiveMapCompletedById,
     setCompletedMaps,
 } from '../containers/completed-images/slice';
@@ -27,14 +26,13 @@ import { MapContentStateType, UpdateMapImageThunkArgType } from '../types';
 
 let mapByIdAbortController = new AbortController();
 
-export const onOpenMapContentThunk = createAsyncThunk('map/open-map', async (arg: { mapId: Map['id'] }, thunkAPI) => {
+export const onOpenMapContentThunk = createAsyncThunk('map/open-map', async (arg: { levelId: Map['id'] }, thunkAPI) => {
     mapByIdAbortController = new AbortController();
     try {
-        if (arg?.mapId) {
-            const mapId = arg.mapId;
-            thunkAPI.dispatch(getMapByIdThunk({ mapId }));
-            thunkAPI.dispatch(getCompletedMapsByMapThunk({ mapId }));
-            thunkAPI.dispatch(getMapCommentsThunk({ mapId }));
+        if (arg?.levelId) {
+            const levelId = arg.levelId;
+            thunkAPI.dispatch(getMapByIdThunk({ levelId }));
+            thunkAPI.dispatch(getMapCommentsThunk({ levelId }));
         }
     } catch (error) {
         console.log(error);
@@ -59,7 +57,7 @@ export const onCloseMapContentThunk = createAsyncThunk('map/close-map', async (a
 export const deleteMapThunk = createAsyncThunk('map/delete', async (arg: DeleteMapApiArg, thunkAPI) => {
     try {
         await mapsApi.deleteMap(arg);
-        thunkAPI.dispatch(deleteMap(arg.mapId));
+        thunkAPI.dispatch(deleteMap(arg.levelId));
         thunkAPI.dispatch(setMapContent(null));
         thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Удалено' }));
         return thunkAPI.fulfillWithValue(true);
@@ -72,6 +70,7 @@ export const deleteMapThunk = createAsyncThunk('map/delete', async (arg: DeleteM
 export const addFavorite = createAsyncThunk('map/favorite', async (arg: AddFavoriteMapApiArg, thunkAPI) => {
     try {
         await mapsApi.addFavorite(arg);
+        thunkAPI.dispatch(setIsFavorite(true));
         thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Добавлено в избранное' }));
         return thunkAPI.fulfillWithValue(true);
     } catch (error) {
@@ -80,11 +79,24 @@ export const addFavorite = createAsyncThunk('map/favorite', async (arg: AddFavor
     }
 });
 
+export const removeFavorite = createAsyncThunk('map/favorite', async (arg: RemoveFavoriteMapApiArg, thunkAPI) => {
+    try {
+        await mapsApi.removeFavorite(arg);
+        thunkAPI.dispatch(setIsFavorite(false));
+        thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Удалено из избранного' }));
+        return thunkAPI.fulfillWithValue(true);
+    } catch (error) {
+        thunkAPI.dispatch(setAppMessage({ severity: 'error', text: 'Ошибка удаления из избранного' }));
+        return thunkAPI.rejectWithValue(false);
+    }
+});
+
 export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: GetMapApiArg, thunkAPI) => {
     try {
-        const map = await mapsApi.getMapsById({ mapId: arg.mapId }, mapByIdAbortController.signal);
+        const map = await mapsApi.getMapsById({ levelId: arg.levelId }, mapByIdAbortController.signal);
         const tagIds = map.tags?.map(el => el.id as number) || [];
         thunkAPI.dispatch(setMapContent(map));
+        thunkAPI.dispatch(setCompletedMaps(map.completed || []));
 
         thunkAPI.dispatch(setSelectedTagIds(tagIds));
         return thunkAPI.fulfillWithValue(map);
@@ -97,13 +109,13 @@ export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: Get
 export const updateMapImageThunk = createAsyncThunk('map/update-image', async (arg: UpdateMapImageThunkArgType, thunkAPI) => {
     try {
         const file = convertDataUrlToBlob(arg.file);
-        if (file && arg.mapId) {
-            const validArg: UpdateMapImageApiArg = { mapId: arg.mapId, body: { file } };
+        if (file && arg.levelId) {
+            const validArg: UpdateMapImageApiArg = { levelId: arg.levelId, body: { file } };
             await mapsApi.updateMapImage(validArg);
-            const updatedMap = await thunkAPI.dispatch(getMapByIdThunk({ mapId: arg.mapId }));
+            const updatedMap = await thunkAPI.dispatch(getMapByIdThunk({ levelId: arg.levelId }));
 
             if (updatedMap.payload) {
-                thunkAPI.dispatch(setMapImageById({ mapId: arg.mapId, updatedMap: updatedMap.payload as Map }));
+                thunkAPI.dispatch(setMapImageById({ levelId: arg.levelId, updatedMap: updatedMap.payload as Map }));
             }
             thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Обложка обновлена' }));
             return thunkAPI.fulfillWithValue(true);
@@ -114,13 +126,13 @@ export const updateMapImageThunk = createAsyncThunk('map/update-image', async (a
     }
 });
 
-export const updateMapTagsThunk = createAsyncThunk('tag/set-map-tags', async (mapId: Map['id'], thunkAPI) => {
+export const updateMapTagsThunk = createAsyncThunk('tag/set-map-tags', async (levelId: Map['id'], thunkAPI) => {
     try {
         const state = thunkAPI.getState() as RootState;
         const tagIds = state.map.selectedModalTagIds;
         if (tagIds) {
-            const map = await mapsApi.setMapsTag({ mapId, tagIds });
-            thunkAPI.dispatch(setTagModalType(null));
+            const map = await mapsApi.setMapsTag({ levelId, tagIds });
+            thunkAPI.dispatch(setAppModalType(null));
             thunkAPI.dispatch(setMapContentTags(map.tags || []));
         }
         thunkAPI.dispatch(setAppMessage({ text: 'Теги успешно добавлены', severity: 'success' }));
@@ -148,6 +160,11 @@ const slice = createSlice({
         },
         setSelectedTagIds: (state, action: PayloadAction<number[]>) => {
             state.selectedModalTagIds = action.payload;
+        },
+        setIsFavorite: (state, action: PayloadAction<boolean>) => {
+            if (state.mapContent) {
+                state.mapContent.isFavoriteByUser = action.payload;
+            }
         },
         setIsMapContentImageFetching: (state, action: PayloadAction<boolean>) => {
             state.isMapFetching = action.payload;
@@ -193,5 +210,6 @@ export const {
     setSelectedTagIds,
     setIsMapContentImageFetching,
     setMapContentTags,
+    setIsFavorite
 } = slice.actions;
 export const mapReducer = slice.reducer;

@@ -8,13 +8,13 @@ import { StyledMiniMapImageContainer } from './styles';
 import { StyledBox } from '@/ui/Box';
 
 export const MiniMapImages = () => {
-    const { mapId } = useMapView();
+    const { levelId } = useMapView();
 
     const {
         maps,
         onMapClick,
         activeMapCompleted
-    } = useCompletedMap(mapId);
+    } = useCompletedMap(levelId);
 
     if (!maps?.length) {
         return null;
@@ -47,6 +47,8 @@ export const MiniMapImages = () => {
                             src={getMapImageLink(item?.image)}
                             height={MINI_IMAGES_HEIGHT}
                             width={MINI_IMAGES_WIDTH}
+                            objectPosition={'center'}
+                            objectFit={'cover'}
                         />
                     </StyledMiniMapImageContainer>
                 ))}

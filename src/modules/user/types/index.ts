@@ -1,5 +1,6 @@
-import { User } from '@/api/codegen/genMouseMapsApi';
+import { GetUsersApiResponse, User } from '@/api/codegen/genMouseMapsApi';
 
 export type UsersStateType = {
-    usersList: User[] | null;
+    users: GetUsersApiResponse | null;
+    openModalByUserId: User['id'] | null;
 }

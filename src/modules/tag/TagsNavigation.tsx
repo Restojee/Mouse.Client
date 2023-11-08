@@ -52,14 +52,14 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
     const onTagDeleteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: Tag['id']) => {
         e.stopPropagation();
         setTagId(id);
-        onOpenModal('delete');
+        onOpenModal('tag-delete');
     };
 
     const modalToggleHandler = () => {
-        if (modalType === 'create') {
+        if (modalType === 'tag-create') {
             onOpenModal(null);
         } else {
-            onOpenModal('create');
+            onOpenModal('tag-create');
         }
     };
 
@@ -109,7 +109,7 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                     ))}
                 </ScrollBox>
                 <Modal
-                    isOpen={modalType === 'delete'}
+                    isOpen={modalType === 'tag-delete'}
                     text={'Вы действительно хотите удалить тег?'}
                     onAccess={() => onTagDelete(tagId)}
                     onClose={onCloseModal}

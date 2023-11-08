@@ -1,4 +1,6 @@
 import { User } from '@/api/codegen/genMouseMapsApi';
+import { getMapImageLink } from '@/common/utils';
+import { useUser } from '@/modules/user/hooks/useUser';
 import { Avatar } from '@/ui/Avatar';
 import { StyledBox } from '@/ui/Box';
 import { Typography } from '@/ui/Typography';
@@ -14,6 +16,10 @@ export const SidebarProfile = (props: MapContentSidebarProfilePropsType) => {
         date,
     } = props;
 
+    const {
+        onOpenUserModal
+    } = useUser();
+
     return (
         <StyledBox
             direction={'column'}
@@ -23,7 +29,7 @@ export const SidebarProfile = (props: MapContentSidebarProfilePropsType) => {
         >
             <Avatar
                 size={80}
-                image={user?.avatar}
+                image={getMapImageLink(user?.avatar)}
                 username={user?.username}
             />
             <StyledBox
@@ -35,6 +41,7 @@ export const SidebarProfile = (props: MapContentSidebarProfilePropsType) => {
                     isLink
                     isEllipsis
                     fontWeight="bold"
+                    onClick={() => onOpenUserModal(user?.id)}
                 >
                     {user?.username}
                 </Typography>
