@@ -251,3 +251,28 @@ export type LoginResponse = {
     refreshToken: string,
     user: User;
 }
+
+export type RegisterRequest = {
+    userName: string;
+    password: string;
+}
+export type RegisterResponse = {
+    accessToken: string;
+    refreshToken: string;
+    user: User;
+}
+export type GetChatMessagesResponse = {
+    page: number;
+    pageSize: number;
+    totalItems: number;
+    totalPages: number;
+    records: Comment[];
+}
+export type GetChatMessagesRequest = {
+    size: number;
+    page: number;
+}
+export type CreateChatMessageRequest = {
+    text: string;
+}
+export type CreateChatMessageResponse = Comment

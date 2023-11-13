@@ -1,3 +1,4 @@
+import { chatApi } from '@/api/chatApi';
 import { Comment } from '@/api/codegen/genMouseMapsApi';
 import { commentsApi } from '@/api/commentsApi';
 import { setAppMessage } from '@/bll/appReducer';
@@ -8,8 +9,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export const getChatMessagesThunk = createAsyncThunk('chat/get', async (arg, thunkAPI) => {
     try {
-        const messages = await commentsApi.getCommentsByMapId({ levelId: 99 });
-        thunkAPI.dispatch(setChatMessages(messages));
+        const messages = await chatApi.getChatMessages({ size: 100, page: 1 });
+        thunkAPI.dispatch(setChatMessages(messages.records));
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({ severity: 'error', text: 'Ошибка загрузки чата' }));
     }
@@ -17,7 +18,7 @@ export const getChatMessagesThunk = createAsyncThunk('chat/get', async (arg, thu
 
 export const addChatMessageThunk = createAsyncThunk('chat/create', async (arg: { text: string }, thunkAPI) => {
     try {
-        const message = await commentsApi.addComment({ levelId: 99, text: arg.text });
+        const message = await chatApi.addChatMessage({ text: arg.text });
         const state = thunkAPI.getState() as RootState;
         const user = state.auth.user;
 
