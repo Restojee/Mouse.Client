@@ -1,8 +1,8 @@
 import { LoginRequest } from '@/api/codegen/genMouseMapsApi';
-import { setAppModalType } from '@/bll/appReducer';
+import { setAppMessage, setAppModalType } from '@/bll/appReducer';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useCallback } from 'react';
-import { loginThunk } from '@/modules/auth/slice';
+import { loginThunk, logoutThunk } from '@/modules/auth/slice';
 
 export const useLogin = () => {
     const dispatch = useAppDispatch();
@@ -17,14 +17,20 @@ export const useLogin = () => {
     }, []);
 
     const login = async (data: LoginRequest) => {
-        const res = await dispatch(loginThunk(data));
-        if (res.payload) {
-            onLoginModalClose();
+        try {
+            const res = await dispatch(loginThunk(data));
+            if (res.payload) {
+                onLoginModalClose();
+            } else {
+                throw new Error;
+            }
+        } catch (err) {
+            dispatch(setAppMessage({severity: 'error', text: 'Ошибка авторизации'}))
         }
     };
 
     const logout = async () => {
-        alert('Разлогиниться пока невозможно..')
+        dispatch(logoutThunk());
     };
 
     return {

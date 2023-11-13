@@ -1,12 +1,41 @@
 import { authApi } from '@/api/authApi';
-import { LoginRequest, User } from '@/api/codegen/genMouseMapsApi';
+import { LoginRequest, RegisterRequest, User } from '@/api/codegen/genMouseMapsApi';
+import { setAppMessage, setAppModalType } from '@/bll/appReducer';
+import { getUsersThunk } from '@/modules/user/slice';
 import { accessTokenProvider, refreshTokenProvider } from '@/services';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthStateType } from '../types';
 
-export const refreshThunk = createAsyncThunk('refresh', async (arg, thunkAPI) => {
+export const logoutThunk = createAsyncThunk('auth/logout', async (arg: void, thunkAPI) => {
+    try {
+        thunkAPI.dispatch(setCurrentUser(null));
+        thunkAPI.dispatch(setAuthStatus('unauthenticated'));
+        accessTokenProvider.setToken('');
+        refreshTokenProvider.setToken('');
+        thunkAPI.dispatch(setAppMessage({severity: 'success', text: 'Вы вышли из аккаунта'}));
+        return thunkAPI.fulfillWithValue(true);
+    } catch (err) {
+        thunkAPI.dispatch(setAppMessage({severity: 'error', text: 'Произошла какая-то ошибка'}));
+        return thunkAPI.rejectWithValue(false);
+    }
+});
 
+export const registerThunk = createAsyncThunk('auth/register', async (arg: RegisterRequest, thunkAPI) => {
+    try {
+        const res = await authApi.register(arg);
+        if (res.user.id) {
+            thunkAPI.dispatch(setCurrentUser(res.user));
+            thunkAPI.dispatch(getUsersThunk());
+            thunkAPI.dispatch(setAuthStatus('authenticated'));
+            accessTokenProvider.setToken(res.accessToken);
+            refreshTokenProvider.setToken(res.refreshToken);
+            thunkAPI.dispatch(setAppMessage({severity: 'success', text: `Добро пожаловать, ${res.user.username}!`}));
+        }
+        return thunkAPI.fulfillWithValue(true);
+    } catch (err) {
+        return thunkAPI.rejectWithValue(false);
+    }
 });
 
 export const loginThunk = createAsyncThunk('auth/login', async (arg: LoginRequest, thunkAPI) => {
@@ -17,6 +46,7 @@ export const loginThunk = createAsyncThunk('auth/login', async (arg: LoginReques
             thunkAPI.dispatch(setAuthStatus('authenticated'));
             accessTokenProvider.setToken(res.accessToken);
             refreshTokenProvider.setToken(res.refreshToken);
+            thunkAPI.dispatch(setAppMessage({severity: 'success', text: 'Добро пожаловать!'}));
         }
         return thunkAPI.fulfillWithValue(true);
     } catch (err) {

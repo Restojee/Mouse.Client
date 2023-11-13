@@ -1,8 +1,8 @@
 import { useLogin } from '@/modules/auth/hooks/useLogin';
-import { Login } from './Login';
+import { Register } from './Register';
 import { Modal } from '@/ui/Modal/Modal';
 
-const LoginModal = () => {
+const RegisterModal = () => {
     const {
         onLoginModalClose,
     } = useLogin();
@@ -15,9 +15,9 @@ const LoginModal = () => {
             width={300}
             withoutButtons
         >
-            <Login/>
+            <Register/>
         </Modal>
     );
 };
 
-export default LoginModal;
+export default RegisterModal;

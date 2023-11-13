@@ -17,6 +17,7 @@ const AsyncModalContent = (props: ModalPropsType) => {
         title,
         children,
         width,
+        withoutTitle,
         withoutButtons,
     } = props;
 
@@ -25,16 +26,18 @@ const AsyncModalContent = (props: ModalPropsType) => {
     return (
         <React.Fragment>
             <StyledMegaShadow/>
-            <StyledModalWrapper onClick={onClose}>
+            <StyledModalWrapper onMouseDown={onClose}>
                 <Paper
-                    onClick={(e) => e.stopPropagation()}
+                    onMouseDown={e => e.stopPropagation()}
                     height={'auto'}
                     gap={20}
                     width={width || 400}
                 >
-                    <Typography fontSize="18px" color={theme.colors.textOnSecondary}>
+                    <Display condition={!withoutTitle}>
+                        <Typography fontSize="18px" color={theme.colors.textOnSecondary}>
                         {title || 'Подтверждение действия'}
                     </Typography>
+                    </Display>
                     <Display condition={!children}>
                         <Typography color={theme.colors.textOnSecondary}>
                             {text || 'Вы действительно уверены?'}

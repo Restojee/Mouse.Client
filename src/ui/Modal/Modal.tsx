@@ -10,7 +10,8 @@ export type ModalPropsType = {
     title?: string;
     width?: Property.Width<number>;
     children?: ReactNode;
-    withoutButtons?: boolean
+    withoutTitle?: boolean;
+    withoutButtons?: boolean;
 }
 export const Modal = ({ isOpen, ...props }: ModalPropsType) => {
 

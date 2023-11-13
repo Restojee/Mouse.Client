@@ -6,6 +6,7 @@ const modals: Record<AppModalTypes, LazyExoticComponent<() => JSX.Element>> = {
     'tag-update': React.lazy(() => import('../tag/containers/tags-modal/TagsModal')),
     'login': React.lazy(() => import('../auth/containers/login/LoginModal')),
     'user': React.lazy(() => import('../user/containers/user-modal/UserModal')),
+    'register': React.lazy(() => import('../auth/containers/register/RegisterModal')),
 }
 
 export const AsyncModals = () => {
