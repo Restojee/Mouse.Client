@@ -1,6 +1,5 @@
 import { chatApi } from '@/api/chatApi';
 import { Comment } from '@/api/codegen/genMouseMapsApi';
-import { commentsApi } from '@/api/commentsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { ChatStateType } from '@/modules/chat/types';
 import { addMapCommentsThunk } from '@/modules/map/containers/map-content/containers/comments/slice';

@@ -1,11 +1,8 @@
-import { AsyncModals } from '@/modules/modals/AsyncModals';
 import React, { Suspense, useEffect } from 'react';
+import { AsyncModals } from '@/modules/modals/AsyncModals';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { LoginModal } from '@/modules/auth/containers/login/LoginModal';
-import { UserModal } from '@/modules/user/containers/user-modal/UserModal';
 import { getUsersThunk } from '@/modules/user/slice';
 import { MapsQueryParams } from '@/modules/map/containers/map-list/containers/maps-query-params/MapsQueryParams';
-import { TagsModal } from '@/modules/tag/containers/tags-modal/TagsModal';
 import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
 import { Display } from '@/ui/Display';
 import { AsyncMapViewModal } from '@/modules/map/containers/map-view-modal';

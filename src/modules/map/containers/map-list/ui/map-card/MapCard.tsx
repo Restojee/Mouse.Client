@@ -1,8 +1,3 @@
-import {
-    useCompletedMap
-} from '@/modules/map/containers/map-content/containers/completed-images/hooks/useCompletedMap';
-import { ImageIcon } from '@/svg/ImageIcon';
-import { Display } from '@/ui/Display';
 import { useState } from 'react';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMap } from '@/modules/map/common';
@@ -47,7 +42,7 @@ export const MapCard = (props: MapCardProps) => {
 
     const {
         onMapNameCopy,
-        onAddMapFavorite
+        onToggleMapFavorite
     } = useMap(id);
 
     const onIconsClick = async (e: React.MouseEvent<HTMLDivElement>) => {
@@ -95,7 +90,7 @@ export const MapCard = (props: MapCardProps) => {
                     {/*<IconButton onClick={onCompletedMapModalOpen}>*/}
                     {/*    <ImageIcon />*/}
                     {/*</IconButton>*/}
-                    <IconButton onClick={onAddMapFavorite}>
+                    <IconButton onClick={onToggleMapFavorite}>
                         <FavoriteIcon color={isFavorite ? theme.colors.brandColor : undefined}/>
                     </IconButton>
                 </StyledBox>

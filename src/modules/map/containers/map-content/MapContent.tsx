@@ -1,7 +1,7 @@
+import React, { useCallback, useMemo } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
 import { Display } from '@/ui/Display';
-import React, { useCallback, useMemo } from 'react';
 import { useCompletedMap } from './containers/completed-images/hooks/useCompletedMap';
 import { useMap } from '@/modules/map/common';
 import { formatDateTime } from '@/common/utils/formatDateTime';

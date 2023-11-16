@@ -14,12 +14,12 @@ import {
     setComments,
     setIsCommentsInitialized,
 } from '@/modules/map/containers/map-content/containers/comments/slice';
+import { setMapNote } from '@/modules/map/containers/map-content/containers/note/slice';
 import {
     setActiveMapCompletedById,
     setCompletedMaps,
 } from '../containers/completed-images/slice';
 import { deleteMap, setMapImageById } from '@/modules/map/containers/map-list/slice';
-import { setTagModalType } from '@/modules/tag';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MapContentStateType, UpdateMapImageThunkArgType } from '../types';
@@ -97,7 +97,7 @@ export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: Get
         const tagIds = map.tags?.map(el => el.id as number) || [];
         thunkAPI.dispatch(setMapContent(map));
         thunkAPI.dispatch(setCompletedMaps(map.completed || []));
-
+        thunkAPI.dispatch(setMapNote(map.notes[0].text));
         thunkAPI.dispatch(setSelectedTagIds(tagIds));
         return thunkAPI.fulfillWithValue(map);
 

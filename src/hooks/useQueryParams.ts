@@ -18,7 +18,7 @@ const useQueryParams = () => {
     }, [router.query])
 
     const updateQuery = useCallback(async () => {
-        await router.push({ query: { filter: queryString.stringify(filter, { skipEmptyString: true }) } });
+        await router.push({ query: {...router.query, filter: queryString.stringify(filter, { skipEmptyString: true }) } });
     }, [router, filter]);
 
     const removeQuery = useCallback(async (query: Array<keyof GetMapsApiArg>) => {

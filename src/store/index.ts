@@ -4,6 +4,7 @@ import { chatReducer } from '@/modules/chat/slice';
 import { infoReducer } from '@/modules/info/slice';
 import { mapCommentsReducer } from '@/modules/map/containers/map-content/containers/comments/slice';
 import { completedMapsReducer } from '@/modules/map/containers/map-content/containers/completed-images/slice';
+import { mapNoteReducer } from '@/modules/map/containers/map-content/containers/note/slice';
 import { mapReducer } from '@/modules/map/containers/map-content/slice';
 import { mapCreateReducer } from '@/modules/map/containers/map-create';
 import { mapsReducer } from '@/modules/map/containers/map-list/slice';
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     comments: mapCommentsReducer,
     maps: mapsReducer,
     map: mapReducer,
+    mapNote: mapNoteReducer,
     completedMaps: completedMapsReducer,
     mapCreate: mapCreateReducer,
     info: infoReducer,

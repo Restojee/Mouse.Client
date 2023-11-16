@@ -276,3 +276,8 @@ export type CreateChatMessageRequest = {
     text: string;
 }
 export type CreateChatMessageResponse = Comment
+export type UpdateMapNoteRequest = {
+    levelId: number;
+    text: string;
+}
+export type UpdateMapNoteResponse = Map;

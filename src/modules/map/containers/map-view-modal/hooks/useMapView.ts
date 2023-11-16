@@ -1,4 +1,3 @@
-import useQueryParams from '@/hooks/useQueryParams';
 import { useCallback } from 'react';
 import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
 import { onCloseMapContentThunk } from '@/modules/map/containers/map-content/slice';
@@ -13,7 +12,6 @@ export const useMapView = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { levelId } = router.query;
-    const {} = useQueryParams();
 
     const isAuth = useAppSelector(selectIsAuth);
 
@@ -25,7 +23,7 @@ export const useMapView = () => {
         } catch (err) {
             dispatch(setAppMessage({ severity: 'error', text: 'Ошибка открытия карты' }));
         }
-    }, [levelId, isAuth]);
+    }, [levelId, isAuth, router.query]);
 
     const closeMap = useCallback(async () => {
         const query = router.query;
