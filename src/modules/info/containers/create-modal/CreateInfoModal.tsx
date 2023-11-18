@@ -35,7 +35,7 @@ export const CreateInfoModal = () => {
 
     const onSubmitHandler = useCallback(async (data: CreateTipApiArg) => {
         if(selectedInfo) {
-            await updateInfo({tipId: selectedInfo.id, ...data})
+            await updateInfo({id: selectedInfo.id, ...data})
             return;
         }
         await createInfo(data);

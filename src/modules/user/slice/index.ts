@@ -1,6 +1,7 @@
-import { GetUsersApiResponse, User } from '@/api/codegen/genMouseMapsApi';
+import { GetUsersApiResponse, UpdateUserImageRequest, User } from '@/api/codegen/genMouseMapsApi';
 import { usersApi } from '@/api/usersApi';
 import { setAppMessage } from '@/bll/appReducer';
+import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
 import { UsersStateType } from '@/modules/user/types';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -11,6 +12,16 @@ export const getUsersThunk = createAsyncThunk('users/get', async (arg, thunkAPI)
         thunkAPI.dispatch(setUsers(users));
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({ severity: 'error', text: 'Ошибка получения юзеров' }));
+    }
+});
+
+export const updateUserImageThunk = createAsyncThunk('user/update-avatar', async (arg: {file: string}, thunkAPI) => {
+    try {
+        const file = convertDataUrlToBlob(arg.file);
+        await usersApi.updateAvatar({ file });
+        thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Аватарка обновлена' }));
+    } catch (error) {
+        thunkAPI.dispatch(setAppMessage({ severity: 'error', text: 'Ошибка обновления аватарки' }));
     }
 });
 

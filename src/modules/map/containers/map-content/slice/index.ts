@@ -19,7 +19,12 @@ import {
     setActiveMapCompletedById,
     setCompletedMaps,
 } from '../containers/completed-images/slice';
-import { deleteMap, setMapImageById } from '@/modules/map/containers/map-list/slice';
+import {
+    deleteMap,
+    getMapsThunk,
+    setMapImageById,
+    updateMapDataByIdThunk,
+} from '@/modules/map/containers/map-list/slice';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MapContentStateType, UpdateMapImageThunkArgType } from '../types';
@@ -70,8 +75,9 @@ export const deleteMapThunk = createAsyncThunk('map/delete', async (arg: DeleteM
 export const addFavorite = createAsyncThunk('map/favorite', async (arg: AddFavoriteMapApiArg, thunkAPI) => {
     try {
         await mapsApi.addFavorite(arg);
-        thunkAPI.dispatch(setIsFavorite(true));
-        thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Добавлено в избранное' }));
+        thunkAPI.dispatch(setIsFavorite(true))
+        thunkAPI.dispatch(increaseFavoriteCount())
+        thunkAPI.dispatch(updateMapDataByIdThunk({levelId: arg.levelId}));
         return thunkAPI.fulfillWithValue(true);
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({ severity: 'error', text: 'Ошибка добавления в избранное' }));
@@ -82,8 +88,9 @@ export const addFavorite = createAsyncThunk('map/favorite', async (arg: AddFavor
 export const removeFavorite = createAsyncThunk('map/favorite', async (arg: RemoveFavoriteMapApiArg, thunkAPI) => {
     try {
         await mapsApi.removeFavorite(arg);
+        thunkAPI.dispatch(getMapsThunk());
+        thunkAPI.dispatch(decreaseFavoriteCount())
         thunkAPI.dispatch(setIsFavorite(false));
-        thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Удалено из избранного' }));
         return thunkAPI.fulfillWithValue(true);
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({ severity: 'error', text: 'Ошибка удаления из избранного' }));
@@ -166,6 +173,16 @@ const slice = createSlice({
                 state.mapContent.isFavoriteByUser = action.payload;
             }
         },
+        decreaseFavoriteCount: (state) => {
+            if (state.mapContent) {
+                state.mapContent.favoritesCount--;
+            }
+        },
+        increaseFavoriteCount: (state) => {
+            if (state.mapContent) {
+                state.mapContent.favoritesCount++;
+            }
+        },
         setIsMapContentImageFetching: (state, action: PayloadAction<boolean>) => {
             state.isMapFetching = action.payload;
         },
@@ -210,6 +227,8 @@ export const {
     setSelectedTagIds,
     setIsMapContentImageFetching,
     setMapContentTags,
-    setIsFavorite
+    setIsFavorite,
+    decreaseFavoriteCount,
+    increaseFavoriteCount,
 } = slice.actions;
 export const mapReducer = slice.reducer;

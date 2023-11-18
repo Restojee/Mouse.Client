@@ -26,7 +26,7 @@ export function MapsByCategoryNavigation(props: MapsByCategoryNavigationSectionP
             />
             <NavLink
                 onClick={()=> navigateTo({})}
-                isChecked={!filters.userId}
+                isChecked={Object.entries(filters).length < 4}
                 label="Все карты"
                 prepend={(
                     <StyledNavLinkSection isOpen={ props.isOpen }>

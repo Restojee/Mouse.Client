@@ -33,10 +33,10 @@ export const navItems: NavItemsType[] = [
     //     IconComponent:  CommentFillIcon,
     //     query: ''
     // },
-    // {
-    //     label: 'Карты с заметкой',
-    //     IconComponent:  BookmarkIcon,
-    //     query: ''
-    // },
+    {
+        label: 'Карты с заметкой',
+        IconComponent:  BookmarkIcon,
+        query: {hasNote: true}
+    },
 
 ];

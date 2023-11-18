@@ -1,7 +1,8 @@
+import React, { useEffect, useRef, useState } from 'react';
 import { Display } from '@/ui/Display';
+import { useImage } from '@/ui/ImageForm/hooks/useImage';
 import { StyledImageFormContainer, StyledImageFormLink, StyledImageHover } from '@/ui/ImageForm/ImageFormElements';
 import { Property } from 'csstype';
-import React, { useEffect, useRef, useState } from 'react';
 
 type ImageFormPropsType = {
     placeholder?: string;
@@ -14,6 +15,10 @@ type ImageFormPropsType = {
     height?: Property.Height<number>;
 };
 export const ImageForm = (props: ImageFormPropsType) => {
+    const {
+        image,
+        getDataUrlImage
+    } = useImage();
 
     const inputAccept = {
         image: '.png, .jpg, .jpeg',
@@ -26,43 +31,14 @@ export const ImageForm = (props: ImageFormPropsType) => {
         inputFile.current?.click();
     };
 
-    const convertFileToDataUrl = (file: File, callback: (result: string | void) => void): string | void => {
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-            const dataUrl = e.target?.result;
-            if (typeof dataUrl === 'string') {
-                callback(dataUrl);
-            }
-        };
-
-        reader.readAsDataURL(file);
-    };
-
-    const uploadFile = (files: FileList | null) => {
-        if (files && files.length) {
-            const file = files[0];
-            convertFileToDataUrl(file, (convertedFile) => {
-                if (convertedFile) {
-                    props.onChange(convertedFile);
-                }
-            });
-        }
-    };
-
     const uploadHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const files = e.target.files;
-
-        if (files) {
-            uploadFile(files);
-        }
+        getDataUrlImage(files)
     };
 
     function onPasteHandler(e: ClipboardEvent): any {
         const files = e.clipboardData?.files;
-        if (files) {
-            uploadFile(files);
-        }
+        getDataUrlImage(files)
     };
 
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -79,7 +55,7 @@ export const ImageForm = (props: ImageFormPropsType) => {
         e.preventDefault();
         setDrag(false);
         const files = e.dataTransfer.files;
-        uploadFile(files);
+        getDataUrlImage(files)
     };
 
     useEffect(() => {
@@ -89,6 +65,10 @@ export const ImageForm = (props: ImageFormPropsType) => {
             document.removeEventListener('paste', onPasteHandler);
         };
     });
+
+    useEffect(() => {
+        props.onChange(image)
+    }, [image]);
 
     return (
         <StyledImageFormContainer

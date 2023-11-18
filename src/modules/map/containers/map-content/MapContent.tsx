@@ -74,6 +74,7 @@ export const MapContent = React.memo(() => {
                 />
                 <SidebarIcons
                   levelId={map?.id}
+                  favoritesCount={map?.favoritesCount}
                   isCompleted={map?.isCompletedByUser}
                   isFavorite={map?.isFavoriteByUser}
                 />

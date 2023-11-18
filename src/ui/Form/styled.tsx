@@ -17,7 +17,7 @@ export const StyledFormColumn = styled.div({
     alignItems: 'flex-end',
 });
 
-export const StyledFormRow = styled.div<{ justify: Property.JustifyContent }>(props => ({
+export const StyledFormRow = styled.div<{ justify?: Property.JustifyContent }>(props => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: props.justify,
@@ -45,6 +45,7 @@ type InputWrapperPropsType = {
     width?: Property.Width,
     bgColor?: Property.BackgroundColor,
     isError?: boolean,
+    isDisabled?: boolean,
 }
 export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ...props }) => ({
     display: 'flex',
@@ -69,6 +70,10 @@ export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ..
     ...props.isError && {
         marginBottom: 5,
         border: `1px solid ${ theme.colors.status.error }`,
+    },
+    ...props.isDisabled && {
+        pointerEvents: 'none',
+        opacity: 0.5
     }
 }));
 

@@ -140,11 +140,10 @@ export const tabsData: TabsDataType[] = [
     {
         label: 'Настройки',
         isNeedAuth: true,
-        tab: null,
+        tab: 'settings',
         icon: <SettingsIcon/>,
         margin: 'auto 0 0 0',
     },
-
 ];
 
 type TabsDataType = {

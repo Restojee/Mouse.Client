@@ -30,7 +30,7 @@ export const useTag = () => {
     const selectedIdForCreateMap = useAppSelector(selectMapTags);
     const tagsList = useAppSelector(selectTags);
 
-    const [selectedTagIdsForCreateMap, setSelectedTagIdsForCreateMap] = useState<Tag['id'][]>(selectedTagIds || []);
+    const [selectedTagIdsForCreateMap, setSelectedTagIdsForCreateMap] = useState<Tag['id'][]>(selectedIdForCreateMap || []);
 
     const onTagCreate = useCallback(async (name: string) => {
         if (name.trim().length) {
@@ -89,6 +89,7 @@ export const useTag = () => {
     }, [levelId, selectedTagIdsForCreateMap]);
 
     const checkIsSelectedTagId = useCallback((id: Tag['id']) => {
+        console.log(selectedTagIds, levelId, id)
         if (id && levelId) {
             return selectedTagIds.includes(id);
         }

@@ -31,7 +31,14 @@ export const Input = (props: InputPropsType) => {
             transition={'0.2s'}
             position={'relative'}
         >
-            <StyledInputWrapper bgColor={ bgColor } isError={isError}>
+            <StyledBox
+                opacity={0.5}
+                fontSize={'0.8rem'}
+                padding={'0 0 5px 15px'}
+            >
+                {props.title}
+            </StyledBox>
+            <StyledInputWrapper isDisabled={props.disabled} bgColor={ bgColor } isError={isError}>
                 { inputPrepend && (
                     <StyledInputIcon left>
                         { inputPrepend }

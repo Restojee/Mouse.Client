@@ -17,7 +17,7 @@ export const infoApi = {
         return res.data;
     },
     deleteInfo: async (params: RemoveTipApiArg) => {
-        const res = await api.delete<apiTypes.RemoveTipApiArg, AxiosResponse<apiTypes.RemoveTipApiResponse>>(`/tips/remove/${params.tipId}`);
+        const res = await api.delete<apiTypes.RemoveTipApiArg, AxiosResponse<apiTypes.RemoveTipApiResponse>>(`/tips/delete/${params.tipId}`);
         return res.data;
     },
 };

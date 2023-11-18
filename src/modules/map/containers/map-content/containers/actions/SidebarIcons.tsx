@@ -1,5 +1,6 @@
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
+import { Display } from '@/ui/Display';
 import React from 'react';
 import { StyledBox } from '@/ui/Box';
 import { OutIcon } from '@/svg/OutIcon';
@@ -10,15 +11,16 @@ import { AddImageIcon } from '@/svg/AddImageIcon';
 import { FavoriteIcon } from '@/svg/FavoriteIcon';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { SvgIconPropsType } from '@/svg/common/types';
-import { StyledContentSidebarBodyIcon } from '@/modules/map/styles/styled';
+import { StyledContentSidebarBodyCount, StyledContentSidebarBodyIcon } from '@/modules/map/styles/styled';
 import { useCompletedMap } from '../completed-images/hooks/useCompletedMap';
 
 type MapContentSidebarIconsPropsType = {
     levelId: Map['id'];
     isCompleted?: boolean;
     isFavorite?: boolean;
+    favoritesCount?: number;
 }
-export const SidebarIcons = ({levelId, isFavorite, isCompleted}: MapContentSidebarIconsPropsType) => {
+export const SidebarIcons = ({levelId, isFavorite, isCompleted, favoritesCount}: MapContentSidebarIconsPropsType) => {
     const theme = useAppTheme();
     const isAuth = useAppSelector(selectIsAuth);
 
@@ -37,6 +39,10 @@ export const SidebarIcons = ({levelId, isFavorite, isCompleted}: MapContentSideb
         color: theme.colors.primary
     }
 
+    const onToggleMapFavoriteHandler = () => {
+        onToggleMapFavorite(Boolean(isFavorite))
+    }
+
     return (
         <StyledBox
             width={'100%'}
@@ -47,13 +53,18 @@ export const SidebarIcons = ({levelId, isFavorite, isCompleted}: MapContentSideb
                 disabled={!isAuth}
                 onClick={onCompletedMapModalOpen}
             >
-                <AddImageIcon{...iconsProps}/>
+                <AddImageIcon {...iconsProps} color={isCompleted ? theme.colors.brandColor : iconsProps.color}/>
             </StyledContentSidebarBodyIcon>
             <StyledContentSidebarBodyIcon
                 disabled={!isAuth}
-                onClick={onToggleMapFavorite}
+                onClick={onToggleMapFavoriteHandler}
             >
-                <FavoriteIcon {...iconsProps} color={isFavorite ? theme.colors.brandColor : iconsProps.color}  />
+                <FavoriteIcon {...iconsProps} color={isFavorite ? theme.colors.brandColor : iconsProps.color} />
+                <Display condition={favoritesCount}>
+                    <StyledContentSidebarBodyCount>
+                        {favoritesCount}
+                    </StyledContentSidebarBodyCount>
+                </Display>
             </StyledContentSidebarBodyIcon>
             <StyledContentSidebarBodyIcon
                 onClick={onMapShare}

@@ -16,9 +16,11 @@ import { StyledDrawerBlock, StyledDrawerHeader } from '@/layout/drawer/styled';
 export const Statistic = () => {
     const {
         users,
+        getMapsPercent,
     } = useUser();
+
     const {
-        updateFilter,
+        changeFilterNavigate,
     } = useQueryParams();
 
 
@@ -70,39 +72,39 @@ export const Statistic = () => {
                                 grow="1"
                                 justify="center"
                                 title="Выполнено"
-                                onClick={() => updateFilter({ userId: user.id, isCompleted: true, isFavorite: undefined })}
+                                onClick={() => changeFilterNavigate({ isCompleted: true, userId: user.id })}
                             >
                                 <StyledStatisticIconContainer
-                                    fillingPercent={'60%'}
+                                    fillingPercent={`${getMapsPercent(user.completedCount)}%`}
                                 >
                                     <BookCheckFillIcon/>
                                     <StyledStatisticIconText>
-                                        0
+                                        {user.completedCount}
                                     </StyledStatisticIconText>
                                 </StyledStatisticIconContainer>
                             </StyledBox>
                             <StyledBox
-                                onClick={() => alert('просмотр загруженных карт пока не работает')}
+                                onClick={() => changeFilterNavigate({ isCreatedByUser: true, userId: user.id })}
                                 grow="1"
                                 justify="center"
                                 title="Добавлено"
                             >
-                                <StyledStatisticIconContainer fillingPercent={'20%'}>
+                                <StyledStatisticIconContainer fillingPercent={`${getMapsPercent(user.levelsCount)}%`}>
                                     <InIcon/>
                                     <StyledStatisticIconText>
-                                        0
+                                        {user.levelsCount}
                                     </StyledStatisticIconText>
                                 </StyledStatisticIconContainer>
                             </StyledBox>
                             <StyledBox
-                                onClick={() => updateFilter({isFavorite: true, isCompleted: undefined, userId: user.id})}
+                                onClick={() => changeFilterNavigate({ isFavorite: true, userId: user.id })}
                                 grow="1"
                                 justify="center"
                                 title="В избранном"
                             >
                                 <StyledStatisticIconContainer>
                                     <FavoriteIcon/>
-                                    <StyledStatisticIconText>{1}</StyledStatisticIconText>
+                                    <StyledStatisticIconText>{user.favoritesCount}</StyledStatisticIconText>
                                 </StyledStatisticIconContainer>
                             </StyledBox>
                             <StyledBox
@@ -113,7 +115,7 @@ export const Statistic = () => {
                             >
                                 <StyledStatisticIconContainer>
                                     <CommentFillIcon/>
-                                    <StyledStatisticIconText>{1}</StyledStatisticIconText>
+                                    <StyledStatisticIconText>{user.commentsCount}</StyledStatisticIconText>
                                 </StyledStatisticIconContainer>
                             </StyledBox>
                         </StyledBox>

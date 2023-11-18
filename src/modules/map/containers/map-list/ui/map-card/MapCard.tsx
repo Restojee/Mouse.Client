@@ -52,6 +52,10 @@ export const MapCard = (props: MapCardProps) => {
         }
     };
 
+    const onToggleMapFavoriteHandler = () => {
+        onToggleMapFavorite(Boolean(isFavorite))
+    }
+
     return (
         <StyledMapCard
             onMouseLeave={() => setIsMapHover(false)}
@@ -90,7 +94,7 @@ export const MapCard = (props: MapCardProps) => {
                     {/*<IconButton onClick={onCompletedMapModalOpen}>*/}
                     {/*    <ImageIcon />*/}
                     {/*</IconButton>*/}
-                    <IconButton onClick={onToggleMapFavorite}>
+                    <IconButton onClick={onToggleMapFavoriteHandler}>
                         <FavoriteIcon color={isFavorite ? theme.colors.brandColor : undefined}/>
                     </IconButton>
                 </StyledBox>

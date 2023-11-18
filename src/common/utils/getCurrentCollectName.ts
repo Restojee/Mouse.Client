@@ -7,6 +7,10 @@ export const getCurrentCollectName = (query: Partial<GetMapsApiArg>): string => 
         return 'Невыполненные';
     } else if (query.isFavorite === true) {
         return 'Избранные';
+    } else if (query.isCreatedByUser === true) {
+        return 'Добавленные';
+    } else if (query.hasNote === true) {
+        return 'Карты с заметкой';
     } else {
         return 'Все карты';
     }

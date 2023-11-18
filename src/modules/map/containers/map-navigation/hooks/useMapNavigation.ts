@@ -6,23 +6,10 @@ import { useCallback } from 'react';
 
 export const useMapNavigation = () => {
     const queryParams = useQueryParams();
-    const userId = useAppSelector(selectCurrentUserId);
 
     const navigateTo = useCallback(async (query?: Partial<GetMapsApiArg> )  => {
-        if (query?.isCompleted) {
-            await queryParams.updateFilter({ ...query, userId, isFavorite: undefined });
-            return;
-        } else if (query?.isFavorite) {
-            await queryParams.updateFilter({ ...query, userId, isCompleted: undefined });
-            return;
-        } else if (query?.isCompleted === false) {
-            await queryParams.updateFilter({ ...query, userId, isFavorite: undefined });
-            return;
-        } else {
-            await queryParams.removeQuery(['isCompleted', 'isFavorite', 'userId', 'name']);
-            return;
-        }
-    }, [queryParams.updateQuery, queryParams.removeQuery, userId]);
+        await queryParams.changeFilterNavigate({ ...query });
+    }, [queryParams.changeFilterNavigate]);
 
     return {
         filters: queryParams.filter,

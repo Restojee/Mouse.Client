@@ -78,9 +78,10 @@ export type GetCompletedMapsByMapApiArg = {
 export type GetCompletedMapsByMapApiResponse = /** status 200 OK */ MapCompleted[];
 export type GetMapsApiResponse = /** status 200 OK */ {
     records: Map[];
-    pageNumber: number;
+    page: number;
     pageSize: number;
-    totalRecordsCount: number;
+    totalItems: number;
+    totalPages: number;
 };
 export type GetMapsApiArg = {
     page: number;
@@ -88,7 +89,9 @@ export type GetMapsApiArg = {
     sortDirection?: 'ASC' | 'DESC';
     sortBy?: 'DATE' | 'COMPLETED' | 'COMMENTED' | 'FAVORITE' | 'VISIT';
     isFavorite?: boolean;
+    hasNote?: boolean;
     isCompleted?: boolean;
+    isCreatedByUser?: boolean;
     name?: string;
     userId?: User['id'];
     tagIds?: Tag['id'][]
@@ -156,6 +159,10 @@ export type User = {
     modifiedUtcDate?: string,
     avatar?: string;
     username?: string;
+    levelsCount?: number;
+    completedCount?: number;
+    commentsCount?: number;
+    favoritesCount?: number;
 };
 export type MapCompleted = {
     user: User;
@@ -219,7 +226,7 @@ export type Tip = {
     modifiedUtcDate: string | null;
 };
 export type UpdateTipRequest = {
-    tipId?: number;
+    id?: number;
     title?: string;
     text?: string;
 };
@@ -251,7 +258,9 @@ export type LoginResponse = {
     refreshToken: string,
     user: User;
 }
-
+export type UpdateUserImageRequest = {
+    file: Blob;
+}
 export type RegisterRequest = {
     userName: string;
     password: string;

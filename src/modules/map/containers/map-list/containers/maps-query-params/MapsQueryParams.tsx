@@ -23,7 +23,6 @@ export const MapsQueryParams = React.memo(() => {
         if (!router.isReady) {
             return;
         }
-        console.log(2)
         updateQuery();
     }, [filter]);
 

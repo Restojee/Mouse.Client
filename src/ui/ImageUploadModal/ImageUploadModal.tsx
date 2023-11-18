@@ -1,5 +1,6 @@
 import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
 import { StyledBox } from '@/ui/Box';
+import { useImage } from '@/ui/ImageForm/hooks/useImage';
 import { ImageForm } from '@/ui/ImageForm/ImageForm';
 import { Modal } from '@/ui/Modal/Modal';
 import { useState } from 'react';

@@ -53,6 +53,7 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg: {id: Ma
 
 const initialState: MapCreateFormType = {
     name: '',
+    tags: [],
 };
 
 const slice = createSlice({

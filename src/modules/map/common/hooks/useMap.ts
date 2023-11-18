@@ -21,13 +21,13 @@ export const useMap = (levelId?: Map['id']) => {
     const isMapImageModalOpen = useAppSelector(selectIsMapImageModalOpen);
     const map = useAppSelector(selectMapContent);
 
-    const onToggleMapFavorite = useCallback((): void => {
-        if (levelId && !map?.isFavoriteByUser) {
+    const onToggleMapFavorite = useCallback((isFavorite: boolean): void => {
+        if (levelId && !isFavorite) {
             dispatch(addFavorite({ levelId }));
             return
         }
 
-        if (levelId && map?.isFavoriteByUser) {
+        if (levelId && isFavorite) {
             dispatch(removeFavorite({ levelId }))
         }
 

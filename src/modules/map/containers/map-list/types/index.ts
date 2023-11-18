@@ -4,4 +4,5 @@ export type MapsStateType = {
     isMapsFetching: boolean;
     filter: GetMapsApiArg;
     mapsData: GetMapsApiResponse | null;
+    staticMapsInfo: GetMapsApiResponse | null;
 }
