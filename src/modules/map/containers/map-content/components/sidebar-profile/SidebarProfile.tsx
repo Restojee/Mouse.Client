@@ -1,5 +1,5 @@
 import { User } from '@/api/codegen/genMouseMapsApi';
-import { getMapImageLink } from '@/common/utils';
+import { getAvatarImageLink } from '@/common/utils';
 import { useUser } from '@/modules/user/hooks/useUser';
 import { Avatar } from '@/ui/Avatar';
 import { StyledBox } from '@/ui/Box';
@@ -29,7 +29,7 @@ export const SidebarProfile = (props: MapContentSidebarProfilePropsType) => {
         >
             <Avatar
                 size={80}
-                image={getMapImageLink(user?.avatar)}
+                image={getAvatarImageLink(user?.avatar)}
                 username={user?.username}
             />
             <StyledBox

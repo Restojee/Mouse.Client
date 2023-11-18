@@ -1,4 +1,4 @@
-import { getMapImageLink } from '@/common/utils';
+import { getAvatarImageLink } from '@/common/utils';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { NavLink } from '@/layout/navigation/NavLink';
 import { useLogin } from '@/modules/auth/hooks/useLogin';
@@ -58,7 +58,11 @@ export const Panel = (props: PanelProps) => {
                     </StyledNavLinkSection>
                 }
             />
-            <Avatar size={40} image={getMapImageLink(avatar)} username={userData?.username}/>
+            <Avatar
+                size={40}
+                image={getAvatarImageLink(avatar)}
+                username={userData?.username}
+            />
             {tabsData.map((el, index) => (
                 <NavLink
                     key={index}

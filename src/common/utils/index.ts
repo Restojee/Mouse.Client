@@ -9,6 +9,12 @@ export const getMapImageLink = (link: string | null | undefined) => {
     return DEFAULT_MAP_IMAGE;
 };
 
+export const getAvatarImageLink = (link: string | null | undefined) => {
+    if (link) {
+        return process.env.FILE_STORAGE_URL + '/' + link;
+    }
+};
+
 export const createRootContainerElement = (rootContainerClass: string): HTMLDivElement => {
     const element = document.createElement('div');
     element.setAttribute('class', rootContainerClass);

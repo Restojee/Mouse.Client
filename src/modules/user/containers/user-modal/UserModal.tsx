@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetMapsApiArg } from '@/api/codegen/genMouseMapsApi';
-import { getMapImageLink } from '@/common/utils';
+import { getAvatarImageLink, getMapImageLink } from '@/common/utils';
 import { formatDateTime } from '@/common/utils/formatDateTime';
 import useQueryParams from '@/hooks/useQueryParams';
 import { StyledStatisticIconContainer, StyledStatisticIconText } from '@/layout/drawer/Statistic/styled';
@@ -55,7 +55,7 @@ const UserModal = () => {
                 >
                     <Avatar
                         size={100}
-                        image={getMapImageLink(currentUserView?.avatar)}
+                        image={getAvatarImageLink(currentUserView?.avatar)}
                         username={currentUserView?.username}
                     />
                     <StyledBox

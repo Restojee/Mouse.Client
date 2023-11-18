@@ -1,7 +1,7 @@
-import { getMapImageLink } from '@/common/utils';
+import React from 'react';
+import { getAvatarImageLink } from '@/common/utils';
 import { formatDateTime } from '@/common/utils/formatDateTime';
 import useQueryParams from '@/hooks/useQueryParams';
-import React from 'react';
 import { useUser } from '@/modules/user/hooks/useUser';
 import { Avatar } from '@/ui/Avatar';
 import { StyledBox } from '@/ui/Box';
@@ -49,7 +49,7 @@ export const Statistic = () => {
                         >
                             <Avatar
                                 size={60}
-                                image={getMapImageLink(user.avatar)}
+                                image={getAvatarImageLink(user.avatar)}
                                 username={user.username}
                             />
                             <StyledBox
