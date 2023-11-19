@@ -28,8 +28,6 @@ export const useMapCreate = () => {
     const image = useAppSelector(selectMapImage);
     const completedMapImage = useAppSelector(selectCompletedMapImage);
 
-    console.log(image, completedMapImage)
-
     const {
         updateFilter,
         query,

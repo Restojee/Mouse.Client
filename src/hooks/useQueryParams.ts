@@ -44,7 +44,7 @@ const useQueryParams = () => {
         const filter = { ...staticFilters, ...newFilter };
 
         dispatch(setFilter(filter));
-    }, []);
+    }, [staticFilters]);
 
     const updateFilter = useCallback(async (newFilter: Partial<GetMapsApiArg>) => {
         dispatch(updateStateFilter(newFilter));

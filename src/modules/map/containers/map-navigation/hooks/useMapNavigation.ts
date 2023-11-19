@@ -9,7 +9,7 @@ export const useMapNavigation = () => {
 
     const navigateTo = useCallback(async (query?: Partial<GetMapsApiArg> )  => {
         await queryParams.changeFilterNavigate({ ...query });
-    }, [queryParams.changeFilterNavigate]);
+    }, [queryParams]);
 
     return {
         filters: queryParams.filter,

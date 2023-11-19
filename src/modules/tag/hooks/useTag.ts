@@ -89,7 +89,6 @@ export const useTag = () => {
     }, [levelId, selectedTagIdsForCreateMap]);
 
     const checkIsSelectedTagId = useCallback((id: Tag['id']) => {
-        console.log(selectedTagIds, levelId, id)
         if (id && levelId) {
             return selectedTagIds.includes(id);
         }

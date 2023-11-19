@@ -20,6 +20,7 @@ const UserModal = () => {
     const {
         onCloseUserModal,
         currentUserView,
+        getMapsPercent
     } = useUser();
 
     const {
@@ -27,10 +28,10 @@ const UserModal = () => {
         levelId
     } = useMapView();
 
-    const { updateFilter } = useQueryParams();
+    const { changeFilterNavigate } = useQueryParams();
 
     const onFilterClick = async (filter: Partial<GetMapsApiArg>) => {
-        await updateFilter(filter);
+        await changeFilterNavigate(filter);
         onCloseUserModal();
 
         if (levelId) {
@@ -76,39 +77,39 @@ const UserModal = () => {
                         grow="1"
                         justify="center"
                         title="Выполнено"
-                        onClick={() => onFilterClick({ userId: currentUserView?.id, isCompleted: true, isFavorite: undefined })}
+                        onClick={() => onFilterClick({ isCompleted: true, userId: currentUserView?.id })}
                     >
                         <StyledStatisticIconContainer
-                            fillingPercent={'60%'}
+                            fillingPercent={`${getMapsPercent(currentUserView?.completedCount)}%`}
                         >
                             <BookCheckFillIcon/>
                             <StyledStatisticIconText>
-                                0
+                                {currentUserView?.completedCount}
                             </StyledStatisticIconText>
                         </StyledStatisticIconContainer>
                     </StyledBox>
                     <StyledBox
-                        onClick={() => alert('просмотр загруженных карт пока не работает')}
+                        onClick={() => onFilterClick({ isCreatedByUser: true, userId: currentUserView?.id })}
                         grow="1"
                         justify="center"
                         title="Добавлено"
                     >
-                        <StyledStatisticIconContainer fillingPercent={'20%'}>
+                        <StyledStatisticIconContainer fillingPercent={`${getMapsPercent(currentUserView?.levelsCount)}%`}>
                             <InIcon/>
                             <StyledStatisticIconText>
-                                0
+                                {currentUserView?.levelsCount}
                             </StyledStatisticIconText>
                         </StyledStatisticIconContainer>
                     </StyledBox>
                     <StyledBox
-                        onClick={() => onFilterClick({ isFavorite: true, isCompleted: undefined, userId: currentUserView?.id })}
+                        onClick={() => onFilterClick({ isFavorite: true, userId: currentUserView?.id })}
                         grow="1"
                         justify="center"
                         title="В избранном"
                     >
                         <StyledStatisticIconContainer>
                             <FavoriteIcon/>
-                            <StyledStatisticIconText>{1}</StyledStatisticIconText>
+                            <StyledStatisticIconText>{currentUserView?.favoritesCount}</StyledStatisticIconText>
                         </StyledStatisticIconContainer>
                     </StyledBox>
                     <StyledBox
@@ -119,7 +120,7 @@ const UserModal = () => {
                     >
                         <StyledStatisticIconContainer>
                             <CommentFillIcon/>
-                            <StyledStatisticIconText>{1}</StyledStatisticIconText>
+                            <StyledStatisticIconText>{currentUserView?.commentsCount}</StyledStatisticIconText>
                         </StyledStatisticIconContainer>
                     </StyledBox>
                 </StyledBox>
