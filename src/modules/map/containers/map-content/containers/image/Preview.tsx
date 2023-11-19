@@ -40,6 +40,7 @@ export const Preview = React.memo(({ image }: MapContentPreviewPropsType) => {
                 <ImageActions/>
             </Display>
             <StyledBox
+                height={'100%'}
                 opacity={isLoading ? 0 : 1}
                 transition={'0.2s'}
             >

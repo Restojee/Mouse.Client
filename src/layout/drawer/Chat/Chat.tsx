@@ -1,3 +1,4 @@
+import { useUser } from '@/modules/user/hooks/useUser';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -23,7 +24,7 @@ export const Chat = () => {
 
     const theme = useAppTheme();
 
-    const { onUsernameClick } = useUserActions();
+    const { onOpenUserModal } = useUser();
 
     const scrollToBottomRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +47,7 @@ export const Chat = () => {
     }, []);
 
     const onUsernameClickHandler = useCallback((id: number) => {
-        onUsernameClick(id);
+        onOpenUserModal(id);
     }, []);
 
     useEffect(() => {

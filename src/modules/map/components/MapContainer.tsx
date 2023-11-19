@@ -24,7 +24,7 @@ export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
         const userId = Number(filter.userId);
         const collect = getCurrentCollectName(filter);
 
-        if (!collect.length) {
+        if (!collect.length || Object.entries(filter).length < 4) {
             return { collect, username: '' };
         }
 

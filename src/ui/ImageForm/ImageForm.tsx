@@ -67,7 +67,9 @@ export const ImageForm = (props: ImageFormPropsType) => {
     });
 
     useEffect(() => {
-        props.onChange(image)
+        if (image) {
+            props.onChange(image)
+        }
     }, [image]);
 
     return (

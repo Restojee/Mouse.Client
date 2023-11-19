@@ -117,13 +117,10 @@ export const updateMapImageThunk = createAsyncThunk('map/update-image', async (a
     try {
         const file = convertDataUrlToBlob(arg.file);
         if (file && arg.levelId) {
-            const validArg: UpdateMapImageApiArg = { levelId: arg.levelId, body: { file } };
-            await mapsApi.updateMapImage(validArg);
-            const updatedMap = await thunkAPI.dispatch(getMapByIdThunk({ levelId: arg.levelId }));
-
-            if (updatedMap.payload) {
-                thunkAPI.dispatch(setMapImageById({ levelId: arg.levelId, updatedMap: updatedMap.payload as Map }));
-            }
+            await mapsApi.updateMapImage({ levelId: arg.levelId, body: { file } });
+            await thunkAPI.dispatch(getMapByIdThunk({ levelId: arg.levelId }));
+            
+            thunkAPI.dispatch(updateMapDataByIdThunk({ levelId: arg.levelId }));
             thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Обложка обновлена' }));
             return thunkAPI.fulfillWithValue(true);
         }

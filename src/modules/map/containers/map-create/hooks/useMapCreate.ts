@@ -15,19 +15,20 @@ import {
     setMapName,
     setMapTagIds,
 } from '@/modules/map/containers/map-create/slice';
-import { getMapByNameThunk, selectMaps } from '@/modules/map/containers/map-list/slice';
+import { getMapByNameThunk } from '@/modules/map/containers/map-list/slice';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 
 export const useMapCreate = () => {
     const router = useRouter();
-
     const dispatch = useAppDispatch();
+
     const name = useAppSelector(selectMapName);
+    const tags = useAppSelector(selectMapTags);
     const image = useAppSelector(selectMapImage);
     const completedMapImage = useAppSelector(selectCompletedMapImage);
-    const tags = useAppSelector(selectMapTags);
-    const maps = useAppSelector(selectMaps);
+
+    console.log(image, completedMapImage)
 
     const {
         updateFilter,

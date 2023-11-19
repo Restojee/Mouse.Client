@@ -28,8 +28,8 @@ export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
         <StyledBox
             align={'center'}
             justify={'center'}
-            fontSize={'1.2rem'}
-            fontWeight={500}
+            fontSize={size && size > 70 ? '2.5rem' : '1.2rem'}
+            fontWeight={300}
             borderRadius={'50%'}
             overflow={'hidden'}
             width={size}
