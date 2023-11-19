@@ -220,6 +220,7 @@ export type UpdateMapRequest = {
 };
 export type Tip = {
     id?: number;
+    user?: User;
     title?: string;
     text?: string;
     createdUtcDate: string | null;
