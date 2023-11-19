@@ -27,7 +27,7 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
     }
 
     return (
-        <StyledBox justify={'center'}>
+        <StyledBox justify={'center'} margin={'auto 0 0 0 '}>
             <Display condition={tags?.length}>
                 <StyledBox wrap={'wrap'} gap={10}>
                     {tags?.map(({ name, id }) => (
@@ -40,12 +40,14 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
                             </Typography>
                         </StyledTag>
                     ))}
-                    <Button
-                        bgColor={theme.colors.secondaryAccent}
-                        onClick={onOpenModalHandler}
-                        label={'Изменить'}
-                        prepend={<EditFillIcon/>}
-                    />
+                    <Display condition={isAuth}>
+                        <Button
+                            bgColor={theme.colors.secondaryAccent}
+                            onClick={onOpenModalHandler}
+                            label={'Изменить'}
+                            prepend={<EditFillIcon/>}
+                        />
+                    </Display>
                 </StyledBox>
             </Display>
             <Display condition={!tags?.length}>
