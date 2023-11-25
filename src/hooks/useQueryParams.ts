@@ -13,7 +13,6 @@ const useQueryParams = () => {
     const dispatch = useAppDispatch();
 
     const userId = useAppSelector(selectCurrentUserId);
-
     const filter = useAppSelector(selectFilter);
 
     const staticFilters: Partial<GetMapsApiArg> = {
@@ -24,7 +23,7 @@ const useQueryParams = () => {
 
     const query = useMemo((): Partial<GetMapsApiArg> => {
         return queryString.parse(router.query.filter as string) as Partial<GetMapsApiArg>;
-    }, [router.query]);
+    }, [router.query.filter]);
 
     const updateQuery = useCallback(async () => {
         await router.push({
@@ -33,7 +32,7 @@ const useQueryParams = () => {
                 filter: queryString.stringify(filter, { skipEmptyString: true }),
             },
         });
-    }, [router, filter]);
+    }, [router.query, filter]);
 
     const removeQuery = useCallback(async (query: Array<keyof GetMapsApiArg>) => {
         const updatedQuery = removeKeysFromObject(filter, query) as GetMapsApiArg;

@@ -99,15 +99,18 @@ export const removeFavorite = createAsyncThunk('map/favorite', async (arg: Remov
 });
 
 export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: GetMapApiArg, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
     try {
+        const cachedMap = state.maps.mapsData?.records.find((el) => el.id === arg.levelId) as Map;
+        thunkAPI.dispatch(setMapContent({ ...cachedMap }))
+
         const map = await mapsApi.getMapsById({ levelId: arg.levelId }, mapByIdAbortController.signal);
         const tagIds = map.tags?.map(el => el.id as number) || [];
-        thunkAPI.dispatch(setMapContent(map));
-        thunkAPI.dispatch(setCompletedMaps(map.completed || []));
-        thunkAPI.dispatch(setMapNote(map.notes[0].text));
-        thunkAPI.dispatch(setSelectedTagIds(tagIds));
-        return thunkAPI.fulfillWithValue(map);
 
+        thunkAPI.dispatch(setSelectedTagIds(tagIds));
+        thunkAPI.dispatch(setCompletedMaps(map.completed || []));
+        thunkAPI.dispatch(setMapNote(map.notes[0]?.text));
+        return thunkAPI.fulfillWithValue(map);
     } catch (error) {
         return thunkAPI.rejectWithValue(null);
     }
@@ -119,7 +122,7 @@ export const updateMapImageThunk = createAsyncThunk('map/update-image', async (a
         if (file && arg.levelId) {
             await mapsApi.updateMapImage({ levelId: arg.levelId, body: { file } });
             await thunkAPI.dispatch(getMapByIdThunk({ levelId: arg.levelId }));
-            
+
             thunkAPI.dispatch(updateMapDataByIdThunk({ levelId: arg.levelId }));
             thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Обложка обновлена' }));
             return thunkAPI.fulfillWithValue(true);

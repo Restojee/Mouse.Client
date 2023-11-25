@@ -7,7 +7,7 @@ import {
 } from '@/modules/map/containers/map-content/slice';
 import { TagModalTypes } from '@/modules/tag/types';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Tag } from '@/api/codegen/genMouseMapsApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -23,7 +23,9 @@ export const useTag = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const { levelId } = router.query;
+    const levelId = useMemo(() => {
+        return router.query.levelId;
+    }, [router.query.levelId])
 
     const selectedTagIds = useAppSelector(selectSelectedTagIds);
     const modalType = useAppSelector(selectTagModalType);

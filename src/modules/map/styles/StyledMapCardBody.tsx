@@ -6,6 +6,7 @@ export const StyledMapCardBody = styled.div({
     alignItems: "center",
     height: "150px",
     span: {
-        height: '100%!important'
-    }
+        height: '100%!important',
+        width: '100%!important'
+    },
 })

@@ -1,43 +1,38 @@
-import { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { getMapImageLink } from '@/common/utils';
+import { MapCardButton } from './MapCardButton';
+import { AppImage } from '@/ui/AppImage/AppImage';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMap } from '@/modules/map/common';
 import { StyledMapCard } from '@/modules/map/styles/StyledMapCard';
 import { StyledMapCardHeader } from '@/modules/map/styles/StyledMapCardHeader';
 import { Typography } from '@/ui/Typography/styles/Typography';
 import { StyledMapCardBody } from '@/modules/map/styles/StyledMapCardBody';
-import { StyledMapCardButton } from '@/modules/map/styles/StyledMapCardButton';
 import { StyledMapCardFooter } from '@/modules/map/styles/StyledMapCardFooter';
 import { StyledBox } from '@/ui/Box';
 import { FavoriteIcon } from '@/svg/FavoriteIcon';
 import { BookCheckIcon } from '@/svg/BookCheckIcon';
 import { CommentIcon } from '@/svg/CommentIcon';
 import { CopyIcon } from '@/svg/CopyIcon';
-import { Button } from '@/ui/Button/Button';
 import { IconButton } from '@/ui/Button/IconButton';
-import Image from 'next/image';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 
 type MapCardProps = {
-    id: Map['id'];
-    label?: string | null;
-    completedCount?: number;
-    commentsCount?: number;
-    image: string;
-    isFavorite?: boolean;
-    onClick?: (id: Map['id']) => void;
+    map: Map;
 }
-export const MapCard = (props: MapCardProps) => {
+// eslint-disable-next-line react/display-name
+export const MapCard = React.memo((props: MapCardProps) => {
     const {
         id,
-        label,
+        name,
         image = '',
-        onClick,
         commentsCount,
         completedCount,
-        isFavorite,
-    } = props;
+        isFavoriteByUser,
+    } = props.map;
 
     const theme = useAppTheme();
+
     const [isMapHover, setIsMapHover] = useState(false);
 
     const {
@@ -45,16 +40,17 @@ export const MapCard = (props: MapCardProps) => {
         onToggleMapFavorite
     } = useMap(id);
 
-    const onIconsClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    const onIconsClick = useCallback(async (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        if (label) {
-            await onMapNameCopy(label);
+        if (name) {
         }
-    };
+    }, [name, onMapNameCopy]);
 
-    const onToggleMapFavoriteHandler = () => {
-        onToggleMapFavorite(Boolean(isFavorite))
-    }
+    const onToggleMapFavoriteHandler = useCallback(() => {
+        onToggleMapFavorite(Boolean(isFavoriteByUser))
+    }, [onToggleMapFavorite, isFavoriteByUser])
+
+    const mapImage = useMemo(() => (getMapImageLink(image)), [image])
 
     return (
         <StyledMapCard
@@ -62,27 +58,22 @@ export const MapCard = (props: MapCardProps) => {
             onMouseEnter={() => setIsMapHover(true)}
         >
             <StyledMapCardHeader onClick={onIconsClick}>
-                <Typography fontSize={'0.8rem'}>{label}</Typography>
+                <Typography fontSize={'0.8rem'}>{name}</Typography>
                 <IconButton>
                     <CopyIcon size={20}/>
                 </IconButton>
             </StyledMapCardHeader>
             <StyledMapCardBody>
-                <StyledMapCardButton
-                    isHover={isMapHover}
-                    onClick={() => onClick?.(props.id)}
-                >
-                    <Button
-                        bgColor={theme.colors.status.success}
-                        label="Открыть"
-                    />
-                </StyledMapCardButton>
-                <Image
-                    src={image}
-                    alt=" "
+                <MapCardButton
+                    id={id}
+                    isMapHover={isMapHover}
+                />
+                <AppImage
+                    src={mapImage}
+                    alt={name || ''}
                     objectFit={'contain'}
                     objectPosition={'center'}
-                    width={330}
+                    width={300}
                     height={150}
                 />
             </StyledMapCardBody>
@@ -95,7 +86,7 @@ export const MapCard = (props: MapCardProps) => {
                     {/*    <ImageIcon />*/}
                     {/*</IconButton>*/}
                     <IconButton onClick={onToggleMapFavoriteHandler}>
-                        <FavoriteIcon color={isFavorite ? theme.colors.brandColor : undefined}/>
+                        <FavoriteIcon color={isFavoriteByUser ? theme.colors.brandColor : undefined}/>
                     </IconButton>
                 </StyledBox>
                 <StyledBox gap={'10px'} justify="flex-end" opacity="0.6">
@@ -111,4 +102,4 @@ export const MapCard = (props: MapCardProps) => {
             </StyledMapCardFooter>
         </StyledMapCard>
     );
-};
+});

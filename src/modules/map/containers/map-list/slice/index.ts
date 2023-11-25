@@ -3,7 +3,6 @@ import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { parseObjectValues } from '@/common/utils/parseObjectValues';
 import { removeUndefinedKeys } from '@/common/utils/removeUndefinedKeys';
-import { getMapByIdThunk } from '@/modules/map/containers/map-content/slice';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MapsStateType } from '../types';

@@ -104,7 +104,7 @@ export const Register = () => {
                 <Divider/>
                 <StyledBox direction={'column'}>
                     <Typography>
-                        Уюе есть аккаунт?
+                        Уже есть аккаунт?
                     </Typography>
                     <Typography onClick={onLoginModalOpen} isLink>
                         Войти

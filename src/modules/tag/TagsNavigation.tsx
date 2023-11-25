@@ -37,15 +37,15 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
     const filter = useAppSelector(selectFilter);
     const [tagId, setTagId] = useState<Tag['id'] | null>(null);
 
-    const onTagClickHandler = (id: Tag['id']) => {
+    const onTagClickHandler =  async (id: Tag['id']) => {
         if (filter.tagIds?.includes(id)) {
-            updateFilter({ tagIds: filter.tagIds?.filter(el => id !== el) });
+            await updateFilter({ tagIds: filter.tagIds?.filter(el => id !== el) });
             return;
         } else if (filter.tagIds) {
-            updateFilter({ tagIds: [...filter.tagIds, id] });
+            await updateFilter({ tagIds: [...filter.tagIds, id] });
             return;
         } else {
-            updateFilter({ tagIds: [id] });
+            await updateFilter({ tagIds: [id] });
         }
     };
 

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { getUsersThunk } from '@/modules/user/slice';
 import { getAvatarImageLink } from '@/common/utils';
 import { formatDateTime } from '@/common/utils/formatDateTime';
 import useQueryParams from '@/hooks/useQueryParams';
@@ -14,6 +16,8 @@ import { StyledStatisticIconContainer, StyledStatisticIconText } from '@/layout/
 import { StyledDrawerBlock, StyledDrawerHeader } from '@/layout/drawer/styled';
 
 export const Statistic = () => {
+    const dispatch = useAppDispatch();
+
     const {
         users,
         getMapsPercent,
@@ -23,6 +27,9 @@ export const Statistic = () => {
         changeFilterNavigate,
     } = useQueryParams();
 
+    useEffect(() => {
+        dispatch(getUsersThunk());
+    }, []);
 
     return (
         <StyledBox
