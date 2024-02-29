@@ -8,6 +8,7 @@ type ImageFormPropsType = {
     placeholder?: string;
     onClick?: (file: string) => void;
     name?: string;
+    messageWords?: string;
     onChange: (file: string) => void;
     value: string | null;
     fileType?: 'image';
@@ -94,7 +95,7 @@ export const ImageForm = (props: ImageFormPropsType) => {
             />
             {!props.value && (
                 <span>
-                    <StyledImageFormLink>Загрузите скрин,</StyledImageFormLink>
+                    <StyledImageFormLink>Загрузите {props.messageWords || "скрин"},</StyledImageFormLink>
                     <span> перетащите или вставьте из буфера обмена (Ctrl+V)</span>
                 </span>
             )}

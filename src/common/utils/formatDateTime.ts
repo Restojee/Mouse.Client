@@ -7,7 +7,7 @@ dayjs.locale('ru');
 dayjs.extend(timezone);
 dayjs.extend(utcPlugin);
 
-export const formatDateTime = (utcDate?: string | null, withoutTime?: boolean): string => {
+export const formatDateTime = (utcDate?: string | null, withoutTime?: boolean, isForTitle?: boolean): string => {
     if (!utcDate) {
         return 'до нашей эры';
     }
@@ -18,10 +18,13 @@ export const formatDateTime = (utcDate?: string | null, withoutTime?: boolean): 
     const diffSeconds = now.diff(date, 'second');
     const diffMinutes = now.diff(date, 'minute');
     const diffDays = now.diff(date, 'day');
-    const diffYear = now.diff(date, 'year');
 
     if (diffSeconds <= 0) {
         return `сейчас`;
+    } else if (date.year() !== now.year()) {
+        return isForTitle
+            ? date.format("HH:mm")
+            : date.format('D MMM YYYY')
     } else if (diffMinutes < 1) {
         return `${diffSeconds} секунд${getSuffix(diffSeconds)} назад`;
     } else if (diffMinutes < 60) {
@@ -38,10 +41,6 @@ export const formatDateTime = (utcDate?: string | null, withoutTime?: boolean): 
         return withoutTime
             ? date.format('D MMMM')
             : `${date.format('D MMM в HH:mm')}`;
-    } else if (diffYear) {
-        return withoutTime
-            ? date.format('D MMM YYYY')
-            : date.format('D MMM YYYY в HH:mm');
     } else {
         return withoutTime
             ? date.format('D MMMM')

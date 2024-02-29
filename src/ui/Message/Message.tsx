@@ -46,6 +46,10 @@ export const Message = (props: PropsType) => {
         return formatDateTime(comment.createdUtcDate)
     }, [comment])
 
+    const time = useMemo(() => {
+        return formatDateTime(comment.createdUtcDate, false, true)
+    }, [comment])
+
     return (
         <StyledBox
             maxWidth={'100%'}
@@ -73,7 +77,7 @@ export const Message = (props: PropsType) => {
                     >
                         {comment.user?.username}
                     </Typography>
-                    <Typography fontSize={'0.7rem'}>
+                    <Typography title={time} fontSize={'0.7rem'}>
                         {dateTime}
                     </Typography>
                     <Display condition={!!onDelete}>

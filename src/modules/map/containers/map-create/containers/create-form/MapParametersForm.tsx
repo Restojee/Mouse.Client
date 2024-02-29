@@ -37,6 +37,8 @@ export const MapParametersForm = () => {
         onOpenModal('tag-update');
     };
 
+    console.log(currentTab === 'map' ? "свою постройку" : "обложку карты")
+
     return (
         <PointBlock
             centeredTitle
@@ -66,6 +68,7 @@ export const MapParametersForm = () => {
                         fileType="image"
                         onChange={setImage}
                         value={image || null}
+                        messageWords={"обложку карты"}
                     />
                 </Display>
                 <Display condition={currentTab === 'completed'}>
@@ -73,6 +76,7 @@ export const MapParametersForm = () => {
                         fileType="image"
                         onChange={setCompletedMapImage}
                         value={completedMapImage || null}
+                        messageWords={"свою постройку"}
                     />
                 </Display>
                 <StyledBox

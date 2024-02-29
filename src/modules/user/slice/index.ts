@@ -3,6 +3,7 @@ import { usersApi } from '@/api/usersApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
 import { UsersStateType } from '@/modules/user/types';
+import { filterTestUsers } from "@/modules/user/utils/filterTestUsers";
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
@@ -36,6 +37,7 @@ const slice = createSlice({
     reducers: {
         setUsers: (state, action: PayloadAction<GetUsersApiResponse>) => {
             state.users = action.payload;
+            state.users.records = filterTestUsers(action.payload.records);
         },
         setOpenModalByUserId: (state, action: PayloadAction<User['id'] | null>) => {
             state.openModalByUserId = action.payload;
