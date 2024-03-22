@@ -7,7 +7,7 @@ import { RootState } from '@/store';
 import { MapCreateFormType } from '../containers/create-form/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export const createMapThunk = createAsyncThunk('map/create', async (arg: {id: Map['id']}, thunkAPI) => {
+export const createMapThunk = createAsyncThunk('map/create', async (arg: {id?: Map['id']}, thunkAPI) => {
     try {
         const state = thunkAPI.getState() as RootState;
         const name = selectMapName(state);
@@ -15,7 +15,7 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg: {id: Ma
         const completedMapImage = selectCompletedMapImage(state);
         const tags = selectMapTags(state);
 
-        let levelId: Map['id'] = arg.id;
+        let levelId: Map['id'] = arg?.id;
         let createdMap: Map;
 
         if (!levelId) {
@@ -40,7 +40,7 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg: {id: Ma
 
         thunkAPI.dispatch(getMapsThunk())
 
-        if(arg.id) {
+        if (arg?.id) {
             thunkAPI.dispatch(setAppMessage({ severity: 'success', text: `Существующая карта обновлена` }));
         } else {
             thunkAPI.dispatch(setAppMessage({ severity: 'success', text: `Карта добавлена` }));
@@ -48,6 +48,7 @@ export const createMapThunk = createAsyncThunk('map/create', async (arg: {id: Ma
         return thunkAPI.fulfillWithValue(true);
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({ severity: 'error', text: `Ошибка добавления` }));
+        console.log(error)
     }
 });
 

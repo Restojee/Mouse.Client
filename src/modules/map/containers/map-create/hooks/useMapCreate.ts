@@ -69,7 +69,12 @@ export const useMapCreate = () => {
             const getMapByName = await dispatch(getMapByNameThunk({ name }));
             const map = getMapByName.payload as Map
 
-            dispatch(createMapThunk({id: map?.id}));
+            if (map.name === name) {
+                dispatch(createMapThunk({id: map?.id}));
+                return;
+            }
+
+            dispatch(createMapThunk({}));
             clearForm();
         } else {
             dispatch(setAppMessage({ severity: 'error', text: 'Некорректный номер карты' }));

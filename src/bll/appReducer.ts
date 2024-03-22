@@ -47,7 +47,7 @@ const slice = createSlice({
             state.messages.push(newMessage);
         },
         setAppModalType(state, action:PayloadAction<TAppState['modalType']>) {
-           state.modalType = action.payload
+            state.modalType = action.payload
         },
         setAppLastMessage(state) {
             state.messages.splice(-1);
