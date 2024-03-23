@@ -26,7 +26,8 @@ export const StyledMapContentMain = styled.div(({theme}) => ({
 
 export const StyledMapContentNoteForm = styled(StyledTextarea)(({theme}) => ({
     marginBottom: 'auto',
-    backgroundColor: theme.colors.primaryAccent,
+    position: 'relative',
+    backgroundColor: theme.colors.primaryAccent + "!important",
     "&:hover": {
         opacity: 0.8,
         backgroundColor: theme.colors.primaryAccent,
@@ -62,7 +63,7 @@ export const StyledMapContentSidebar = styled.div(({theme}) => ({
     }
 }))
 
-export const StyledContentSidebarBodyIcon = styled.div({
+export const StyledContentSidebarBodyIcon = styled.div<{disabled?: boolean, count?: number}>((props) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -77,7 +78,7 @@ export const StyledContentSidebarBodyIcon = styled.div({
     "&:before": {
         content: '""',
         borderRadius: "50%",
-        backgroundColor: "rgba(0, 0, 0, 0.1)",
+        backgroundColor: "rgba(0, 0, 0, 0.05)",
         height: "50px",
         width: "50px",
         position: "absolute",
@@ -109,9 +110,19 @@ export const StyledContentSidebarBodyIcon = styled.div({
             transform: "scale(1.3)"
         }
     },
+    ...props.disabled && {
+        opacity: 0.2,
+        pointerEvents: 'none',
+    },
     ...IS_TABLET && {
         padding: '20px 0'
     }
+}))
+
+export const StyledContentSidebarBodyCount = styled.div({
+    position: 'absolute',
+    bottom: '-5px',
+    fontSize: '0.7rem'
 })
 
 export const StyledMobileMapViewContainer = styled.div(({theme}) => ({
@@ -133,7 +144,7 @@ export const StyledMobileMapViewMainBlock = styled(StyledBox)(({theme}) => ({
     padding: 20,
     height: 'auto',
     borderRadius: 'inherit',
-    
+
     '&::placeholder': {
         color: 'rgba(255, 255, 255, 0.5)',
     },

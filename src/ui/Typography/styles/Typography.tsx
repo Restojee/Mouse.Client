@@ -35,7 +35,6 @@ export const Typography = styled.p<Props>(props => ({
     },
     ...props.isLink && {
         color: props.theme.colors.brandColor,
-        fontWeight: "bold",
         cursor: "pointer",
         "&:hover":{
             textDecoration: "underline",

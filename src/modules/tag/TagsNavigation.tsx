@@ -1,7 +1,9 @@
 import { Tag } from '@/api/codegen/genMouseMapsApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import useQueryParams from '@/hooks/useQueryParams';
 import { selectIsAuth } from '@/modules/auth/slice';
+import { selectFilter } from '@/modules/map/containers/map-list/slice';
 import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledNavLinkSection } from '@/layout/navigation/styles/StyledNavLinkSection';
 import { SidebarSection } from '@/layout/sidebar/SidebarSection';
@@ -13,7 +15,7 @@ import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display';
 import { Modal } from '@/ui/Modal/Modal';
 import { ScrollBox } from '@/ui/ScrollBox/ScrollBox';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type TagsNavigationSectionProps = {
     isOpen: boolean;
@@ -28,20 +30,36 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
         tagsList,
     } = useTag();
 
+    const { updateFilter } = useQueryParams();
+
     const dispatch = useAppDispatch();
     const isAuth = useAppSelector(selectIsAuth);
+    const filter = useAppSelector(selectFilter);
     const [tagId, setTagId] = useState<Tag['id'] | null>(null);
 
-    const onTagDeleteHandler = (id: Tag['id']) => {
+    const onTagClickHandler =  async (id: Tag['id']) => {
+        if (filter.tagIds?.includes(id)) {
+            await updateFilter({ tagIds: filter.tagIds?.filter(el => id !== el) });
+            return;
+        } else if (filter.tagIds) {
+            await updateFilter({ tagIds: [...filter.tagIds, id] });
+            return;
+        } else {
+            await updateFilter({ tagIds: [id] });
+        }
+    };
+
+    const onTagDeleteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: Tag['id']) => {
+        e.stopPropagation();
         setTagId(id);
-        onOpenModal('delete');
+        onOpenModal('tag-delete');
     };
 
     const modalToggleHandler = () => {
-        if (modalType === 'create') {
+        if (modalType === 'tag-create') {
             onOpenModal(null);
         } else {
-            onOpenModal('create');
+            onOpenModal('tag-create');
         }
     };
 
@@ -57,29 +75,32 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                 padding="5px"
                 overflow={'hidden'}
             >
-                <SidebarSection
-                    label="Поиск по тегам"
-                    append={
-                        <Display condition={isAuth}>
-                            <StyledNavLinkSection
+                <Display condition={tagsList.length}>
+                    <SidebarSection
+                      label="Поиск по тегам"
+                      append={
+                          <Display condition={isAuth}>
+                              <StyledNavLinkSection
                                 onClick={modalToggleHandler}
                                 isOpen={props.isOpen && isAuth}
-                            >
-                                <AddIcon/>
-                            </StyledNavLinkSection>
-                        </Display>
-                    }
-                    isOpen={props.isOpen}
-                />
+                              >
+                                  <AddIcon/>
+                              </StyledNavLinkSection>
+                          </Display>
+                      }
+                      isOpen={props.isOpen}
+                    />
+                </Display>
                 <ScrollBox>
                     {tagsList?.map(el => (
                         <NavLink
                             key={el.id}
                             label={el.name}
-                            isChecked={false}
+                            onClick={() => onTagClickHandler(el.id)}
+                            isChecked={filter.tagIds?.includes(el.id)}
                             append={(
                                 <Display condition={isAuth}>
-                                    <StyledNavLinkSection onClick={() => onTagDeleteHandler(el.id)}>
+                                    <StyledNavLinkSection onClick={(e) => onTagDeleteHandler(e, el.id)}>
                                         <CloseIcon/>
                                     </StyledNavLinkSection>
                                 </Display>
@@ -90,7 +111,7 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                     ))}
                 </ScrollBox>
                 <Modal
-                    isOpen={modalType === 'delete'}
+                    isOpen={modalType === 'tag-delete'}
                     text={'Вы действительно хотите удалить тег?'}
                     onAccess={() => onTagDelete(tagId)}
                     onClose={onCloseModal}

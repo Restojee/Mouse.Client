@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 type MapsCardPanelProps = {
     justify?: Property.JustifyContent,
+    isMapHover?: boolean
 }
 export const StyledMapCardFooter = styled.div<MapsCardPanelProps>(props => ({
     display: "flex",
@@ -17,5 +18,10 @@ export const StyledMapCardFooter = styled.div<MapsCardPanelProps>(props => ({
     zIndex: props.theme.order.other,
     background: "linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0))",
     bottom: 0,
-    padding: "10px"
+    opacity: 0,
+    padding: "6px 10px",
+    transition: '0.3s',
+    ...props.isMapHover && {
+        opacity: 1
+    }
 }))

@@ -12,7 +12,7 @@ const MapViewModal = () => {
     const dispatch = useAppDispatch();
 
     const {
-        mapId,
+        levelId,
         closeMap,
     } = useMapView();
 
@@ -20,7 +20,7 @@ const MapViewModal = () => {
         isMapImageModalOpen,
         onMapImageModalClose,
         onMapImageUpdate
-    } = useMap(mapId);
+    } = useMap(levelId);
 
     const {
         isCompletedMapModalOpen,
@@ -31,18 +31,18 @@ const MapViewModal = () => {
     const onMapUpdateImage = useCallback(async (image: string) => {
         const res = await onMapImageUpdate(image);
         return Boolean(res);
-    }, [mapId]);
+    }, [levelId]);
 
     const onCompletedMapUpdateImage = useCallback(async (image: string) => {
-        const res = await addCompletedMap(mapId, image);
+        const res = await addCompletedMap(levelId, image);
         return Boolean(res?.payload);
-    }, [mapId]);
+    }, [levelId]);
 
     useEffect(() => {
-        if (mapId) {
-            dispatch(onOpenMapContentThunk({ mapId }))
+        if (levelId) {
+            dispatch(onOpenMapContentThunk({ levelId }))
         }
-    }, [mapId]);
+    }, [levelId]);
 
     return (
         <>

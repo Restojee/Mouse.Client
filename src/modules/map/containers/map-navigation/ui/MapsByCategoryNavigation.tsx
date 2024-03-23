@@ -1,3 +1,4 @@
+import React from 'react';
 import { useMapNavigation } from '../hooks/useMapNavigation';
 import { StyledBox } from "@/ui/Box";
 import { SidebarSection } from "@/layout/sidebar/SidebarSection";
@@ -8,10 +9,11 @@ import { WidgetIcon } from "@/svg/WidgetIcon";
 type MapsByCategoryNavigationSectionProps = {
     isOpen: boolean
 }
-export function MapsByCategoryNavigation(props: MapsByCategoryNavigationSectionProps) {
-
+// eslint-disable-next-line react/display-name
+export const MapsByCategoryNavigation = React.memo((props: MapsByCategoryNavigationSectionProps) => {
     const {
-        navigateTo
+        filters,
+        navigateTo,
     } = useMapNavigation();
 
     return (
@@ -25,7 +27,8 @@ export function MapsByCategoryNavigation(props: MapsByCategoryNavigationSectionP
                 isOpen={ props.isOpen }
             />
             <NavLink
-                onClick={()=> navigateTo('')}
+                onClick={()=> navigateTo({})}
+                isChecked={Object.entries(filters).length < 4}
                 label="Все карты"
                 prepend={(
                     <StyledNavLinkSection isOpen={ props.isOpen }>
@@ -36,4 +39,4 @@ export function MapsByCategoryNavigation(props: MapsByCategoryNavigationSectionP
             />
         </StyledBox>
     )
-}
+});

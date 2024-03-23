@@ -4,20 +4,19 @@ import { Modal } from '@/ui/Modal/Modal';
 import { StyledTag } from '@/ui/Tag/styled';
 import { Typography } from '@/ui/Typography';
 
-export const TagsModal = () => {
+const TagsModal = () => {
     const {
         tagsList,
         onCloseModal,
         updateMapTags,
-        modalType,
         toggleSelectedTag,
         checkIsSelectedTagId
     } = useTag();
 
     return (
         <Modal
+            isOpen={true}
             title={'Выберите теги'}
-            isOpen={modalType === 'update'}
             onClose={onCloseModal}
             onAccess={updateMapTags}
             width={600}
@@ -45,3 +44,4 @@ export const TagsModal = () => {
     );
 };
 
+export default TagsModal;

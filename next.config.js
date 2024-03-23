@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ['tfm-maps.ru', 'i.imgur.com', '151.248.121.176', 'cdn.tfm-maps.ru']
+    domains: ['tfm-maps.ru', 'i.imgur.com', '151.248.121.176', 'cdn.tfm-maps.ru', 'cdn.onlyplanks.fun']
 
   },
   experimental: {

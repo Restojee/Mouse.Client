@@ -1,6 +1,4 @@
-import { useAppSelector } from '@/hooks/useAppSelector';
 import React from 'react';
-import { getMapsThunk, selectMaps } from '@/modules/map/containers/map-list/slice';
 import { LayoutProvider } from '@/layout/common/LayoutProvider';
 import { Provider } from 'react-redux';
 import { RootState, wrapper } from '@/store';

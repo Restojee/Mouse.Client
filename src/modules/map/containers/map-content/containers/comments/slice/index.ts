@@ -7,18 +7,18 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export const getMapCommentsThunk = createAsyncThunk('map-comments', async (arg: GetCommentsByMapIdApiArg, thunkAPI) => {
     try {
-        const comments = await commentsApi.getCommentsByMapId({ mapId: arg.mapId });
+        const comments = await commentsApi.getCommentsByMapId({ levelId: arg.levelId });
         thunkAPI.dispatch(setComments(comments));
         thunkAPI.dispatch(setIsCommentsInitialized(true));
     } catch (error) {
-        thunkAPI.dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки комментов: ${error}` }));
+        thunkAPI.dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки комментов` }));
     }
 });
 
 export const addMapCommentsThunk = createAsyncThunk('map-comments/create', async (arg: CreateCommentRequest, thunkAPI) => {
     try {
-        const { mapId, text } = arg;
-        const comment = await commentsApi.addComment({ mapId, text });
+        const { levelId, text } = arg;
+        const comment = await commentsApi.addComment({ levelId, text });
         const state = thunkAPI.getState() as RootState;
         const user = state.auth.user;
 
@@ -28,7 +28,7 @@ export const addMapCommentsThunk = createAsyncThunk('map-comments/create', async
 
         return thunkAPI.fulfillWithValue(true);
     } catch (error) {
-        thunkAPI.dispatch(setAppMessage({ text: `Ошибка добавления коммента, ${error}`, severity: 'error' }));
+        thunkAPI.dispatch(setAppMessage({ text: `Ошибка добавления коммента`, severity: 'error' }));
         return thunkAPI.rejectWithValue(false);
     }
 });

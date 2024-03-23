@@ -30,6 +30,7 @@ export type StyledBoxProps = {
     fontSize: Property.FontSize;
     fontWeight: Property.FontWeight;
     boxShadow: Property.BoxShadow;
+    display: Property.Display;
     zIndex: Property.ZIndex;
     borderBottom: Property.BorderBottom;
     maxHeight: Property.MaxHeight;
@@ -42,7 +43,7 @@ export type StyledBoxProps = {
     children: ReactNode | JSX.Element;
 }
 export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props }) => ({
-    display: "flex",
+    display: props.display || "flex",
     flexDirection: props.direction || "row",
     alignItems: props.align,
     boxShadow: props.boxShadow,

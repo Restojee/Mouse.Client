@@ -17,7 +17,7 @@ export const StyledFormColumn = styled.div({
     alignItems: 'flex-end',
 });
 
-export const StyledFormRow = styled.div<{ justify: Property.JustifyContent }>(props => ({
+export const StyledFormRow = styled.div<{ justify?: Property.JustifyContent }>(props => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: props.justify,
@@ -44,6 +44,8 @@ export const StyledFormElementHeader = styled.div({
 type InputWrapperPropsType = {
     width?: Property.Width,
     bgColor?: Property.BackgroundColor,
+    isError?: boolean,
+    isDisabled?: boolean,
 }
 export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ...props }) => ({
     display: 'flex',
@@ -55,7 +57,7 @@ export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ..
     boxShadow: `inset 0 0 100px 100px ${ props.bgColor || theme.colors.input.default }`,
     border: '1px solid rgba(0, 0, 0, 0.1)',
     transition: '0.2s',
-    transitionProperty: 'opacity, background-color, border, box-shadow',
+    transitionProperty: 'opacity, background-color, border, box-shadow, margin',
     '&:hover': {
         boxShadow: `inset 0 0 100px 100px ${ props.bgColor ? '' : theme.colors.input.hover }`,
         ...(props.bgColor && {
@@ -65,6 +67,14 @@ export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ..
     '&:focus': {
         boxShadow: `inset 0 0 100px 100px ${ theme.colors.input.hover }`,
     },
+    ...props.isError && {
+        marginBottom: 5,
+        border: `1px solid ${ theme.colors.status.error }`,
+    },
+    ...props.isDisabled && {
+        pointerEvents: 'none',
+        opacity: 0.5
+    }
 }));
 
 export const StyledInput = styled.input(({ theme, ...props }) => ({

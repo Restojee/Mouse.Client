@@ -35,7 +35,7 @@ export const NavLink = (props: NavLinkProps) => {
 
     return (
         <StyledNavLink
-            title={isDisabled ? 'Необходимо войти в аккаунт' : label}
+            title={isDisabled ? `${label}: недоступно` : label}
             margin={margin}
             withBorder={border}
             gap={gap}

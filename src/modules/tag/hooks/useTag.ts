@@ -1,12 +1,13 @@
+import { setAppModalType } from '@/bll/appReducer';
 import { selectMapTags, setMapTagIds } from '@/modules/map/containers';
 import {
     selectSelectedTagIds,
     toggleSelectedTagById,
     updateMapTagsThunk,
 } from '@/modules/map/containers/map-content/slice';
-import { ModalType } from '@/modules/tag/types';
+import { TagModalTypes } from '@/modules/tag/types';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Tag } from '@/api/codegen/genMouseMapsApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -22,14 +23,16 @@ export const useTag = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const { mapId } = router.query;
+    const levelId = useMemo(() => {
+        return router.query.levelId;
+    }, [router.query.levelId])
 
-    const [selectedTagIdsForCreateMap, setSelectedTagIdsForCreateMap] = useState<Tag['id'][]>([]);
-
-    const modalType = useAppSelector(selectTagModalType);
     const selectedTagIds = useAppSelector(selectSelectedTagIds);
+    const modalType = useAppSelector(selectTagModalType);
     const selectedIdForCreateMap = useAppSelector(selectMapTags);
     const tagsList = useAppSelector(selectTags);
+
+    const [selectedTagIdsForCreateMap, setSelectedTagIdsForCreateMap] = useState<Tag['id'][]>(selectedIdForCreateMap || []);
 
     const onTagCreate = useCallback(async (name: string) => {
         if (name.trim().length) {
@@ -37,11 +40,16 @@ export const useTag = () => {
         }
     }, []);
 
-    const onOpenModal = useCallback((modalType: ModalType): void => {
+    const onOpenModal = useCallback((modalType: TagModalTypes): void => {
+        if(modalType === 'tag-update') {
+            dispatch(setAppModalType('tag-update'));
+            return;
+        }
         dispatch(setTagModalType(modalType));
     }, []);
 
     const onCloseModal = useCallback((): void => {
+        dispatch(setAppModalType(null));
         dispatch(setTagModalType(null));
     }, []);
 
@@ -56,17 +64,17 @@ export const useTag = () => {
     }, []);
 
     const updateMapTags = useCallback((): void => {
-        const id = Number(mapId);
-        if (mapId) {
+        const id = Number(levelId);
+        if (levelId) {
             dispatch(updateMapTagsThunk(id));
         } else {
             dispatch(setMapTagIds(selectedTagIdsForCreateMap));
-            dispatch(setTagModalType(null))
+            onCloseModal();
         }
-    }, [mapId, selectedTagIdsForCreateMap]);
+    }, [levelId, selectedTagIdsForCreateMap]);
 
     const toggleSelectedTag = useCallback((id: Tag['id']) => {
-        if (id && mapId) {
+        if (id && levelId) {
             dispatch(toggleSelectedTagById(id));
             return;
         }
@@ -80,18 +88,18 @@ export const useTag = () => {
             setSelectedTagIdsForCreateMap(filteredTagIds);
             return;
         }
-    }, [mapId, selectedTagIdsForCreateMap]);
+    }, [levelId, selectedTagIdsForCreateMap]);
 
     const checkIsSelectedTagId = useCallback((id: Tag['id']) => {
-        if (id && mapId) {
+        if (id && levelId) {
             return selectedTagIds.includes(id);
         }
 
-        if (id && !mapId) {
+        if (id && !levelId) {
             return selectedTagIdsForCreateMap.includes(id);
         }
         return false;
-    }, [mapId, selectedTagIds, selectedTagIdsForCreateMap]);
+    }, [levelId, selectedTagIds, selectedTagIdsForCreateMap]);
 
     useEffect(() => {
         if(!selectedIdForCreateMap?.length) {
@@ -102,9 +110,9 @@ export const useTag = () => {
     return {
         onTagCreate,
         onTagDelete,
-        modalType,
         tagsList,
         onCloseModal,
+        modalType,
         onOpenModal,
         updateMapTags,
         toggleSelectedTag,

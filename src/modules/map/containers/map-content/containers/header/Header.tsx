@@ -1,17 +1,17 @@
 import { useMap } from '@/modules/map/common';
 import { MAP_ADDITIONAL_INFO, MapInfoType } from '../../constants';
 import React from 'react';
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { Map, MapById } from '@/api/codegen/genMouseMapsApi';
 import { CopyIcon } from '@/svg/CopyIcon';
 import { StyledBox } from '@/ui/Box';
 import { IconButton } from '@/ui/Button/IconButton';
 import { Typography } from '@/ui/Typography';
 
 type MapContentHeaderPropsType = {
-    completeCount: number;
-    viewCount: number;
-    commentsCount: number;
-    title?: Map['name'];
+    completeCount?: number;
+    viewCount?: number;
+    commentsCount?: number;
+    title?: MapById['name'];
 }
 export const Header = (props: MapContentHeaderPropsType) => {
     const {
@@ -23,7 +23,7 @@ export const Header = (props: MapContentHeaderPropsType) => {
 
     const {onMapNameCopy} = useMap()
 
-    const counts: {[key in MapInfoType]: number} = {
+    const counts: {[key in MapInfoType]?: number} = {
         complete: completeCount,
         view: viewCount,
         comments: commentsCount,

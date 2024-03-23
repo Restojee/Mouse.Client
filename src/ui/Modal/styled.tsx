@@ -1,4 +1,3 @@
-import { IS_TABLET } from '@/common/constants/breakpoints';
 import { StyledBox } from '@/ui/Box';
 import styled from "styled-components";
 
@@ -15,7 +14,7 @@ export const StyledModalWrapper = styled(StyledBox)(({theme}) => ({
     bottom: 0,
     zIndex: theme.order.modal,
     padding: 40,
-    ...IS_TABLET && {
+    '@media all and (max-width: 790)': {
         padding: 10
     }
 }))

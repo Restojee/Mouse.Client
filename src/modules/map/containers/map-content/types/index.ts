@@ -1,13 +1,13 @@
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { Map, MapById } from '@/api/codegen/genMouseMapsApi';
 
 export type MapContentStateType = {
-    mapContent: Map | null;
+    mapContent: MapById | null;
     isMapImageModalOpen: boolean,
     isMapFetching: boolean;
     selectedModalTagIds: number[];
 }
 
 export type UpdateMapImageThunkArgType = {
-    mapId: Map['id'];
+    levelId: Map['id'];
     file: string;
 }

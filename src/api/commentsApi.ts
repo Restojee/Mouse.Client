@@ -9,11 +9,11 @@ import { AxiosResponse } from 'axios';
 
 export const commentsApi = {
     getCommentsByMapId: async (params: GetCommentsByMapIdApiArg) => {
-        const res = await api.get<GetCommentsByMapIdApiArg, AxiosResponse<GetCommentsByMapIdApiResponse>>(`/comments/by-map/${params.mapId}`);
+        const res = await api.get<GetCommentsByMapIdApiArg, AxiosResponse<GetCommentsByMapIdApiResponse>>(`/comments/by-level/${params.levelId}`);
         return res.data;
     },
     addComment: async (body: CreateCommentRequest) => {
-        const res = await api.post<CreateCommentRequest, AxiosResponse<CreateCommentApiResponse>>('/comments', body);
+        const res = await api.post<CreateCommentRequest, AxiosResponse<CreateCommentApiResponse>>('/comments/create', body);
         return res.data;
     },
 };

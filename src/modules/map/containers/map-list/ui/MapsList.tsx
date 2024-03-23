@@ -1,56 +1,29 @@
-import { selectCurrentUserId } from '@/modules/auth/slice';
-import { BoxLoader } from '@/ui/BoxLoader/BoxLoader';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useAppSelector } from '@/hooks/useAppSelector';
-import {
-    getCompletedMapsByUserIdThunk,
-    getFavoriteMapsThunk,
-    selectIsMapsFetching,
-    getMapsThunk,
-    selectMaps,
-} from '@/modules/map/containers/map-list/slice';
-import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
-import { StyledMapsGrid } from '@/modules/map/styles/StyledMapsGrid';
 import { MapCard } from '@/modules/map/containers/map-list/ui/map-card/MapCard';
-import { Map } from '@/api/codegen/genMouseMapsApi';
-import { CommonUtils } from '@/common/utils';
+import { BoxLoader } from '@/ui/BoxLoader/BoxLoader';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { getMapsThunk, selectIsMapsFetching, selectMaps } from '@/modules/map/containers/map-list/slice';
+import { StyledMapsGrid } from '@/modules/map/styles/StyledMapsGrid';
 import { StyledBox } from '@/ui/Box';
+import { useRouter } from 'next/router';
 
-export const MapsList = () => {
+// eslint-disable-next-line react/display-name
+export const MapsList = React.memo(() => {
     const dispatch = useAppDispatch();
-    const router = useRouter();
 
     const maps = useAppSelector(selectMaps);
-    const userId = useAppSelector(selectCurrentUserId);
-    const isFetching = useAppSelector(selectIsMapsFetching)
-
-    const { openMap } = useMapView();
-
-    const onMapClickHandler = async (id: Map['id']) => {
-        try {
-            await openMap(id);
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    const isFetching = useAppSelector(selectIsMapsFetching);
+    const router = useRouter();
 
     useEffect(() => {
-        switch (router.query.filter) {
-            case 'favorites':
-                dispatch(getFavoriteMapsThunk({ page: 0, size: 100, userId }));
-                break;
-            case 'completed':
-                dispatch(getCompletedMapsByUserIdThunk({ userId }));
-                break;
-            default:
-                dispatch(getMapsThunk({ page: 0, size: 100 }));
-                break;
+        if (!router.isReady) {
+            return;
         }
-    }, [router.query.filter, userId]);
+        dispatch(getMapsThunk());
+    }, [router.query.filter, router.isReady]);
 
-    if (!maps.length && !isFetching) {
+    if (!maps?.length && !isFetching) {
         return (
             <StyledBox
                 position={'relative'}
@@ -66,19 +39,13 @@ export const MapsList = () => {
     }
 
     return (
-        <StyledMapsGrid>
-            {maps?.map(map => (
-                <MapCard
-                    key={map.id}
-                    id={map.id}
-                    // addedCount={ 1 }
-                    // commentsCount={ 1 }
-                    onClick={onMapClickHandler}
-                    label={map.name}
-                    image={CommonUtils.getMapImageLink(map.image)}
-                />
-            ))}
+        <>
+            <StyledMapsGrid>
+                {maps?.map(map => (
+                    <MapCard key={map.id} map={map}/>
+                ))}
+            </StyledMapsGrid>
             <BoxLoader isLoading={isFetching}/>
-        </StyledMapsGrid>
+        </>
     );
-};
+});

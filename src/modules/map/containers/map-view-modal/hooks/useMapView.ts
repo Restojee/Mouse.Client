@@ -3,37 +3,30 @@ import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
 import { onCloseMapContentThunk } from '@/modules/map/containers/map-content/slice';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
-import { routes } from '@/common/routes';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useAppSelector } from '@/hooks/useAppSelector';
-import { selectIsAuth } from '@/modules/auth/slice';
 import { useRouter } from 'next/router';
 
 export const useMapView = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const { mapId } = router.query;
+    const { levelId } = router.query;
 
-    const isAuth = useAppSelector(selectIsAuth);
-
-    const id = Number(mapId);
+    const id = Number(levelId);
 
     const openMap = useCallback(async (id: Map['id']): Promise<void> => {
         try {
-            if (!id || !isAuth) {
-                throw new Error('Ошибка открытия карты');
-            }
-            await router.push({
-                pathname: router.pathname,
-                query: { mapId: id },
-            });
+            await router.push({ query: { ...router.query, levelId: id } });
         } catch (err) {
             dispatch(setAppMessage({ severity: 'error', text: 'Ошибка открытия карты' }));
         }
-    }, [mapId, isAuth]);
+    }, [router]);
 
     const closeMap = useCallback(async () => {
-        await router.push(routes.MAPS);
+        const query = router.query;
+        if(query.levelId) {
+            delete query.levelId
+        }
+        await router.push({query});
         await dispatch(onCloseMapContentThunk());
     }, [router]);
 
@@ -44,7 +37,7 @@ export const useMapView = () => {
     });
 
     return {
-        mapId: id,
+        levelId: id,
         openMap,
         closeMap,
     };

@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsAuth } from '@/modules/auth/slice';
 import React from 'react';
 import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledBox } from '@/ui/Box';
@@ -14,17 +16,18 @@ type MapContentFooterPropsType = {
 }
 export const Tags = ({ tags }: MapContentFooterPropsType) => {
     const theme = useAppTheme();
+    const isAuth = useAppSelector(selectIsAuth);
 
     const {
         onOpenModal,
     } = useTag();
 
     const onOpenModalHandler = () => {
-        onOpenModal('update')
+        onOpenModal('tag-update')
     }
 
     return (
-        <StyledBox justify={'center'}>
+        <StyledBox justify={'center'} margin={'auto 0 0 0 '}>
             <Display condition={tags?.length}>
                 <StyledBox wrap={'wrap'} gap={10}>
                     {tags?.map(({ name, id }) => (
@@ -37,16 +40,19 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
                             </Typography>
                         </StyledTag>
                     ))}
-                    <Button
-                        bgColor={theme.colors.secondaryAccent}
-                        onClick={onOpenModalHandler}
-                        label={'Изменить'}
-                        prepend={<EditFillIcon/>}
-                    />
+                    <Display condition={isAuth}>
+                        <Button
+                            bgColor={theme.colors.secondaryAccent}
+                            onClick={onOpenModalHandler}
+                            label={'Изменить'}
+                            prepend={<EditFillIcon/>}
+                        />
+                    </Display>
                 </StyledBox>
             </Display>
             <Display condition={!tags?.length}>
                 <Button
+                    disabled={!isAuth}
                     size={'lg'}
                     onClick={onOpenModalHandler}
                     label={'Изменить теги'}

@@ -1,7 +1,7 @@
+import React from 'react';
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display';
 import { Paper } from '@/ui/Paper';
-import React from 'react';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { Button } from '@/ui/Button';
 import { StyledCardActions } from '@/ui/Form/styled';
@@ -16,7 +16,9 @@ const AsyncModalContent = (props: ModalPropsType) => {
         text,
         title,
         children,
-        width
+        width,
+        withoutTitle,
+        withoutButtons,
     } = props;
 
     const theme = useAppTheme();
@@ -24,16 +26,18 @@ const AsyncModalContent = (props: ModalPropsType) => {
     return (
         <React.Fragment>
             <StyledMegaShadow/>
-            <StyledModalWrapper onClick={onClose}>
+            <StyledModalWrapper onMouseDown={onClose}>
                 <Paper
-                    onClick={(e) => e.stopPropagation()}
+                    onMouseDown={e => e.stopPropagation()}
                     height={'auto'}
                     gap={20}
                     width={width || 400}
                 >
-                    <Typography fontSize="18px" color={theme.colors.textOnSecondary}>
+                    <Display condition={!withoutTitle}>
+                        <Typography fontSize="18px" color={theme.colors.textOnSecondary}>
                         {title || 'Подтверждение действия'}
                     </Typography>
+                    </Display>
                     <Display condition={!children}>
                         <Typography color={theme.colors.textOnSecondary}>
                             {text || 'Вы действительно уверены?'}
@@ -44,18 +48,21 @@ const AsyncModalContent = (props: ModalPropsType) => {
                             {children}
                         </StyledBox>
                     </Display>
-                    <StyledCardActions>
-                        <Button
-                            label="Отмена"
-                            onClick={onClose}
-                        />
-                        <Button
-                            size={'lg'}
-                            onClick={onAccess}
-                            bgColor={theme.colors.status.success}
-                            label="Подтвердить"
-                        />
-                    </StyledCardActions>
+                    <Display condition={!withoutButtons}>
+                        <StyledCardActions>
+                            <Button
+                                label="Отмена"
+                                onClick={onClose}
+                            />
+                            <Button
+                                type={'submit'}
+                                size={'lg'}
+                                onClick={onAccess}
+                                bgColor={theme.colors.status.success}
+                                label="Подтвердить"
+                            />
+                        </StyledCardActions>
+                    </Display>
                 </Paper>
             </StyledModalWrapper>
         </React.Fragment>

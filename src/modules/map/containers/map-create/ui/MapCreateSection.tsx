@@ -27,7 +27,6 @@ export const MapCreateSection = () => {
 
     const onSubmitHandler = async () => {
         await onMapCreate();
-        setIsPopupOpen(false);
     };
 
     const onIconClickHandler = async () => {
@@ -35,8 +34,8 @@ export const MapCreateSection = () => {
             await onSubmitHandler();
         } else {
             setIsContentVisible(true);
+            setIsPopupOpen(false);
         }
-        setIsPopupOpen(false);
     };
 
     return (

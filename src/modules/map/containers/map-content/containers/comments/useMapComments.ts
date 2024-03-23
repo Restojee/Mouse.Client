@@ -23,13 +23,13 @@ export const useMapComments = () => {
 
     const [commentText, setCommentText] = useState('');
 
-    const { mapId } = router.query;
+    const { levelId } = router.query;
 
-    const onCommentAdd = useCallback(async (mapId: Map['id']): Promise<void> => {
+    const onCommentAdd = useCallback(async (levelId: Map['id']): Promise<void> => {
         const messageText = String(commentText).trim();
 
         if (messageText.length) {
-            const res = await dispatch(addMapCommentsThunk({ mapId, text: commentText }));
+            const res = await dispatch(addMapCommentsThunk({ levelId, text: commentText }));
             if (res.payload) {
                 setCommentText('');
             }
@@ -41,26 +41,26 @@ export const useMapComments = () => {
         setCommentText(text);
     }, []);
 
-    const onInputKeyUp = useCallback(async (e: React.KeyboardEvent<HTMLTextAreaElement>, mapId: Map['id']): Promise<void> => {
+    const onInputKeyUp = useCallback(async (e: React.KeyboardEvent<HTMLTextAreaElement>, levelId: Map['id']): Promise<void> => {
         if (e.ctrlKey || e.shiftKey) {
             return;
         }
 
         if (e.key === 'Enter') {
-            await onCommentAdd(mapId);
+            await onCommentAdd(levelId);
         }
     }, [onCommentAdd]);
 
     useEffect(() => {
-        if (mapId) {
+        if (levelId) {
             const id = setInterval(() => {
-                dispatch(getMapCommentsThunk({ mapId: Number(mapId) }));
+                dispatch(getMapCommentsThunk({ levelId: Number(levelId) }));
             }, 5000);
             return () => {
                 clearInterval(id);
             };
         }
-    }, [mapId]);
+    }, [levelId]);
 
     return {
         comments,

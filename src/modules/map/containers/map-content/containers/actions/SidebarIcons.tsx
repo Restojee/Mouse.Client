@@ -1,3 +1,6 @@
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectIsAuth } from '@/modules/auth/slice';
+import { Display } from '@/ui/Display';
 import React from 'react';
 import { StyledBox } from '@/ui/Box';
 import { OutIcon } from '@/svg/OutIcon';
@@ -8,20 +11,24 @@ import { AddImageIcon } from '@/svg/AddImageIcon';
 import { FavoriteIcon } from '@/svg/FavoriteIcon';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { SvgIconPropsType } from '@/svg/common/types';
-import { StyledContentSidebarBodyIcon } from '@/modules/map/styles/styled';
+import { StyledContentSidebarBodyCount, StyledContentSidebarBodyIcon } from '@/modules/map/styles/styled';
 import { useCompletedMap } from '../completed-images/hooks/useCompletedMap';
 
 type MapContentSidebarIconsPropsType = {
-    mapId: Map['id']
+    levelId: Map['id'];
+    isCompleted?: boolean;
+    isFavorite?: boolean;
+    favoritesCount?: number;
 }
-export const SidebarIcons = ({mapId}: MapContentSidebarIconsPropsType) => {
+export const SidebarIcons = ({levelId, isFavorite, isCompleted, favoritesCount}: MapContentSidebarIconsPropsType) => {
     const theme = useAppTheme();
+    const isAuth = useAppSelector(selectIsAuth);
 
     const {
-        onAddMapFavorite,
+        onToggleMapFavorite,
         onMapShare,
         onMapDelete
-    } = useMap(mapId)
+    } = useMap(levelId)
 
     const {
         onCompletedMapModalOpen
@@ -32,6 +39,10 @@ export const SidebarIcons = ({mapId}: MapContentSidebarIconsPropsType) => {
         color: theme.colors.primary
     }
 
+    const onToggleMapFavoriteHandler = () => {
+        onToggleMapFavorite(Boolean(isFavorite))
+    }
+
     return (
         <StyledBox
             width={'100%'}
@@ -39,14 +50,21 @@ export const SidebarIcons = ({mapId}: MapContentSidebarIconsPropsType) => {
             borderBottom={'1px solid rgba(0, 0, 0, 0.1)'}
         >
             <StyledContentSidebarBodyIcon
+                disabled={!isAuth}
                 onClick={onCompletedMapModalOpen}
             >
-                <AddImageIcon{...iconsProps}/>
+                <AddImageIcon {...iconsProps} color={isCompleted ? theme.colors.brandColor : iconsProps.color}/>
             </StyledContentSidebarBodyIcon>
             <StyledContentSidebarBodyIcon
-                onClick={onAddMapFavorite}
+                disabled={!isAuth}
+                onClick={onToggleMapFavoriteHandler}
             >
-                <FavoriteIcon {...iconsProps} />
+                <FavoriteIcon {...iconsProps} color={isFavorite ? theme.colors.brandColor : iconsProps.color} />
+                <Display condition={favoritesCount}>
+                    <StyledContentSidebarBodyCount>
+                        {favoritesCount}
+                    </StyledContentSidebarBodyCount>
+                </Display>
             </StyledContentSidebarBodyIcon>
             <StyledContentSidebarBodyIcon
                 onClick={onMapShare}
@@ -54,6 +72,7 @@ export const SidebarIcons = ({mapId}: MapContentSidebarIconsPropsType) => {
                 <OutIcon {...iconsProps} />
             </StyledContentSidebarBodyIcon>
             <StyledContentSidebarBodyIcon
+                disabled={!isAuth}
                 onClick={onMapDelete}
             >
                 <TrashIcon {...iconsProps} />

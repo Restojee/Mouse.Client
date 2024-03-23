@@ -34,7 +34,7 @@ export const MapParametersForm = () => {
     }, [tagsList, selectedIdForCreateMap]);
 
     const onOpenModalHandler = () => {
-        onOpenModal('update');
+        onOpenModal('tag-update');
     };
 
     return (
@@ -66,6 +66,7 @@ export const MapParametersForm = () => {
                         fileType="image"
                         onChange={setImage}
                         value={image || null}
+                        messageWords={"обложку карты"}
                     />
                 </Display>
                 <Display condition={currentTab === 'completed'}>
@@ -73,6 +74,7 @@ export const MapParametersForm = () => {
                         fileType="image"
                         onChange={setCompletedMapImage}
                         value={completedMapImage || null}
+                        messageWords={"свою постройку"}
                     />
                 </Display>
                 <StyledBox

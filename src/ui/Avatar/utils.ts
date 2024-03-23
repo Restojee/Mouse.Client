@@ -5,8 +5,9 @@ export const getInitials = (name: string = ''): string => {
         return words
             .filter((word) => word !== '')
             .map((word) => word[0])
-            .join('');
+            .join('')
+            .toUpperCase();
     } else {
-        return 'A';
+        return '';
     }
 };

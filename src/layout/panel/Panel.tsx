@@ -1,25 +1,23 @@
+import { getAvatarImageLink } from '@/common/utils';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { NavLink } from "@/layout/navigation/NavLink";
+import { NavLink } from '@/layout/navigation/NavLink';
+import { useLogin } from '@/modules/auth/hooks/useLogin';
 import { selectCurrentUser, selectIsAuth } from '@/modules/auth/slice';
-import { MoonIcon } from "@/svg/MoonIcon";
-import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
-import { BurgerIcon } from "@/svg/BurgerIcon";
-import { NotificationsIcon } from "@/svg/NotificationIcons";
-import { ChartIcon } from "@/svg/ChartIcon";
+import { MoonIcon } from '@/svg/MoonIcon';
+import { StyledNavLinkSection } from '@/layout/navigation/styles/StyledNavLinkSection';
+import { BurgerIcon } from '@/svg/BurgerIcon';
+import { NotificationsIcon } from '@/svg/NotificationIcons';
+import { ChartIcon } from '@/svg/ChartIcon';
 import { OutIcon } from '@/svg/OutIcon';
-import { PaperIcon } from "@/svg/PaperIcon";
-import { ChatFillIcon } from "@/svg/ChatFillIcon";
-import { SettingsIcon } from "@/svg/SettingsIcon";
-import { LogInIcon } from "@/svg/LogInIcon";
+import { PaperIcon } from '@/svg/PaperIcon';
+import { ChatFillIcon } from '@/svg/ChatFillIcon';
+import { SettingsIcon } from '@/svg/SettingsIcon';
+import { LogInIcon } from '@/svg/LogInIcon';
 import { Avatar } from '@/ui/Avatar';
 import { Display } from '@/ui/Display';
-import { ReactNode } from "react";
-import { Property } from "csstype";
-import { StyledPanel } from "@/layout/panel/styled";
-import {
-    signIn,
-    signOut,
-} from "next-auth/react"
+import { ReactNode } from 'react';
+import { Property } from 'csstype';
+import { StyledPanel } from '@/layout/panel/styled';
 
 export type PanelProps = {
     activeTab: string;
@@ -29,61 +27,73 @@ export type PanelProps = {
 }
 export type TabsType = 'settings' | 'notifications' | 'info' | 'statistic' | 'chat'
 export const Panel = (props: PanelProps) => {
+    const {
+        onLoginModalOpen,
+        logout
+    } = useLogin();
 
     const isAuth = useAppSelector(selectIsAuth);
     const userData = useAppSelector(selectCurrentUser);
 
-    const onTabClickHandler = (tab: TabsType) => {
-        alert('Пока не работает')
-        // props.setActiveTab(tab)
-        // props.setIsOpen(true)
-        // if(props.activeTab === tab && props.isOpen) props.setIsOpen(false)
-    }
+    const onTabClickHandler = (tab: TabsType | null) => {
+        if (!tab) {
+            alert('Пока не работает');
+            return;
+        }
+        props.setActiveTab(tab);
+        props.setIsOpen(true);
+        if (props.activeTab === tab && props.isOpen) props.setIsOpen(false);
+    };
 
-    const avatar = userData?.avatar
+    const avatar = userData?.avatar;
 
     return (
         <StyledPanel>
             <NavLink
                 isDisabled={!isAuth}
-                onClick={() => alert('Пока не работает')}
+                onClick={() => props.setIsOpen(!props.isOpen)}
                 prepend={
                     <StyledNavLinkSection>
-                        <BurgerIcon />
+                        <BurgerIcon/>
                     </StyledNavLinkSection>
                 }
             />
-            <Avatar size={40} image={avatar} username={userData?.username} />
-            { tabsData.map(el => (
+            <Avatar
+                size={40}
+                image={getAvatarImageLink(avatar)}
+                username={userData?.username}
+            />
+            {tabsData.map((el, index) => (
                 <NavLink
-                    key={ el.tab }
-                    isDisabled={el.isNeedAuth && !isAuth}
-                    label={ el.label }
-                    isChecked={ el.tab === props.activeTab }
-                    onClick={ () => onTabClickHandler(el.tab) }
-                    margin={ el.margin }
-                    border={ el.border }
-                    prepend={ (
+                    key={index}
+                    isDisabled={(el.isNeedAuth && !isAuth) || !el.tab}
+                    label={el.label}
+                    isChecked={el.tab === props.activeTab}
+                    onClick={() => onTabClickHandler(el.tab)}
+                    margin={el.margin}
+                    border={el.border}
+                    prepend={(
                         <StyledNavLinkSection>
                             {el.icon}
                         </StyledNavLinkSection>
-                    ) }
+                    )}
                 />
-            )) }
+            ))}
             <NavLink
                 onClick={() => alert('Не готово ( ´･･)ﾉ(._.`)')}
                 border
+                isDisabled={true}
                 label="Сменить тему"
                 prepend={(
                     <StyledNavLinkSection>
-                        <MoonIcon />
+                        <MoonIcon/>
                     </StyledNavLinkSection>
                 )}
             />
             <Display condition={isAuth}>
                 <NavLink
-                    label={"Выйти"}
-                    onClick={ signOut }
+                    label={'Выйти'}
+                    onClick={logout}
                     prepend={(
                         <StyledNavLinkSection>
                             <OutIcon color={'#e87575'}/>
@@ -93,31 +103,56 @@ export const Panel = (props: PanelProps) => {
             </Display>
             <Display condition={!isAuth}>
                 <NavLink
-                    label={"Войти"}
-                    onClick={ () => signIn("mouse-auth") }
+                    label={'Войти'}
+                    onClick={onLoginModalOpen}
                     prepend={(
                         <StyledNavLinkSection>
-                            <LogInIcon />
+                            <LogInIcon/>
                         </StyledNavLinkSection>
                     )}
                 />
             </Display>
         </StyledPanel>
-    )
-}
+    );
+};
 
 export const tabsData: TabsDataType[] = [
-    {label: "Уведомления", isNeedAuth: true, tab: 'notifications', border: true, icon: <NotificationsIcon />},
-    {label: "Полезная инфа", isNeedAuth: true, tab: 'info', icon: <PaperIcon />},
-    {label: "Статистика", isNeedAuth: true, tab: 'statistic', icon: <ChartIcon />},
-    {label: "Чат", isNeedAuth: true, tab: 'chat', icon: <ChatFillIcon />},
-    {label: "Настройки", isNeedAuth: true, tab: 'settings', icon: <SettingsIcon />, margin: "auto 0 0 0"}
-
-]
+    {
+        label: 'Уведомления',
+        isNeedAuth: true,
+        tab: null,
+        border: true,
+        icon: <NotificationsIcon/>,
+    },
+    {
+        label: 'Полезная инфа',
+        tab: null,
+        isNeedAuth: true,
+        icon: <PaperIcon/>,
+    },
+    {
+        label: 'Статистика',
+        tab: 'statistic',
+        icon: <ChartIcon/>,
+    },
+    {
+        label: 'Чат',
+        isNeedAuth: true,
+        tab: 'chat',
+        icon: <ChatFillIcon/>,
+    },
+    {
+        label: 'Настройки',
+        isNeedAuth: true,
+        tab: 'settings',
+        icon: <SettingsIcon/>,
+        margin: 'auto 0 0 0',
+    },
+];
 
 type TabsDataType = {
     label: string,
-    tab: TabsType,
+    tab: TabsType | null,
     isNeedAuth?: boolean,
     icon: ReactNode,
     border?: boolean,

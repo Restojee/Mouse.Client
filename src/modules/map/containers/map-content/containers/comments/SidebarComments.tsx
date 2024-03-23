@@ -1,19 +1,19 @@
+import { useUser } from '@/modules/user/hooks/useUser';
 import { BoxLoader } from '@/ui/BoxLoader/BoxLoader';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
 import { Map } from '@/api/codegen/genMouseMapsApi';
 import { useMapComments } from './useMapComments';
-import { useUserActions } from '@/modules/user/utils/useUserActions';
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display/Display';
 import { Message } from '@/ui/Message';
 import { MessageSendFormContainer } from '@/ui/Message/MessagesSendForm';
 
 type MapContentSidebarCommentsPropsType = {
-    mapId: Map['id']
+    levelId: Map['id']
 }
-export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) => {
+export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType) => {
     const {
         comments,
         commentText,
@@ -25,8 +25,8 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
     } = useMapComments();
 
     const {
-        onUsernameClick,
-    } = useUserActions();
+        onOpenUserModal,
+    } = useUser();
 
     const isAuth = useAppSelector(selectIsAuth);
 
@@ -51,16 +51,16 @@ export const SidebarComments = ({ mapId }: MapContentSidebarCommentsPropsType) =
     }, []);
 
     const onCommentAddHandler = useCallback(async () => {
-        await onCommentAdd(mapId);
-    }, [onCommentAdd, mapId]);
+        await onCommentAdd(levelId);
+    }, [onCommentAdd, levelId]);
 
     const onInputKeyUpHandler = useCallback(async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        await onInputKeyUp(e, mapId);
-    }, [onInputKeyUp, mapId]);
+        await onInputKeyUp(e, levelId);
+    }, [onInputKeyUp, levelId]);
 
     const onUsernameClickHandler = useCallback((id: number) => {
-        onUsernameClick(id);
-    }, [onUsernameClick]);
+        onOpenUserModal(id);
+    }, [onOpenUserModal]);
 
     useEffect(() => {
         scrollToBottomHandler(true);

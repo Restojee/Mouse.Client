@@ -1,9 +1,11 @@
 import {ReactNode} from "react";
-import {TabsType} from "@/layout/panel/Panel";
-import {Notifications} from "@/layout/drawer/Notifications/Notifications";
-import {Info} from "@/layout/drawer/Info/Info";
-import { Statistic } from "@/layout/drawer/Statistic/Statistic";
-import { StyledDrawer } from "@/layout/drawer/styled";
+import { Chat } from './Chat/Chat';
+import { Settings } from './Settings/Settings';
+import {TabsType} from "../panel/Panel";
+import {Notifications} from "./Notifications/Notifications";
+import {Info} from "./Info/Info";
+import { Statistic } from "./Statistic/Statistic";
+import { StyledDrawer } from "./styled";
 
 type Props = {
     activeTab: TabsType,
@@ -21,7 +23,7 @@ const getTabsContent = (tab: TabsType): ReactNode => {
     const tabs: TabsContentType[] = [
         {
             component: <Notifications />,
-            tab: 'notifications',
+            tab: '',
         },
         {
             component: <Info />,
@@ -32,11 +34,11 @@ const getTabsContent = (tab: TabsType): ReactNode => {
             tab: 'statistic',
         },
         {
-            component: <>Чат</>,
+            component: <Chat/>,
             tab: 'chat',
         },
         {
-            component: <>Настройки</>,
+            component: <Settings/>,
             tab: 'settings',
         }
     ]
@@ -46,5 +48,5 @@ const getTabsContent = (tab: TabsType): ReactNode => {
 
 type TabsContentType = {
     component: ReactNode,
-    tab: TabsType,
+    tab: TabsType | '',
 }

@@ -1,3 +1,5 @@
+import { checkFilter } from '@/common/utils/checkFilters';
+import useQueryParams from '@/hooks/useQueryParams';
 import { navItems } from '../constants';
 import { useMapNavigation } from '../hooks/useMapNavigation';
 import { StyledBox } from '@/ui/Box';
@@ -11,8 +13,9 @@ type MapsByFiltersNavigationSectionProps = {
 
 export function MapsByFiltersNavigation(props: MapsByFiltersNavigationSectionProps) {
     const {
-        navigateTo,
-    } = useMapNavigation();
+        filter,
+        changeFilterNavigate,
+    } = useQueryParams();
 
     return (
         <StyledBox
@@ -27,9 +30,10 @@ export function MapsByFiltersNavigation(props: MapsByFiltersNavigationSectionPro
             />
             {navItems.map(({ label, IconComponent, query }) => (
                 <NavLink
-                    key={query}
-                    onClick={() => navigateTo(query)}
+                    key={label}
+                    onClick={() => changeFilterNavigate(query)}
                     label={label}
+                    isChecked={checkFilter(filter, query)}
                     prepend={(
                         <StyledNavLinkSection isOpen={props.isOpen}>
                             <IconComponent/>

@@ -7,21 +7,11 @@ import {
 import { mapsApi } from '@/api/mapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { convertDataUrlToBlob } from '@/common/utils/convertDataUrlToBlob';
+import { getMapByIdThunk } from '@/modules/map/containers/map-content/slice';
 import { UpdateMapImageThunkArgType } from '@/modules/map/containers/map-content/types';
 import { RootState } from '@/store';
 import { MapCompletedStateType } from '../type';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export const getCompletedMapsByMapThunk = createAsyncThunk('completed-maps/get', async (arg: GetCompletedMapsByMapApiArg, thunkAPI) => {
-    try {
-        const completedMaps = await mapsApi.getCompletedByMapId(arg);
-        thunkAPI.dispatch(setCompletedMaps(completedMaps));
-        return thunkAPI.fulfillWithValue(completedMaps);
-    } catch (error) {
-        thunkAPI.dispatch(setAppMessage({ severity: 'error', text: 'Ошибка загрузки карт' }));
-        return thunkAPI.rejectWithValue(false);
-    }
-});
 
 export const addCompletedMapThunk = createAsyncThunk('completed-maps/create', async (arg: UpdateMapImageThunkArgType, thunkAPI) => {
     try {
@@ -30,9 +20,9 @@ export const addCompletedMapThunk = createAsyncThunk('completed-maps/create', as
         const currentUserId = state.auth.user?.id;
         const maps = state.completedMaps.completedMapsList;
 
-        if (arg.mapId) {
-            await mapsApi.addCompletedMap({ mapId: arg.mapId, body: { file } });
-            await thunkAPI.dispatch(getCompletedMapsByMapThunk({ mapId: arg.mapId }));
+        if (arg.levelId) {
+            await mapsApi.addCompletedMap({ levelId: arg.levelId, body: { file } });
+            await thunkAPI.dispatch(getMapByIdThunk({ levelId: arg.levelId }));
 
             const updatedMapContent = maps.find(map => map.user?.id === currentUserId);
 
@@ -50,7 +40,7 @@ export const deleteCompletedMapThunk = createAsyncThunk('completed-maps/delete',
     try {
         await mapsApi.removeCompletedMap(arg);
 
-        thunkAPI.dispatch(getCompletedMapsByMapThunk(arg));
+        thunkAPI.dispatch(getMapByIdThunk(arg));
         thunkAPI.dispatch(setActiveMapCompletedById(null));
         thunkAPI.dispatch(setAppMessage({ severity: 'success', text: 'Успешно удалено' }));
     } catch (error) {
