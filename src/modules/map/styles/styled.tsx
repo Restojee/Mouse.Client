@@ -27,7 +27,7 @@ export const StyledMapContentMain = styled.div(({theme}) => ({
 export const StyledMapContentNoteForm = styled(StyledTextarea)(({theme}) => ({
     marginBottom: 'auto',
     position: 'relative',
-    backgroundColor: theme.colors.primaryAccent,
+    backgroundColor: theme.colors.primaryAccent + "!important",
     "&:hover": {
         opacity: 0.8,
         backgroundColor: theme.colors.primaryAccent,
@@ -144,7 +144,7 @@ export const StyledMobileMapViewMainBlock = styled(StyledBox)(({theme}) => ({
     padding: 20,
     height: 'auto',
     borderRadius: 'inherit',
-    
+
     '&::placeholder': {
         color: 'rgba(255, 255, 255, 0.5)',
     },

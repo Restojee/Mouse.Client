@@ -6,6 +6,7 @@ export const StyledLayout = styled.div(({ theme }) => ({
     justifyContent: "space-between",
     maxHeight: "100vh",
     height: "100vh",
+    overflow: "auto",
     width: "100%",
     padding: "10px 0",
     fontSize: theme.font.fontSize,
@@ -21,5 +22,6 @@ export const StyledWrapper = styled.div(({theme}) => ({
     flexGrow: 1,
     backgroundColor: theme.colors.secondary,
     borderRadius: 20,
+    minWidth: 768,
     overflow: "hidden"
 }))

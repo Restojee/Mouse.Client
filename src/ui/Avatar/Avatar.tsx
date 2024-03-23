@@ -1,3 +1,4 @@
+import { DEFAULT_MAP_IMAGE } from "@/common/constants";
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { AVATAR_SIZE } from '@/ui/Avatar/constants';
 import { getInitials } from '@/ui/Avatar/utils';
@@ -40,7 +41,7 @@ export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
         >
             <Display condition={image}>
                 <Image
-                    src={image || ''}
+                    src={image || DEFAULT_MAP_IMAGE}
                     width={size}
                     height={size}
                     objectFit={'cover'}

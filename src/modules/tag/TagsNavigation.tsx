@@ -75,20 +75,22 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                 padding="5px"
                 overflow={'hidden'}
             >
-                <SidebarSection
-                    label="Поиск по тегам"
-                    append={
-                        <Display condition={isAuth}>
-                            <StyledNavLinkSection
+                <Display condition={tagsList.length}>
+                    <SidebarSection
+                      label="Поиск по тегам"
+                      append={
+                          <Display condition={isAuth}>
+                              <StyledNavLinkSection
                                 onClick={modalToggleHandler}
                                 isOpen={props.isOpen && isAuth}
-                            >
-                                <AddIcon/>
-                            </StyledNavLinkSection>
-                        </Display>
-                    }
-                    isOpen={props.isOpen}
-                />
+                              >
+                                  <AddIcon/>
+                              </StyledNavLinkSection>
+                          </Display>
+                      }
+                      isOpen={props.isOpen}
+                    />
+                </Display>
                 <ScrollBox>
                     {tagsList?.map(el => (
                         <NavLink

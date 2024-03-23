@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { StyledBox } from '@/ui/Box';
 import Image, { ImageProps } from 'next/image';
-import { CSSObject } from 'styled-components';
 
 type AppImageType = ImageProps;
 export const AppImage = (props: AppImageType) => {
@@ -42,7 +41,6 @@ export const AppImage = (props: AppImageType) => {
                     width={width}
                     height={height}
                     alt={alt}
-                    loading={'lazy'}
                     {...restProps}
                 />
             </StyledBox>

@@ -69,7 +69,7 @@ export const useMapCreate = () => {
             const getMapByName = await dispatch(getMapByNameThunk({ name }));
             const map = getMapByName.payload as Map
 
-            if (map.name === name) {
+            if (map?.name === name) {
                 dispatch(createMapThunk({id: map?.id}));
                 return;
             }

@@ -37,8 +37,6 @@ export const MapParametersForm = () => {
         onOpenModal('tag-update');
     };
 
-    console.log(currentTab === 'map' ? "свою постройку" : "обложку карты")
-
     return (
         <PointBlock
             centeredTitle
