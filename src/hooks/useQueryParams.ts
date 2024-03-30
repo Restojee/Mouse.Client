@@ -17,7 +17,7 @@ const useQueryParams = () => {
 
     const staticFilters: Partial<GetMapsApiArg> = {
         page: 1,
-        size: 100,
+        size: 30,
         userId,
     };
 

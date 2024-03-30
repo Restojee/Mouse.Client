@@ -13,8 +13,9 @@ export const Tab = ({ label, onClick, isActive }: TabPropsType) => {
         <Button
             width={'100%'}
             onClick={onClick}
-            borderRadius={'6px'}
+            borderRadius={'8px'}
             label={label}
+            size={"sm"}
             bgColor={isActive ? theme.colors.brandColor : theme.colors.secondaryDark}
             color={isActive ? theme.colors.brandColorContrastText : 'initial'}
         />

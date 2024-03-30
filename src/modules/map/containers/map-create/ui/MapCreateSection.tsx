@@ -54,7 +54,7 @@ export const MapCreateSection = () => {
                 />
             }
         >
-            <Display condition={isContentVisible}>
+            <Display condition={isContentVisible && isValid}>
                 <DoneRoundIcon color={theme.colors.primary}/>
             </Display>
             <Display condition={!isContentVisible}>

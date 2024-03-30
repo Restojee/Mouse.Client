@@ -34,7 +34,7 @@ export const MapCardButton = (props: MapCardButtonPropsType) => {
         >
             <Button
                 bgColor={theme.colors.status.success}
-                label="Открыть"
+                label="Открыть" size={"md"}
             />
         </StyledMapCardButton>
     );

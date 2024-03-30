@@ -45,7 +45,7 @@ export const Settings = () => {
                     <Input title={'Логин'} value={currentUser?.username} disabled/>
                     <Input title={'Пароль'} value={'пароль'} type={'password'} disabled/>
                 </StyledBox>
-                <Button onClick={onSubmitHandler} label={'Сохранить'} size={'lg'}/>
+                <Button onClick={onSubmitHandler} label={'Сохранить'} />
             </StyledBox>
         </StyledBox>
     );

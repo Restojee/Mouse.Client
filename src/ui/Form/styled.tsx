@@ -49,7 +49,7 @@ type InputWrapperPropsType = {
 }
 export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ...props }) => ({
     display: 'flex',
-    borderRadius: '10px',
+    borderRadius: '50px',
     minWidth: props.width,
     maxWidth: '100%',
     zIndex: 1,
@@ -88,8 +88,8 @@ export const StyledInput = styled.input(({ theme, ...props }) => ({
     width: '100%',
     maxWidth: '100%',
     color: 'inherit',
-    borderRadius: '10px',
-    padding: '7px 15px',
+    borderRadius: '50px',
+    padding: '10px 15px',
     fontSize: 'inherit',
     boxShadow: 'inherit',
     textOverflow: 'ellipsis',

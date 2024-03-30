@@ -1,0 +1,52 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+    padding-top: 30px;
+    margin-top: auto;
+}
+
+.item, .break, .next, .previous {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    transition: 0.2s background-color;
+    cursor: pointer;
+}
+
+.item {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.item:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.item_active {
+    background-color: #e96b6b;
+    color: #fff;
+    pointer-events: none;
+}
+
+.item_disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.previous, .next {
+
+}
+
+.previous:hover, .next:hover, .break:hover {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.break {
+
+}

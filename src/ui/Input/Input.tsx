@@ -1,4 +1,5 @@
 import { StyledBox } from '@/ui/Box';
+import { Display } from "@/ui/Display";
 import React from 'react';
 import { StyledFieldError } from './styled';
 import { StyledInput, StyledInputIcon, StyledInputWrapper } from '@/ui/Form/styled';
@@ -25,19 +26,21 @@ export const Input = (props: InputPropsType) => {
 
     return (
         <StyledBox
-            width={'100%'}
+            width={props.width || '100%'}
             direction={'column'}
             margin={isError ? '0 0 5px 0' : 0}
             transition={'0.2s'}
             position={'relative'}
         >
-            <StyledBox
-                opacity={0.5}
-                fontSize={'0.8rem'}
-                padding={'0 0 5px 15px'}
-            >
-                {props.title}
-            </StyledBox>
+            <Display condition={props.title}>
+                <StyledBox
+                  opacity={0.5}
+                  fontSize={'0.8rem'}
+                  padding={'0 0 5px 15px'}
+                >
+                    {props.title}
+                </StyledBox>
+            </Display>
             <StyledInputWrapper isDisabled={props.disabled} bgColor={ bgColor } isError={isError}>
                 { inputPrepend && (
                     <StyledInputIcon left>

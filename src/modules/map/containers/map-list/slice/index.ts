@@ -12,10 +12,16 @@ const selectFilters = (state: RootState) => state.maps.filter;
 export const getMapsThunk = createAsyncThunk('map/get', async (arg, { getState, dispatch }) => {
     try {
         const filters = selectFilters(getState() as RootState);
-        const staticMapsData = await mapsApi.getMaps({ page: 1, size: 0 });
-        const mapsData = await mapsApi.getMaps(filters);
+
+        const [staticMapsData, mapsData] = await Promise.all([
+            mapsApi.getMaps({ page: 1, size: filters.size }),
+            mapsApi.getMaps(filters),
+        ])
+
+
         dispatch(setStaticMapsInfo(staticMapsData));
         dispatch(setMaps(mapsData));
+
         return mapsData;
     } catch (error) {
         dispatch(setAppMessage({ severity: 'error', text: `Ошибка загрузки карт` }));
@@ -51,7 +57,7 @@ const initialState: MapsStateType = {
     staticMapsInfo: null,
     mapsData: null,
     filter: {
-        size: 100,
+        size: 30,
         page: 1,
         // sortBy: 'DATE',
         // sortDirection: 'DESC',
@@ -137,6 +143,7 @@ export const selectFilter = (state: RootState) => state.maps.filter;
 export const selectMaps = (state: RootState) => state.maps.mapsData?.records;
 export const selectIsMapsFetching = (state: RootState) => state.maps.isMapsFetching;
 export const selectStaticMapsInfo = (state: RootState) => state.maps.staticMapsInfo;
+export const selectMapsInfo = (state: RootState) => state.maps.mapsData;
 
 export const {
     addMap,

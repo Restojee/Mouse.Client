@@ -21,7 +21,7 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     bgColor = theme.colors.brandColor,
     size = "md",
     color = "#fff",
-    borderRadius = "20px",
+    borderRadius = "50px",
     width = "min-content",
     margin = "",
     disabled

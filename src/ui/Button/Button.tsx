@@ -26,6 +26,7 @@ export const Button = (props: ButtonProps & StyledButtonProps) => {
         onClick,
         type = 'button',
         children,
+        size = "md",
         ...restProps
     } = props;
 
@@ -33,6 +34,7 @@ export const Button = (props: ButtonProps & StyledButtonProps) => {
         <StyledButton
             onClick={onClick}
             type={type}
+            size={size}
             {...restProps}
         >
             {prepend}

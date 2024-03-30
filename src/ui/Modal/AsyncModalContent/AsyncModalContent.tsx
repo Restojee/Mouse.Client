@@ -52,13 +52,13 @@ const AsyncModalContent = (props: ModalPropsType) => {
                         <StyledCardActions>
                             <Button
                                 label="Отмена"
+                                color={"#000"}
+                                bgColor={theme.colors.default.paperAccent}
                                 onClick={onClose}
                             />
                             <Button
                                 type={'submit'}
-                                size={'lg'}
                                 onClick={onAccess}
-                                bgColor={theme.colors.status.success}
                                 label="Подтвердить"
                             />
                         </StyledCardActions>

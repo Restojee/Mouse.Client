@@ -1,5 +1,6 @@
 import { getCurrentCollectName } from '@/common/utils/getCurrentCollectName';
 import useQueryParams from '@/hooks/useQueryParams';
+import { MapSearch } from "../containers/map-search/MapSearch";
 import { useUser } from '@/modules/user/hooks/useUser';
 import { StyledBox } from '@/ui/Box';
 import { Typography } from '@/ui/Typography';
@@ -8,7 +9,7 @@ import { PageHeader } from '@/layout/page/PageHeader';
 import { StyledPageWrapper } from '@/layout/page/styles/StyledPageWrapper';
 import { PageFooter } from '@/layout/page/PageFooter';
 import { PageContent } from '@/modules/map/components/PageContent';
-import { MapCreateSection } from '@/modules/map/containers/map-create/ui/MapCreateSection';
+import { MapCreateSection } from '../containers/map-create/ui/MapCreateSection';
 
 type Props = {
     children: ReactNode;
@@ -40,14 +41,21 @@ export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
     return (
         <StyledPageWrapper>
             <PageHeader>
-                <StyledBox padding={'0 10px'} gap={5}>
+                <StyledBox
+                  align={"center"}
+                  padding={'0 10px'}
+                  gap={5}
+                  grow={1}
+                >
                     <Typography opacity={0.6} fontSize={'1rem'}>
                         {currentPageTitle.collect}
                     </Typography>
                     <Typography fontSize={'1rem'}>
                         {currentPageTitle.username}
                     </Typography>
-                    {/*<MapSortSection />*/}
+                    <StyledBox margin={"0 0 0 auto"}>
+                        <MapSearch />
+                    </StyledBox>
                 </StyledBox>
             </PageHeader>
             <PageContent>

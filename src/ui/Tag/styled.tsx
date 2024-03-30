@@ -20,7 +20,7 @@ export const StyledTag = styled(StyledBox)<StyledTagType>(({ theme,...props }) =
     whiteSpace: 'nowrap',
     alignItems: 'center',
     backgroundColor: props.bgColor || 'rgba(0, 0, 0, 0.07)',
-    padding: '6px 15px',
+    padding: '8px 15px',
     fontSize: '0.8rem',
     borderRadius: '20px',
     svg: {
@@ -39,6 +39,6 @@ export const StyledTag = styled(StyledBox)<StyledTagType>(({ theme,...props }) =
     },
     ...props.small && {
         fontSize: '0.7rem',
-        padding: '4px 10px',
+        padding: '8px 10px',
     },
 }))

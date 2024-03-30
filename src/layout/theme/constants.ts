@@ -26,7 +26,8 @@ export const DefaultTheme = {
         mapBackgroundLight: '#a7acc7',
 
         default: {
-            paper: '#FFFFFF'
+            paper: '#FFFFFF',
+            paperAccent: "rgba(0, 0, 0, 0.07)",
         },
 
         status: {
@@ -83,18 +84,18 @@ export const DefaultTheme = {
         },
         button: {
             sm: {
-                padding: '6px 10px',
-                fontSize: '10px',
+                padding: '8px 15px',
+                fontSize: '12px',
                 svg: { width: '12px', height: '12px' },
             },
             md: {
-                padding: '4px 15px',
+                padding: '12px 25px',
                 fontSize: '0.8rem',
                 svg: { width: '14px', height: '14px' },
             },
             lg: {
-                padding: '8px 20px',
-                fontSize: '14px',
+                padding: '16px 32px',
+                fontSize: '16px',
                 svg: { width: '14px', height: '14px' },
             },
         },
