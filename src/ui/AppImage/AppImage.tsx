@@ -1,8 +1,6 @@
-import { LoaderIcon } from "@/svg/loader/LoaderIcon";
-import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
-import { useState } from "react";
 import { StyledBox } from "@/ui/Box";
 import Image, { ImageProps } from "next/image";
+import { useEffect, useState } from "react";
 
 type AppImageType = ImageProps;
 export const AppImage = (props: AppImageType) => {
@@ -15,32 +13,28 @@ export const AppImage = (props: AppImageType) => {
   } = props;
 
   const [isLoaded, setIsLoaded] = useState(true);
-console.log(isLoaded)
-  return (
-    <>
+
+  useEffect(() => {
+    const imageElement = document.createElement('img');
+
+    if (!imageElement) return;
+
+      imageElement.onload = () => {
+        setIsLoaded(false);
+      };
+      imageElement.src = src as string;
+  }, []);
+
+  if (isLoaded) {
+    return  (
       <StyledBox
-        display={isLoaded ? "none" : "initial"}
         height={"100%"}
         width={"100%"}
       >
         <Image
-          onLoad={() => setIsLoaded(false)}
           src={src}
-          alt={alt}
-          quality={70}
-          width={width}
-          height={height}
-          objectFit={"cover"}
-        />
-      </StyledBox>
-      <StyledBox
-        height={"100%"}
-        width={"100%"}
-        display={isLoaded ? "flex" : "none"}>
-        <Image
-          src={src}
-          width={50}
-          height={50}
+          width={10}
+          height={10}
           quality={1}
           style={{
             filter: "blur(8px)",
@@ -50,6 +44,25 @@ console.log(isLoaded)
           {...restProps}
         />
       </StyledBox>
+    )
+  }
+
+  return (
+    <>
+      <StyledBox
+        height={"100%"}
+        width={"100%"}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          quality={70}
+          width={width}
+          height={height}
+          objectFit={"cover"}
+        />
+      </StyledBox>
+
     </>
   );
 };

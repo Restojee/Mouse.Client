@@ -43,8 +43,10 @@ export const MapCard = React.memo((props: MapCardProps) => {
     const onIconsClick = useCallback(async (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         if (name) {
+            await onMapNameCopy(name)
         }
     }, [name, onMapNameCopy]);
+
 
     const onToggleMapFavoriteHandler = useCallback(() => {
         onToggleMapFavorite(Boolean(isFavoriteByUser))
