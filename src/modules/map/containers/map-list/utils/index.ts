@@ -8,3 +8,5 @@ export function capitalizeKeys<T>(obj: T): T {
     }
     return result as T;
 }
+
+export const removeNonDigits = (str?: string) => str?.replace(/\D/g, '');

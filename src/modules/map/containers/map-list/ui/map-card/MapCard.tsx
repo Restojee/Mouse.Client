@@ -1,3 +1,4 @@
+import { removeNonDigits } from "@/modules/map/containers/map-list";
 import React, { useCallback, useMemo, useState } from 'react';
 import { getMapImageLink } from '@/common/utils';
 import { MapCardButton } from './MapCardButton';
@@ -25,6 +26,7 @@ export const MapCard = React.memo((props: MapCardProps) => {
     const {
         id,
         name,
+        tags,
         image = '',
         commentsCount,
         completedCount,
@@ -42,10 +44,22 @@ export const MapCard = React.memo((props: MapCardProps) => {
 
     const onIconsClick = useCallback(async (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        if (name) {
-            await onMapNameCopy(name)
+
+        const isVanilla = tags?.find(el => el.name === "Ванилла");
+
+        if (name && isVanilla) {
+            await onMapNameCopy(removeNonDigits(name));
+            return;
         }
-    }, [name, onMapNameCopy]);
+
+        await onMapNameCopy(name);
+    }, [name, onMapNameCopy, tags]);
+
+    const formattedName = useMemo(() => {
+        const isVanilla = tags?.find(el => el.name === "Ванилла");
+
+        return isVanilla ? removeNonDigits(name) : name;
+    }, [name, tags])
 
 
     const onToggleMapFavoriteHandler = useCallback(() => {
@@ -60,7 +74,7 @@ export const MapCard = React.memo((props: MapCardProps) => {
             onMouseEnter={() => setIsMapHover(true)}
         >
             <StyledMapCardHeader onClick={onIconsClick}>
-                <Typography>{name}</Typography>
+                <Typography>{formattedName}</Typography>
                 <IconButton>
                     <CopyIcon size={24} />
                 </IconButton>

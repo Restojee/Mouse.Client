@@ -1,3 +1,4 @@
+import { removeNonDigits } from "@/modules/map/containers/map-list";
 import React, { useCallback, useMemo } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
@@ -31,6 +32,8 @@ export const MapContent = React.memo(() => {
         e.stopPropagation();
     }, []);
 
+    const isVanilla = map?.tags?.find(el => el.name === "Ванилла");
+
     const dateTime = useMemo(() => {
         if (map) {
             const dateTime = activeMapCompleted?.createdUtcDate || map?.createdUtcDate;
@@ -54,7 +57,7 @@ export const MapContent = React.memo(() => {
                     completeCount={map?.completedCount}
                     viewCount={map?.visitsCount}
                     commentsCount={map?.commentsCount}
-                    title={map?.name}
+                    title={isVanilla ? removeNonDigits(map?.name) : map?.name}
                 />
                 <Preview image={activeMapCompleted?.image || map?.image}/>
                 <MiniMapImages/>
