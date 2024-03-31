@@ -10,7 +10,7 @@ export const StyledMapCard = styled.div(({theme}) => ({
     boxShadow: "2px 2px 3px 1px rgba(0, 0, 0, 0.2)",
     transition: "0.2s",
     cursor: "pointer",
-    aspectRatio: "16/9",
+    aspectRatio: "19/9",
     img: {
       transition: '0.5s',
     },

@@ -60,9 +60,9 @@ export const MapCard = React.memo((props: MapCardProps) => {
             onMouseEnter={() => setIsMapHover(true)}
         >
             <StyledMapCardHeader onClick={onIconsClick}>
-                <Typography fontSize={'0.8rem'}>{name}</Typography>
+                <Typography>{name}</Typography>
                 <IconButton>
-                    <CopyIcon size={20}/>
+                    <CopyIcon size={24} />
                 </IconButton>
             </StyledMapCardHeader>
             <StyledMapCardBody>
