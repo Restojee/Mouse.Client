@@ -47,6 +47,7 @@ export const MapParametersForm = () => {
             <StyledBox
                 width={'100%'}
                 gap="15px"
+                textAlign={"center"}
                 direction="column"
             >
                 <Tabs>
@@ -63,6 +64,7 @@ export const MapParametersForm = () => {
                 </Tabs>
                 <Display condition={currentTab === 'map'}>
                     <ImageForm
+                        subTextSize={"sm"}
                         fileType="image"
                         onChange={setImage}
                         value={image || null}
@@ -71,6 +73,7 @@ export const MapParametersForm = () => {
                 </Display>
                 <Display condition={currentTab === 'completed'}>
                     <ImageForm
+                        subTextSize={"sm"}
                         fileType="image"
                         onChange={setCompletedMapImage}
                         value={completedMapImage || null}

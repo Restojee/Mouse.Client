@@ -4,6 +4,8 @@ import { useAppSelector } from '@/hooks/useAppSelector';
 import useQueryParams from '@/hooks/useQueryParams';
 import { selectIsAuth } from '@/modules/auth/slice';
 import { selectFilter } from '@/modules/map/containers/map-list/slice';
+import { TagItemActions } from "@/modules/tag/components/TagItemActions";
+import { UpdateTagModal } from "@/modules/tag/components/UpdateTagModal";
 import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledNavLinkSection } from '@/layout/navigation/styles/StyledNavLinkSection';
 import { SidebarSection } from '@/layout/sidebar/SidebarSection';
@@ -11,6 +13,7 @@ import { NavLink } from '@/layout/navigation/NavLink';
 import { getTagsThunk } from '@/modules/tag/slice';
 import { CloseIcon } from '@/svg/CloseIcon';
 import { AddIcon } from '@/svg/AddIcon';
+import { EditFillIcon } from "@/svg/EditFillIcon";
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display';
 import { Modal } from '@/ui/Modal/Modal';
@@ -35,7 +38,8 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
     const dispatch = useAppDispatch();
     const isAuth = useAppSelector(selectIsAuth);
     const filter = useAppSelector(selectFilter);
-    const [tagId, setTagId] = useState<Tag['id'] | null>(null);
+    const [tempTag, setTempTag] = useState<Tag>();
+
 
     const onTagClickHandler =  async (id: Tag['id']) => {
         if (filter.tagIds?.includes(id)) {
@@ -49,11 +53,6 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
         }
     };
 
-    const onTagDeleteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: Tag['id']) => {
-        e.stopPropagation();
-        setTagId(id);
-        onOpenModal('tag-delete');
-    };
 
     const modalToggleHandler = () => {
         if (modalType === 'tag-create') {
@@ -96,15 +95,10 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                         <NavLink
                             key={el.id}
                             label={el.name}
+                            description={el.description}
                             onClick={() => onTagClickHandler(el.id)}
                             isChecked={filter.tagIds?.includes(el.id)}
-                            append={(
-                                <Display condition={isAuth}>
-                                    <StyledNavLinkSection onClick={(e) => onTagDeleteHandler(e, el.id)}>
-                                        <CloseIcon/>
-                                    </StyledNavLinkSection>
-                                </Display>
-                            )}
+                            append={isAuth ? <TagItemActions tag={el} setTempTag={setTempTag}/> : undefined}
                             justifyContent="space-between"
                             isOpen={props.isOpen}
                         />
@@ -113,9 +107,10 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
                 <Modal
                     isOpen={modalType === 'tag-delete'}
                     text={'Вы действительно хотите удалить тег?'}
-                    onAccess={() => onTagDelete(tagId)}
+                    onAccess={() => onTagDelete(tempTag?.id)}
                     onClose={onCloseModal}
                 />
+                <UpdateTagModal tag={tempTag}  />
             </StyledBox>
         );
     }

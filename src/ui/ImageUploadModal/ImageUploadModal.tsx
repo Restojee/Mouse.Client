@@ -1,6 +1,5 @@
 import { useGlobalKeyDown } from '@/hooks/useGlobalKeyDown';
 import { StyledBox } from '@/ui/Box';
-import { useImage } from '@/ui/ImageForm/hooks/useImage';
 import { ImageForm } from '@/ui/ImageForm/ImageForm';
 import { Modal } from '@/ui/Modal/Modal';
 import { useState } from 'react';
@@ -44,6 +43,7 @@ export const ImageUploadModal = (props: ImageUploadModalPropsType) => {
             width={420}
         >
             <ImageForm
+                fileType={"image"}
                 width={'100%'}
                 height={'180px'}
                 onChange={setImage}

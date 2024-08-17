@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from "react";
 import { selectMapContent } from '@/modules/map/containers/map-content/slice';
 import { Map, MapCompleted } from '@/api/codegen/genMouseMapsApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
@@ -20,10 +20,12 @@ export const useCompletedMap = (levelId?: Map['id']) => {
     const isCompletedMapModalOpen = useAppSelector(selectIsCompletedModalOpen);
     const maps = useAppSelector(selectCompletedMaps);
     const userId = useAppSelector(selectCurrentUserId);
-    const mapContent = useAppSelector(selectMapContent);
     const activeMapCompleted = useAppSelector(selectActiveMapCompleted);
 
-    const isMyMap = mapContent?.user?.id === userId;
+    const isMyMap = useMemo(() => {
+        return activeMapCompleted?.user?.id === userId;
+    }, [activeMapCompleted?.user?.id, userId])
+
 
     const onMapClick = useCallback((e?: React.MouseEvent<HTMLDivElement>, id?: MapCompleted['user']['id'] | null) => {
         const currentElement: HTMLDivElement | undefined = e?.currentTarget;
@@ -35,27 +37,27 @@ export const useCompletedMap = (levelId?: Map['id']) => {
             });
         }
         dispatch(setActiveMapCompletedById(id));
-    }, []);
+    }, [dispatch]);
 
     const addCompletedMap = useCallback(async (levelId: Map['id'], file: string) => {
         if (levelId && file) {
             return dispatch(addCompletedMapThunk({ levelId, file }));
         }
-    }, []);
+    }, [dispatch]);
 
     const deleteCompletedMap = useCallback(() => {
         if (levelId) {
             dispatch(deleteCompletedMapThunk({ levelId }));
         }
-    }, [levelId]);
+    }, [dispatch, levelId]);
 
     const onCompletedMapModalClose = useCallback(() => {
         dispatch(setIsCompletedMapModalOpen(false));
-    }, []);
+    }, [dispatch]);
 
     const onCompletedMapModalOpen = useCallback(() => {
         dispatch(setIsCompletedMapModalOpen(true));
-    }, []);
+    }, [dispatch]);
 
     return {
         maps,

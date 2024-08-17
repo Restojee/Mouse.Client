@@ -3,6 +3,8 @@ import { useAppSelector } from '@/hooks/useAppSelector';
 import { NavLink } from '@/layout/navigation/NavLink';
 import { useLogin } from '@/modules/auth/hooks/useLogin';
 import { selectCurrentUser, selectIsAuth } from '@/modules/auth/slice';
+import { useChat } from "@/modules/chat/hooks/useChat";
+import { useTag } from "@/modules/tag/hooks/useTag";
 import { MoonIcon } from '@/svg/MoonIcon';
 import { StyledNavLinkSection } from '@/layout/navigation/styles/StyledNavLinkSection';
 import { BurgerIcon } from '@/svg/BurgerIcon';
@@ -15,7 +17,7 @@ import { SettingsIcon } from '@/svg/SettingsIcon';
 import { LogInIcon } from '@/svg/LogInIcon';
 import { Avatar } from '@/ui/Avatar';
 import { Display } from '@/ui/Display';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from "react";
 import { Property } from 'csstype';
 import { StyledPanel } from '@/layout/panel/styled';
 
@@ -32,6 +34,8 @@ export const Panel = (props: PanelProps) => {
         logout
     } = useLogin();
 
+    const { isHasNewMessage, fetchChatMessages, messages } = useChat();
+
     const isAuth = useAppSelector(selectIsAuth);
     const userData = useAppSelector(selectCurrentUser);
 
@@ -46,6 +50,20 @@ export const Panel = (props: PanelProps) => {
     };
 
     const avatar = userData?.avatar;
+
+    useEffect(() => {
+      if (!messages?.length) {
+        fetchChatMessages();
+      }
+
+      const id = setInterval(() => {
+        fetchChatMessages();
+      }, 5000);
+      return () => {
+        clearInterval(id);
+      };
+    }, [])
+
 
     return (
         <StyledPanel>
@@ -66,8 +84,10 @@ export const Panel = (props: PanelProps) => {
             {tabsData.map((el, index) => (
                 <NavLink
                     key={index}
+                    hasPin={Boolean(el.tab === "chat" && isHasNewMessage)}
                     isDisabled={(el.isNeedAuth && !isAuth) || !el.tab}
                     label={el.label}
+                    description={el.label}
                     isChecked={el.tab === props.activeTab}
                     onClick={() => onTabClickHandler(el.tab)}
                     margin={el.margin}

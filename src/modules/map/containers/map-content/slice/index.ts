@@ -52,6 +52,7 @@ export const onCloseMapContentThunk = createAsyncThunk('map/close-map', async (a
         thunkAPI.dispatch(setActiveMapCompletedById(null));
         thunkAPI.dispatch(setIsMapContentImageFetching(true));
         thunkAPI.dispatch(setMapContent(null));
+        thunkAPI.dispatch(setMapNote(""));
         thunkAPI.dispatch(setComments([]));
         thunkAPI.dispatch(setIsCommentsInitialized(false));
     } catch (error) {
@@ -113,7 +114,15 @@ export const getMapByIdThunk = createAsyncThunk('map/get-by-id', async (arg: Get
 
         thunkAPI.dispatch(setSelectedTagIds(tagIds));
         thunkAPI.dispatch(setCompletedMaps(map.completed || []));
-        thunkAPI.dispatch(setMapNote(map.notes[0]?.text));
+
+        const note = map.notes[0]?.text;
+
+        if (note) {
+            thunkAPI.dispatch(setMapNote(map.notes[0].text));
+        } else {
+            thunkAPI.dispatch(setMapNote(""));
+        }
+
         return thunkAPI.fulfillWithValue(map);
     } catch (error) {
         return thunkAPI.rejectWithValue(null);

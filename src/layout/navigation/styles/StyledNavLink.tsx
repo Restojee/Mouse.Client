@@ -9,12 +9,14 @@ type Props = {
     withBorder?: boolean
     isDisabled?: boolean
     isChecked?: boolean;
+    hasPin?: boolean;
 }
 export const StyledNavLink = styled.div<Props>(({
                                                     theme,
                                                     margin,
                                                     isOpen,
                                                     withBorder,
+                                                    hasPin,
                                                     isDisabled,
                                                     gap,
                                                     isChecked,
@@ -53,6 +55,19 @@ export const StyledNavLink = styled.div<Props>(({
         '*': {
             cursor: 'default',
         }
+    },
+    ...hasPin && {
+        '&:before': {
+            content: '""',
+            position: 'absolute',
+            top: 6,
+            right: 6,
+            height: 6,
+            width: 6,
+            borderRadius: 50,
+            backgroundColor: theme.colors.brandColor,
+            zIndex: 1,
+        },
     },
     ...!isDisabled && {
         cursor: 'pointer',

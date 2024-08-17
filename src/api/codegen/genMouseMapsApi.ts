@@ -145,7 +145,7 @@ export type Tag = {
     name: string;
 };
 export type UpdateTagRequest = {
-    tagId?: number;
+    id?: number;
     name?: string;
     description?: string;
 };

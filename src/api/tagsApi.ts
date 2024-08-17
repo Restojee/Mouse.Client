@@ -5,8 +5,8 @@ import {
     DeleteTagApiArg,
     DeleteTagApiResponse,
     GetTagsApiArg,
-    GetTagsApiResponse,
-} from '@/api/codegen/genMouseMapsApi';
+    GetTagsApiResponse, UpdateTagApiArg, UpdateTagApiResponse,
+} from "@/api/codegen/genMouseMapsApi";
 import api from '@/api/coreMapsApi';
 
 export const tagsApi = {
@@ -20,6 +20,10 @@ export const tagsApi = {
     },
     deleteTag: async (params: DeleteTagApiArg) => {
         const res = await api.delete<DeleteTagApiArg, AxiosResponse<DeleteTagApiResponse>>(`/tags/delete/${params.tagId}`);
+        return res.data;
+    },
+    updateTag: async (body: UpdateTagApiArg['updateTagRequest']) => {
+        const res = await api.put<UpdateTagApiArg, AxiosResponse<UpdateTagApiResponse>>(`/tags/update`, body);
         return res.data;
     },
 }

@@ -1,10 +1,11 @@
+import { localStorageKeys } from "@/common/constants";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { useUser } from '@/modules/user/hooks/useUser';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { selectIsAuth } from '@/modules/auth/slice';
 import { useChat } from '@/modules/chat/hooks/useChat';
-import { useUserActions } from '@/modules/user/utils/useUserActions';
 import { Message } from '@/ui/Message';
 import { MessageSendFormContainer } from '@/ui/Message/MessagesSendForm';
 import { StyledDrawerHeader } from '@/layout/drawer/styled';
@@ -12,11 +13,11 @@ import { StyledBox } from '@/ui/Box';
 
 export const Chat = () => {
     const isAuth = useAppSelector(selectIsAuth);
+    const {setValue} = useLocalStorage(localStorageKeys.CHAT_MESSAGES_COUNT);
     const {
         messages,
         messageText,
         onMessageAdd,
-        isChatMessageInitialized,
         isChatMessageCreateFetching,
         onInputKeyUp,
         onInputChange,
@@ -28,35 +29,36 @@ export const Chat = () => {
 
     const scrollToBottomRef = useRef<HTMLDivElement>(null);
 
-    const scrollToBottomHandler = (isNotSmooth?: boolean) => {
+    const scrollToBottomHandler = useCallback((isNotSmooth?: boolean) => {
         const ref = scrollToBottomRef.current;
         const timeout = isNotSmooth ? 0 : 200;
 
         if (ref) {
             setTimeout(() => {
+
                 ref.scrollTo({
                     top: ref.scrollHeight,
                     behavior: isNotSmooth ? undefined : 'smooth',
                 });
             }, timeout);
         }
-    };
+    }, []);
 
     const onFocusHandler = useCallback(async () => {
         scrollToBottomHandler();
-    }, []);
+    }, [scrollToBottomHandler]);
 
     const onUsernameClickHandler = useCallback((id: number) => {
         onOpenUserModal(id);
-    }, []);
+    }, [onOpenUserModal]);
 
     useEffect(() => {
+        if (messages?.length) {
+            setValue(messages?.length);
+        }
+
         scrollToBottomHandler(true);
     }, [messages?.length]);
-
-    useEffect(() => {
-        scrollToBottomHandler();
-    }, []);
 
     return (
         <>

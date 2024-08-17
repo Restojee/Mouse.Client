@@ -9,7 +9,7 @@ type TAppMessage = {
     text: string;
 };
 
-export type AppModalTypes = "login" | "user" | "tag-update" | "register"
+export type AppModalTypes = "login" | "user" | "map-tags-update" | "register";
 
 export type TAppState = {
     isInitialized: boolean;

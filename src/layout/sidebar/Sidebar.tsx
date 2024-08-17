@@ -2,7 +2,7 @@ import * as React from 'react';
 import { getAppVersion } from '@/common/utils';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectIsAuth } from '@/modules/auth/slice';
-import { CreateTagPopup } from '@/modules/tag/containers/create-tag-popup/CreateTagPopup';
+import { CreateTagPopup } from '@/modules/tag/components/CreateTagPopup';
 import { useTag } from '@/modules/tag/hooks/useTag';
 import { StyledBox } from '@/ui/Box';
 import { Display } from '@/ui/Display';

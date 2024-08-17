@@ -1,9 +1,22 @@
-import { CreateTagRequest, DeleteTagApiArg, Tag } from '@/api/codegen/genMouseMapsApi';
+import { CreateTagRequest, DeleteTagApiArg, Tag, UpdateTagApiArg } from "@/api/codegen/genMouseMapsApi";
 import { tagsApi } from '@/api/tagsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { RootState } from '@/store';
 import { TagModalTypes, TagsStateType } from '../types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export const updateTagThunk = createAsyncThunk('tag/update', async (arg: UpdateTagApiArg["updateTagRequest"], thunkAPI) => {
+    try {
+        await tagsApi.updateTag(arg);
+        const tags = await tagsApi.getTags();
+        thunkAPI.dispatch(setTags(tags));
+        thunkAPI.dispatch(setAppMessage({text: 'Тег успешно изменен', severity: 'success'}));
+        return thunkAPI.fulfillWithValue(true)
+    } catch (error) {
+        thunkAPI.dispatch(setAppMessage({text: 'Ошибка изменения тега', severity: 'error'}));
+        return thunkAPI.rejectWithValue(false)
+    }
+});
 
 export const createTagThunk = createAsyncThunk('tag/create', async (arg: CreateTagRequest, thunkAPI) => {
     try {

@@ -1,3 +1,3 @@
 export type MapNoteStateType = {
-    note: string
+    note: string;
 }

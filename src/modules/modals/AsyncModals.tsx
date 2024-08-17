@@ -3,7 +3,7 @@ import { AppModalTypes, selectAppModalType } from '@/bll/appReducer';
 import { useAppSelector } from '@/hooks/useAppSelector';
 
 const modals: Record<AppModalTypes, LazyExoticComponent<() => JSX.Element>> = {
-    'tag-update': React.lazy(() => import('../tag/containers/tags-modal/TagsModal')),
+    'map-tags-update': React.lazy(() => import('../tag/components/TagsModal')),
     'login': React.lazy(() => import('../auth/containers/login/LoginModal')),
     'user': React.lazy(() => import('../user/containers/user-modal/UserModal')),
     'register': React.lazy(() => import('../auth/containers/register/RegisterModal')),

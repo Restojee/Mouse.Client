@@ -22,12 +22,12 @@ export const ImageActions = () => {
 
     return (
         <StyledActionsContainer>
-            <Display condition={Boolean(!activeMapCompleted)}>
+            <Display condition={(!activeMapCompleted)}>
                 <IconButton onClick={onMapImageModalOpen} isStylized>
                     <EditFillIcon/>
                 </IconButton>
             </Display>
-            <Display condition={isMyMap && Boolean(activeMapCompleted)}>
+            <Display condition={Boolean(activeMapCompleted && isMyMap)}>
                 <IconButton onClick={deleteCompletedMap} isStylized>
                     <DeleteIcon/>
                 </IconButton>

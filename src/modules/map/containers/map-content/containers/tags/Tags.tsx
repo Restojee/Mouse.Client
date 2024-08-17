@@ -23,7 +23,7 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
     } = useTag();
 
     const onOpenModalHandler = () => {
-        onOpenModal('tag-update')
+        onOpenModal('map-tags-update')
     }
 
     return (

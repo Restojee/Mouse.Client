@@ -5,6 +5,7 @@ import { Typography } from '@/ui/Typography/styles/Typography';
 
 type NavLinkProps = {
     label?: string;
+    description?: string;
     prepend?: ReactElement;
     append?: ReactElement;
     isOpen?: boolean;
@@ -15,6 +16,7 @@ type NavLinkProps = {
     justifyContent?: Property.JustifyContent;
     isDisabled?: boolean;
     isVisible?: boolean;
+    hasPin?: boolean;
     onClick?: () => void;
 }
 export const NavLink = (props: NavLinkProps) => {
@@ -26,19 +28,22 @@ export const NavLink = (props: NavLinkProps) => {
         margin,
         border,
         isOpen,
+        hasPin,
         isChecked,
         justifyContent,
         isDisabled,
         onClick,
+        description,
         gap = '15px',
     } = props;
 
     return (
         <StyledNavLink
-            title={isDisabled ? `${label}: недоступно` : label}
+            title={isDisabled ? `${description}: недоступно` : description}
             margin={margin}
             withBorder={border}
             gap={gap}
+            hasPin={hasPin}
             isOpen={isOpen}
             isChecked={isChecked}
             isDisabled={isDisabled}

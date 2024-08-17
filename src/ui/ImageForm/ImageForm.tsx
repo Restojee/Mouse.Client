@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useAppNotifications } from "@/hooks/useAppNotifications";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Display } from '@/ui/Display';
 import { useImage } from '@/ui/ImageForm/hooks/useImage';
 import { StyledImageFormContainer, StyledImageFormLink, StyledImageHover } from '@/ui/ImageForm/ImageFormElements';
 import { Property } from 'csstype';
+import { StyledText } from "./styled";
 
 type ImageFormPropsType = {
     placeholder?: string;
@@ -12,10 +14,14 @@ type ImageFormPropsType = {
     onChange: (file: string) => void;
     value: string | null;
     fileType?: 'image';
+    maxSizeInMb?: number;
+    subTextSize?: "sm" | "md";
     width?: Property.Width<number>;
     height?: Property.Height<number>;
 };
 export const ImageForm = (props: ImageFormPropsType) => {
+    const { onError } = useAppNotifications();
+
     const {
         image,
         getDataUrlImage
@@ -25,6 +31,12 @@ export const ImageForm = (props: ImageFormPropsType) => {
         image: '.png, .jpg, .jpeg',
         document: '.doc, .pdf',
     };
+
+    const maxSizeInBytes = useMemo(() => {
+        const maxSizeInMb = props.maxSizeInMb || 1;
+        return maxSizeInMb * 1024 * 1024;
+    }, [props.maxSizeInMb]);
+
     const inputFile = useRef<HTMLInputElement | null>(null);
     const [drag, setDrag] = useState(false);
 
@@ -34,6 +46,13 @@ export const ImageForm = (props: ImageFormPropsType) => {
 
     const uploadHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const files = e.target.files;
+        const fileSizeInBytes = e.target.files?.[0].size;
+
+        if (fileSizeInBytes && fileSizeInBytes > maxSizeInBytes) {
+            onError?.("Превышен макс. размер файла");
+            return;
+        }
+
         getDataUrlImage(files)
     };
 
@@ -74,7 +93,8 @@ export const ImageForm = (props: ImageFormPropsType) => {
     }, [image]);
 
     return (
-        <StyledImageFormContainer
+      <div>
+          <StyledImageFormContainer
             onClick={onClickHandler}
             onDragStart={(e) => dragStartHandler(e)}
             onDragLeave={(e) => dragLeaveHandler(e)}
@@ -84,26 +104,31 @@ export const ImageForm = (props: ImageFormPropsType) => {
             isDrag={drag}
             width={props.width}
             height={props.height}
-        >
-            <input
+          >
+              <input
                 accept={props.fileType && inputAccept[props.fileType]}
                 name={props.name}
                 type="file"
                 ref={inputFile}
                 onChange={uploadHandler}
                 style={{ display: 'none' }}
-            />
-            {!props.value && (
+              />
+              {!props.value && (
                 <span>
                     <StyledImageFormLink>Загрузите {props.messageWords || "скрин"},</StyledImageFormLink>
                     <span> перетащите или вставьте из буфера обмена (Ctrl+V)</span>
                 </span>
-            )}
-            <Display condition={props.value}>
-                <StyledImageHover>
-                    Изменить скрин
-                </StyledImageHover>
-            </Display>
-        </StyledImageFormContainer>
+              )}
+              <Display condition={props.value}>
+                  <StyledImageHover>
+                      Изменить скрин
+                  </StyledImageHover>
+              </Display>
+          </StyledImageFormContainer>
+          <StyledText size={props.subTextSize || "md"}>
+              Макс. размер файла - 1МБ
+          </StyledText>
+      </div>
+
     );
 };

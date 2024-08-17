@@ -40,20 +40,20 @@ export const useMapCreate = () => {
 
     const onTagsChange = useCallback((tags: Tag['id'][]): void => {
         dispatch(setMapTagIds(tags));
-    }, []);
+    }, [dispatch]);
 
     const onImageChange = useCallback((image: string): void => {
         dispatch(setMapImage(image));
-    }, []);
+    }, [dispatch]);
 
     const onCompletedMapImageChange = useCallback((image: string): void => {
         dispatch(setCompletedMapImage(image));
-    }, []);
+    }, [dispatch]);
 
     const onNameChange = useCallback((name: Map['name']): void => {
         dispatch(setMapName(name));
         debounceSearchByName(name);
-    }, []);
+    }, [debounceSearchByName, dispatch]);
 
     const clearForm = useCallback(() => {
         removeQuery(['name'])
@@ -61,7 +61,7 @@ export const useMapCreate = () => {
         dispatch(setCompletedMapImage(''));
         dispatch(setMapName(''));
         dispatch(setMapTagIds([]));
-    }, [])
+    }, [dispatch, removeQuery])
 
     const onMapCreate = useCallback(async (): Promise<void> => {
         const nameLength = name?.trim().length;
@@ -79,7 +79,7 @@ export const useMapCreate = () => {
         } else {
             dispatch(setAppMessage({ severity: 'error', text: 'Некорректный номер карты' }));
         }
-    }, [name]);
+    }, [clearForm, dispatch, name]);
 
     const isValid = useMemo((): boolean => {
         return name ? name.trim().length > 1 : false;

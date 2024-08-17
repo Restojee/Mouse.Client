@@ -1,3 +1,4 @@
+import { useAppNotifications } from "@/hooks/useAppNotifications";
 import React, { useCallback, useEffect } from 'react';
 import { useMap } from '@/modules/map/common';
 import { useCompletedMap, } from '../map-content/containers/completed-images/hooks/useCompletedMap';
@@ -31,7 +32,7 @@ const MapViewModal = () => {
     const onMapUpdateImage = useCallback(async (image: string) => {
         const res = await onMapImageUpdate(image);
         return Boolean(res);
-    }, [levelId]);
+    }, [onMapImageUpdate]);
 
     const onCompletedMapUpdateImage = useCallback(async (image: string) => {
         const res = await addCompletedMap(levelId, image);

@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { localStorageKeys } from "@/common/constants";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import React, { useCallback, useMemo, useState } from "react";
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
@@ -14,6 +16,7 @@ export const useChat = () => {
     const messages = useAppSelector(selectChatMessages);
     const isChatMessageInitialized = useAppSelector(selectIsChatMessageInitialized);
     const isChatMessageCreateFetching = useAppSelector(selectIsChatMessageCreateFetching);
+    const {getValue} = useLocalStorage<number>(localStorageKeys.CHAT_MESSAGES_COUNT);
 
     const [messageText, setMessageText] = useState('');
 
@@ -39,22 +42,19 @@ export const useChat = () => {
         }
 
         if (e.key === 'Enter') {
+            e.preventDefault();
             await onMessageAdd();
         }
     }, [onMessageAdd]);
 
-    useEffect(() => {
-        dispatch(getChatMessagesThunk());
-    }, []);
+    const isHasNewMessage = useMemo(() => {
+        const messagesLength = Number(getValue());
+        return messagesLength && messages?.length !== messagesLength;
+    }, [getValue, messages?.length])
 
-    useEffect(() => {
-        const id = setInterval(() => {
-            dispatch(getChatMessagesThunk());
-        }, 5000);
-        return () => {
-            clearInterval(id);
-        };
-    }, []);
+    const fetchChatMessages = useCallback(() => {
+        dispatch(getChatMessagesThunk());
+    }, [dispatch])
 
     return {
         messageText,
@@ -64,6 +64,8 @@ export const useChat = () => {
         onInputKeyUp,
         isChatMessageInitialized,
         isChatMessageCreateFetching,
+        isHasNewMessage,
+        fetchChatMessages,
     };
 };
 

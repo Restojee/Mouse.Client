@@ -1,3 +1,4 @@
+import { tagsApi } from "@/api/tagsApi";
 import { setAppModalType } from '@/bll/appReducer';
 import { selectMapTags, setMapTagIds } from '@/modules/map/containers';
 import {
@@ -8,7 +9,7 @@ import {
 import { TagModalTypes } from '@/modules/tag/types';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Tag } from '@/api/codegen/genMouseMapsApi';
+import { Tag, UpdateTagApiArg } from "@/api/codegen/genMouseMapsApi";
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import {
@@ -16,8 +17,8 @@ import {
     selectTags,
     createTagThunk,
     deleteTagThunk,
-    setTagModalType,
-} from '@/modules/tag';
+    setTagModalType, updateTagThunk,
+} from "@/modules/tag";
 
 export const useTag = () => {
     const dispatch = useAppDispatch();
@@ -41,27 +42,41 @@ export const useTag = () => {
     }, []);
 
     const onOpenModal = useCallback((modalType: TagModalTypes): void => {
-        if(modalType === 'tag-update') {
-            dispatch(setAppModalType('tag-update'));
+        if(modalType === 'map-tags-update') {
+            dispatch(setAppModalType('map-tags-update'));
             return;
         }
         dispatch(setTagModalType(modalType));
-    }, []);
+    }, [dispatch]);
 
     const onCloseModal = useCallback((): void => {
         dispatch(setAppModalType(null));
         dispatch(setTagModalType(null));
     }, []);
 
-    const onTagDelete = useCallback(async (tagId: Tag['id'] | null): Promise<boolean> => {
-        if (tagId) {
-            const res = await dispatch(deleteTagThunk({ tagId }))
-            if (res.payload) {
+    const onTagDelete = useCallback(async (tagId: Tag['id'] | null) => {
+        try {
+            if (tagId) {
+                await dispatch(deleteTagThunk({ tagId }))
                 onCloseModal()
+                return true;
             }
+        } catch (err) {
+            console.log(err);
+            return false;
         }
-        return false
-    }, []);
+    }, [dispatch, onCloseModal]);
+
+    const onTagUpdate = useCallback(async (arg: UpdateTagApiArg["updateTagRequest"]) => {
+        try {
+            if (arg) {
+                await dispatch(updateTagThunk(arg));
+                onCloseModal();
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }, [dispatch, onCloseModal])
 
     const updateMapTags = useCallback((): void => {
         const id = Number(levelId);
@@ -110,6 +125,7 @@ export const useTag = () => {
     return {
         onTagCreate,
         onTagDelete,
+        onTagUpdate,
         tagsList,
         onCloseModal,
         modalType,
