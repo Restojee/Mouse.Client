@@ -21,7 +21,7 @@ type MapContentSidebarIconsPropsType = {
     favoritesCount?: number;
 }
 export const SidebarIcons = ({levelId, isFavorite, isCompleted, favoritesCount}: MapContentSidebarIconsPropsType) => {
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
     const isAuth = useAppSelector(selectIsAuth);
 
     const {
@@ -36,7 +36,7 @@ export const SidebarIcons = ({levelId, isFavorite, isCompleted, favoritesCount}:
 
     const iconsProps: SvgIconPropsType = {
         size: 30,
-        color: theme.colors.primary
+        color: theme.colors.textOnSecondary
     }
 
     const onToggleMapFavoriteHandler = () => {
@@ -47,7 +47,7 @@ export const SidebarIcons = ({levelId, isFavorite, isCompleted, favoritesCount}:
         <StyledBox
             width={'100%'}
             padding={'10px 0 10px 0'}
-            borderBottom={'1px solid rgba(0, 0, 0, 0.1)'}
+            borderBottom={`1px solid ${theme.colors.neutral}`}
         >
             <StyledContentSidebarBodyIcon
                 disabled={!isAuth}

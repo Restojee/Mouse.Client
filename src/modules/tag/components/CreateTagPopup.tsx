@@ -13,7 +13,7 @@ type CreateTagPopupProps = {
     onClose: () => void;
 }
 export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
     const [name, setName] = React.useState('');
     const { onTagCreate } = useTag();
     const { isVisible = true } = props;
@@ -48,7 +48,6 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
                 <ModalCloseIcon
                     size={30}
                     onClick={props.onClose}
-                    color={theme.colors.secondaryAccent}
                 />
                 <Form onSubmit={onFormSubmit} gap="15px">
                     <FormElement

@@ -9,13 +9,13 @@ export const AddRoundIcon = (props: SvgIconPropsType) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
-                stroke={props.color || '#CCD2E3'}
+                stroke={props.color || 'currentColor'}
                 d="M12 6L12 18"
                 strokeWidth="2"
                 strokeLinecap="round"
             />
             <path
-                stroke={props.color || '#CCD2E3'}
+                stroke={props.color || 'currentColor'}
                 d="M18 12L6 12"
                 strokeWidth="2"
                 strokeLinecap="round"

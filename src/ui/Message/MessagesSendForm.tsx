@@ -28,7 +28,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
         isFetching,
     } = props;
 
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     return (
         <StyledBox

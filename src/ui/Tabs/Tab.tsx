@@ -7,7 +7,7 @@ type TabPropsType = {
     onClick?: () => void;
 }
 export const Tab = ({ label, onClick, isActive }: TabPropsType) => {
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     return (
         <Button
@@ -16,8 +16,8 @@ export const Tab = ({ label, onClick, isActive }: TabPropsType) => {
             borderRadius={'8px'}
             label={label}
             size={"sm"}
-            bgColor={isActive ? theme.colors.brandColor : theme.colors.secondaryDark}
-            color={isActive ? theme.colors.brandColorContrastText : 'initial'}
+            bgColor={isActive ? theme.colors.brandColor : theme.colors.neutral}
+            color={isActive ? theme.colors.brandColorContrastText : 'inherit'}
         />
     );
 };

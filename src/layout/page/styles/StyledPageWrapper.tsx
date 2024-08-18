@@ -7,6 +7,7 @@ export const StyledPageWrapper = styled.div(({ theme }) => ({
     overflow: "hidden",
     flexGrow: 1,
     backgroundColor: theme.colors.secondary,
+    transition: "background-color 0.3s",
     [`@media all and (max-width: ${ theme.sizes.media.medium }px)`]: {
         marginBottom: 0
     }

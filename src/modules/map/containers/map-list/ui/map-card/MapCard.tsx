@@ -33,7 +33,7 @@ export const MapCard = React.memo((props: MapCardProps) => {
         isFavoriteByUser,
     } = props.map;
 
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     const [isMapHover, setIsMapHover] = useState(false);
 

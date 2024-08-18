@@ -33,7 +33,7 @@ export const UpdateTagModal = (props: Props) => {
     }
 
     await onTagUpdate({ id: props.tag?.id, description: tagDescription, name: tagName });
-  }, [onTagUpdate, props.tag?.id, tagDescription, tagName]);
+  }, [onError, onTagUpdate, props.tag?.id, tagDescription, tagName]);
 
   useLayoutEffect(() => {
     setTagName(props.tag?.name || "");

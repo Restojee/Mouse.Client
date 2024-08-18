@@ -13,7 +13,6 @@ export const ModalCloseIcon = ({ onClick, size, color }: CloseIconPropsType) => 
         <StyledModalCloseIcon>
             <IconButton onClick={onClick}>
                 <CloseIcon
-                    color={color}
                     size={size || 40}
                 />
             </IconButton>

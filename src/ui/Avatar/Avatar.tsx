@@ -19,7 +19,7 @@ export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
         username,
     } = props;
 
-    const theme = useAppTheme()
+    const { theme } = useAppTheme()
 
     const initials = React.useMemo(() => {
         return getInitials(username);

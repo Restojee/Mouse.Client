@@ -1,3 +1,4 @@
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Tab } from '@/ui/Tabs/Tab';
 import { Tabs } from '@/ui/Tabs/Tabs';
 import React, { useMemo, useState } from 'react';
@@ -13,6 +14,7 @@ import { ImageForm } from '@/ui/ImageForm/ImageForm';
 import { StyledTag } from '@/ui/Tag/styled';
 
 export const MapParametersForm = () => {
+    const { theme } = useAppTheme();
 
     const [currentTab, setCurrentTab] = useState<'map' | 'completed'>('map');
 
@@ -34,7 +36,7 @@ export const MapParametersForm = () => {
     }, [tagsList, selectedIdForCreateMap]);
 
     const onOpenModalHandler = () => {
-        onOpenModal('tag-update');
+        onOpenModal('map-tags-update');
     };
 
     return (
@@ -101,6 +103,7 @@ export const MapParametersForm = () => {
                     </Display>
                     <StyledBox margin={selectedTags.length ? 'initial' : '10px auto 0 auto'}>
                         <Button
+                            color={theme.colors.brandColorContrastText}
                             onClick={onOpenModalHandler}
                             size={'sm'}
                             prepend={<EditFillIcon/>}

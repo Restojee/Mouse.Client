@@ -23,7 +23,7 @@ export const Chat = () => {
         onInputChange,
     } = useChat();
 
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     const { onOpenUserModal } = useUser();
 

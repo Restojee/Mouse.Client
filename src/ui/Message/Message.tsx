@@ -28,7 +28,7 @@ export const Message = (props: PropsType) => {
         onUsernameClick,
     } = props;
 
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     const onDeleteHandler = () => {
         if(comment.id && onDelete) {

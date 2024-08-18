@@ -10,6 +10,8 @@ export const StyledDrawer = styled.div<{ isOpen: boolean }>(({ theme }) => ({
     width: theme.sizes.rightSidebar.width,
     borderLeft: "1px solid rgba(0, 0, 0, 0.1)",
     zIndex: theme.order.rightSidebar,
+    transition: "background-color 0.3s",
+
     "@media all and (max-width: 1140px)": {
         // position: "fixed",
         // right: `calc(${ theme.sizes.sitePanel.width } + 5px)`,

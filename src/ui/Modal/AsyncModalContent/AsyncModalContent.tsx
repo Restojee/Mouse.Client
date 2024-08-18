@@ -21,7 +21,7 @@ const AsyncModalContent = (props: ModalPropsType) => {
         withoutButtons,
     } = props;
 
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     return (
         <React.Fragment>
@@ -52,11 +52,12 @@ const AsyncModalContent = (props: ModalPropsType) => {
                         <StyledCardActions>
                             <Button
                                 label="Отмена"
-                                color={"#000"}
+                                color={theme.colors.textOnSecondary}
                                 bgColor={theme.colors.default.paperAccent}
                                 onClick={onClose}
                             />
                             <Button
+                                color={theme.colors.brandColorContrastText}
                                 type={'submit'}
                                 onClick={onAccess}
                                 label="Подтвердить"

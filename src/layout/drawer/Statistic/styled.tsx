@@ -9,7 +9,7 @@ export const StyledStatisticIconContainer = styled.div<StyledStatisticIconContai
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: `linear-gradient(to top, rgb(132, 208, 108) ${ props.fillingPercent }, #ffffff ${ props.fillingPercent })`,
+        background: `linear-gradient(to top, rgb(132, 208, 108) ${ props.fillingPercent }, ${theme.colors.secondary} ${ props.fillingPercent })`,
         flexDirection: 'column',
         position: 'relative',
         backgroundColor: theme.colors.secondary,
@@ -17,16 +17,17 @@ export const StyledStatisticIconContainer = styled.div<StyledStatisticIconContai
         height: 44,
         marginBottom: 25,
         borderRadius: '50%',
-        boxShadow: '0 0 2px 1px rgba(0, 0, 0, 0.3)',
+        boxShadow: `0 0 2px 1px ${theme.colors.iconOnSecondary}`,
         cursor: 'pointer',
+        color: theme.colors.textOnSecondary,
         transition: '0.2s',
         transitionProperty: 'transform',
         '&:hover': {
             transform: 'scale(1.06)',
         },
         'svg': {
-            '-webkit-filter': 'drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.4))',
-            filter: 'drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.4))',
+            '-webkit-filter': `drop-shadow(0px 0px 2px ${theme.colors.iconOnSecondary})`,
+            filter: `drop-shadow(0px 0px 2px ${theme.colors.iconOnSecondary})`,
         }
     }))
 

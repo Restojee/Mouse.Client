@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-export const StyledBoxLoader = styled.div({
+export const StyledBoxLoader = styled.div(({theme}) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: theme.colors.backgroundShadow,
     position: 'absolute',
     left: 0,
     right: 0,
@@ -12,4 +12,4 @@ export const StyledBoxLoader = styled.div({
     bottom: 0,
     zIndex: 3,
     pointerEvents: 'none'
-});
+}));

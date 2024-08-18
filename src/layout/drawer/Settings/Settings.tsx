@@ -1,3 +1,4 @@
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useState } from 'react';
 import { StyledDrawerHeader } from '@/layout/drawer/styled';
 import { useUser } from '@/modules/user/hooks/useUser';
@@ -9,6 +10,7 @@ import { UpdateAvatar } from '@/ui/UpdateAvatar/UpdateAvatar';
 
 export const Settings = () => {
     const { currentUser, updateUserImage } = useUser();
+    const { theme } = useAppTheme();
 
     const [image, setImage] = useState(currentUser?.avatar);
 
@@ -45,7 +47,11 @@ export const Settings = () => {
                     <Input title={'Логин'} value={currentUser?.username} disabled/>
                     <Input title={'Пароль'} value={'пароль'} type={'password'} disabled/>
                 </StyledBox>
-                <Button onClick={onSubmitHandler} label={'Сохранить'} />
+                <Button
+                  onClick={onSubmitHandler}
+                  label={'Сохранить'}
+                  color={theme.colors.brandColorContrastText}
+                />
             </StyledBox>
         </StyledBox>
     );

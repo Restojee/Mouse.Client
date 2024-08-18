@@ -5,6 +5,7 @@ export const StyledPagePanelButton = styled.button((props) => ({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
+    color: "inherit",
     padding: '5px 8px',
     backgroundColor: 'transparent',
     cursor: 'pointer',

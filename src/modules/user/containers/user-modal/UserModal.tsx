@@ -1,3 +1,4 @@
+import { useAppTheme } from "@/hooks/useAppTheme";
 import React from 'react';
 import { GetMapsApiArg } from '@/api/codegen/genMouseMapsApi';
 import { getAvatarImageLink, getMapImageLink } from '@/common/utils';
@@ -22,6 +23,8 @@ const UserModal = () => {
         currentUserView,
         getMapsPercent
     } = useUser();
+
+    const { theme } = useAppTheme();
 
     const {
         closeMap,
@@ -82,7 +85,7 @@ const UserModal = () => {
                         <StyledStatisticIconContainer
                             fillingPercent={`${getMapsPercent(currentUserView?.completedCount)}%`}
                         >
-                            <BookCheckFillIcon/>
+                            <BookCheckFillIcon />
                             <StyledStatisticIconText>
                                 {currentUserView?.completedCount}
                             </StyledStatisticIconText>
@@ -95,7 +98,7 @@ const UserModal = () => {
                         title="Добавлено"
                     >
                         <StyledStatisticIconContainer fillingPercent={`${getMapsPercent(currentUserView?.levelsCount)}%`}>
-                            <InIcon/>
+                            <InIcon />
                             <StyledStatisticIconText>
                                 {currentUserView?.levelsCount}
                             </StyledStatisticIconText>
@@ -108,7 +111,7 @@ const UserModal = () => {
                         title="В избранном"
                     >
                         <StyledStatisticIconContainer>
-                            <FavoriteIcon/>
+                            <FavoriteIcon />
                             <StyledStatisticIconText>{currentUserView?.favoritesCount}</StyledStatisticIconText>
                         </StyledStatisticIconContainer>
                     </StyledBox>
@@ -119,12 +122,13 @@ const UserModal = () => {
                         title="Оставлено комментариев"
                     >
                         <StyledStatisticIconContainer>
-                            <CommentFillIcon/>
+                            <CommentFillIcon />
                             <StyledStatisticIconText>{currentUserView?.commentsCount}</StyledStatisticIconText>
                         </StyledStatisticIconContainer>
                     </StyledBox>
                 </StyledBox>
                 <Button
+                    color={theme.colors.brandColorContrastText}
                     size={'lg'}
                     label={'Закрыть'}
                     onClick={onCloseUserModal}

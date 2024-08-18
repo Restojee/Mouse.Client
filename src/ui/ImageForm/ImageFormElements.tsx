@@ -14,7 +14,7 @@ export const StyledImageFormContainer = styled.div<StyledImageFormContainerProps
     alignItems: 'center',
     borderRadius: 10,
     position: 'relative',
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    backgroundColor: theme.colors.neutral,
     padding: '15px 15px',
     height: props.height || 120,
     textAlign: 'center',

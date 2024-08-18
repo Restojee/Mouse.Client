@@ -1,25 +1,27 @@
-import { getAvatarImageLink } from '@/common/utils';
-import { useAppSelector } from '@/hooks/useAppSelector';
-import { NavLink } from '@/layout/navigation/NavLink';
-import { useLogin } from '@/modules/auth/hooks/useLogin';
-import { selectCurrentUser, selectIsAuth } from '@/modules/auth/slice';
+import { getAvatarImageLink } from "@/common/utils";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { NavLink } from "@/layout/navigation/NavLink";
+import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
+import { StyledPanel } from "@/layout/panel/styled";
+import { ThemeKey } from "@/layout/theme/types";
+import { useLogin } from "@/modules/auth/hooks/useLogin";
+import { selectCurrentUser, selectIsAuth } from "@/modules/auth/slice";
 import { useChat } from "@/modules/chat/hooks/useChat";
-import { useTag } from "@/modules/tag/hooks/useTag";
-import { MoonIcon } from '@/svg/MoonIcon';
-import { StyledNavLinkSection } from '@/layout/navigation/styles/StyledNavLinkSection';
-import { BurgerIcon } from '@/svg/BurgerIcon';
-import { NotificationsIcon } from '@/svg/NotificationIcons';
-import { ChartIcon } from '@/svg/ChartIcon';
-import { OutIcon } from '@/svg/OutIcon';
-import { PaperIcon } from '@/svg/PaperIcon';
-import { ChatFillIcon } from '@/svg/ChatFillIcon';
-import { SettingsIcon } from '@/svg/SettingsIcon';
-import { LogInIcon } from '@/svg/LogInIcon';
-import { Avatar } from '@/ui/Avatar';
-import { Display } from '@/ui/Display';
-import { ReactNode, useEffect } from "react";
-import { Property } from 'csstype';
-import { StyledPanel } from '@/layout/panel/styled';
+import { BurgerIcon } from "@/svg/BurgerIcon";
+import { ChartIcon } from "@/svg/ChartIcon";
+import { ChatFillIcon } from "@/svg/ChatFillIcon";
+import { LogInIcon } from "@/svg/LogInIcon";
+import { MoonIcon } from "@/svg/MoonIcon";
+import { NotificationsIcon } from "@/svg/NotificationIcon";
+import { OutIcon } from "@/svg/OutIcon";
+import { PaperIcon } from "@/svg/PaperIcon";
+import { SettingsIcon } from "@/svg/SettingsIcon";
+import { SunIcon } from "@/svg/SunIcon";
+import { Avatar } from "@/ui/Avatar";
+import { Display } from "@/ui/Display";
+import { Property } from "csstype";
+import { ReactNode, useEffect, useMemo } from "react";
 
 export type PanelProps = {
     activeTab: string;
@@ -34,10 +36,16 @@ export const Panel = (props: PanelProps) => {
         logout
     } = useLogin();
 
+    const { toggleTheme, themeKey } = useAppTheme();
+
     const { isHasNewMessage, fetchChatMessages, messages } = useChat();
 
     const isAuth = useAppSelector(selectIsAuth);
     const userData = useAppSelector(selectCurrentUser);
+
+    const themeIcon = useMemo(() => {
+      return themeKey === ThemeKey.LIGHT ? <MoonIcon/> : <SunIcon/>
+    }, [themeKey])
 
     const onTabClickHandler = (tab: TabsType | null) => {
         if (!tab) {
@@ -64,7 +72,6 @@ export const Panel = (props: PanelProps) => {
       };
     }, [])
 
-
     return (
         <StyledPanel>
             <NavLink
@@ -76,11 +83,14 @@ export const Panel = (props: PanelProps) => {
                     </StyledNavLinkSection>
                 }
             />
-            <Avatar
+            <Display condition={isAuth}>
+              <Avatar
                 size={40}
                 image={getAvatarImageLink(avatar)}
                 username={userData?.username}
-            />
+              />
+            </Display>
+
             {tabsData.map((el, index) => (
                 <NavLink
                     key={index}
@@ -100,13 +110,12 @@ export const Panel = (props: PanelProps) => {
                 />
             ))}
             <NavLink
-                onClick={() => alert('Не готово ( ´･･)ﾉ(._.`)')}
+                onClick={toggleTheme}
                 border
-                isDisabled={true}
                 label="Сменить тему"
                 prepend={(
                     <StyledNavLinkSection>
-                        <MoonIcon/>
+                      {themeIcon}
                     </StyledNavLinkSection>
                 )}
             />

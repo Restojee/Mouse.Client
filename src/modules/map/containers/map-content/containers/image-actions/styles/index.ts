@@ -7,4 +7,7 @@ export const StyledActionsContainer = styled.div({
     top: 10,
     position: 'absolute',
     zIndex: 1,
+    button: {
+        color: "inherit"
+    }
 })

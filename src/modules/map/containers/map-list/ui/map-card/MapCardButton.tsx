@@ -15,7 +15,7 @@ export const MapCardButton = (props: MapCardButtonPropsType) => {
         isMapHover
     } = props
 
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     const { openMap } = useMapView();
 
@@ -34,7 +34,9 @@ export const MapCardButton = (props: MapCardButtonPropsType) => {
         >
             <Button
                 bgColor={theme.colors.status.success}
-                label="Открыть" size={"md"}
+                label="Открыть"
+                size={"md"}
+                color={theme.colors.brandColorContrastText}
             />
         </StyledMapCardButton>
     );

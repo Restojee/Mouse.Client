@@ -22,7 +22,7 @@ import { Paper } from '@/ui/Paper';
 
 // eslint-disable-next-line react/display-name
 export const MapContent = React.memo(() => {
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
     const { closeMap } = useMapView();
     const { map } = useMap();
     const { activeMapCompleted } = useCompletedMap();

@@ -75,10 +75,13 @@ export const StyledContentSidebarBodyIcon = styled.div<{disabled?: boolean, coun
     cursor: "pointer",
     transition: "0.2s",
     transitionProperty: "opacity, transform",
+    svg: {
+      opacity: 0.8,
+    },
     "&:before": {
         content: '""',
         borderRadius: "50%",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: props.theme.colors.iconOnSecondary,
         height: "50px",
         width: "50px",
         position: "absolute",
@@ -88,7 +91,7 @@ export const StyledContentSidebarBodyIcon = styled.div<{disabled?: boolean, coun
     },
     "&:after": {
         content: "' '",
-        backgroundColor: "rgba(0, 0, 0, 0.1)",
+        backgroundColor: props.theme.colors.neutral,
         height: "50%",
         position: "absolute",
         right: "-15px",
@@ -102,7 +105,7 @@ export const StyledContentSidebarBodyIcon = styled.div<{disabled?: boolean, coun
     },
     "&:hover": {
         "&::before": {
-            opacity: 1
+            opacity: 0.2
         }
     },
     "&:active": {

@@ -7,7 +7,7 @@ type PaperPropsType = Partial<StyledBoxProps> & {
     onMouseDown?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 export const Paper = ({ children, onClick, ...props }: PaperPropsType) => {
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     return (
         <StyledBox

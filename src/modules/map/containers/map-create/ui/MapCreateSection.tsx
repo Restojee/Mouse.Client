@@ -10,7 +10,7 @@ import { useAppTheme } from '@/hooks/useAppTheme';
 import PagePanelItem from '@/layout/page/PagePanelItem';
 
 export const MapCreateSection = () => {
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isContentVisible, setIsContentVisible] = useState(false);
@@ -55,10 +55,10 @@ export const MapCreateSection = () => {
             }
         >
             <Display condition={isContentVisible && isValid}>
-                <DoneRoundIcon color={theme.colors.primary}/>
+                <DoneRoundIcon />
             </Display>
             <Display condition={!isContentVisible}>
-                <AddRoundIcon color={theme.colors.primary}/>
+                <AddRoundIcon />
             </Display>
         </PagePanelItem>
     );

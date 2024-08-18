@@ -2,7 +2,7 @@ import { useAppTheme } from '@/hooks/useAppTheme';
 import { StyledBox } from '@/ui/Box';
 
 export const Divider = () => {
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     return (
         <StyledBox

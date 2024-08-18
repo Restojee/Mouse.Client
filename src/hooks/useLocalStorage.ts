@@ -1,8 +1,9 @@
 export function useLocalStorage<T>(key: string) {
   const getValue = () => {
     try {
+      const value = window.localStorage.getItem(key);
 
-      return window.localStorage.getItem(key) as T;
+      return JSON.parse(value!) as T;
     } catch (err) {
       console.log(err);
     }

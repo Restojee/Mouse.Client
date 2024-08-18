@@ -17,7 +17,7 @@ type MapContentPreviewPropsType = {
 }
 // eslint-disable-next-line react/display-name
 export const Preview = React.memo(({ image }: MapContentPreviewPropsType) => {
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
     const [isLoading, setIsLoading] = useState(true);
     const isMapFetching = useAppSelector(selectIsMapFetching);
     const isAuth = useAppSelector(selectIsAuth);

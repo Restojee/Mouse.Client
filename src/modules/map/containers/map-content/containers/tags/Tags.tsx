@@ -15,7 +15,7 @@ type MapContentFooterPropsType = {
     tags?: Tag[]
 }
 export const Tags = ({ tags }: MapContentFooterPropsType) => {
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
     const isAuth = useAppSelector(selectIsAuth);
 
     const {

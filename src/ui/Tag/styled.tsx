@@ -19,7 +19,7 @@ export const StyledTag = styled(StyledBox)<StyledTagType>(({ theme,...props }) =
     width: 'min-content',
     whiteSpace: 'nowrap',
     alignItems: 'center',
-    backgroundColor: props.bgColor || 'rgba(0, 0, 0, 0.07)',
+    backgroundColor: props.bgColor || theme.colors.neutral,
     padding: '8px 15px',
     fontSize: '0.8rem',
     borderRadius: '20px',

@@ -18,7 +18,7 @@ import { StyledDrawerHeader } from '@/layout/drawer/styled';
 
 export const Info = () => {
     const dispatch = useAppDispatch();
-    const theme = useAppTheme();
+    const { theme } = useAppTheme();
 
     const isAuth = useAppSelector(selectIsAuth);
 
