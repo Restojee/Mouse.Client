@@ -50,37 +50,17 @@ const slice = createSlice({
         addChatMessage: (state, action: PayloadAction<Comment>) => {
             state.messages.push(action.payload);
         },
-        setIsChatMessageCreateFetching: (state, action: PayloadAction<boolean>) => {
-            state.isCreateFetching = action.payload;
-        },
         setIsChatMessageInitialized: (state, action: PayloadAction<boolean>) => {
             state.isMessagesInitialized = action.payload;
         },
     },
-    extraReducers: builder => {
-        builder
-            .addCase(addMapCommentsThunk.pending, (state, action) => {
-                state.isCreateFetching = true;
-            })
-            .addCase(addMapCommentsThunk.fulfilled, (state, action) => {
-                state.isCreateFetching = false;
-            })
-            .addCase(addMapCommentsThunk.rejected, (state, action) => {
-                state.isCreateFetching = false;
-            });
-
-    },
-
 });
 
 export const selectChatMessages = (state: RootState) => state.chat?.messages;
 export const selectIsChatMessageInitialized = (state: RootState) => state.chat?.isMessagesInitialized;
-export const selectIsChatMessageCreateFetching = (state: RootState) => state.chat?.isCreateFetching;
 
 export const {
     setChatMessages,
     addChatMessage,
-    setIsChatMessageCreateFetching,
-    setIsChatMessageInitialized
 } = slice.actions;
 export const chatReducer = slice.reducer;

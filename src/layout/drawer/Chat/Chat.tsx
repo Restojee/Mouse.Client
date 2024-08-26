@@ -18,7 +18,7 @@ export const Chat = () => {
         messages,
         messageText,
         onMessageAdd,
-        isChatMessageCreateFetching,
+        isSendLoading,
         onInputKeyUp,
         onInputChange,
     } = useChat();
@@ -101,7 +101,7 @@ export const Chat = () => {
                     onFocus={onFocusHandler}
                     onSendClick={onMessageAdd}
                     onKeyUp={onInputKeyUp}
-                    isFetching={isChatMessageCreateFetching}
+                    isFetching={isSendLoading}
                     disabled={!isAuth}
                 />
             </StyledBox>

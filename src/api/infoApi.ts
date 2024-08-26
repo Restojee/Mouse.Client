@@ -6,6 +6,7 @@ import * as apiTypes from '@/api/codegen/genMouseMapsApi';
 export const infoApi = {
     getInfo: async (params: apiTypes.GetTipPaginateApiArg) => {
         const res = await api.get<apiTypes.GetTipPaginateApiArg, AxiosResponse<apiTypes.GetTipApiResponse>>(`/tips/collect`, { params });
+        res.data.records = res.data.records.reverse();
         return res.data;
     },
     createInfo: async (body: apiTypes.CreateTipApiArg) => {
@@ -17,7 +18,7 @@ export const infoApi = {
         return res.data;
     },
     deleteInfo: async (params: RemoveTipApiArg) => {
-        const res = await api.delete<apiTypes.RemoveTipApiArg, AxiosResponse<apiTypes.RemoveTipApiResponse>>(`/tips/delete/${params.tipId}`);
+        const res = await api.delete<apiTypes.RemoveTipApiArg, AxiosResponse<apiTypes.RemoveTipApiResponse>>(`/tips/delete/${params.tipId}`, { params });
         return res.data;
     },
 };

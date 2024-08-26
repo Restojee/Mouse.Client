@@ -13,7 +13,7 @@ import { InfoStateType } from '../types';
 
 export const getInfoThunk = createAsyncThunk('info/get', async (arg, thunkAPI) => {
     try {
-        const infoList = await infoApi.getInfo();
+        const infoList = await infoApi.getInfo({page: 1, size: 200});
         thunkAPI.dispatch(setInfo(infoList));
     } catch (error) {
         thunkAPI.dispatch(setAppMessage({ severity: 'error', text: 'Ошибка загрузки инфы' }));

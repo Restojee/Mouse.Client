@@ -114,7 +114,10 @@ export type GetTipApiResponse = /** status 200 OK */ {
     totalItems: number;
     totalPages: number;
 };
-export type GetTipPaginateApiArg = void;
+export type GetTipPaginateApiArg = {
+    size: number;
+    page: number;
+};
 export type GetCommentsByUserIdApiResponse = /** status 200 OK */ Comment[];
 export type GetCommentsByUserIdApiArg = {
     userId: number;

@@ -131,6 +131,7 @@ const DarkTheme: GlobalTheme = {
       border: "rgb(68,68,68)",
     },
     secondaryDark: "#232323",
+    secondaryDarker: "#1e1e1e",
     iconOnSecondary: "rgb(82,82,82)",
     default: {
       paper: "#2b2b2b",

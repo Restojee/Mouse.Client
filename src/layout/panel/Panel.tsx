@@ -155,7 +155,7 @@ export const tabsData: TabsDataType[] = [
     },
     {
         label: 'Полезная инфа',
-        tab: null,
+        tab: 'info',
         isNeedAuth: true,
         icon: <PaperIcon/>,
     },

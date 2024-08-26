@@ -47,7 +47,7 @@ export const Info = () => {
                 </Typography>
                 <Display condition={isAuth}>
                     <IconButton onClick={() => onModalOpen()}>
-                        <AddIcon color={theme.colors.secondaryAccent}/>
+                        <AddIcon color={theme.colors.textOnSecondary}/>
                     </IconButton>
                 </Display>
             </StyledDrawerHeader>

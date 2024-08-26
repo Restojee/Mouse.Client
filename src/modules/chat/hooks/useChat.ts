@@ -7,7 +7,6 @@ import {
     addChatMessageThunk,
     getChatMessagesThunk,
     selectChatMessages,
-    selectIsChatMessageCreateFetching,
     selectIsChatMessageInitialized,
 } from '@/modules/chat/slice';
 
@@ -15,21 +14,23 @@ export const useChat = () => {
     const dispatch = useAppDispatch();
     const messages = useAppSelector(selectChatMessages);
     const isChatMessageInitialized = useAppSelector(selectIsChatMessageInitialized);
-    const isChatMessageCreateFetching = useAppSelector(selectIsChatMessageCreateFetching);
     const {getValue} = useLocalStorage<number>(localStorageKeys.CHAT_MESSAGES_COUNT);
 
     const [messageText, setMessageText] = useState('');
+    const [isSendLoading, setIsSendLoading] = useState(false);
 
     const onMessageAdd = useCallback(async (): Promise<void> => {
+        setIsSendLoading(true);
         const text = String(messageText).trim();
 
-        if (messageText.length) {
+        if (messageText.length && !isSendLoading) {
             const res = await dispatch(addChatMessageThunk({ text }));
             if (res.payload) {
                 setMessageText('');
             }
         }
-    }, [messageText]);
+        setIsSendLoading(false);
+    }, [dispatch, isSendLoading, messageText]);
 
     const onInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.currentTarget.value;
@@ -41,11 +42,11 @@ export const useChat = () => {
             return;
         }
 
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !isSendLoading) {
             e.preventDefault();
             await onMessageAdd();
         }
-    }, [onMessageAdd]);
+    }, [onMessageAdd, isSendLoading]);
 
     const isHasNewMessage = useMemo(() => {
         const messagesLength = Number(getValue());
@@ -63,7 +64,7 @@ export const useChat = () => {
         onInputChange,
         onInputKeyUp,
         isChatMessageInitialized,
-        isChatMessageCreateFetching,
+        isSendLoading,
         isHasNewMessage,
         fetchChatMessages,
     };
