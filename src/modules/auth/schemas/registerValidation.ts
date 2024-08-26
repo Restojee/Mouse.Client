@@ -9,6 +9,13 @@ export const registerValidation: yup.ObjectSchema<RegisterRequest & {confirmPass
         .max(16, 'Максимальное количество символов - 16')
         .required('Это обязательное поле')
     ,
+    inviteToken: yup
+        .string()
+        .trim()
+        .min(1, 'Некорректный код')
+        .max(500, 'Максимальное количество символов - 500')
+        .required('Это обязательное поле')
+    ,
     password: yup
         .string()
         .trim()

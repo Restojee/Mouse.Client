@@ -265,6 +265,7 @@ export type UpdateUserImageRequest = {
 export type RegisterRequest = {
     userName: string;
     password: string;
+    inviteToken: string;
 }
 export type RegisterResponse = {
     accessToken: string;
@@ -291,3 +292,9 @@ export type UpdateMapNoteRequest = {
     text: string;
 }
 export type UpdateMapNoteResponse = Map;
+export type GetInviteCollectResponse = {
+    createdUtcDate: string;
+    modifiedUtcDate: string;
+    token: string;
+    expirationDate: string;
+}

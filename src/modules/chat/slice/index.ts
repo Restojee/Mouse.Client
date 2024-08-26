@@ -2,15 +2,14 @@ import { chatApi } from '@/api/chatApi';
 import { Comment } from '@/api/codegen/genMouseMapsApi';
 import { setAppMessage } from '@/bll/appReducer';
 import { ChatStateType } from '@/modules/chat/types';
-import { fixMessagesOrder } from "@/modules/chat/utils/fixMessagesOrder";
 import { addMapCommentsThunk } from '@/modules/map/containers/map-content/containers/comments/slice';
 import { RootState } from '@/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export const getChatMessagesThunk = createAsyncThunk('chat/get', async (arg, thunkAPI) => {
     try {
-        const messages = await chatApi.getChatMessages({ size: 100, page: 1 });
-        const fixedMessages = fixMessagesOrder(messages.records);
+        const messages = await chatApi.getChatMessages({ size: 200, page: 1 });
+        const fixedMessages = messages.records;
 
         thunkAPI.dispatch(setChatMessages(fixedMessages));
     } catch (error) {

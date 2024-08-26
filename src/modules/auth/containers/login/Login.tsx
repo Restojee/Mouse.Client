@@ -1,4 +1,5 @@
 import { LoginRequest } from '@/api/codegen/genMouseMapsApi';
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useLogin } from '@/modules/auth/hooks/useLogin';
 import { useRegister } from '@/modules/auth/hooks/useRegister';
 import { loginValidateSchema } from '@/modules/auth/schemas/loginValidateSchema';
@@ -21,6 +22,7 @@ export const Login = () => {
     } = useForm<LoginRequest>({
         resolver: yupResolver(loginValidateSchema)
     });
+
     const {
         login,
     } = useLogin();
@@ -28,6 +30,8 @@ export const Login = () => {
     const {
         onRegisterModalOpen
     } = useRegister();
+
+    const { theme } = useAppTheme();
 
     const onSubmit = async (data: LoginRequest) => {
         await login(data);
@@ -79,6 +83,7 @@ export const Login = () => {
                 />
                 <Button
                     margin={'auto'}
+                    color={theme.colors.brandColorContrastText}
                     size={'lg'}
                     label={'Войти'}
                     type={'submit'}

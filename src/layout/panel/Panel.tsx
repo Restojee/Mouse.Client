@@ -94,7 +94,7 @@ export const Panel = (props: PanelProps) => {
             {tabsData.map((el, index) => (
                 <NavLink
                     key={index}
-                    hasPin={Boolean(el.tab === "chat" && isHasNewMessage)}
+                    hasPin={Boolean(el.tab === "chat" && isHasNewMessage && isAuth)}
                     isDisabled={(el.isNeedAuth && !isAuth) || !el.tab}
                     label={el.label}
                     description={el.label}

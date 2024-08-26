@@ -5,7 +5,7 @@ import {
     LoginResponse, RegisterRequest, RegisterResponse,
 } from '@/api/codegen/genMouseMapsApi';
 import api from '@/api/coreMapsApi';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 
 export const authApi = {
     getCurrentUser: async () => {

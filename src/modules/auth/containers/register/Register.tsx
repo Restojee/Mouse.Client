@@ -1,4 +1,5 @@
 import { LoginRequest, RegisterRequest } from '@/api/codegen/genMouseMapsApi';
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useLogin } from '@/modules/auth/hooks/useLogin';
 import { useRegister } from '@/modules/auth/hooks/useRegister';
 import { registerValidation } from '@/modules/auth/schemas/registerValidation';
@@ -22,15 +23,13 @@ export const Register = () => {
         resolver: yupResolver(registerValidation)
     });
 
-    const {
-        register,
-    } = useRegister();
+    const { register } = useRegister();
 
-    const {
-        onLoginModalOpen,
-    } = useLogin();
+    const { onLoginModalOpen, } = useLogin();
 
-    const onSubmit = async (data: LoginRequest) => {
+    const { theme } = useAppTheme();
+
+    const onSubmit = async (data: RegisterRequest) => {
         await register(data);
     };
 
@@ -90,15 +89,32 @@ export const Register = () => {
                             value={field.value}
                             type={'password'}
                             error={errors.confirmPassword?.message}
-                            enterKeyHint={'send'}
+                            enterKeyHint={'next'}
                             placeholder={'Подтвердите пароль'}
                         />
                     )}
                 />
+                <Controller
+                    control={control}
+                    name={'inviteToken'}
+                    render={({ field }) => (
+                        <Input
+                            name={field.name}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            disabled={field.disabled}
+                            value={field.value}
+                            error={errors.confirmPassword?.message}
+                            enterKeyHint={'send'}
+                            placeholder={'Пригласительный код'}
+                        />
+                    )}
+                />
                 <Button
+                    color={theme.colors.brandColorContrastText}
                     margin={'auto'}
                     size={'lg'}
-                    label={'Войти'}
+                    label={'Создать аккаунт'}
                     type={'submit'}
                 />
                 <Divider/>
