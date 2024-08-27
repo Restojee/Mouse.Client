@@ -7,7 +7,6 @@ import { GlobalTheme, ThemeKey } from "@/layout/theme/types";
 import { useCallback, useMemo } from "react";
 import { useTheme } from "styled-components";
 
-
 export const useAppTheme = () => {
   const dispatch = useAppDispatch();
 
@@ -21,10 +20,13 @@ export const useAppTheme = () => {
     return getValue();
   }, [getValue]);
 
-  const onChangeTheme = useCallback((theme: ThemeKey) => {
-    setValue(theme);
-    dispatch(setCurrentTheme(theme));
-  }, [dispatch, setValue]);
+  const onChangeTheme = useCallback(
+    (theme: ThemeKey) => {
+      setValue(theme);
+      dispatch(setCurrentTheme(theme));
+    },
+    [dispatch, setValue],
+  );
 
   const toggleTheme = useCallback(() => {
     if (themeKey === ThemeKey.DARK) {

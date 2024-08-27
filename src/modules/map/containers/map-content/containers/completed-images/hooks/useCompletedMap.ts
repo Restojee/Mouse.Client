@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo } from "react";
-import { selectMapContent } from "@/modules/map/containers/map-content/slice";
 import { Map, MapCompleted } from "@/api/codegen/genMouseMapsApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectCurrentUserId } from "@/modules/auth/slice";
+import React, { useCallback, useMemo } from "react";
 import {
   addCompletedMapThunk,
   deleteCompletedMapThunk,
@@ -30,32 +29,37 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
     // Бэк при невыясненных обстоятельствах возвращает дублированные карты
     const resultMaps: MapCompleted[] = [];
 
-      maps?.forEach((el) => {
-      const isMapAlreadyExist = resultMaps?.find(map => el.user.id === map.user.id);
+    maps?.forEach((el) => {
+      const isMapAlreadyExist = resultMaps?.find((map) => el.user.id === map.user.id);
       if (!isMapAlreadyExist) resultMaps.push(el);
     });
 
     return resultMaps;
   }, [maps]);
 
+  const onMapClick = useCallback(
+    (e?: React.MouseEvent<HTMLDivElement>, id?: MapCompleted["user"]["id"] | null) => {
+      const currentElement: HTMLDivElement | undefined = e?.currentTarget;
+      if (currentElement) {
+        currentElement.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+      dispatch(setActiveMapCompletedById(id));
+    },
+    [dispatch],
+  );
 
-  const onMapClick = useCallback((e?: React.MouseEvent<HTMLDivElement>, id?: MapCompleted["user"]["id"] | null) => {
-    const currentElement: HTMLDivElement | undefined = e?.currentTarget;
-    if (currentElement) {
-      currentElement.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
-    }
-    dispatch(setActiveMapCompletedById(id));
-  }, [dispatch]);
-
-  const addCompletedMap = useCallback(async (levelId: Map["id"], file: string) => {
-    if (levelId && file) {
-      return dispatch(addCompletedMapThunk({ levelId, file }));
-    }
-  }, [dispatch]);
+  const addCompletedMap = useCallback(
+    async (levelId: Map["id"], file: string) => {
+      if (levelId && file) {
+        return dispatch(addCompletedMapThunk({ levelId, file }));
+      }
+    },
+    [dispatch],
+  );
 
   const deleteCompletedMap = useCallback(() => {
     if (levelId) {
@@ -83,4 +87,3 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
     onCompletedMapModalClose,
   };
 };
-

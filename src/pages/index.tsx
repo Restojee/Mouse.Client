@@ -1,14 +1,13 @@
-import React, { Suspense, useEffect } from "react";
-import { AsyncModals } from "@/modules/modals/AsyncModals";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { getUsersThunk } from "@/modules/user/slice";
-import { MapsQueryParams } from "@/modules/map/containers/map-list";
-import { useMapView } from "@/modules/map/containers";
-import { Display } from "@/ui/Display";
-import { AsyncMapViewModal } from "@/modules/map/containers";
-import { MapsList } from "@/modules/map/containers/map-list/ui/MapsList";
 import { MapPageContainer } from "@/modules/map/components/MapContainer";
+import { AsyncMapViewModal, useMapView } from "@/modules/map/containers";
+import { MapsQueryParams } from "@/modules/map/containers/map-list";
+import { MapsList } from "@/modules/map/containers/map-list/ui/MapsList";
+import { AsyncModals } from "@/modules/modals/AsyncModals";
+import { getUsersThunk } from "@/modules/user/slice";
+import { Display } from "@/ui/Display";
 import { MetaTags } from "@/ui/MetaTags/MetaTags";
+import React, { Suspense, useEffect } from "react";
 
 export default function Maps() {
   const { levelId } = useMapView();
@@ -19,17 +18,16 @@ export default function Maps() {
   }, []);
 
   return (
-    // eslint-disable-next-line react/jsx-no-undef
-      <MapPageContainer>
-        <MetaTags title={"Maps"}/>
-        <MapsQueryParams/>
-        <MapsList/>
-        <Display condition={levelId}>
-          <Suspense fallback={null}>
-            <AsyncMapViewModal/>
-          </Suspense>
-        </Display>
-        <AsyncModals/>
-      </MapPageContainer>
+    <MapPageContainer>
+      <MetaTags title={"Maps"} />
+      <MapsQueryParams />
+      <MapsList />
+      <Display condition={levelId}>
+        <Suspense fallback={null}>
+          <AsyncMapViewModal />
+        </Suspense>
+      </Display>
+      <AsyncModals />
+    </MapPageContainer>
   );
 }

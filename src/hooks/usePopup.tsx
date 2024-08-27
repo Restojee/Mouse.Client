@@ -8,11 +8,11 @@ export const usePopup = (key: AppModalTypes) => {
 
   const onOpen = useCallback(() => {
     dispatch(setAppModalType(key));
-  }, [key]);
+  }, [dispatch, key]);
 
   const onClose = useCallback(() => {
     dispatch(setAppModalType(null));
-  }, [key]);
+  }, [dispatch]);
 
   return {
     isOpen: modalType === key,

@@ -1,3 +1,1 @@
-export const FormActions = () => {
-
-}
+export const FormActions = () => {};

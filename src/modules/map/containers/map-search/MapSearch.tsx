@@ -17,7 +17,7 @@ export const MapSearch = () => {
   };
 
   const onKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const map = maps?.find(el => el.name === filter.name);
+    const map = maps?.find((el) => el.name === filter.name);
 
     if (e.key !== "Enter") {
       return;
@@ -34,10 +34,13 @@ export const MapSearch = () => {
   };
 
   return (
-    <StyledBox align={"center"} gap={15}>
+    <StyledBox
+      align={"center"}
+      gap={15}
+    >
       <Input
         onKeyDown={onKeyDown}
-        inputPrepend={<SearchIcon/>}
+        inputPrepend={<SearchIcon />}
         width={240}
         value={filter.name}
         onChange={onChange}
@@ -46,4 +49,3 @@ export const MapSearch = () => {
     </StyledBox>
   );
 };
-

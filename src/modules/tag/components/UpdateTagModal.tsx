@@ -50,7 +50,8 @@ export const UpdateTagModal = (props: Props) => {
       isOpen={modalType === "tag-update"}
       onClose={onCloseModal}
       onAccess={onSuccess}
-      title={"Редактирование тега"}>
+      title={"Редактирование тега"}
+    >
       <StylesUpdateTagModal>
         <Input
           placeholder={"Название тега"}
@@ -66,4 +67,3 @@ export const UpdateTagModal = (props: Props) => {
     </Modal>
   );
 };
-

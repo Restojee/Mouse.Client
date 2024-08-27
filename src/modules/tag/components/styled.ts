@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
-export const StylesUpdateTagModal = styled.div(({theme}) => ({
+export const StylesUpdateTagModal = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: 20,
   color: theme.colors.textOnSecondary,
 }));
-
 
 export const StyledTagActions = styled.div({
   display: "flex",
@@ -16,7 +15,7 @@ export const StyledTagActions = styled.div({
     height: 30,
     opacity: 0.6,
     "&:hover": {
-      transform: "scale(1.1)"
-    }
-  }
+      transform: "scale(1.1)",
+    },
+  },
 });

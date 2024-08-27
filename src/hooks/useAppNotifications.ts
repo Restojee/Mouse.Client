@@ -5,13 +5,19 @@ import { useCallback } from "react";
 export const useAppNotifications = () => {
   const dispatch = useAppDispatch();
 
-  const onError = useCallback((text: string) => {
-    dispatch(setAppMessage({severity: "error", text}))
-  }, [dispatch])
+  const onError = useCallback(
+    (text: string) => {
+      dispatch(setAppMessage({ severity: "error", text }));
+    },
+    [dispatch],
+  );
 
-  const onSuccess = useCallback((text: string) => {
-    dispatch(setAppMessage({severity: "success", text}))
-  }, [dispatch])
+  const onSuccess = useCallback(
+    (text: string) => {
+      dispatch(setAppMessage({ severity: "success", text }));
+    },
+    [dispatch],
+  );
 
-  return {onError, onSuccess}
-}
+  return { onError, onSuccess };
+};

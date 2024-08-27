@@ -1,1 +1,1 @@
-export * from './ModalCloseIcon'
+export * from "./ModalCloseIcon";

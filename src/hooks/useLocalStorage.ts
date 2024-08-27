@@ -17,8 +17,7 @@ export function useLocalStorage<T>(key: string) {
     }
   };
 
-
-  return { getValue, setValue};
+  return { getValue, setValue };
 }
 
 export default useLocalStorage;

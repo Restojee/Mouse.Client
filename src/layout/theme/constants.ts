@@ -6,7 +6,6 @@ export const DefaultTheme = {
     brandColorContrastText: "#ffffff",
     selection: "#e96b6b",
 
-
     primaryDark: "#3d3d3d",
     primary: "#2b2b2b",
     primaryLight: "#383838",

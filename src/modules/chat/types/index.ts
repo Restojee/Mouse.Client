@@ -1,7 +1,7 @@
-import { Comment } from '@/api/codegen/genMouseMapsApi';
+import { Comment } from "@/api/codegen/genMouseMapsApi";
 
 export type ChatStateType = {
-    messages: Comment[];
-    isCreateFetching: boolean;
-    isMessagesInitialized: boolean;
-}
+  messages: Comment[];
+  isCreateFetching: boolean;
+  isMessagesInitialized: boolean;
+};

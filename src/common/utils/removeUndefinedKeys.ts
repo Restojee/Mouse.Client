@@ -1,11 +1,11 @@
 export function removeUndefinedKeys<T>(obj: T): T {
-    const result: Partial<T> = {};
+  const result: Partial<T> = {};
 
-    for (const key in obj) {
-        if (obj[key] !== undefined) {
-            result[key] = obj[key];
-        }
+  for (const key in obj) {
+    if (obj[key] !== undefined) {
+      result[key] = obj[key];
     }
+  }
 
-    return result as T;
+  return result as T;
 }

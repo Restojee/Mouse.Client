@@ -6,4 +6,4 @@ export const sortUsersByStatistic = (users: User[]) => {
     const completedAndLevelsB = (b.completedCount || 0) + (b.levelsCount || 0);
     return completedAndLevelsB - completedAndLevelsA;
   });
-}
+};

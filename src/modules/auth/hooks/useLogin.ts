@@ -1,43 +1,41 @@
-import { LoginRequest } from '@/api/codegen/genMouseMapsApi';
-import { setAppMessage, setAppModalType } from '@/bll/appReducer';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useCallback } from 'react';
-import { loginThunk, logoutThunk } from '@/modules/auth/slice';
+import { LoginRequest } from "@/api/codegen/genMouseMapsApi";
+import { setAppMessage, setAppModalType } from "@/bll/appReducer";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { loginThunk, logoutThunk } from "@/modules/auth/slice";
+import { useCallback } from "react";
 
 export const useLogin = () => {
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
+  const onLoginModalClose = useCallback(() => {
+    dispatch(setAppModalType(null));
+  }, [dispatch]);
 
-    const onLoginModalClose = useCallback(() => {
-        dispatch(setAppModalType(null));
-    }, []);
+  const onLoginModalOpen = useCallback(() => {
+    dispatch(setAppModalType("login"));
+  }, [dispatch]);
 
-    const onLoginModalOpen = useCallback(() => {
-        dispatch(setAppModalType('login'));
-    }, []);
+  const login = async (data: LoginRequest) => {
+    try {
+      const res = await dispatch(loginThunk(data));
+      if (res.payload) {
+        onLoginModalClose();
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      dispatch(setAppMessage({ severity: "error", text: "Ошибка авторизации" }));
+    }
+  };
 
-    const login = async (data: LoginRequest) => {
-        try {
-            const res = await dispatch(loginThunk(data));
-            if (res.payload) {
-                onLoginModalClose();
-            } else {
-                throw new Error;
-            }
-        } catch (err) {
-            dispatch(setAppMessage({severity: 'error', text: 'Ошибка авторизации'}))
-        }
-    };
+  const logout = async () => {
+    dispatch(logoutThunk());
+  };
 
-    const logout = async () => {
-        dispatch(logoutThunk());
-    };
-
-    return {
-        onLoginModalClose,
-        onLoginModalOpen,
-        login,
-        logout,
-    };
+  return {
+    onLoginModalClose,
+    onLoginModalOpen,
+    login,
+    logout,
+  };
 };
-

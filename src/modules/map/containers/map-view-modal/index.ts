@@ -1,5 +1,5 @@
 export * from "./hooks";
 
-import React from 'react';
+import React from "react";
 
-export const AsyncMapViewModal = React.lazy(() => import('./MapViewModal'))
+export const AsyncMapViewModal = React.lazy(() => import("./MapViewModal"));

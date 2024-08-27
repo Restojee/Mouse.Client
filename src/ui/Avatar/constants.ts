@@ -1,1 +1,1 @@
-export const AVATAR_SIZE = 50
+export const AVATAR_SIZE = 50;

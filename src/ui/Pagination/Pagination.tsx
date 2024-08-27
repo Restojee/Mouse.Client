@@ -2,10 +2,7 @@ import { ArrowIcon } from "@/svg/ArrowIcon";
 import ReactPaginate, { ReactPaginateProps } from "react-paginate";
 import styles from "./styles.module.css";
 
-interface Props extends ReactPaginateProps {
-}
-
-export const Pagination = (props: Props) => {
+export const Pagination = (props: ReactPaginateProps) => {
   return (
     <ReactPaginate
       previousLinkClassName={styles.previous}
@@ -15,10 +12,9 @@ export const Pagination = (props: Props) => {
       activeLinkClassName={styles.item_active}
       pageLinkClassName={styles.item}
       disabledLinkClassName={styles.item_disabled}
-      previousLabel={<ArrowIcon rotate={"180deg"}/>}
-      nextLabel={<ArrowIcon/>}
+      previousLabel={<ArrowIcon rotate={"180deg"} />}
+      nextLabel={<ArrowIcon />}
       {...props}
     />
   );
 };
-

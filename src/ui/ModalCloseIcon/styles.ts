@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledModalCloseIcon = styled.div(({theme}) => ({
+export const StyledModalCloseIcon = styled.div(({ theme }) => ({
   position: "absolute",
   top: 10,
   right: 10,

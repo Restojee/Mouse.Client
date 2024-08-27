@@ -1,1 +1,1 @@
-export * from './styles/Typography'
+export * from "./styles/Typography";

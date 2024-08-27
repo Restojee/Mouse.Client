@@ -1,26 +1,22 @@
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { selectIsAuth } from "@/modules/auth/slice";
-import { Display } from "@/ui/Display";
-import React, { useMemo, useState } from "react";
-import { formatDateTime } from "@/common/utils/formatDateTime";
 import { Tip } from "@/api/codegen/genMouseMapsApi";
+import { formatDateTime } from "@/common/utils/formatDateTime";
+import { useAppSelector } from "@/hooks/useAppSelector";
 import { StyledInfoBlock, StyledInfoTitle } from "@/layout/drawer/Info/styled";
+import { selectIsAuth } from "@/modules/auth/slice";
 import { CloseIcon } from "@/svg/CloseIcon";
 import { StyledBox } from "@/ui/Box";
 import { StyledButtonIcon } from "@/ui/Button/styles/StyledButtonIcon";
+import { Display } from "@/ui/Display";
 import { Typography } from "@/ui/Typography";
+import React, { useMemo, useState } from "react";
 
 type InfoItemPropsType = {
   info: Tip;
   removeInfo: (id: Tip["id"]) => void;
   selectInfo: (info: Tip) => void;
-}
+};
 export const InfoItem = (props: InfoItemPropsType) => {
-  const {
-    info,
-    removeInfo,
-    selectInfo,
-  } = props;
+  const { info, removeInfo, selectInfo } = props;
 
   const isAuth = useAppSelector(selectIsAuth);
 
@@ -54,16 +50,14 @@ export const InfoItem = (props: InfoItemPropsType) => {
       direction="column"
     >
       <StyledBox align="center">
-        <StyledInfoTitle onClick={selectInfoHandler}>
-          {info.title}
-        </StyledInfoTitle>
+        <StyledInfoTitle onClick={selectInfoHandler}>{info.title}</StyledInfoTitle>
         <Display condition={isAuth}>
           <StyledButtonIcon
             opacity={isHovered ? "0.4" : "0"}
             onClick={removeInfoHandler}
             margin="0 0 0 auto"
           >
-            <CloseIcon color="gray"/>
+            <CloseIcon />
           </StyledButtonIcon>
         </Display>
       </StyledBox>
@@ -77,15 +71,9 @@ export const InfoItem = (props: InfoItemPropsType) => {
         fontSize={"0.8rem"}
         opacity={isHovered ? "0.5" : "0"}
       >
-        <Typography>
-          {info.user?.username},
-        </Typography>
-        <Typography>
-          {formattedDate}
-        </Typography>
+        <Typography>{info.user?.username},</Typography>
+        <Typography>{formattedDate}</Typography>
       </StyledBox>
-
     </StyledBox>
   );
 };
-

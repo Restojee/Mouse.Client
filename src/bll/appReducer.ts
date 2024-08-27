@@ -26,7 +26,7 @@ const slice = createSlice({
     modalType: null,
     messages: [],
     isFetching: false,
-    currentTheme: null
+    currentTheme: null,
   } as TAppState,
   reducers: {
     setIsInitialized(state, action: PayloadAction<boolean>) {

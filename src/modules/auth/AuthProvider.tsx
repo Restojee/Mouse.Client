@@ -1,28 +1,28 @@
-import { ReactElement, useEffect } from 'react';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useAppSelector } from '@/hooks/useAppSelector';
-import { getCurrentUserThunk, selectIsAuth } from '@/modules/auth/slice';
+import { ReactElement, useEffect } from "react";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import { getCurrentUserThunk, selectIsAuth } from "@/modules/auth/slice";
 
 type AuthProviderProps = {
-    children: ReactElement;
-}
+  children: ReactElement;
+};
 export const AuthProvider = (props: AuthProviderProps) => {
-    const dispatch = useAppDispatch();
-    const isAuth = useAppSelector(selectIsAuth);
+  const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(selectIsAuth);
 
-    useEffect(() => {
-        const id = setInterval(() => {
-            dispatch(getCurrentUserThunk())
-        }, 300000)
+  useEffect(() => {
+    const id = setInterval(() => {
+      dispatch(getCurrentUserThunk());
+    }, 300000);
 
-        return () => {
-            clearInterval(id)
-        }
-    }, [])
+    return () => {
+      clearInterval(id);
+    };
+  }, []);
 
-    useEffect(() => {
-        dispatch(getCurrentUserThunk())
-    }, [isAuth]);
+  useEffect(() => {
+    dispatch(getCurrentUserThunk());
+  }, [isAuth]);
 
-    return props.children;
-}
+  return props.children;
+};

@@ -1,1 +1,1 @@
-export const IS_TABLET = window.innerWidth < 790
+export const IS_TABLET = window.innerWidth < 790;

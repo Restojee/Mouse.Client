@@ -1,7 +1,9 @@
 import { GetInviteCollectResponse } from "@/api/codegen/genMouseMapsApi";
 import { inviteApi } from "@/api/inviteApi";
+import { useAppNotifications } from "@/hooks/useAppNotifications";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useEffect, useState } from "react";
+import { Display } from "@/ui/Display";
+import { useCallback, useEffect, useState } from "react";
 import { StyledDrawerHeader } from "@/layout/drawer/styled";
 import { useUser } from "@/modules/user/hooks/useUser";
 import { StyledBox } from "@/ui/Box";
@@ -11,6 +13,7 @@ import { Typography } from "@/ui/Typography";
 import { UpdateAvatar } from "@/ui/UpdateAvatar/UpdateAvatar";
 
 export const Settings = () => {
+  const { onError, onSuccess } = useAppNotifications();
   const [inviteToken, setInviteToken] = useState<GetInviteCollectResponse | null>(null);
   const { currentUser, updateUserImage } = useUser();
   const { theme } = useAppTheme();
@@ -23,9 +26,22 @@ export const Settings = () => {
     }
   };
 
+  const onInviteCopy = useCallback(async () => {
+    try {
+      if (!inviteToken) {
+        return;
+      }
+
+      await navigator.clipboard.writeText(inviteToken.token);
+      onSuccess("Скопировано");
+    } catch (error) {
+      onError("Ошибка копирования");
+    }
+  }, [inviteToken, onError, onSuccess]);
+
   useEffect(() => {
     inviteApi.getInviteToken().then(setInviteToken);
-  }, [])
+  }, []);
 
   return (
     <StyledBox
@@ -35,9 +51,7 @@ export const Settings = () => {
       grow={1}
     >
       <StyledDrawerHeader>
-        <Typography>
-          Настройки
-        </Typography>
+        <Typography>Настройки</Typography>
       </StyledDrawerHeader>
       <StyledBox
         align={"center"}
@@ -51,8 +65,17 @@ export const Settings = () => {
           currentImage={image}
         />
         <StyledBox gap={20}>
-          <Input title={"Логин"} value={currentUser?.username} disabled/>
-          <Input title={"Пароль"} value={"пароль"} type={"password"} disabled/>
+          <Input
+            title={"Логин"}
+            value={currentUser?.username}
+            disabled
+          />
+          <Input
+            title={"Пароль"}
+            value={"пароль"}
+            type={"password"}
+            disabled
+          />
         </StyledBox>
         <Button
           onClick={onSubmitHandler}
@@ -60,19 +83,28 @@ export const Settings = () => {
           color={theme.colors.brandColorContrastText}
         />
       </StyledBox>
-      {/*<StyledBox align={"center"} direction={"column"} padding={"20px 0 0 0"} gap={20}>*/}
-      {/*  <StyledDrawerHeader>*/}
-      {/*    <Typography>*/}
-      {/*      Другое*/}
-      {/*    </Typography>*/}
-      {/*  </StyledDrawerHeader>*/}
-      {/*  <Input title={"Пригласительный код"} value={inviteToken?.token} readOnly/>*/}
-      {/*  <Button*/}
-      {/*    label={"Копировать код"}*/}
-      {/*    color={theme.colors.brandColorContrastText}*/}
-      {/*  />*/}
-      {/*</StyledBox>*/}
+      <Display condition={inviteToken?.token}>
+        <StyledBox
+          align={"center"}
+          direction={"column"}
+          padding={"20px 0 0 0"}
+          gap={20}
+        >
+          <StyledDrawerHeader>
+            <Typography>Другое</Typography>
+          </StyledDrawerHeader>
+          <Input
+            title={"Пригласительный код"}
+            value={inviteToken?.token}
+            readOnly
+          />
+          <Button
+            onClick={onInviteCopy}
+            label={"Копировать код"}
+            color={theme.colors.brandColorContrastText}
+          />
+        </StyledBox>
+      </Display>
     </StyledBox>
   );
 };
-

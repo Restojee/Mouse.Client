@@ -4,29 +4,23 @@ import { useEffect, useState } from "react";
 
 type AppImageType = ImageProps;
 export const AppImage = (props: AppImageType) => {
-  const {
-    height,
-    width,
-    src,
-    alt,
-    ...restProps
-  } = props;
+  const { height, width, src, alt, ...restProps } = props;
 
   const [isLoaded, setIsLoaded] = useState(true);
 
   useEffect(() => {
-    const imageElement = document.createElement('img');
+    const imageElement = document.createElement("img");
 
     if (!imageElement) return;
 
-      imageElement.onload = () => {
-        setIsLoaded(false);
-      };
-      imageElement.src = src as string;
+    imageElement.onload = () => {
+      setIsLoaded(false);
+    };
+    imageElement.src = src as string;
   }, []);
 
   if (isLoaded) {
-    return  (
+    return (
       <StyledBox
         height={"100%"}
         width={"100%"}
@@ -44,7 +38,7 @@ export const AppImage = (props: AppImageType) => {
           {...restProps}
         />
       </StyledBox>
-    )
+    );
   }
 
   return (
@@ -62,8 +56,6 @@ export const AppImage = (props: AppImageType) => {
           objectFit={"cover"}
         />
       </StyledBox>
-
     </>
   );
 };
-

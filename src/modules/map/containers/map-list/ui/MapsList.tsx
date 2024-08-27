@@ -1,25 +1,25 @@
-import useQueryParams from "@/hooks/useQueryParams";
-import { Display } from "@/ui/Display";
-import { Pagination } from "@/ui/Pagination/Pagination";
-import React, { useEffect } from "react";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { MapCard } from "./map-card/MapCard";
-import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { getMapsThunk, selectIsMapsFetching, selectMaps, selectMapsInfo, selectStaticMapsInfo } from "../slice";
+import useQueryParams from "@/hooks/useQueryParams";
 import { StyledMapsGrid } from "@/modules/map/styles/StyledMapsGrid";
 import { StyledBox } from "@/ui/Box";
+import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
+import { Display } from "@/ui/Display";
+import { Pagination } from "@/ui/Pagination/Pagination";
 import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+import { getMapsThunk, selectIsMapsFetching, selectMaps, selectMapsInfo } from "../slice";
+import { MapCard } from "./map-card/MapCard";
 
-// eslint-disable-next-line react/display-name
 export const MapsList = React.memo(() => {
   const dispatch = useAppDispatch();
 
   const maps = useAppSelector(selectMaps);
   const isFetching = useAppSelector(selectIsMapsFetching);
   const mapsInfo = useAppSelector(selectMapsInfo);
+
   const router = useRouter();
-  const { updateFilter } = useQueryParams();
+  const { updateFilter, filter } = useQueryParams();
 
   useEffect(() => {
     if (!router.isReady) {
@@ -52,13 +52,17 @@ export const MapsList = React.memo(() => {
   return (
     <>
       <StyledMapsGrid>
-        {maps?.map(map => (
-          <MapCard key={map.id} map={map}/>
+        {maps?.map((map) => (
+          <MapCard
+            key={map.id}
+            map={map}
+          />
         ))}
       </StyledMapsGrid>
-      <BoxLoader isLoading={isFetching}/>
+      <BoxLoader isLoading={isFetching} />
       <Display condition={mapsInfo && mapsInfo.totalPages > 1}>
         <Pagination
+          forcePage={filter.page - 1}
           pageCount={mapsInfo?.totalPages || 1}
           onPageChange={onPageChange}
         />
