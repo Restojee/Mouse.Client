@@ -1,115 +1,158 @@
-import { selectMapTags, setMapTagIds } from '@/modules/map/containers';
+import { Tag, UpdateTagApiArg } from "@/api/codegen/genMouseMapsApi";
+import { setAppModalType } from "@/bll/appReducer";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import { selectMapTags, setMapTagIds } from "@/modules/map/containers";
 import {
-    selectSelectedTagIds,
-    toggleSelectedTagById,
-    updateMapTagsThunk,
-} from '@/modules/map/containers/map-content/slice';
-import { ModalType } from '@/modules/tag/types';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
-import { Tag } from '@/api/codegen/genMouseMapsApi';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useAppSelector } from '@/hooks/useAppSelector';
+  selectSelectedTagIds,
+  toggleSelectedTagById,
+  updateMapTagsThunk,
+} from "@/modules/map/containers/map-content/slice";
 import {
-    selectTagModalType,
-    selectTags,
-    createTagThunk,
-    deleteTagThunk,
-    setTagModalType,
-} from '@/modules/tag';
+  createTagThunk,
+  deleteTagThunk,
+  selectTagModalType,
+  selectTags,
+  setTagModalType,
+  updateTagThunk,
+} from "@/modules/tag";
+import { TagModalTypes } from "@/modules/tag/types";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const useTag = () => {
-    const dispatch = useAppDispatch();
-    const router = useRouter();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-    const { mapId } = router.query;
+  const levelId = useMemo(() => {
+    return router.query.levelId;
+  }, [router.query.levelId]);
 
-    const [selectedTagIdsForCreateMap, setSelectedTagIdsForCreateMap] = useState<Tag['id'][]>([]);
+  const selectedTagIds = useAppSelector(selectSelectedTagIds);
+  const modalType = useAppSelector(selectTagModalType);
+  const selectedIdForCreateMap = useAppSelector(selectMapTags);
+  const tagsList = useAppSelector(selectTags);
 
-    const modalType = useAppSelector(selectTagModalType);
-    const selectedTagIds = useAppSelector(selectSelectedTagIds);
-    const selectedIdForCreateMap = useAppSelector(selectMapTags);
-    const tagsList = useAppSelector(selectTags);
+  const [selectedTagIdsForCreateMap, setSelectedTagIdsForCreateMap] = useState<Tag["id"][]>(
+    selectedIdForCreateMap || [],
+  );
 
-    const onTagCreate = useCallback(async (name: string) => {
-        if (name.trim().length) {
-            return dispatch(createTagThunk({ name }));
-        }
-    }, []);
+  const onTagCreate = useCallback(
+    async (name: string) => {
+      if (name.trim().length) {
+        return dispatch(createTagThunk({ name }));
+      }
+    },
+    [dispatch],
+  );
 
-    const onOpenModal = useCallback((modalType: ModalType): void => {
-        dispatch(setTagModalType(modalType));
-    }, []);
+  const onOpenModal = useCallback(
+    (modalType: TagModalTypes): void => {
+      if (modalType === "map-tags-update") {
+        dispatch(setAppModalType("map-tags-update"));
+        return;
+      }
+      dispatch(setTagModalType(modalType));
+    },
+    [dispatch],
+  );
 
-    const onCloseModal = useCallback((): void => {
-        dispatch(setTagModalType(null));
-    }, []);
+  const onCloseModal = useCallback((): void => {
+    dispatch(setAppModalType(null));
+    dispatch(setTagModalType(null));
+  }, [dispatch]);
 
-    const onTagDelete = useCallback(async (tagId: Tag['id'] | null): Promise<boolean> => {
+  const onTagDelete = useCallback(
+    async (tagId: Tag["id"] | null) => {
+      try {
         if (tagId) {
-            const res = await dispatch(deleteTagThunk({ tagId }))
-            if (res.payload) {
-                onCloseModal()
-            }
+          await dispatch(deleteTagThunk({ tagId }));
+          onCloseModal();
+          return true;
         }
-        return false
-    }, []);
-
-    const updateMapTags = useCallback((): void => {
-        const id = Number(mapId);
-        if (mapId) {
-            dispatch(updateMapTagsThunk(id));
-        } else {
-            dispatch(setMapTagIds(selectedTagIdsForCreateMap));
-            dispatch(setTagModalType(null))
-        }
-    }, [mapId, selectedTagIdsForCreateMap]);
-
-    const toggleSelectedTag = useCallback((id: Tag['id']) => {
-        if (id && mapId) {
-            dispatch(toggleSelectedTagById(id));
-            return;
-        }
-
-        if (id && !selectedTagIdsForCreateMap?.includes(id)) {
-            setSelectedTagIdsForCreateMap(prev => [...prev, id]);
-            return;
-        }
-        if (id && selectedTagIdsForCreateMap?.includes(id)) {
-            const filteredTagIds = selectedTagIdsForCreateMap.filter(tagId => tagId !== id);
-            setSelectedTagIdsForCreateMap(filteredTagIds);
-            return;
-        }
-    }, [mapId, selectedTagIdsForCreateMap]);
-
-    const checkIsSelectedTagId = useCallback((id: Tag['id']) => {
-        if (id && mapId) {
-            return selectedTagIds.includes(id);
-        }
-
-        if (id && !mapId) {
-            return selectedTagIdsForCreateMap.includes(id);
-        }
+      } catch (err) {
+        console.log(err);
         return false;
-    }, [mapId, selectedTagIds, selectedTagIdsForCreateMap]);
+      }
+    },
+    [dispatch, onCloseModal],
+  );
 
-    useEffect(() => {
-        if(!selectedIdForCreateMap?.length) {
-            setSelectedTagIdsForCreateMap([])
+  const onTagUpdate = useCallback(
+    async (arg: UpdateTagApiArg["updateTagRequest"]) => {
+      try {
+        if (arg) {
+          await dispatch(updateTagThunk(arg));
+          onCloseModal();
         }
-    }, [selectedIdForCreateMap])
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [dispatch, onCloseModal],
+  );
 
-    return {
-        onTagCreate,
-        onTagDelete,
-        modalType,
-        tagsList,
-        onCloseModal,
-        onOpenModal,
-        updateMapTags,
-        toggleSelectedTag,
-        checkIsSelectedTagId,
-        selectedIdForCreateMap,
-    };
+  const updateMapTags = useCallback((): void => {
+    const id = Number(levelId);
+    if (levelId) {
+      dispatch(updateMapTagsThunk(id));
+    } else {
+      dispatch(setMapTagIds(selectedTagIdsForCreateMap));
+      onCloseModal();
+    }
+  }, [dispatch, levelId, onCloseModal, selectedTagIdsForCreateMap]);
+
+  const toggleSelectedTag = useCallback(
+    (id: Tag["id"]) => {
+      if (id && levelId) {
+        dispatch(toggleSelectedTagById(id));
+        return;
+      }
+
+      if (id && !selectedTagIdsForCreateMap?.includes(id)) {
+        setSelectedTagIdsForCreateMap((prev) => [...prev, id]);
+        return;
+      }
+      if (id && selectedTagIdsForCreateMap?.includes(id)) {
+        const filteredTagIds = selectedTagIdsForCreateMap.filter((tagId) => tagId !== id);
+        setSelectedTagIdsForCreateMap(filteredTagIds);
+        return;
+      }
+    },
+    [dispatch, levelId, selectedTagIdsForCreateMap],
+  );
+
+  const checkIsSelectedTagId = useCallback(
+    (id: Tag["id"]) => {
+      if (id && levelId) {
+        return selectedTagIds.includes(id);
+      }
+
+      if (id && !levelId) {
+        return selectedTagIdsForCreateMap.includes(id);
+      }
+      return false;
+    },
+    [levelId, selectedTagIds, selectedTagIdsForCreateMap],
+  );
+
+  useEffect(() => {
+    if (!selectedIdForCreateMap?.length) {
+      setSelectedTagIdsForCreateMap([]);
+    }
+  }, [selectedIdForCreateMap]);
+
+  return {
+    onTagCreate,
+    onTagDelete,
+    onTagUpdate,
+    tagsList,
+    onCloseModal,
+    modalType,
+    onOpenModal,
+    updateMapTags,
+    toggleSelectedTag,
+    checkIsSelectedTagId,
+    selectedIdForCreateMap,
+  };
 };
-

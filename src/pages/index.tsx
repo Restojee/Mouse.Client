@@ -1,26 +1,33 @@
-import React, { Suspense } from 'react';
-import { TagsModal } from '@/modules/tag/containers/tags-modal/TagsModal';
-import { useMapView } from '@/modules/map/containers/map-view-modal/hooks/useMapView';
-import { Display } from '@/ui/Display';
-import { AsyncMapViewModal } from '@/modules/map/containers/map-view-modal';
-import { MapsList } from '@/modules/map/containers/map-list/ui/MapsList';
-import { MapPageContainer } from '@/modules/map/components/MapContainer';
-import { MetaTags } from '@/ui/MetaTags/MetaTags';
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { MapPageContainer } from "@/modules/map/components/MapContainer";
+import { AsyncMapViewModal, useMapView } from "@/modules/map/containers";
+import { MapsQueryParams } from "@/modules/map/containers/map-list";
+import { MapsList } from "@/modules/map/containers/map-list/ui/MapsList";
+import { AsyncModals } from "@/modules/modals/AsyncModals";
+import { getUsersThunk } from "@/modules/user/slice";
+import { Display } from "@/ui/Display";
+import { MetaTags } from "@/ui/MetaTags/MetaTags";
+import React, { Suspense, useEffect } from "react";
 
 export default function Maps() {
-    const { mapId } = useMapView();
+  const { levelId } = useMapView();
+  const dispatch = useAppDispatch();
 
-    return (
-        // eslint-disable-next-line react/jsx-no-undef
-        <MapPageContainer>
-            <MetaTags title={'Maps'}/>
-            <MapsList/>
-            <Display condition={mapId}>
-                <Suspense fallback={null}>
-                    <AsyncMapViewModal/>
-                </Suspense>
-            </Display>
-            <TagsModal/>
-        </MapPageContainer>
-    );
+  useEffect(() => {
+    dispatch(getUsersThunk());
+  }, []);
+
+  return (
+    <MapPageContainer>
+      <MetaTags title={"Maps"} />
+      <MapsQueryParams />
+      <MapsList />
+      <Display condition={levelId}>
+        <Suspense fallback={null}>
+          <AsyncMapViewModal />
+        </Suspense>
+      </Display>
+      <AsyncModals />
+    </MapPageContainer>
+  );
 }

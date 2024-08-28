@@ -1,3 +1,3 @@
-import React from 'react';
+import React from "react";
 
-export const AsyncModalContent = React.lazy(() => import('./AsyncModalContent'))
+export const AsyncModalContent = React.lazy(() => import("./AsyncModalContent"));

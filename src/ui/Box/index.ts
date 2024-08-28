@@ -1,1 +1,1 @@
-export * from './styles/StyledBox'
+export * from "./styles/StyledBox";

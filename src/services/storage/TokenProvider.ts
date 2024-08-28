@@ -1,5 +1,5 @@
 export type TokenProvider = {
-    setToken: (token: string) => void;
-    getToken: () => string | null;
-    isHasToken: boolean;
-}
+  setToken: (token: string) => void;
+  getToken: () => string | null;
+  isHasToken: boolean;
+};

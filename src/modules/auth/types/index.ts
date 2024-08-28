@@ -1,9 +1,9 @@
-import { User } from '@/api/codegen/genMouseMapsApi';
+import { User } from "@/api/codegen/genMouseMapsApi";
 
-export type AuthStatusType = 'authenticated' | 'unauthenticated' | 'loading'
+export type AuthStatusType = "authenticated" | "unauthenticated" | "loading";
 
 export type AuthStateType = {
-    status: AuthStatusType | null,
-    user: User | null,
-    isAuth: boolean
-}
+  status: AuthStatusType | null;
+  user: User | null;
+  isAuth: boolean;
+};

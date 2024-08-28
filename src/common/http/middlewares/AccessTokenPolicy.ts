@@ -1,12 +1,13 @@
 export const AccessTokenPolicy = {
-    key: "AccessTokenPolicy",
-    callback: () => {
+  key: "AccessTokenPolicy",
+  callback: () => {
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      request: (request: RequestInit) => {
         return {
-            request: (request: RequestInit) => {
-                return {
-                    headers: { Authorization: `Bearer 123` }
-                }
-            }
-        }
-    }
-}
+          headers: { Authorization: `Bearer 123` },
+        };
+      },
+    };
+  },
+};

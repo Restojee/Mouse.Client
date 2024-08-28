@@ -1,103 +1,126 @@
-import { useState } from 'react';
-import { useAppTheme } from '@/hooks/useAppTheme';
-import { useMap } from '@/modules/map/common';
-import { StyledMapCard } from '@/modules/map/styles/StyledMapCard';
-import { StyledMapCardHeader } from '@/modules/map/styles/StyledMapCardHeader';
-import { Typography } from '@/ui/Typography/styles/Typography';
-import { StyledMapCardBody } from '@/modules/map/styles/StyledMapCardBody';
-import { StyledMapCardButton } from '@/modules/map/styles/StyledMapCardButton';
-import { StyledMapCardFooter } from '@/modules/map/styles/StyledMapCardFooter';
-import { StyledBox } from '@/ui/Box';
-import { FavoriteIcon } from '@/svg/FavoriteIcon';
-import { BookCheckIcon } from '@/svg/BookCheckIcon';
-import { CommentIcon } from '@/svg/CommentIcon';
-import { CopyIcon } from '@/svg/CopyIcon';
-import { Button } from '@/ui/Button/Button';
-import { IconButton } from '@/ui/Button/IconButton';
-import Image from 'next/image';
-import { Map } from '@/api/codegen/genMouseMapsApi';
+import { Map } from "@/api/codegen/genMouseMapsApi";
+import { getMapImageLink } from "@/common/utils";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useMap } from "@/modules/map/common";
+import { removeNonDigits } from "@/modules/map/containers/map-list";
+import { StyledMapCard } from "@/modules/map/styles/StyledMapCard";
+import { StyledMapCardBody } from "@/modules/map/styles/StyledMapCardBody";
+import { StyledMapCardFooter } from "@/modules/map/styles/StyledMapCardFooter";
+import { StyledMapCardHeader } from "@/modules/map/styles/StyledMapCardHeader";
+import { BookCheckIcon } from "@/svg/BookCheckIcon";
+import { CommentIcon } from "@/svg/CommentIcon";
+import { CopyIcon } from "@/svg/CopyIcon";
+import { FavoriteIcon } from "@/svg/FavoriteIcon";
+import { AppImage } from "@/ui/AppImage/AppImage";
+import { StyledBox } from "@/ui/Box";
+import { IconButton } from "@/ui/Button/IconButton";
+import { Typography } from "@/ui/Typography/styles/Typography";
+import React, { useCallback, useMemo, useState } from "react";
+import { MapCardButton } from "./MapCardButton";
 
 type MapCardProps = {
-    id: Map['id'];
-    label?: string | null;
-    addedCount?: number;
-    commentsCount?: number;
-    image: string;
-    onClick?: (id: Map['id']) => void;
-}
-export const MapCard = (props: MapCardProps) => {
-    const theme = useAppTheme();
-    const [isMapHover, setIsMapHover] = useState(false);
-
-    const {
-        onMapNameCopy,
-        onAddMapFavorite
-    } = useMap(props.id);
-
-    const onIconsClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        if (props.label) {
-            await onMapNameCopy(props.label);
-        }
-    };
-
-    const {
-        label,
-        addedCount,
-        image = '',
-        onClick,
-        commentsCount,
-    } = props;
-    return (
-        <StyledMapCard
-            onMouseLeave={() => setIsMapHover(false)}
-            onMouseEnter={() => setIsMapHover(true)}
-        >
-            <StyledMapCardHeader>
-                <Typography>{label}</Typography>
-                <IconButton onClick={onIconsClick}>
-                    <CopyIcon/>
-                </IconButton>
-            </StyledMapCardHeader>
-            <StyledMapCardBody>
-                <StyledMapCardButton
-                    isHover={isMapHover}
-                    onClick={() => onClick?.(props.id)}
-                >
-                    <Button
-                        bgColor={theme.colors.status.success}
-                        label="Открыть"
-                    />
-                </StyledMapCardButton>
-                <Image
-                    src={image}
-                    alt=" "
-                    objectFit={'cover'}
-                    objectPosition={'center'}
-                    width={330}
-                    height={150}
-                />
-            </StyledMapCardBody>
-            <StyledMapCardFooter justify="space-between">
-                <StyledBox gap={'10px'} justify="flex-start">
-                    {/*<IconButton onClick={onIconsClick}>*/}
-                    {/*    <ImageIcon />*/}
-                    {/*</IconButton>*/}
-                    <IconButton onClick={onAddMapFavorite}>
-                        <FavoriteIcon/>
-                    </IconButton>
-                </StyledBox>
-                <StyledBox gap={'10px'} justify="flex-end" opacity="0.6">
-                    <StyledBox gap="5px" align="center" title="Выполнений">
-                        <BookCheckIcon/>
-                        <Typography>{addedCount}</Typography>
-                    </StyledBox>
-                    <StyledBox gap="5px" align="center" title="Комментариев">
-                        <CommentIcon/>
-                        <Typography>{commentsCount}</Typography>
-                    </StyledBox>
-                </StyledBox>
-            </StyledMapCardFooter>
-        </StyledMapCard>
-    );
+  map: Map;
 };
+export const MapCard = React.memo((props: MapCardProps) => {
+  const { id, name, tags, image = "", commentsCount, completedCount, isFavoriteByUser } = props.map;
+
+  const { theme } = useAppTheme();
+
+  const [isMapHover, setIsMapHover] = useState(false);
+
+  const { onMapNameCopy, onToggleMapFavorite } = useMap(id);
+
+  const onIconsClick = useCallback(
+    async (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+
+      const isVanilla = tags?.find((el) => el.name === "Ванилла");
+
+      if (name && isVanilla) {
+        await onMapNameCopy(removeNonDigits(name));
+        return;
+      }
+
+      await onMapNameCopy(name);
+    },
+    [name, onMapNameCopy, tags],
+  );
+
+  const formattedName = useMemo(() => {
+    const isVanilla = tags?.find((el) => el.name === "Ванилла");
+
+    return isVanilla ? removeNonDigits(name) : name;
+  }, [name, tags]);
+
+  const onToggleMapFavoriteHandler = useCallback(() => {
+    onToggleMapFavorite(Boolean(isFavoriteByUser));
+  }, [onToggleMapFavorite, isFavoriteByUser]);
+
+  const mapImage = useMemo(() => getMapImageLink(image), [image]);
+
+  return (
+    <StyledMapCard
+      onMouseLeave={() => setIsMapHover(false)}
+      onMouseEnter={() => setIsMapHover(true)}
+    >
+      <StyledMapCardHeader onClick={onIconsClick}>
+        <Typography>{formattedName}</Typography>
+        <IconButton>
+          <CopyIcon size={24} />
+        </IconButton>
+      </StyledMapCardHeader>
+      <StyledMapCardBody>
+        <MapCardButton
+          id={id}
+          isMapHover={isMapHover}
+        />
+        <AppImage
+          src={mapImage}
+          alt={name || ""}
+          objectFit={"contain"}
+          objectPosition={"center"}
+          width={300}
+          height={150}
+        />
+      </StyledMapCardBody>
+      <StyledMapCardFooter
+        isMapHover={isMapHover}
+        justify="space-between"
+      >
+        <StyledBox
+          gap={"10px"}
+          justify="flex-start"
+        >
+          {/*<IconButton onClick={onCompletedMapModalOpen}>*/}
+          {/*    <ImageIcon />*/}
+          {/*</IconButton>*/}
+          <IconButton onClick={onToggleMapFavoriteHandler}>
+            <FavoriteIcon color={isFavoriteByUser ? theme.colors.brandColor : undefined} />
+          </IconButton>
+        </StyledBox>
+        <StyledBox
+          gap={"10px"}
+          justify="flex-end"
+          opacity="0.6"
+        >
+          <StyledBox
+            gap="5px"
+            align="center"
+            title="Выполнений"
+          >
+            <BookCheckIcon />
+            <Typography>{completedCount}</Typography>
+          </StyledBox>
+          <StyledBox
+            gap="5px"
+            align="center"
+            title="Комментариев"
+          >
+            <CommentIcon />
+            <Typography>{commentsCount}</Typography>
+          </StyledBox>
+        </StyledBox>
+      </StyledMapCardFooter>
+    </StyledMapCard>
+  );
+});

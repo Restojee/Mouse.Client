@@ -1,9 +1,9 @@
 type SvgIconProps = {
-    size: string | number,
-    height: string,
-    color: string,
-    rotate: string,
-    onClick: () => void
-}
+  size: string | number;
+  height: string;
+  color: string | undefined;
+  rotate: string;
+  onClick: () => void;
+};
 
-export type SvgIconPropsType = Partial<SvgIconProps>
+export type SvgIconPropsType = Partial<SvgIconProps>;

@@ -2,30 +2,31 @@ import styled from "styled-components";
 import { Property } from "csstype";
 
 export type StyledButtonProps = {
-    justify?: Property.JustifyContent;
-    borderRadius?: Property.BorderRadius;
-    fontSize?: Property.FontSize;
-    width?: Property.Width;
-    bgColor?: Property.BackgroundColor;
-    color?: Property.Color;
-    margin?: string | number;
-    size?: 'sm' | 'md' | 'lg';
-    isWithError?: boolean;
-    disabled?: boolean;
-    isBold?: boolean;
-}
-export const StyledButton = styled.button<StyledButtonProps>(({
+  justify?: Property.JustifyContent;
+  borderRadius?: Property.BorderRadius;
+  fontSize?: Property.FontSize;
+  width?: Property.Width;
+  bgColor?: Property.BackgroundColor;
+  color?: Property.Color;
+  margin?: string | number;
+  size?: "sm" | "md" | "lg";
+  isWithError?: boolean;
+  disabled?: boolean;
+  isBold?: boolean;
+};
+export const StyledButton = styled.button<StyledButtonProps>(
+  ({
     theme,
     isBold,
     justify = "center",
     bgColor = theme.colors.brandColor,
     size = "md",
-    color = "#fff",
-    borderRadius = "20px",
+    color = "inherit",
+    borderRadius = "50px",
     width = "min-content",
     margin = "",
-    disabled
-}) => ({
+    disabled,
+  }) => ({
     justifyContent: justify,
     width: width,
     margin: margin,
@@ -46,13 +47,12 @@ export const StyledButton = styled.button<StyledButtonProps>(({
     borderRadius: borderRadius,
     padding: "7px 10px",
     "&:hover": {
-        transform: 'scale(0.98)'
+      transform: "scale(0.98)",
     },
-    ...disabled && {
-        pointerEvents: 'none',
-        opacity: 0.6
-    },
-    ...size
-        ? theme.sizes.button[size]
-        : theme.sizes.button.md,
-}))
+    ...(disabled && {
+      pointerEvents: "none",
+      opacity: 0.6,
+    }),
+    ...(size ? theme.sizes.button[size] : theme.sizes.button.md),
+  }),
+);

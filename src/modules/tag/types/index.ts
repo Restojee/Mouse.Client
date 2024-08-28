@@ -1,8 +1,8 @@
-import { Tag } from '@/api/codegen/genMouseMapsApi';
+import { Tag } from "@/api/codegen/genMouseMapsApi";
 
-export type ModalType = 'delete' | 'create' | 'update' | null;
+export type TagModalTypes = "tag-delete" | "tag-create" | "tag-update" | "map-tags-update" | null;
 
 export type TagsStateType = {
-    modalType: ModalType,
-    tagsList: Tag[];
-}
+  modalType: TagModalTypes;
+  tagsList: Tag[];
+};

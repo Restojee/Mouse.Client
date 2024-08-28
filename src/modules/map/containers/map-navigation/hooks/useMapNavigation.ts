@@ -1,27 +1,19 @@
-import { routes } from '@/common/routes';
-import { useRouter } from 'next/router';
-
-export type NavigationQueryType = 'completed' | 'favorites' | ''
+import { GetMapsApiArg } from "@/api/codegen/genMouseMapsApi";
+import useQueryParams from "@/hooks/useQueryParams";
+import { useCallback } from "react";
 
 export const useMapNavigation = () => {
-    const router = useRouter();
+  const queryParams = useQueryParams();
 
-    const navigateTo = async (query: NavigationQueryType) => {
-        if (query.length) {
-            await router.push({
-                pathname: routes.MAPS,
-                query: { filter: query },
-            });
-        } else {
-            await router.push({
-                pathname: routes.MAPS,
-                query: {},
-            });
-        }
-    };
+  const navigateTo = useCallback(
+    async (query?: Partial<GetMapsApiArg>) => {
+      await queryParams.changeFilterNavigate({ ...query });
+    },
+    [queryParams.changeFilterNavigate],
+  );
 
-    return {
-        navigateTo,
-    };
+  return {
+    filters: queryParams.filter,
+    navigateTo,
+  };
 };
-

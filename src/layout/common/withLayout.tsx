@@ -1,15 +1,16 @@
-import { LayoutContainer } from '@/layout/common/LayoutContainer';
-import React from 'react';
+import { LayoutContainer } from "@/layout/common/LayoutContainer";
+import React from "react";
 
 export type LayoutProps = {
-    children: React.ReactElement;
-}
+  children: React.ReactElement;
+};
 
-// eslint-disable-next-line react/display-name
-export const withLayout = (Component: React.FC, layout: React.FC<LayoutProps>): React.FC => () => {
+export const withLayout =
+  (Component: React.FC, layout: React.FC<LayoutProps>): React.FC =>
+  () => {
     return (
-        <LayoutContainer layout={ layout }>
-            <Component />
-        </LayoutContainer>
-    )
-}
+      <LayoutContainer layout={layout}>
+        <Component />
+      </LayoutContainer>
+    );
+  };
