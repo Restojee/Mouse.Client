@@ -2,6 +2,7 @@ import { GetMapsApiArg } from "@/api/codegen/genMouseMapsApi";
 import { BookCheckFillIcon } from "@/svg/BookCheckFillIcon";
 import { BookFillIcon } from "@/svg/BookFillIcon";
 import { BookmarkIcon } from "@/svg/BookmarkIcon";
+import { CommentFillIcon } from "@/svg/CommentFillIcon";
 import { SvgIconPropsType } from "@/svg/common/types";
 import { FavoriteIcon } from "@/svg/FavoriteIcon";
 
@@ -27,11 +28,11 @@ export const navItems: NavItemsType[] = [
     IconComponent: BookFillIcon,
     query: { isCompleted: false },
   },
-  // {
-  //     label: 'Прокомментированные',
-  //     IconComponent:  CommentFillIcon,
-  //     query: ''
-  // },
+  {
+    label: "Прокомментированные",
+    IconComponent: CommentFillIcon,
+    query: { isWithComment: true },
+  },
   {
     label: "Карты с заметкой",
     IconComponent: BookmarkIcon,

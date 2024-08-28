@@ -13,11 +13,11 @@ export const MapSearch = () => {
   const maps = useAppSelector(selectMaps);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    await updateFilter({ name: e.currentTarget.value, page: 1 });
+    await updateFilter({ name: e.currentTarget.value.trim(), page: 1 });
   };
 
   const onKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const map = maps?.find((el) => el.name === filter.name);
+    const map = maps?.find((el) => el.name === filter.name?.trim());
 
     if (e.key !== "Enter") {
       return;

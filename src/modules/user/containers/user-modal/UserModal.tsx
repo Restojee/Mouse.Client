@@ -115,7 +115,7 @@ const UserModal = () => {
             </StyledStatisticIconContainer>
           </StyledBox>
           <StyledBox
-            onClick={() => alert("просмотр прокомментированных карт пока не работает")}
+            onClick={() => onFilterClick({ isWithComment: true, userId: currentUserView?.id })}
             grow="1"
             justify="center"
             title="Оставлено комментариев"

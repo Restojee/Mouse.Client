@@ -9,6 +9,8 @@ export const getCurrentCollectName = (query: Partial<GetMapsApiArg>): string => 
     return "Избранные";
   } else if (query.isCreatedByUser === true) {
     return "Добавленные";
+  } else if (query.isWithComment === true) {
+    return "Прокомментированные";
   } else if (query.hasNote === true) {
     return "Карты с заметкой";
   } else {

@@ -10,7 +10,8 @@ import { AxiosResponse } from "axios";
 export const commentsApi = {
   getCommentsByMapId: async (params: GetCommentsByMapIdApiArg) => {
     const res = await api.get<GetCommentsByMapIdApiArg, AxiosResponse<GetCommentsByMapIdApiResponse>>(
-      `/comments/by-level/${params.levelId}`,
+      `/comments/collect`,
+      { params },
     );
     return res.data;
   },

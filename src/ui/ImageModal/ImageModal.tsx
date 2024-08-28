@@ -1,13 +1,15 @@
 import { CloseIcon } from "@/svg/CloseIcon";
-import React, { useRef, useState } from "react";
+import { StyledBox } from "@/ui/Box";
+import React, { ReactNode, useRef, useState } from "react";
 import styles from "./styles.module.scss";
 
 interface ImageModalProps {
   imageSrc: string;
+  children: ReactNode;
   altText: string;
 }
 
-const ImageModal: React.FC<ImageModalProps> = ({ imageSrc, altText }) => {
+const ImageModal: React.FC<ImageModalProps> = ({ imageSrc, altText, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [position, setPosition] = useState(0);
@@ -18,28 +20,35 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageSrc, altText }) => {
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-  const startDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  // Handle drag start for both mouse and touch events
+  const startDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) => {
     setDragging(true);
-    setStartX(e.clientX - position);
+    const clientX =
+      e.type === "mousedown" ? (e as React.MouseEvent).clientX : (e as React.TouchEvent).touches[0].clientX;
+    setStartX(clientX - position);
   };
 
-  const onDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  // Handle dragging for both mouse and touch events
+  const onDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) => {
     if (dragging) {
-      const newPosition = e.clientX - startX;
+      const clientX =
+        e.type === "mousemove" ? (e as React.MouseEvent).clientX : (e as React.TouchEvent).touches[0].clientX;
+      const newPosition = clientX - startX;
       setPosition(newPosition);
     }
   };
 
+  // Handle drag end for both mouse and touch events
   const stopDrag = () => setDragging(false);
 
   return (
     <>
-      <img
-        src={imageSrc}
-        alt={altText}
+      <StyledBox
         onClick={openModal}
-        className={styles.image}
-      />
+        cursor={"zoom-in"}
+      >
+        {children}
+      </StyledBox>
 
       {isOpen && (
         <div
@@ -61,6 +70,10 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageSrc, altText }) => {
               onMouseMove={onDrag}
               onMouseUp={stopDrag}
               onMouseLeave={stopDrag}
+              // Handling touch events
+              onTouchStart={startDrag}
+              onTouchMove={onDrag}
+              onTouchEnd={stopDrag}
               style={{ transform: `translateX(${position}px)` }}
             >
               <img

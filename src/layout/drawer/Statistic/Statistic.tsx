@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { getUsersThunk } from "@/modules/user/slice";
 import { getAvatarImageLink } from "@/common/utils";
 import { formatDateTime } from "@/common/utils/formatDateTime";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
 import useQueryParams from "@/hooks/useQueryParams";
+import { StyledStatisticIconContainer, StyledStatisticIconText } from "@/layout/drawer/Statistic/styled";
+import { StyledDrawerBlock, StyledDrawerHeader } from "@/layout/drawer/styled";
 import { useUser } from "@/modules/user/hooks/useUser";
-import { Avatar } from "@/ui/Avatar";
-import { StyledBox } from "@/ui/Box";
-import { Typography } from "@/ui/Typography/styles/Typography";
+import { getUsersThunk } from "@/modules/user/slice";
+import { BookCheckFillIcon } from "@/svg/BookCheckFillIcon";
 import { CommentFillIcon } from "@/svg/CommentFillIcon";
 import { FavoriteIcon } from "@/svg/FavoriteIcon";
 import { InIcon } from "@/svg/InIcon";
-import { BookCheckFillIcon } from "@/svg/BookCheckFillIcon";
-import { StyledStatisticIconContainer, StyledStatisticIconText } from "@/layout/drawer/Statistic/styled";
-import { StyledDrawerBlock, StyledDrawerHeader } from "@/layout/drawer/styled";
+import { Avatar } from "@/ui/Avatar";
+import { StyledBox } from "@/ui/Box";
+import { Typography } from "@/ui/Typography/styles/Typography";
+import React, { useEffect } from "react";
 
 export const Statistic = () => {
   const dispatch = useAppDispatch();
@@ -109,7 +109,7 @@ export const Statistic = () => {
                 </StyledStatisticIconContainer>
               </StyledBox>
               <StyledBox
-                onClick={() => alert("просмотр прокомментированных карт пока не работает")}
+                onClick={() => changeFilterNavigate({ isWithComment: true, userId: user.id })}
                 grow="1"
                 justify="center"
                 title="Оставлено комментариев"

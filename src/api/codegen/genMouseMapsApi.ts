@@ -90,6 +90,7 @@ export type GetMapsApiArg = {
   sortBy?: "DATE" | "COMPLETED" | "COMMENTED" | "FAVORITE" | "VISIT";
   isFavorite?: boolean;
   hasNote?: boolean;
+  isWithComment?: boolean;
   isCompleted?: boolean;
   isCreatedByUser?: boolean;
   name?: string;
@@ -125,6 +126,7 @@ export type GetCommentsByUserIdApiArg = {
 export type GetCommentsByMapIdApiResponse = /** status 200 OK */ Comment[];
 export type GetCommentsByMapIdApiArg = {
   levelId: number;
+  userId?: number;
 };
 export type RemoveFavoriteMapApiResponse = /** status 200 OK */ string;
 export type RemoveFavoriteMapApiArg = {
