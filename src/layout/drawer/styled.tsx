@@ -55,7 +55,7 @@ export const StyledDrawerHeader = styled.div(({ theme }) => ({
   top: 0,
 }));
 
-export const StyledDrawerBlock = styled.div<{ isMyCard: boolean }>(({ theme, isMyCard }) => ({
+export const StyledDrawerBlock = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   backgroundColor: theme.colors.secondary,
@@ -65,7 +65,4 @@ export const StyledDrawerBlock = styled.div<{ isMyCard: boolean }>(({ theme, isM
   "@media all and (max-width: 1140px)": {
     backgroundColor: "rgba(0, 0, 0, 0.05)",
   },
-  ...(isMyCard && {
-    boxShadow: ` inset 0 0 3px 0 ${theme.colors.mapBackground}`,
-  }),
 }));

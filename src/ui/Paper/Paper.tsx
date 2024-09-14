@@ -1,6 +1,6 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { StyledBox, StyledBoxProps } from "@/ui/Box";
 import React from "react";
+import { StyledBox, StyledBoxProps } from "@/ui/Box";
 
 type PaperPropsType = Partial<StyledBoxProps> & {
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -12,7 +12,7 @@ export const Paper = ({ children, onClick, ...props }: PaperPropsType) => {
   return (
     <StyledBox
       onClick={onClick}
-      flex={"column"}
+      direction={"column"}
       textAlign={"center"}
       align={"center"}
       boxShadow={"0 0 100px 1px rgba(0, 0, 0, 1)"}

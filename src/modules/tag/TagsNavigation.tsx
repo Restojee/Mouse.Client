@@ -1,7 +1,7 @@
 import { Tag } from "@/api/codegen/genMouseMapsApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import useFilterQueryParams from "@/hooks/useFilterQueryParams";
+import useQueryParams from "@/hooks/useQueryParams";
 import { NavLink } from "@/layout/navigation/NavLink";
 import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
 import { SidebarSection } from "@/layout/sidebar/SidebarSection";
@@ -25,7 +25,7 @@ type TagsNavigationSectionProps = {
 export function TagsNavigation(props: TagsNavigationSectionProps) {
   const { onTagDelete, modalType, onOpenModal, onCloseModal, tagsList } = useTag();
 
-  const { updateFilter } = useFilterQueryParams();
+  const { updateFilter } = useQueryParams();
 
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(selectIsAuth);

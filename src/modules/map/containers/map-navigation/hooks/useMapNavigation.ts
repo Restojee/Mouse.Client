@@ -1,15 +1,15 @@
 import { GetMapsApiArg } from "@/api/codegen/genMouseMapsApi";
-import useFilterQueryParams from "@/hooks/useFilterQueryParams";
+import useQueryParams from "@/hooks/useQueryParams";
 import { useCallback } from "react";
 
 export const useMapNavigation = () => {
-  const queryParams = useFilterQueryParams();
+  const queryParams = useQueryParams();
 
   const navigateTo = useCallback(
     async (query?: Partial<GetMapsApiArg>) => {
       await queryParams.changeFilterNavigate({ ...query });
     },
-    [queryParams],
+    [queryParams.changeFilterNavigate],
   );
 
   return {

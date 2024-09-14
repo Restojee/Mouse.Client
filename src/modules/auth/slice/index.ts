@@ -33,8 +33,9 @@ export const registerThunk = createAsyncThunk("auth/register", async (arg: Regis
       refreshTokenProvider.setToken(res.refreshToken);
       thunkAPI.dispatch(setAppMessage({ severity: "success", text: `Добро пожаловать, ${res.user.username}!` }));
     }
+    return thunkAPI.fulfillWithValue(true);
   } catch (err) {
-    console.log(err);
+    return thunkAPI.rejectWithValue(false);
   }
 });
 

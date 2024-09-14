@@ -1,11 +1,10 @@
-import styled from "styled-components";
 import { MINI_IMAGES_HEIGHT, MINI_IMAGES_WIDTH } from "../constants";
+import styled from "styled-components";
 
 type StyledMiniMapImageContainerPropsType = {
   isVisible?: boolean;
   username?: string;
   isActive?: boolean;
-  isWithShadows?: boolean;
 };
 export const StyledMiniMapImageContainer = styled.div<StyledMiniMapImageContainerPropsType>(({ theme, ...props }) => ({
   height: MINI_IMAGES_HEIGHT,

@@ -1,8 +1,6 @@
-import { StyledMapContentNoteForm } from "@/modules/map/styles/styled";
-import { StyledBox } from "@/ui/Box";
-import { Typography } from "@/ui/Typography";
-import React, { ChangeEvent, useEffect, useState } from "react";
 import { useMapNote } from "./hooks/useMapNote";
+import { StyledMapContentNoteForm } from "@/modules/map/styles/styled";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 export const Note = () => {
   const { note, saveNote } = useMapNote();
@@ -40,25 +38,13 @@ export const Note = () => {
   }, [note]);
 
   return (
-    <StyledBox
-      textAlign={"start"}
-      direction={"column"}
-      gap={15}
-    >
-      <Typography
-        margin={"0 0 0 10px"}
-        opacity={0.3}
-      >
-        Моя заметка
-      </Typography>
-      <StyledMapContentNoteForm
-        value={value}
-        onBlur={onSaveNoteHandler}
-        onChange={onChangeHandler}
-        onKeyUp={onKeyUpHandler}
-        placeholder="Нажмите, чтобы написать заметку..."
-        maxLength={1000}
-      />
-    </StyledBox>
+    <StyledMapContentNoteForm
+      value={value}
+      onBlur={onSaveNoteHandler}
+      onChange={onChangeHandler}
+      onKeyUp={onKeyUpHandler}
+      placeholder="Нажмите, чтобы написать заметку..."
+      maxLength={1000}
+    />
   );
 };

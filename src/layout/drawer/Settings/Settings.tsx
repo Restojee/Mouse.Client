@@ -1,18 +1,20 @@
+import { GetInviteCollectResponse } from "@/api/codegen/genMouseMapsApi";
 import { inviteApi } from "@/api/inviteApi";
 import { useAppNotifications } from "@/hooks/useAppNotifications";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { Display } from "@/ui/Display";
+import { useCallback, useEffect, useState } from "react";
 import { StyledDrawerHeader } from "@/layout/drawer/styled";
-import { getInviteLink } from "@/modules/auth";
 import { useUser } from "@/modules/user/hooks/useUser";
 import { StyledBox } from "@/ui/Box";
 import { Button } from "@/ui/Button";
 import { Input } from "@/ui/Input";
 import { Typography } from "@/ui/Typography";
 import { UpdateAvatar } from "@/ui/UpdateAvatar/UpdateAvatar";
-import { useCallback, useState } from "react";
 
 export const Settings = () => {
   const { onError, onSuccess } = useAppNotifications();
+  const [inviteToken, setInviteToken] = useState<GetInviteCollectResponse | null>(null);
   const { currentUser, updateUserImage } = useUser();
   const { theme } = useAppTheme();
 
@@ -26,19 +28,20 @@ export const Settings = () => {
 
   const onInviteCopy = useCallback(async () => {
     try {
-      const { token } = await inviteApi.createInviteToken({ email: currentUser?.username || "Не указано" });
-      if (!token) {
+      if (!inviteToken) {
         return;
       }
 
-      const link = getInviteLink(token);
-
-      await navigator.clipboard.writeText(link);
-      onSuccess("Ссылка скопирована");
+      await navigator.clipboard.writeText(inviteToken.token);
+      onSuccess("Скопировано");
     } catch (error) {
       onError("Ошибка копирования");
     }
-  }, [currentUser?.username, onError, onSuccess]);
+  }, [inviteToken, onError, onSuccess]);
+
+  useEffect(() => {
+    inviteApi.getInviteToken().then(setInviteToken);
+  }, []);
 
   return (
     <StyledBox
@@ -48,7 +51,7 @@ export const Settings = () => {
       grow={1}
     >
       <StyledDrawerHeader>
-        <Typography>Мои данные</Typography>
+        <Typography>Настройки</Typography>
       </StyledDrawerHeader>
       <StyledBox
         align={"center"}
@@ -80,30 +83,28 @@ export const Settings = () => {
           color={theme.colors.brandColorContrastText}
         />
       </StyledBox>
-      <StyledBox
-        align={"center"}
-        direction={"column"}
-        padding={"20px 0 0 0"}
-      >
-        <StyledDrawerHeader>
-          <Typography>Приглашение для друга</Typography>
-        </StyledDrawerHeader>
+      <Display condition={inviteToken?.token}>
         <StyledBox
-          fontSize={"0.8rem"}
-          padding={"0px 10px 20px"}
-          opacity={0.7}
-          textAlign={"center"}
-          borderRadius={15}
-          style={{ lineHeight: 1.5 }}
+          align={"center"}
+          direction={"column"}
+          padding={"20px 0 0 0"}
+          gap={20}
         >
-          Получите одноразовую ссылку-приглашение для регистрации. Помните, что ссылка не должна попасть в плохие руки!
+          <StyledDrawerHeader>
+            <Typography>Другое</Typography>
+          </StyledDrawerHeader>
+          <Input
+            title={"Пригласительный код"}
+            value={inviteToken?.token}
+            readOnly
+          />
+          <Button
+            onClick={onInviteCopy}
+            label={"Копировать код"}
+            color={theme.colors.brandColorContrastText}
+          />
         </StyledBox>
-        <Button
-          onClick={onInviteCopy}
-          label={"Скопировать"}
-          color={theme.colors.brandColorContrastText}
-        />
-      </StyledBox>
+      </Display>
     </StyledBox>
   );
 };

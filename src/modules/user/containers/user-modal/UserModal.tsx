@@ -2,7 +2,7 @@ import { GetMapsApiArg } from "@/api/codegen/genMouseMapsApi";
 import { getAvatarImageLink } from "@/common/utils";
 import { formatDateTime } from "@/common/utils/formatDateTime";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import useFilterQueryParams from "@/hooks/useFilterQueryParams";
+import useQueryParams from "@/hooks/useQueryParams";
 import { StyledStatisticIconContainer, StyledStatisticIconText } from "@/layout/drawer/Statistic/styled";
 import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
 import { useUser } from "@/modules/user/hooks/useUser";
@@ -24,7 +24,7 @@ const UserModal = () => {
 
   const { closeMap, levelId } = useMapView();
 
-  const { changeFilterNavigate } = useFilterQueryParams();
+  const { changeFilterNavigate } = useQueryParams();
 
   const onFilterClick = async (filter: Partial<GetMapsApiArg>) => {
     await changeFilterNavigate(filter);

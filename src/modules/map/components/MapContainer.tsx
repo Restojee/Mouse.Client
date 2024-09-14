@@ -1,21 +1,21 @@
 import { getCurrentCollectName } from "@/common/utils/getCurrentCollectName";
-import useFilterQueryParams from "@/hooks/useFilterQueryParams";
-import { PageFooter } from "@/layout/page/PageFooter";
-import { PageHeader } from "@/layout/page/PageHeader";
-import { StyledPageWrapper } from "@/layout/page/styles/StyledPageWrapper";
-import { PageContent } from "@/modules/map/components/PageContent";
+import useQueryParams from "@/hooks/useQueryParams";
+import { MapSearch } from "../containers/map-search/MapSearch";
 import { useUser } from "@/modules/user/hooks/useUser";
 import { StyledBox } from "@/ui/Box";
 import { Typography } from "@/ui/Typography";
 import React, { ReactNode, useMemo } from "react";
+import { PageHeader } from "@/layout/page/PageHeader";
+import { StyledPageWrapper } from "@/layout/page/styles/StyledPageWrapper";
+import { PageFooter } from "@/layout/page/PageFooter";
+import { PageContent } from "@/modules/map/components/PageContent";
 import { MapCreateSection } from "../containers/map-create/ui/MapCreateSection";
-import { MapSearch } from "../containers/map-search/MapSearch";
 
 type Props = {
   children: ReactNode;
 };
 export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
-  const { filter } = useFilterQueryParams();
+  const { filter } = useQueryParams();
   const { myId, getUserById } = useUser();
 
   const currentPageTitle = useMemo(() => {
@@ -33,7 +33,7 @@ export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
     const username = getUserById(userId)?.username;
 
     return { username, collect };
-  }, [filter, getUserById, myId]);
+  }, [filter]);
 
   return (
     <StyledPageWrapper>

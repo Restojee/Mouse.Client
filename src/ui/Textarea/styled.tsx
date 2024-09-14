@@ -1,12 +1,12 @@
-import { Property } from "csstype";
 import styled from "styled-components";
+import { Property } from "csstype";
 
 type StyledTextareaType = {
   bgColor?: Property.BackgroundColor;
   height?: Property.Height;
 };
 export const StyledTextarea = styled.textarea<StyledTextareaType>(({ theme, ...props }) => ({
-  borderRadius: "15px",
+  borderRadius: "10px",
   backgroundColor: props.bgColor || `${theme.colors.input.default}`,
   border: `1px solid ${theme.colors.input.border}`,
   height: props.height || "100px",
