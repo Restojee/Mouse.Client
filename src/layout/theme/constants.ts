@@ -15,7 +15,7 @@ export const DefaultTheme = {
 
     secondary: "#fff",
     secondaryDarker: "#eaeaea",
-    secondaryDark: "#f3f3f3",
+    secondaryDark: "#f8f8f8",
     secondaryAccent: "rgba(0,0,0,0.28)",
     textOnSecondary: "#000",
     iconOnSecondary: "#939393",
@@ -129,7 +129,7 @@ const DarkTheme: GlobalTheme = {
       focus: "rgb(68,68,68)",
       border: "rgb(68,68,68)",
     },
-    secondaryDark: "#232323",
+    secondaryDark: "#262626",
     secondaryDarker: "#1e1e1e",
     iconOnSecondary: "rgb(82,82,82)",
     default: {

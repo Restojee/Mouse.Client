@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import useQueryParams from "@/hooks/useQueryParams";
+import useFilterQueryParams from "@/hooks/useFilterQueryParams";
 import { StyledMapsGrid } from "@/modules/map/styles/StyledMapsGrid";
 import { StyledBox } from "@/ui/Box";
 import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
@@ -19,7 +19,7 @@ export const MapsList = React.memo(() => {
   const mapsInfo = useAppSelector(selectMapsInfo);
 
   const router = useRouter();
-  const { updateFilter, filter } = useQueryParams();
+  const { updateFilter, filter } = useFilterQueryParams();
 
   useEffect(() => {
     if (!router.isReady) {

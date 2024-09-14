@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/hooks/useAppSelector";
-import useQueryParams from "@/hooks/useQueryParams";
+import useFilterQueryParams from "@/hooks/useFilterQueryParams";
 import { selectMaps } from "@/modules/map/containers/map-list";
 import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
 import { SearchIcon } from "@/svg/SearchIcon";
@@ -8,7 +8,7 @@ import { Input } from "@/ui/Input";
 import React from "react";
 
 export const MapSearch = () => {
-  const { updateFilter, filter } = useQueryParams();
+  const { updateFilter, filter } = useFilterQueryParams();
   const { openMap } = useMapView();
   const maps = useAppSelector(selectMaps);
 

@@ -1,74 +1,52 @@
-import { GetMapsApiArg } from "@/api/codegen/genMouseMapsApi";
-import { removeKeysFromObject } from "@/common/utils/removeKeysFromObject";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { selectCurrentUserId } from "@/modules/auth/slice";
-import { useCallback, useMemo } from "react";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { selectFilter, setFilter, updateFilter as updateStateFilter } from "@/modules/map/containers/map-list/slice";
 import { useRouter } from "next/router";
-import queryString from "query-string";
+import { ParsedUrlQueryInput } from "querystring";
+import { useCallback } from "react";
 
-const useQueryParams = () => {
+export const useQueryParams = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
-  const userId = useAppSelector(selectCurrentUserId);
-  const filter = useAppSelector(selectFilter);
-
-  const staticFilters: Partial<GetMapsApiArg> = useMemo(
-    () => ({
-      page: 1,
-      size: 30,
-      userId,
-    }),
-    [userId],
-  );
-
-  const query = useMemo((): Partial<GetMapsApiArg> => {
-    return queryString.parse(router.query.filter as string) as Partial<GetMapsApiArg>;
-  }, [router.query.filter]);
-
-  const updateQuery = useCallback(async () => {
-    await router.push({
-      query: {
-        ...router.query,
-        filter: queryString.stringify(filter, { skipEmptyString: true }),
-      },
-    });
-  }, [router, filter]);
-
-  const removeQuery = useCallback(
-    async (query: Array<keyof GetMapsApiArg>) => {
-      const updatedQuery = removeKeysFromObject(filter, query) as GetMapsApiArg;
-      dispatch(setFilter(updatedQuery));
+  const updateQuery = useCallback(
+    async (newQuery: ParsedUrlQueryInput) => {
+      await router.replace(
+        {
+          pathname: router.pathname,
+          query: newQuery,
+        },
+        undefined,
+        { shallow: true },
+      );
     },
-    [dispatch, filter],
+    [router],
   );
 
-  const changeFilterNavigate = useCallback(
-    async (newFilter?: Partial<GetMapsApiArg>) => {
-      const filter = { ...staticFilters, ...newFilter };
-
-      dispatch(setFilter(filter));
+  const addQueryParam = useCallback(
+    async (param: string, value: string) => {
+      const newQuery = { ...router.query, [param]: value };
+      await updateQuery(newQuery);
     },
-    [dispatch, staticFilters],
+    [router.query, updateQuery],
   );
 
-  const updateFilter = useCallback(
-    async (newFilter: Partial<GetMapsApiArg>) => {
-      dispatch(updateStateFilter(newFilter));
+  const removeQueryParam = useCallback(
+    async (param: string) => {
+      const newQuery = { ...router.query };
+      delete newQuery[param];
+      await updateQuery(newQuery);
     },
-    [dispatch],
+    [router.query, updateQuery],
   );
 
-  return {
-    filter,
-    query,
-    updateQuery,
-    removeQuery,
-    updateFilter,
-    changeFilterNavigate,
-  };
+  const updateQueryParam = useCallback(
+    async (param: string, value: string) => {
+      const newQuery = { ...router.query, [param]: value };
+      await updateQuery(newQuery);
+    },
+    [router.query, updateQuery],
+  );
+
+  const clearAllQueryParams = useCallback(async () => {
+    await updateQuery({});
+  }, [updateQuery]);
+
+  return { query: router.query, addQueryParam, removeQueryParam, updateQueryParam, clearAllQueryParams };
 };
-
-export default useQueryParams;

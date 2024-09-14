@@ -1,4 +1,4 @@
-import useQueryParams from "@/hooks/useQueryParams";
+import useFilterQueryParams from "@/hooks/useFilterQueryParams";
 import { useRouter } from "next/router";
 import queryString from "query-string";
 import React, { useEffect } from "react";
@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 export const MapsQueryParams = React.memo(() => {
   const router = useRouter();
 
-  const { filter, updateFilter, updateQuery } = useQueryParams();
+  const { filter, updateFilter, updateQuery } = useFilterQueryParams();
 
   useEffect(() => {
     if (router.isReady && router.query.filter) {

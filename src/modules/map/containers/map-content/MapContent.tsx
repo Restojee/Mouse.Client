@@ -39,7 +39,7 @@ export const MapContent = React.memo(() => {
       return formatDateTime(dateTime);
     }
     return "";
-  }, [map?.createdUtcDate, activeMapCompleted?.createdUtcDate]);
+  }, [map, activeMapCompleted?.createdUtcDate]);
 
   return (
     <Paper
