@@ -54,12 +54,10 @@ export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ..
   maxWidth: "100%",
   zIndex: 1,
   position: "relative",
-  boxShadow: `inset 0 0 100px 100px ${props.bgColor || theme.colors.input.default}`,
   border: `1px solid ${theme.colors.input.border}`,
   transition: "0.2s",
   transitionProperty: "opacity, background-color, border, box-shadow, margin",
   "&:hover": {
-    boxShadow: `inset 0 0 100px 100px ${props.bgColor ? "" : theme.colors.input.hover}`,
     ...(props.bgColor && {
       opacity: 0.7,
     }),

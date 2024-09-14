@@ -1,15 +1,18 @@
 import { RegisterRequest } from "@/api/codegen/genMouseMapsApi";
 import { setAppMessage, setAppModalType } from "@/bll/appReducer";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useQueryParams } from "@/hooks/useQueryParams";
 import { registerThunk } from "@/modules/auth/slice";
 import { useCallback } from "react";
 
 export const useRegister = () => {
   const dispatch = useAppDispatch();
+  const { removeQueryParam } = useQueryParams();
 
   const onRegisterModalClose = useCallback(() => {
+    removeQueryParam("invite");
     dispatch(setAppModalType(null));
-  }, [dispatch]);
+  }, [dispatch, removeQueryParam]);
 
   const onRegisterModalOpen = useCallback(() => {
     dispatch(setAppModalType("register"));
@@ -17,12 +20,8 @@ export const useRegister = () => {
 
   const register = async (data: RegisterRequest) => {
     try {
-      const res = await dispatch(registerThunk(data));
-      if (res.payload) {
-        onRegisterModalClose();
-      } else {
-        throw new Error();
-      }
+      await dispatch(registerThunk(data));
+      onRegisterModalClose();
     } catch (err) {
       dispatch(setAppMessage({ severity: "error", text: "Ошибка регистрации" }));
     }

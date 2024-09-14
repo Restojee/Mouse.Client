@@ -1,5 +1,5 @@
 import { checkFilter } from "@/common/utils/checkFilters";
-import useQueryParams from "@/hooks/useQueryParams";
+import useFilterQueryParams from "@/hooks/useFilterQueryParams";
 import { NavLink } from "@/layout/navigation/NavLink";
 import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
 import { SidebarSection } from "@/layout/sidebar/SidebarSection";
@@ -11,7 +11,7 @@ type MapsByFiltersNavigationSectionProps = {
 };
 
 export function MapsByFiltersNavigation(props: MapsByFiltersNavigationSectionProps) {
-  const { filter, changeFilterNavigate } = useQueryParams();
+  const { filter, changeFilterNavigate } = useFilterQueryParams();
 
   return (
     <StyledBox
