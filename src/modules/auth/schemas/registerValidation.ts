@@ -13,7 +13,7 @@ export const registerValidation: yup.ObjectSchema<RegisterRequest & { confirmPas
     .trim()
     .min(1, "Некорректный код")
     .max(500, "Максимальное количество символов - 500")
-    .required("Это обязательное поле"),
+    .required(),
   password: yup
     .string()
     .trim()

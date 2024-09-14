@@ -3,7 +3,7 @@ import { setAppMessage } from "@/bll/appReducer";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useDebounce } from "@/hooks/useDebounce";
-import useQueryParams from "@/hooks/useQueryParams";
+import useFilterQueryParams from "@/hooks/useFilterQueryParams";
 import {
   createMapThunk,
   selectCompletedMapImage,
@@ -28,7 +28,7 @@ export const useMapCreate = () => {
   const image = useAppSelector(selectMapImage);
   const completedMapImage = useAppSelector(selectCompletedMapImage);
 
-  const { updateFilter, query, removeQuery } = useQueryParams();
+  const { updateFilter, query, removeQuery } = useFilterQueryParams();
 
   const debounceSearchByName = useDebounce<string>(async (name: string) => {
     await updateFilter({ name });

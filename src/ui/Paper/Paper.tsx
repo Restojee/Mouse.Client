@@ -1,6 +1,6 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
-import React from "react";
 import { StyledBox, StyledBoxProps } from "@/ui/Box";
+import React from "react";
 
 type PaperPropsType = Partial<StyledBoxProps> & {
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;

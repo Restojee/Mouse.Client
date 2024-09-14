@@ -1,11 +1,9 @@
 import { LoginRequest } from "@/api/codegen/genMouseMapsApi";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useLogin } from "@/modules/auth/hooks/useLogin";
-import { useRegister } from "@/modules/auth/hooks/useRegister";
 import { loginValidateSchema } from "@/modules/auth/schemas/loginValidateSchema";
 import { StyledBox } from "@/ui/Box";
 import { Button } from "@/ui/Button";
-import { Divider } from "@/ui/Divider/Divider";
 import { Form } from "@/ui/Form/Form";
 import { Input } from "@/ui/Input";
 import { Typography } from "@/ui/Typography";
@@ -22,9 +20,6 @@ export const Login = () => {
   });
 
   const { login } = useLogin();
-
-  const { onRegisterModalOpen } = useRegister();
-
   const { theme } = useAppTheme();
 
   const onSubmit = async (data: LoginRequest) => {
@@ -36,7 +31,7 @@ export const Login = () => {
       <StyledBox
         direction={"column"}
         width={"100%"}
-        gap={20}
+        gap={30}
       >
         <Typography
           fontSize={"1.5rem"}
@@ -81,20 +76,9 @@ export const Login = () => {
         <Button
           margin={"auto"}
           color={theme.colors.brandColorContrastText}
-          size={"lg"}
           label={"Войти"}
           type={"submit"}
         />
-        <Divider />
-        <StyledBox direction={"column"}>
-          <Typography>Еще нет аккаунта?</Typography>
-          <Typography
-            onClick={onRegisterModalOpen}
-            isLink
-          >
-            Регистрация
-          </Typography>
-        </StyledBox>
       </StyledBox>
     </Form>
   );

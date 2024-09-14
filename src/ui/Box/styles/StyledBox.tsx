@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import { Property } from "csstype";
 import { ReactNode } from "react";
+import styled from "styled-components";
 
 export type StyledBoxProps = {
   direction: Property.FlexDirection;
@@ -33,6 +33,8 @@ export type StyledBoxProps = {
   display: Property.Display;
   zIndex: Property.ZIndex;
   borderBottom: Property.BorderBottom;
+  gridTemplateColumns: Property.GridTemplateColumns;
+  flex: Property.Flex;
   maxHeight: Property.MaxHeight;
 
   isClickable: boolean;
@@ -46,9 +48,11 @@ export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props 
   display: props.display || "flex",
   flexDirection: props.direction || "row",
   alignItems: props.align,
+  flex: props.flex,
   boxShadow: props.boxShadow,
   justifyContent: props.justify,
   gap: props.gap,
+  gridTemplateColumns: props.gridTemplateColumns,
   rowGap: props.gap,
   margin: props.margin,
   padding: props.padding,

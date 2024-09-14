@@ -86,6 +86,7 @@ export type GetMapsApiResponse = /** status 200 OK */ {
 export type GetMapsApiArg = {
   page: number;
   size: number;
+  invite?: string;
   sortDirection?: "ASC" | "DESC";
   sortBy?: "DATE" | "COMPLETED" | "COMMENTED" | "FAVORITE" | "VISIT";
   isFavorite?: boolean;
@@ -302,4 +303,14 @@ export type GetInviteCollectResponse = {
   modifiedUtcDate: string;
   token: string;
   expirationDate: string;
+};
+export type CreateInviteCollectResponse = {
+  createdUtcDate: string;
+  modifiedUtcDate: string;
+  token: string;
+  expirationDate: string;
+};
+
+export type CreateInviteCollectRequest = {
+  email: string;
 };

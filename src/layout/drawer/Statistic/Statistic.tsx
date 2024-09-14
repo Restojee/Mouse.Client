@@ -1,7 +1,7 @@
 import { getAvatarImageLink } from "@/common/utils";
 import { formatDateTime } from "@/common/utils/formatDateTime";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import useQueryParams from "@/hooks/useQueryParams";
+import useFilterQueryParams from "@/hooks/useFilterQueryParams";
 import { StyledStatisticIconContainer, StyledStatisticIconText } from "@/layout/drawer/Statistic/styled";
 import { StyledDrawerBlock, StyledDrawerHeader } from "@/layout/drawer/styled";
 import { useUser } from "@/modules/user/hooks/useUser";
@@ -18,9 +18,9 @@ import React, { useEffect } from "react";
 export const Statistic = () => {
   const dispatch = useAppDispatch();
 
-  const { users, getMapsPercent } = useUser();
+  const { users, getMapsPercent, currentUser } = useUser();
 
-  const { changeFilterNavigate } = useQueryParams();
+  const { changeFilterNavigate } = useFilterQueryParams();
 
   useEffect(() => {
     dispatch(getUsersThunk());
@@ -41,7 +41,10 @@ export const Statistic = () => {
         overflow={"auto"}
       >
         {users?.map((user) => (
-          <StyledDrawerBlock key={user.id}>
+          <StyledDrawerBlock
+            key={user.id}
+            isMyCard={user.id === currentUser?.id}
+          >
             <StyledBox
               align="center"
               gap={20}

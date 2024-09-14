@@ -1,15 +1,15 @@
-import { useLogin } from "@/modules/auth/hooks/useLogin";
-import { Register } from "./Register";
+import { useRegister } from "@/modules/auth/hooks/useRegister";
 import { Modal } from "@/ui/Modal/Modal";
+import { Register } from "./Register";
 
 const RegisterModal = () => {
-  const { onLoginModalClose } = useLogin();
+  const { onRegisterModalClose } = useRegister();
 
   return (
     <Modal
       withoutTitle
       isOpen={true}
-      onClose={onLoginModalClose}
+      onClose={onRegisterModalClose}
       width={300}
       withoutButtons
     >
