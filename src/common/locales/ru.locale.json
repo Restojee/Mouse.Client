@@ -1,0 +1,20 @@
+{
+  "Navigator.Main": "Главная страница",
+  "Navigator.Categories": "Разделы",
+  "Navigator.Categories.Main": "Общие разделы",
+  "Navigator.Categories.Main.All": "Все карты",
+  "Navigator.Categories.Main.Notifications": "Уведомления",
+  "Navigator.Categories.Main.Tips": "Полезная инфа",
+  "Navigator.Categories.Main.Statistic": "Статистика",
+  "Navigator.Categories.Main.Chat": "Чат",
+  "Navigator.Categories.Main.Settings": "Настройки",
+  "Navigator.Categories.Main.Theme": "Сменить тему",
+  "Navigator.Categories.Main.Logout": "Выйти",
+  "Navigator.Categories.MyCollection": "Моя коллекция",
+  "Navigator.Categories.MyCollection.Favorites": "Избранное",
+  "Navigator.Categories.MyCollection.Completed": "Выполненное",
+  "Navigator.Categories.Tags": "Избранное",
+  "Navigator.Categories.Tags.Create": "Добавить тег",
+  "Navigator.Tags": "Теги",
+  "Base.Title": "Мышинная нора"
+}

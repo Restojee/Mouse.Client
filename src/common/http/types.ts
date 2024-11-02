@@ -1,24 +1,26 @@
-export type RequestBuilderPayload<T> = {
-  params?: Partial<T>;
-  body?: Partial<T>;
-  url: string;
-  method: string;
-};
+export namespace Http {
+  export interface ClientHandler {
+    get: <T extends {}, R>(options: ClientOptions<T>) => Promise<R>;
+    delete: <T extends {}, R>(options: ClientOptions<T>) => Promise<R>;
+    post: <T extends {}, R>(options: ClientOptions<T>) => Promise<R>;
+    put: <T extends {}, R>(options: ClientOptions<T>) => Promise<R>;
+  }
 
-export type Middleware = {
-  key: string;
-  callback: <Response = unknown, Error = unknown>() => {
-    error?: (error: Error) => void;
-    response?: (response: Response) => void;
-    request?: (request: RequestInit) => RequestInit;
-  };
-};
+  export interface ClientOptions<T extends {}> {
+    url: string;
+    params: T;
+  }
 
-export type MiddlewareBuilder = {
-  add: (payload: Middleware) => MiddlewareBuilder;
-  getMiddlewares: () => Array<Middleware>;
-};
+  export type EndpointFunction<Args = any, ReturnType = any> = (
+    http: ClientHandler,
+    args: Args,
+  ) => ReturnType;
 
-export type FetchRequest<T> = (payload: T) => RequestBuilderPayload<T>;
-
-export type FR<T> = FetchRequest<T>;
+  export enum Codes {
+    Success = 200,
+    Created = 201,
+    NotAuthorized =  401,
+    BadRequest = 400,
+    NotAccess = 403
+  }
+}

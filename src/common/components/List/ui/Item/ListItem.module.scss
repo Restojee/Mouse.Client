@@ -1,0 +1,23 @@
+.ListItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &.blocked {
+    cursor: default;
+
+    &:hover {
+      background-color: initial;
+    }
+  }
+}

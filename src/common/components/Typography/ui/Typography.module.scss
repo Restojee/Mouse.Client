@@ -1,0 +1,35 @@
+.Typography {
+  &.upperCase {
+    text-transform: uppercase;
+  }
+
+  &.unselectable {
+    user-select: none;
+  }
+
+  &.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &.link {
+    text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &.clickable {
+    opacity: 0.5;
+    font-size: 12px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}

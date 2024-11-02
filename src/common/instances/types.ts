@@ -1,0 +1,1 @@
+export type GetInstance = <T>(key: string) => T

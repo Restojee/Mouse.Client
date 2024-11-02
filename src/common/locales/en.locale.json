@@ -1,0 +1,20 @@
+{
+  "Navigator.Main": "Home page",
+  "Navigator.Categories": "Categories",
+  "Navigator.Categories.Main": "General sections",
+  "Navigator.Categories.Main.All": "All maps",
+  "Navigator.Categories.Main.Notifications": "Notifications",
+  "Navigator.Categories.Main.Tips": "Useful Info",
+  "Navigator.Categories.Main.Statistic": "Statistics",
+  "Navigator.Categories.Main.Chat": "Chat",
+  "Navigator.Categories.Main.Settings": "Settings",
+  "Navigator.Categories.Main.Theme": "Change Theme",
+  "Navigator.Categories.Main.Logout": "Logout",
+  "Navigator.Categories.MyCollection": "My collection",
+  "Navigator.Categories.MyCollection.Favorites": "Favorites",
+  "Navigator.Categories.MyCollection.Completed": "Completed",
+  "Navigator.Categories.Tags": "Favorites",
+  "Navigator.Categories.Tags.Create": "Add Tag",
+  "Navigator.Tags": "Tags",
+  "Base.Title": "Mouse's Den"
+}
