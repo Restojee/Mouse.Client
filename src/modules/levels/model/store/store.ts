@@ -1,59 +1,61 @@
-import {
-  LevelByIdResponseType,
-  LevelCollectArgsType,
-  LevelCreateArgsType,
-  LevelRemoveArgsType,
-  LevelUpdateArgsType,
-} from '@/modules/levels/common/api/types';
 import { levelActions } from '@/modules/levels/model/store/actions';
-import { levelSelectors } from '@/modules/levels/model/store/selectors';
 import LevelEntity from '@/modules/levels/model/common/LevelEntity';
 import Store from '@common/store/store';
-import { LevelEntityCollection, LevelMapById } from '@/modules/levels/model/common/types';
 import EntityManager from '@common/store/entity/EntityManager';
-import Selector from '@common/store/selector/Selector';
-import { AsyncAction } from '@common/store/async/types';
+import Selector from "@common/store/getter/Getter";
+import { LevelEntityCollection, LevelFields, LevelMapById } from "@/modules/levels/model/common/types";
+import {
+  LevelByIdResponse,
+  LevelCollectArgs,
+  LevelCreateArgs,
+  LevelRemoveArgs,
+  LevelUpdateArgs,
+} from "@/modules/levels/common/api/types";
+import { AsyncAction } from "@common/store/async/types";
+import { LevelState } from "@/modules/levels/model/store/types";
+import { levelSelectors } from "@/modules/levels/model/store/selectors";
 
-class LevelStore extends Store<LevelStore> {
+//bindAction - Оборачивать доп логику, например ошибки, лоадер
+//bindSelector - Оборачивать доп стейт, ошибки, лоадер
+
+class LevelStore extends Store<LevelStore, LevelState> {
 
   public static GlobalInjectKey = 'LevelStoreKey';
 
-  public readonly fetchLevelCollection: AsyncAction<LevelCollectArgsType>;
-  public readonly fetchLevel: AsyncAction<LevelByIdResponseType>;
-  public readonly updateLevel: AsyncAction<LevelUpdateArgsType>;
-  public readonly createLevel: AsyncAction<LevelCreateArgsType>;
-  public readonly removeLevel: AsyncAction<LevelRemoveArgsType>;
+  private readonly _levelEntityManager: EntityManager<LevelEntity>;
+
+  public readonly fetchLevelCollection: AsyncAction<LevelCollectArgs>;
+  public readonly fetchLevel: AsyncAction<LevelByIdResponse>;
+  public readonly updateLevel: AsyncAction<LevelUpdateArgs>;
+  public readonly createLevel: AsyncAction<LevelCreateArgs>;
+  public readonly removeLevel: AsyncAction<LevelRemoveArgs>;
 
   public readonly getLevelCollection: Selector<{}, LevelEntityCollection>;
   public readonly getLevelMap: Selector<{}, LevelMapById>;
   public readonly getLevel: Selector<{}, LevelEntity>;
 
-  private readonly _levelEntityManager: EntityManager<LevelEntity>;
-
   constructor() {
-    super();
+    super()
 
-    this.bindActions(
-      levelActions.getLevelCollection,
-      levelActions.getLevelById,
-      levelActions.updateLevel,
-      levelActions.createLevel,
-      levelActions.removeLevel,
-    )
+    this.createState({
+      levels: this._levelEntityManager.getInitialState(),
+    });
 
-    this.bindSelectors(
-      levelSelectors.getLevelCollection,
-      levelSelectors.getLevelById,
-      levelSelectors.getLevelMap,
-    )
+    this.fetchLevelCollection = this.bindAction(levelActions.getLevelCollection);
+    this.fetchLevel = this.bindAction(levelActions.getLevelById);
+    this.createLevel = this.bindAction(levelActions.createLevel);
+    this.updateLevel = this.bindAction(levelActions.updateLevel);
+    this.removeLevel = this.bindAction(levelActions.removeLevel);
+
+    this.getLevel = this.bindSelector(levelSelectors.getLevelById);
+    this.getLevelCollection = this.bindSelector(levelSelectors.getLevelCollection);
+    this.getLevelMap = this.bindSelector(levelSelectors.getLevelMap);
 
   }
 
   public getLevelEntityManager() {
     return this._levelEntityManager;
   }
-
-
 }
 
 export default LevelStore;

@@ -1,29 +1,39 @@
 import User from "@/modules/users/User";
 import Entity from '@common/store/entity/Entity';
+import { LevelFields } from "@/modules/levels/model/common/types";
+import { Field } from "@common/store/entity/utils";
+import { string } from "yup";
 
 class LevelEntity extends Entity {
+
+  @Field('name')
   private _name: string;
+
+  @Field('description')
   private _description: string;
+
+  @Field('user')
   private _user?: User;
 
-  public getName() {
+  get user(): User {
+    return this._user;
+  }
+
+  set user(value: User) {
+    this._user = value;
+  }
+  get description(): string {
+    return this._description;
+  }
+  set description(value: string) {
+    this._description = value;
+  }
+  get name(): string {
     return this._name;
   }
 
-  public setName(name: string) {
-    this._name = name;
-  }
-
-  public setUser(user: User) {
-    this._user = user;
-  }
-
-  public setDescription(description: string) {
-    this._description = description;
-  }
-
-  public getUser() {
-    return this._user;
+  set name(value: string) {
+    this._name = value;
   }
 
 }

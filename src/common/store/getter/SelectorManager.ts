@@ -1,4 +1,4 @@
-import Selector from '@common/store/selector/Selector';
+import Selector from '@common/store/getter/Getter';
 
 class SelectorManager {
   public static DefaultInjectKey = 'SelectorManager';

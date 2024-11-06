@@ -1,16 +1,16 @@
 export interface Level { id: string; name: string; description?: string; }
 
-export interface LevelByIdArgsType { id: string; }
-export interface LevelByIdResponseType extends Level {}
+export interface LevelByIdArgs { id: string; }
+export interface LevelByIdResponse extends Level {}
 
-export interface LevelRemoveArgsType { id: string; }
-export interface LevelRemoveResponseType {}
+export interface LevelRemoveArgs { id: string; }
+export interface LevelRemoveResponse {}
 
-export interface LevelCreateArgsType { id: string; name: string; description?: string; }
-export interface LevelCreateResponseType extends Level {}
+export interface LevelCreateArgs { id: string; name: string; description?: string; }
+export interface LevelCreateResponse extends Level {}
 
-export interface LevelUpdateArgsType { id: string; name?: string; description?: string; }
-export interface LevelUpdateResponseType extends Level {}
+export interface LevelUpdateArgs { id: string; name?: string; description?: string; }
+export interface LevelUpdateResponse extends Level {}
 
-export interface LevelCollectArgsType { page: number; size: number; }
-export interface LevelCollectResponseType { total: number; records: Array<Level> }
+export interface LevelCollectArgs { page: number; size: number; ids?: number[] }
+export interface LevelCollectResponse { total: number; records: Array<Level> }
