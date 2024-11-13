@@ -10,7 +10,7 @@ class Async<Req, S> {
     return this;
   }
 
-  public bind(asyncManager: AsyncManager<S>): (req: Req) => void {
+  public call(asyncManager: AsyncManager<S>): (req: Req) => void {
     return (req: Req) => this._asyncAction(req, asyncManager.getStore(), {})
   }
 }

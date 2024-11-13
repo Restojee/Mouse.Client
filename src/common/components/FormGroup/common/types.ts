@@ -4,6 +4,7 @@ export interface FormItemProps {
   label?: string;
   children?: React.ReactNode;
   error?: string;
+  valid?: boolean;
 }
 
 export interface FormRowProps {
@@ -12,4 +13,5 @@ export interface FormRowProps {
 
 export interface FormProps {
   children?: React.ReactNode;
+  onSubmit?(): void;
 }

@@ -8,8 +8,8 @@ class AsyncManager<S> {
     this._store = store;
   }
 
-  public add<Req>(async: Async<Req, S>): (req: Req) => void {
-    return async.bind(this);
+  public call<Req>(async: Async<Req, S>, req: Req) {
+    return async.call(this)(req);
   }
 
   public getStore(): S {

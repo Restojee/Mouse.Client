@@ -8,3 +8,9 @@ export const Field =(key: string) => {
     target.fieldKeys[propertyKey] = key;
   };
 }
+
+export const Entity = (key: string) => {
+  return (target: any) => {
+
+  };
+}

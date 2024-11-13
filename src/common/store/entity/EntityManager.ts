@@ -1,13 +1,12 @@
-import Entity from '@common/store/entity/Entity';
-import { EntityState } from "@/modules/levels/model/store/types";
+import EntityState from "@common/store/entity/EntityState";
 
-class EntityManager<E extends Entity> {
+class EntityManager<E extends { id: string }> {
 
-  private _entities: Map<string, E>;
+  private _entities: Map<string, EntityState<E>>;
   protected _ids: string[];
 
   public create(entity: E) {
-    this._entities.set(entity.id, entity)
+    this._entities.set(entity.id, new EntityState(entity))
   }
 
   public remove(id: string) {
@@ -19,7 +18,7 @@ class EntityManager<E extends Entity> {
   }
 
   public update(id: string, updates: Partial<Record<string, any>>) {
-    const entity = this.getById(id);
+    const entity = this._entities[id];
     const fieldKeys = entity.getFieldKeys();
 
     for (const [key, value] of Object.entries(updates)) {
@@ -28,26 +27,15 @@ class EntityManager<E extends Entity> {
   }
 
   public set(entity: E) {
-    this._entities.set(entity.id, entity);
+    this._entities.set(entity.id, new EntityState<E>(entity));
   }
 
   public getCollection(): Array<E> {
-    return Array.from(this._entities.values());
-  }
-
-  public getEntities() : Map<string, E> {
-    return this._entities;
+    return Array.from(this._entities.values()).map(value => value.getEntity());
   }
 
   public getById(entityId: string): E {
-    return this._entities.get(entityId);
-  }
-
-  public getInitialState(): EntityState<E> {
-    return {
-      entities: this._entities,
-      ids: this._ids
-    }
+    return this._entities.get(entityId).getEntity();
   }
 }
 

@@ -14,7 +14,7 @@ const FormComponent: React.FC<FormProps> = () => (
 );
 
 export const Form = Object.assign(FormComponent, {
-  Item: FormItemComponent,
+  Field: FormItemComponent,
   Row: FormRowComponent,
 });
 
@@ -24,12 +24,12 @@ const t = () => (
       <Input.Text />
     </Form.Row>
     <Form.Row>
-      <Form.Item label="test 1" error="error">
+      <Form.Field label="test 1" error="error">
 
-      </Form.Item>
-      <Form.Item label="test 2" />
+      </Form.Field>
+      <Form.Field label="test 2" />
     </Form.Row>
-    <Form.Item>
+    <Form.Field>
       <Controls>
         <Controls.Item>
           <Button.Submit />
@@ -38,6 +38,6 @@ const t = () => (
           <Button.Cancel />
         </Controls.Item>
       </Controls>
-    </Form.Item>
+    </Form.Field>
   </Form>
 );

@@ -1,10 +1,11 @@
-import LevelEntity from '@/modules/levels/model/common/LevelEntity';
-import User from "@/modules/users/User";
+import EntityManager from "@common/store/entity/EntityManager";
+import LevelEntity from "@/modules/levels/model/entities/LevelEntity";
+import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
+import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
+import { FormSchema } from "@common/store/formSchema";
 
-export type LevelEntityCollection = Array<LevelEntity>;
-export type LevelMapById = Map<string, LevelEntity>;
-export interface LevelFields {
-  name: string;
-  description: string;
-  user?: User;
+export interface LevelState {
+  levels: EntityManager<LevelEntity>
+  createLevelForm: FormSchema<CreateLevelEntity>
+  updateLevelForm: FormSchema<UpdateLevelEntity>
 }
