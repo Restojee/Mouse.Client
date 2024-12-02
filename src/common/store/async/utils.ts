@@ -6,7 +6,7 @@ export const Validate = (args?: {}) => {
   };
 }
 
-export const LoadingAfter = (key: number) => {
+export const Loading = (key: number) => {
   return (target: any, propertyKey: string) => {
 
   };

@@ -1,15 +1,15 @@
 import Store from '@common/store/store';
 import EntityManager from '@common/store/entity/EntityManager';
 import { Roles } from "@common/types/roles";
-import { GuardRole, LoadingAfter, Validate } from "@common/store/async/utils";
+import { GuardRole, Loading, Validate } from "@common/store/async/utils";
 import LevelsApi from "@/modules/levels/common/api/api";
 import { LevelEndpoints } from "@/modules/levels/common/api/endpoints";
 import { LevelByIdArgs, LevelCollectArgs, LevelRemoveArgs } from "@/modules/levels/common/api/types";
 import { LevelState } from "@/modules/levels/model/common/types";
 import LevelEntity from "@/modules/levels/model/entities/LevelEntity";
-import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
-import { FormSchema } from "@common/store/formSchema";
+import { FormSchema } from "@common/store/form/FormSchema";
+import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
 
 class LevelStore extends Store<LevelStore, LevelState> {
 
@@ -27,18 +27,18 @@ class LevelStore extends Store<LevelStore, LevelState> {
     this._levelApi = new LevelsApi();
     this.createState(({ withForm }) => ({
       levels: new EntityManager<LevelEntity>(),
-      createLevelForm: withForm(new CreateLevelEntity()),
-      updateLevelForm: withForm(new UpdateLevelEntity()),
+      createLevel: withForm(new CreateLevelEntity()),
+      updateLevel: withForm(new UpdateLevelEntity()),
     }));
   }
 
-  public getLevelCreateForm = (): FormSchema<CreateLevelEntity> => this.getState().createLevelForm;
-  public getLevelUpdateForm = (): FormSchema<UpdateLevelEntity> => this.getState().updateLevelForm;
+  public getLevelCreateForm = (): FormSchema<CreateLevelEntity> => this.getState().createLevel;
+  public getLevelUpdateForm = (): FormSchema<UpdateLevelEntity> => this.getState().updateLevel;
   public getLevelCollection = (): Array<LevelEntity> => this.getState().levels.getCollection();
-  public getLevelById = (id: LevelEntity['id']): LevelEntity => this.getState().levels.getById(id)
+  public getLevelById = (id: string): LevelEntity => this.getState().levels.getById(id)
 
   @GuardRole(Roles.Common)
-  @LoadingAfter(LevelStore.getLoadingMs)
+  @Loading(LevelStore.getLoadingMs)
   @Validate({ entity: CreateLevelEntity })
   public async createLevel() {
 
@@ -53,7 +53,7 @@ class LevelStore extends Store<LevelStore, LevelState> {
   }
 
   @GuardRole(Roles.Common)
-  @LoadingAfter(LevelStore.mutateLoadingMs)
+  @Loading(LevelStore.mutateLoadingMs)
   @Validate({ entity: UpdateLevelEntity })
   public async updateLevel() {
     const levelEntityManager = this.getLevelEntityManager();
@@ -69,19 +69,19 @@ class LevelStore extends Store<LevelStore, LevelState> {
   }
 
   @GuardRole(Roles.Common)
-  @LoadingAfter(LevelStore.mutateLoadingMs)
+  @Loading(LevelStore.mutateLoadingMs)
   public async removeLevel(@Validate() request: LevelRemoveArgs) {
     await this.getLevelApi()[LevelEndpoints.Remove](request);
     this.getLevelEntityManager().remove(request.id)
   }
 
-  @LoadingAfter(LevelStore.getLoadingMs)
+  @Loading(LevelStore.getLoadingMs)
   public async loadLevelCollection(request: LevelCollectArgs) {
     const response = await this.getLevelApi()[LevelEndpoints.Collect](request);
     this.getLevelEntityManager().upsert(response.records);
   }
 
-  @LoadingAfter(LevelStore.getLoadingMs)
+  @Loading(LevelStore.getLoadingMs)
   public async loadLevelById(request: LevelByIdArgs) {
     const response = await this.getLevelApi()[LevelEndpoints.ById](request);
 

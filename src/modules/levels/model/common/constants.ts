@@ -1,8 +1,9 @@
 export const LevelMeta = {
-  Create: 'create-level',
-  Update: 'update-level',
-  Name: 'name',
-  Description: 'description',
-  Id: 'id',
-  User: 'user',
+  level: 'level',
+  create: 'create-level',
+  update: 'update-level',
+  name: 'name',
+  description: 'description',
+  id: 'id',
+  user: 'user',
 }

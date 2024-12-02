@@ -2,15 +2,15 @@ import { Entity, Field } from "@common/store/entity/utils";
 import { IsNotEmpty, IsString } from "class-validator";
 import { LevelMeta } from "@/modules/levels/model/common/constants";
 
-@Entity(LevelMeta.Create)
+@Entity(LevelMeta.create)
 export class CreateLevelEntity {
 
-  @Field(LevelMeta.Name)
+  @Field(LevelMeta.name)
   @IsString()
   @IsNotEmpty()
   private _name: string;
 
-  @Field(LevelMeta.Description)
+  @Field(LevelMeta.description)
   @IsString()
   private _description: string;
 

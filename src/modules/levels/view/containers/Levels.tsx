@@ -5,23 +5,22 @@ import React from "react";
 import { LevelMeta } from "@/modules/levels/model/common/constants";
 
 const store = new LevelStore();
-const { Name, Description } = LevelMeta;
+const { name, description } = LevelMeta;
 
-const Levels = () => {
-
+const Levels: React.FC = () => {
   const request = store.getLevelCreateForm();
 
   return (
     <Paper bgColor="secondary">
       <Form onSubmit={store.createLevel}>
-        <Form.Field {...request.getField(Name)}>
-          <Input {...request.Input(Name)}/>
+        <Form.Field {...request.getFieldProps(name)}>
+          <Input {...request.getInputProps(name)}/>
         </Form.Field>
-        <Form.Field {...request.getField(Description)}>
-          <Input {...request.Input(Description)}/>
+        <Form.Field {...request.getFieldProps(description)}>
+          <Input {...request.getInputProps(description)}/>
         </Form.Field>
         <Form.Field>
-          <Button type="submit" disabled={!request.getIsValid()} />
+          <Button type="submit" disabled={!request.getIsValuesValid()} />
         </Form.Field>
       </Form>
     </Paper>

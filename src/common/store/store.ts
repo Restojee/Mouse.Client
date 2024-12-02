@@ -1,19 +1,13 @@
-import SelectorManager from '@common/store/getter/SelectorManager';
 import ActionManager from '@common/store/async/AsyncManager';
-import { FormSchema } from "@common/store/formSchema";
-import EntityState from "@common/store/entity/EntityState";
+import { FormSchema } from "@common/store/form/FormSchema";
+import { CreateStateArgs } from "@common/store/form/types";
 
 const withForm = <E extends {}>(value: E) => new FormSchema(value);
-
-interface CreateStateArgs {
-  withForm: <E extends {}>(value: E) => FormSchema<E>
-}
 
 class Store<Par, State extends {} = {}> {
 
   protected state: State;
   protected readonly actions: ActionManager<Par>;
-  protected readonly selectors: SelectorManager;
 
   constructor() {
 

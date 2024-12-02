@@ -2,19 +2,19 @@ import User from "@/modules/users/User";
 import { Entity, Field } from "@common/store/entity/utils";
 import { LevelMeta } from "@/modules/levels/model/common/constants";
 
-@Entity('create-level')
+@Entity(LevelMeta.level)
 class LevelEntity {
 
-  @Field(LevelMeta.Id)
+  @Field(LevelMeta.id)
   private _id: string;
 
-  @Field(LevelMeta.Name)
+  @Field(LevelMeta.name)
   private _name: string;
 
-  @Field(LevelMeta.Description)
+  @Field(LevelMeta.description)
   private _description: string;
 
-  @Field(LevelMeta.User)
+  @Field(LevelMeta.user)
   private _user?: User;
 
   get id() : string {
@@ -23,11 +23,9 @@ class LevelEntity {
   set id(value: string) {
     this._id = value;
   }
-
   get user(): User {
     return this._user;
   }
-
   set user(value: User) {
     this._user = value;
   }
@@ -40,7 +38,6 @@ class LevelEntity {
   get name(): string {
     return this._name;
   }
-
   set name(value: string) {
     this._name = value;
   }
