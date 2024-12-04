@@ -40,29 +40,29 @@ export const Uploader = (props: ImageFormPropsType) => {
     [uploadFile],
   );
 
-  const handleDrag: UploaderDragEventHandler = React.useCallback((event) => {
-    event.preventDefault();
-  }, []);
-
-  const handleDragLeave: UploaderDragEventHandler = React.useCallback((event) => {
-    event.preventDefault();
-  }, []);
-
-  const handleDrop: UploaderDragEventHandler = React.useCallback((event) => {
-    event.preventDefault();
-    const { files } = event.dataTransfer;
-    uploadFile(files);
-  }, []);
+  // const handleDrag: UploaderDragEventHandler = React.useCallback((event) => {
+  //   event.preventDefault();
+  // }, []);
+  //
+  // const handleDragLeave: UploaderDragEventHandler = React.useCallback((event) => {
+  //   event.preventDefault();
+  // }, []);
+  //
+  // const handleDrop: UploaderDragEventHandler = React.useCallback((event) => {
+  //   event.preventDefault();
+  //   const { files } = event.dataTransfer;
+  //   uploadFile(files);
+  // }, []);
 
   return (
     <Paper
       className={clsx([className, styles])}
       onClick={handleClick}
-      onDragStart={handleDrag}
-      onDragLeave={handleDragLeave}
-      onDragOver={handleDrag}
-      onDrop={handleDrop}
-      backgroundImage={image}
+      // onDragStart={handleDrag}
+      // onDragLeave={handleDragLeave}
+      // onDragOver={handleDrag}
+      // onDrop={handleDrop}
+      // backgroundImage={image}
     >
       <input
         accept={inputAccept.image}

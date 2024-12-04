@@ -13,6 +13,10 @@ import { Theme } from '@common/themes/core/Theme';
 class Palette {
   private _theme: Theme;
 
+  constructor() {
+    return this;
+  }
+
   public from(theme: Theme) {
     this._theme = theme;
     return this;

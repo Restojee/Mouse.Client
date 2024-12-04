@@ -1,3 +1,7 @@
+.root {
+  display: flex;
+}
+
 .justifyFlexCenter {
   justify-content: center;
 }
@@ -44,8 +48,4 @@
 
 .col {
   flex-direction: column;
-}
-
-.root {
-  display: flex;
 }

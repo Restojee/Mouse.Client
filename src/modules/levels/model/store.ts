@@ -11,13 +11,15 @@ import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEn
 import { FormSchema } from "@common/store/form/FormSchema";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
 
+
+
+const getLoadingMs = 1000;
+const mutateLoadingMs = 500;
+
 class LevelStore extends Store<LevelStore, LevelState> {
 
   private readonly _levelEntityManager: EntityManager<LevelEntity>;
   private readonly _levelApi: LevelsApi;
-
-  private static getLoadingMs = 1000;
-  private static mutateLoadingMs = 500;
 
   private getLevelEntityManager = (): EntityManager<LevelEntity> => this._levelEntityManager;
   private getLevelApi = (): LevelsApi => this._levelApi;
@@ -38,7 +40,7 @@ class LevelStore extends Store<LevelStore, LevelState> {
   public getLevelById = (id: string): LevelEntity => this.getState().levels.getById(id)
 
   @GuardRole(Roles.Common)
-  @Loading(LevelStore.getLoadingMs)
+  @Loading(getLoadingMs)
   @Validate({ entity: CreateLevelEntity })
   public async createLevel() {
 
@@ -53,7 +55,7 @@ class LevelStore extends Store<LevelStore, LevelState> {
   }
 
   @GuardRole(Roles.Common)
-  @Loading(LevelStore.mutateLoadingMs)
+  @Loading(mutateLoadingMs)
   @Validate({ entity: UpdateLevelEntity })
   public async updateLevel() {
     const levelEntityManager = this.getLevelEntityManager();
@@ -69,19 +71,19 @@ class LevelStore extends Store<LevelStore, LevelState> {
   }
 
   @GuardRole(Roles.Common)
-  @Loading(LevelStore.mutateLoadingMs)
-  public async removeLevel(@Validate() request: LevelRemoveArgs) {
+  @Loading(mutateLoadingMs)
+  public async removeLevel(request: LevelRemoveArgs) {
     await this.getLevelApi()[LevelEndpoints.Remove](request);
     this.getLevelEntityManager().remove(request.id)
   }
 
-  @Loading(LevelStore.getLoadingMs)
+  @Loading(getLoadingMs)
   public async loadLevelCollection(request: LevelCollectArgs) {
     const response = await this.getLevelApi()[LevelEndpoints.Collect](request);
     this.getLevelEntityManager().upsert(response.records);
   }
 
-  @Loading(LevelStore.getLoadingMs)
+  @Loading(getLoadingMs)
   public async loadLevelById(request: LevelByIdArgs) {
     const response = await this.getLevelApi()[LevelEndpoints.ById](request);
 

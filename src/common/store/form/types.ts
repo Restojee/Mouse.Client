@@ -1,4 +1,5 @@
 import { FormSchema } from "@common/store/form/FormSchema";
+import { ChangeEvent } from "react";
 
 export type GetIsValid = () => boolean;
 export type GetError = () => string
@@ -12,7 +13,7 @@ export interface InputPropsOptions {
 
 export interface InputPropsGetter {
   value: string;
-  onChange: HandleChange
+  onChange(event: ChangeEvent<HTMLInputElement>): void;
 }
 
 export interface CreateStateArgs {

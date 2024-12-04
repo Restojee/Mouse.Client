@@ -1,35 +1,27 @@
 import { Flex, type FlexProps } from '@ui/Layout';
 import cn from 'clsx';
-import styles from './Spacer.module.scss';
 import React from 'react';
+import styles from './Spacer.module.scss';
 
 const SpacerStyles = {
-  vertical: styles.Spacer_vertical,
-  horizontal: styles.Spacer_horizontal,
+  column: styles.column,
+  row: styles.row,
 };
 
 interface SpaceProps extends FlexProps {}
 export const Spacer: React.FC<SpaceProps> = (props) => {
-  const {
-    justify = 'center',
-    align = 'start',
-    direction = 'column',
-    wrap = 'wrap',
-    className,
-    children,
-    ...otherProps
-  } = props;
+  const { className, children } = props;
 
   return (
-    <Flex
-      justify={justify}
-      align={align}
-      direction={direction}
-      className={cn([SpacerStyles[direction], className])}
-      wrap={wrap}
-      {...otherProps}
-    >
+    <Flex className={cn([SpacerStyles[props.direction], className])} {...props}>
       {children}
     </Flex>
   );
 };
+
+Spacer.defaultProps = {
+  justify: 'center',
+  align: 'start',
+  direction: 'column',
+  wrap: 'wrap',
+}

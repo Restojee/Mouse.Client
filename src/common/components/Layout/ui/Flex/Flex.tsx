@@ -1,42 +1,27 @@
 import * as React from 'react';
-import cn from 'clsx';
-import './Flex.scss';
 import { FlexProps } from '@ui/Layout/ui/Flex/types';
-import { flexStyles as cls } from '@ui/Layout/ui/Flex/constants';
-import { calc } from '@ui/Layout/ui/Flex/utils';
+import { PropsWithChildren } from "react";
+import useFlexStyles from "@ui/Layout/ui/Flex/useFlexStyles";
+import './Flex.scss';
 
-const Flex: React.FC<FlexProps> = (props) => {
+const Flex: React.FC<PropsWithChildren<FlexProps>> = (props) => {
 
-  /* Default values */
-  const {
-    justify = 'center',
-    align = 'start',
-    direction = 'row',
-    element: Element = 'div'
-  } = props;
-
-  /* Root classes */
-  const flexClasses = cn([
-    cls.core,
-    justify && cls.justify[justify],
-    align && cls.align[align],
-    direction && cls.direction[direction],
-    props.className,
-  ]);
-
-  /* Root styles */
-  const flexStyles: Pick<React.CSSProperties, "width" | "height" | "gap"> =
-    React.useMemo(
-      () => ({
-        width: calc(props.width),
-        height: calc(props.height),
-        gap: props.gap
-      }),
-      [props.width, props.height, props.width]
-  );
+  const Element = props.element;
+  const flexStyles = useFlexStyles(props);
 
   /* Html element by props.element */
-  return <Element className={flexClasses} style={flexStyles} {...props} />;
+  return (
+    <Element className={flexStyles.classes} style={flexStyles.styles}>
+      {props.children}
+    </Element>
+  );
 };
+
+Flex.defaultProps = {
+  justify: 'center',
+  align: 'start',
+  direction: 'row',
+  element: 'div',
+}
 
 export default React.memo(Flex);

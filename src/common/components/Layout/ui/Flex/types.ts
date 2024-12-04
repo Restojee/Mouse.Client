@@ -36,5 +36,5 @@ export interface GeoProps {
   colGap?: number;
   justify?: Justify;
   align?: Align;
-  pa?: ThemeSizes | number;
+  pa?: number;
 }

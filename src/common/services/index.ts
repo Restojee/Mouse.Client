@@ -6,6 +6,14 @@ export const ThemeInjectKey = 'Theme';
 export const PaletteInjectKey = 'Palette';
 export const HttpInjectKey = 'Http';
 
-AppInstance.add(ThemeInjectKey, new Theme());
-AppInstance.add(PaletteInjectKey, new Palette());
+export default class Services {
+  constructor() {
+    return this;
+  }
+
+  init() {
+    AppInstance.add(ThemeInjectKey, new Theme());
+    AppInstance.add(PaletteInjectKey, new Palette());
+  }
+}
 

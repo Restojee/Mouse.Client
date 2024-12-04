@@ -4,4 +4,5 @@ export interface PaperProps extends Pick<FlexProps, 'children' | 'className' | '
   bgColor?: string;
   bgImage?: string;
   color?: string;
+  radius?: number;
 }

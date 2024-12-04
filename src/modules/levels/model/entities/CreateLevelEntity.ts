@@ -1,9 +1,9 @@
-import { Entity, Field } from "@common/store/entity/utils";
+import { Field } from "@common/store/entity/utils";
 import { IsNotEmpty, IsString } from "class-validator";
 import { LevelMeta } from "@/modules/levels/model/common/constants";
+import Entity from "@common/store/entity/Entity";
 
-@Entity(LevelMeta.create)
-export class CreateLevelEntity {
+export class CreateLevelEntity extends Entity {
 
   @Field(LevelMeta.name)
   @IsString()
@@ -17,14 +17,13 @@ export class CreateLevelEntity {
   get name(): string {
     return this._name;
   }
-
   set name(value: string) {
     this._name = value;
   }
+
   get description(): string {
     return this._description;
   }
-
   set description(value: string) {
     this._description = value;
   }

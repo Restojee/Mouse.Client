@@ -1,9 +1,13 @@
-.Spacer_vertical {
+.root {
+
+}
+
+.column {
   flex-direction: column;
   height: 100%;
 }
 
-.Spacer_horizontal {
+.row {
   flex-direction: row;
   width: 100%
 }

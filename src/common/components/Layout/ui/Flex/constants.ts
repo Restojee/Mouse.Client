@@ -1,7 +1,7 @@
 export const jcPrx = "jc";
 export const alignPrx = "ai"
 export const flexStyles = {
-  core: "Flex",
+  core: 'Flex_root',
   justify: {
     center: `${jcPrx}_center`,
     start: `${jcPrx}_start`,

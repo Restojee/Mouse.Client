@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { PropsWithChildren } from "react";
 import { Paper, Spacer } from '@ui/Layout';
 import styles from './Layout.module.scss';
 
-const Layout: React.FC = () => {
+const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <Paper className={styles.Layout} bgColor="primary">
-      <Spacer pa={2}>
-        <Paper bgColor="secondary">
-          12
+    <Paper className={styles.root} bgColor="primary">
+      <Spacer pa={15}>
+        <Paper bgColor="secondary" radius={15}>
+          { children }
         </Paper>
       </Spacer>
     </Paper>

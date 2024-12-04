@@ -1,4 +1,5 @@
 import { GetValue, HandleChange, InputPropsGetter, InputPropsOptions } from "@common/store/form/types";
+import { ChangeEvent } from "react";
 
 class InputProps {
   private readonly _getValue: GetValue;
@@ -10,7 +11,7 @@ class InputProps {
     return this;
   }
 
-  public handleChange(event): void {
+  public handleChange(event: ChangeEvent<HTMLInputElement>): void {
     this._handleChange(event.target.value)
   }
 
