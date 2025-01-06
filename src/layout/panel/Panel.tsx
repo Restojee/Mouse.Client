@@ -44,6 +44,10 @@ export const Panel = (props: PanelProps) => {
     return themeKey === ThemeKey.LIGHT ? <MoonIcon /> : <SunIcon />;
   }, [themeKey]);
 
+  const isChatPinVisible = useMemo(() => {
+    return isHasNewMessage && isAuth;
+  }, [isHasNewMessage, isAuth]);
+
   const onTabClickHandler = (tab: TabsType | null) => {
     if (!tab) {
       alert("Пока не работает");
@@ -51,7 +55,10 @@ export const Panel = (props: PanelProps) => {
     }
     props.setActiveTab(tab);
     props.setIsOpen(true);
-    if (props.activeTab === tab && props.isOpen) props.setIsOpen(false);
+
+    if (props.activeTab === tab && props.isOpen) {
+      props.setIsOpen(false);
+    }
   };
 
   const avatar = userData?.avatar;
@@ -91,7 +98,7 @@ export const Panel = (props: PanelProps) => {
       {tabsData.map((el, index) => (
         <NavLink
           key={index}
-          hasPin={Boolean(el.tab === "chat" && isHasNewMessage && isAuth)}
+          hasPin={Boolean(el.tab === "chat" && isChatPinVisible)}
           isDisabled={(el.isNeedAuth && !isAuth) || !el.tab}
           label={el.label}
           description={el.label}
@@ -137,8 +144,8 @@ export const Panel = (props: PanelProps) => {
 export const tabsData: TabsDataType[] = [
   {
     label: "Уведомления",
-    isNeedAuth: true,
-    tab: null,
+    // isNeedAuth: true,
+    tab: "notifications",
     border: true,
     icon: <NotificationsIcon />,
   },

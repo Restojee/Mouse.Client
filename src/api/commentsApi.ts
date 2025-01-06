@@ -1,6 +1,7 @@
 import {
   CreateCommentApiResponse,
   CreateCommentRequest,
+  DeleteCommentApiArg,
   GetCommentsByMapIdApiArg,
   GetCommentsByMapIdApiResponse,
 } from "@/api/codegen/genMouseMapsApi";
@@ -17,6 +18,10 @@ export const commentsApi = {
   },
   addComment: async (body: CreateCommentRequest) => {
     const res = await api.post<CreateCommentRequest, AxiosResponse<CreateCommentApiResponse>>("/comments/create", body);
+    return res.data;
+  },
+  deleteComment: async (params: DeleteCommentApiArg) => {
+    const res = await api.delete(`/comments/remove/${params.levelCommentId}`);
     return res.data;
   },
 };

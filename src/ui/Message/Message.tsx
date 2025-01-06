@@ -9,23 +9,25 @@ import { IconButton } from "@/ui/Button/IconButton";
 import { Display } from "@/ui/Display";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { Property } from "csstype";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { StyledMessageText } from "./styled";
 
 type PropsType = {
   comment: Comment;
-  onDelete?: (id: number) => void;
+  onDelete?: (comment: Comment) => void;
   onUsernameClick?: (id: number) => void;
   padding?: Property.Padding;
+  isDeleteView?: boolean;
 };
 export const Message = (props: PropsType) => {
-  const { comment, onDelete, padding, onUsernameClick } = props;
+  const { comment, onDelete, padding, onUsernameClick, isDeleteView } = props;
+  const [isHovered, setIsHovered] = useState(false);
 
   const { theme } = useAppTheme();
 
   const onDeleteHandler = () => {
     if (comment.id && onDelete) {
-      onDelete(comment.id);
+      onDelete(comment);
     }
   };
 
@@ -49,6 +51,8 @@ export const Message = (props: PropsType) => {
       bgColor={theme.colors.secondary}
       borderRadius={"15px"}
       padding={padding || "0 10px"}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       gap={15}
     >
       <Avatar
@@ -64,6 +68,7 @@ export const Message = (props: PropsType) => {
         <StyledBox
           align="center"
           gap={5}
+          minHeight={25}
         >
           <Typography
             margin={"0 auto 0 0"}
@@ -79,13 +84,15 @@ export const Message = (props: PropsType) => {
           >
             {dateTime}
           </Typography>
-          <Display condition={!!onDelete}>
-            <IconButton
-              onClick={onDeleteHandler}
-              isAdmin
-            >
-              <CloseIcon />
-            </IconButton>
+          <Display condition={isDeleteView && isHovered}>
+            <StyledBox>
+              <IconButton
+                onClick={onDeleteHandler}
+                isAdmin
+              >
+                <CloseIcon />
+              </IconButton>
+            </StyledBox>
           </Display>
         </StyledBox>
         <StyledMessageText>{comment.text}</StyledMessageText>

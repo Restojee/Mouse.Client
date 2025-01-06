@@ -4,7 +4,7 @@ import { useUser } from "@/modules/user/hooks/useUser";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { selectIsAuth } from "@/modules/auth/slice";
+import { selectCurrentUser, selectIsAuth } from "@/modules/auth/slice";
 import { useChat } from "@/modules/chat/hooks/useChat";
 import { Message } from "@/ui/Message";
 import { MessageSendFormContainer } from "@/ui/Message/MessagesSendForm";
@@ -13,8 +13,11 @@ import { StyledBox } from "@/ui/Box";
 
 export const Chat = () => {
   const isAuth = useAppSelector(selectIsAuth);
+  const currentUser = useAppSelector(selectCurrentUser);
+
   const { setValue } = useLocalStorage(localStorageKeys.CHAT_MESSAGES_COUNT);
-  const { messages, messageText, onMessageAdd, isSendLoading, onInputKeyUp, onInputChange } = useChat();
+  const { messages, messageText, onMessageAdd, isSendLoading, onInputKeyUp, onInputChange, onMessageDelete } =
+    useChat();
 
   const { theme } = useAppTheme();
 
@@ -78,6 +81,8 @@ export const Chat = () => {
               key={el.id}
               comment={el}
               padding={"10px"}
+              onDelete={onMessageDelete}
+              isDeleteView={currentUser?.id === el.user?.id}
               onUsernameClick={onUsernameClickHandler}
             />
           ))}

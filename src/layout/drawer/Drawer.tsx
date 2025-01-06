@@ -19,7 +19,7 @@ const getTabsContent = (tab: TabsType): ReactNode => {
   const tabs: TabsContentType[] = [
     {
       component: <Notifications />,
-      tab: "",
+      tab: "notifications",
     },
     {
       component: <Info />,

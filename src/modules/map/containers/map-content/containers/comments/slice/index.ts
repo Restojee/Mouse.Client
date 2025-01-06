@@ -1,19 +1,22 @@
-import { Comment, CreateCommentRequest, GetCommentsByMapIdApiArg } from "@/api/codegen/genMouseMapsApi";
+import { Comment, CreateCommentRequest, GetCommentsByMapIdApiArg, Map } from "@/api/codegen/genMouseMapsApi";
 import { commentsApi } from "@/api/commentsApi";
 import { setAppMessage } from "@/bll/appReducer";
 import { RootState } from "@/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { MapCommentsStateType } from "../types";
 
-export const getMapCommentsThunk = createAsyncThunk("map-comments", async (arg: GetCommentsByMapIdApiArg, thunkAPI) => {
-  try {
-    const comments = await commentsApi.getCommentsByMapId({ levelId: arg.levelId });
-    thunkAPI.dispatch(setComments(comments));
-    thunkAPI.dispatch(setIsCommentsInitialized(true));
-  } catch (error) {
-    thunkAPI.dispatch(setAppMessage({ severity: "error", text: `Ошибка загрузки комментов` }));
-  }
-});
+export const fetchMapCommentsThunk = createAsyncThunk(
+  "map-comments",
+  async (arg: GetCommentsByMapIdApiArg, thunkAPI) => {
+    try {
+      const comments = await commentsApi.getCommentsByMapId({ levelId: arg.levelId });
+      thunkAPI.dispatch(setComments(comments));
+      thunkAPI.dispatch(setIsCommentsInitialized(true));
+    } catch (error) {
+      thunkAPI.dispatch(setAppMessage({ severity: "error", text: `Ошибка загрузки комментов` }));
+    }
+  },
+);
 
 export const addMapCommentsThunk = createAsyncThunk(
   "map-comments/create",
@@ -32,6 +35,23 @@ export const addMapCommentsThunk = createAsyncThunk(
     } catch (error) {
       thunkAPI.dispatch(setAppMessage({ text: `Ошибка добавления коммента`, severity: "error" }));
       return thunkAPI.rejectWithValue(false);
+    }
+  },
+);
+
+export const deleteMapCommentsThunk = createAsyncThunk(
+  "map-comments/delete",
+  async (arg: { commentId: Comment["id"]; levelId: Map["id"] }, thunkAPI) => {
+    try {
+      if (!arg.levelId) {
+        return;
+      }
+      await commentsApi.deleteComment({ levelCommentId: arg.commentId });
+      await thunkAPI.dispatch(fetchMapCommentsThunk({ levelId: arg.levelId }));
+
+      thunkAPI.dispatch(setAppMessage({ text: `Коммент успешно удален`, severity: "success" }));
+    } catch (error) {
+      thunkAPI.dispatch(setAppMessage({ text: `Ошибка удаления коммента`, severity: "error" }));
     }
   },
 );

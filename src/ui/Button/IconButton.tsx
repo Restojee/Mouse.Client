@@ -22,7 +22,8 @@ export const IconButton = styled.button<StyledIconButtonPropsType>(({ theme, ...
   backgroundColor: "transparent",
   transitionProperty: "transform",
   "&:hover": {
-    transform: "scale(0.92)",
+    transform: "scale(0.90)",
+    opacity: 0.5 + "!important",
   },
   ...(props.right && {
     marginLeft: "auto",

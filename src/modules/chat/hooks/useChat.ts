@@ -5,10 +5,12 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import {
   addChatMessageThunk,
-  getChatMessagesThunk,
+  deleteChatMessageThunk,
+  fetchChatMessagesThunk,
   selectChatMessages,
   selectIsChatMessageInitialized,
 } from "@/modules/chat/slice";
+import { Comment } from "@/api/codegen/genMouseMapsApi";
 
 export const useChat = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +33,13 @@ export const useChat = () => {
     }
     setIsSendLoading(false);
   }, [dispatch, isSendLoading, messageText]);
+
+  const onMessageDelete = useCallback(async (message: Comment): Promise<void> => {
+    if (!message.id) {
+      return;
+    }
+    await dispatch(deleteChatMessageThunk({ messageId: message.id }));
+  }, []);
 
   const onInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.currentTarget.value;
@@ -57,7 +66,7 @@ export const useChat = () => {
   }, [getValue, messages?.length]);
 
   const fetchChatMessages = useCallback(() => {
-    dispatch(getChatMessagesThunk());
+    dispatch(fetchChatMessagesThunk());
   }, [dispatch]);
 
   return {
@@ -69,6 +78,7 @@ export const useChat = () => {
     isChatMessageInitialized,
     isSendLoading,
     isHasNewMessage,
+    onMessageDelete,
     fetchChatMessages,
   };
 };

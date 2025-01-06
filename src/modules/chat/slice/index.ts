@@ -5,7 +5,7 @@ import { ChatStateType } from "@/modules/chat/types";
 import { RootState } from "@/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export const getChatMessagesThunk = createAsyncThunk("chat/get", async (arg, thunkAPI) => {
+export const fetchChatMessagesThunk = createAsyncThunk("chat/get", async (arg, thunkAPI) => {
   try {
     const messages = await chatApi.getChatMessages({ size: 200, page: 1 });
     const fixedMessages = messages.records;
@@ -30,6 +30,16 @@ export const addChatMessageThunk = createAsyncThunk("chat/create", async (arg: {
   } catch (error) {
     thunkAPI.dispatch(setAppMessage({ text: `Ошибка добавления коммента`, severity: "error" }));
     return thunkAPI.rejectWithValue(false);
+  }
+});
+
+export const deleteChatMessageThunk = createAsyncThunk("chat/delete", async (arg: { messageId: number }, thunkAPI) => {
+  try {
+    await chatApi.deleteChatMessage({ messageId: arg.messageId });
+    await thunkAPI.dispatch(fetchChatMessagesThunk());
+    thunkAPI.dispatch(setAppMessage({ text: `Коммент успешно удален!`, severity: "success" }));
+  } catch (error) {
+    thunkAPI.dispatch(setAppMessage({ text: `Ошибка удаления коммента`, severity: "error" }));
   }
 });
 

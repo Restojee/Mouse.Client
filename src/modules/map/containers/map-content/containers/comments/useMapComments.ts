@@ -1,4 +1,4 @@
-import { Map } from "@/api/codegen/genMouseMapsApi";
+import { Comment, Map } from "@/api/codegen/genMouseMapsApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useRouter } from "next/router";
@@ -6,11 +6,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { shallowEqual } from "react-redux";
 import {
   addMapCommentsThunk,
-  getMapCommentsThunk,
+  deleteMapCommentsThunk,
+  fetchMapCommentsThunk,
   selectIsCommentCreateFetching,
   selectIsCommentsInitialized,
   selectMapComments,
 } from "./slice";
+import { selectCurrentUser } from "@/modules/auth/slice";
 
 export const useMapComments = () => {
   const dispatch = useAppDispatch();
@@ -19,10 +21,21 @@ export const useMapComments = () => {
   const comments = useAppSelector(selectMapComments, shallowEqual);
   const isCommentsInitialized = useAppSelector(selectIsCommentsInitialized);
   const isCommentCreateFetching = useAppSelector(selectIsCommentCreateFetching);
+  const user = useAppSelector(selectCurrentUser);
 
   const [commentText, setCommentText] = useState("");
 
   const { levelId } = router.query;
+
+  const onCommentDelete = useCallback(
+    (comment: Comment) => {
+      if (!comment.id || user?.id !== comment.user?.id || !levelId) {
+        return;
+      }
+      dispatch(deleteMapCommentsThunk({ commentId: comment.id, levelId: levelId as unknown as Comment["id"] }));
+    },
+    [user, levelId],
+  );
 
   const onCommentAdd = useCallback(
     async (levelId: Map["id"]): Promise<void> => {
@@ -59,7 +72,7 @@ export const useMapComments = () => {
   useEffect(() => {
     if (levelId) {
       const id = setInterval(() => {
-        dispatch(getMapCommentsThunk({ levelId: Number(levelId) }));
+        dispatch(fetchMapCommentsThunk({ levelId: Number(levelId) }));
       }, 5000);
       return () => {
         clearInterval(id);
@@ -70,6 +83,7 @@ export const useMapComments = () => {
   return {
     comments,
     commentText,
+    onCommentDelete,
     onCommentAdd,
     onInputChange,
     onInputKeyUp,

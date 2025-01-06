@@ -2,7 +2,7 @@ import { useUser } from "@/modules/user/hooks/useUser";
 import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { selectIsAuth } from "@/modules/auth/slice";
+import { selectCurrentUser, selectIsAuth } from "@/modules/auth/slice";
 import { Map } from "@/api/codegen/genMouseMapsApi";
 import { useMapComments } from "./useMapComments";
 import { StyledBox } from "@/ui/Box";
@@ -17,6 +17,7 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
   const {
     comments,
     commentText,
+    onCommentDelete,
     onCommentAdd,
     onInputChange,
     onInputKeyUp,
@@ -27,6 +28,7 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
   const { onOpenUserModal } = useUser();
 
   const isAuth = useAppSelector(selectIsAuth);
+  const currentUser = useAppSelector(selectCurrentUser);
 
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
 
@@ -94,7 +96,9 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
             <Message
               key={mapComment.id}
               comment={mapComment}
+              onDelete={onCommentDelete}
               onUsernameClick={onUsernameClickHandler}
+              isDeleteView={currentUser?.id === mapComment.user?.id}
             />
           ))}
         </StyledBox>

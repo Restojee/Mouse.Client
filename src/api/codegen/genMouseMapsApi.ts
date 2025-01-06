@@ -47,6 +47,9 @@ export type CreateCommentApiResponse = /** status 200 OK */ Comment;
 export type CreateCommentApiArg = {
   createCommentRequest: CreateCommentRequest;
 };
+export type DeleteCommentApiArg = {
+  levelCommentId: Map["id"];
+};
 export type GetUsersApiResponse = /** status 200 OK */ {
   page: number;
   records: User[];
@@ -291,6 +294,9 @@ export type GetChatMessagesRequest = {
 };
 export type CreateChatMessageRequest = {
   text: string;
+};
+export type DeleteChatMessageRequest = {
+  messageId: number;
 };
 export type CreateChatMessageResponse = Comment;
 export type UpdateMapNoteRequest = {

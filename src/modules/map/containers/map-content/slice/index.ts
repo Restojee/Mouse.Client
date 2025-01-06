@@ -10,7 +10,7 @@ import { mapsApi } from "@/api/mapsApi";
 import { setAppMessage, setAppModalType } from "@/bll/appReducer";
 import { convertDataUrlToBlob } from "@/common/utils/convertDataUrlToBlob";
 import {
-  getMapCommentsThunk,
+  fetchMapCommentsThunk,
   setComments,
   setIsCommentsInitialized,
 } from "@/modules/map/containers/map-content/containers/comments/slice";
@@ -29,7 +29,7 @@ export const onOpenMapContentThunk = createAsyncThunk("map/open-map", async (arg
     if (arg?.levelId) {
       const levelId = arg.levelId;
       thunkAPI.dispatch(getMapByIdThunk({ levelId }));
-      thunkAPI.dispatch(getMapCommentsThunk({ levelId }));
+      thunkAPI.dispatch(fetchMapCommentsThunk({ levelId }));
     }
   } catch (error) {
     console.log(error);

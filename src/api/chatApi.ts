@@ -1,6 +1,7 @@
 import {
   CreateChatMessageRequest,
   CreateChatMessageResponse,
+  DeleteChatMessageRequest,
   GetChatMessagesRequest,
   GetChatMessagesResponse,
 } from "@/api/codegen/genMouseMapsApi";
@@ -19,6 +20,10 @@ export const chatApi = {
       "/messages/create",
       body,
     );
+    return res.data;
+  },
+  deleteChatMessage: async (params: DeleteChatMessageRequest) => {
+    const res = await api.delete<DeleteChatMessageRequest>(`/messages/remove/${params.messageId}`);
     return res.data;
   },
 };

@@ -19,6 +19,7 @@ export const DefaultTheme = {
     secondaryAccent: "rgba(0,0,0,0.28)",
     textOnSecondary: "#000",
     iconOnSecondary: "#939393",
+    disabled: "#b9b9b9",
 
     neutral: "#F3F2F5",
 
@@ -123,6 +124,8 @@ const DarkTheme: GlobalTheme = {
     secondaryAccent: "#1c1c1c",
     textOnSecondary: "#eaeaea",
     textOnPrimary: "#eaeaea",
+    disabled: "#727272",
+
     input: {
       default: "rgb(61,61,61)",
       hover: "rgb(68,68,68)",
