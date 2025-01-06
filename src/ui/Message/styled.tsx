@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { css, CSSObject, keyframes } from "styled-components";
 import { StyledTextarea } from "@/ui/Textarea/styled";
 import { Property } from "csstype";
 
@@ -50,7 +50,7 @@ export const StyledMessageSendFormIcon = styled.div<{ isFetching: boolean; isDis
       pointer-events: none;
       opacity: 0.3;
     `}
-  display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px;
@@ -106,3 +106,15 @@ export const StyledMessageDisabled = styled.div({
   userSelect: "none",
   msUserSelect: "none",
 });
+
+export const StyledSpoiler = styled.span<{ isOpened: boolean }>(
+  ({ isOpened }) =>
+    ({
+      ...(!isOpened && {
+        filter: "blur(6px)",
+        msFilter: "blur(6px)",
+        opacity: 0.6,
+        cursor: "pointer",
+      }),
+    }) as CSSObject,
+);

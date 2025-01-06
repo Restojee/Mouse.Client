@@ -11,6 +11,7 @@ import { Typography } from "@/ui/Typography/styles/Typography";
 import { Property } from "csstype";
 import React, { useMemo, useState } from "react";
 import { StyledMessageText } from "./styled";
+import { Spoiler } from "./Spoiler";
 
 type PropsType = {
   comment: Comment;
@@ -29,6 +30,19 @@ export const Message = (props: PropsType) => {
     if (comment.id && onDelete) {
       onDelete(comment);
     }
+  };
+
+  const renderMessage = () => {
+    const spoilerRegex = /\|\|(.+?)\|\|/g;
+
+    const parts = comment.text?.split(spoilerRegex); // Разбиваем текст по спойлеру
+    return parts?.map((part, index) =>
+      index % 2 === 1 ? ( // Если индекс нечётный, это спойлер
+        <Spoiler key={index}>{part}</Spoiler>
+      ) : (
+        part // Обычный текст
+      ),
+    );
   };
 
   const onAuthorClickHandler = () => {
@@ -95,7 +109,8 @@ export const Message = (props: PropsType) => {
             </StyledBox>
           </Display>
         </StyledBox>
-        <StyledMessageText>{comment.text}</StyledMessageText>
+
+        <StyledMessageText>{renderMessage()}</StyledMessageText>
       </StyledBox>
     </StyledBox>
   );
