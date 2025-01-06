@@ -12,6 +12,7 @@ import {
   setActiveMapCompletedById,
   setIsCompletedMapModalOpen,
 } from "../slice";
+import { usePopup } from "@/hooks/usePopup";
 
 export const useCompletedMap = (levelId?: Map["id"]) => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
   const maps = useAppSelector(selectCompletedMaps);
   const userId = useAppSelector(selectCurrentUserId);
   const activeMapCompleted = useAppSelector(selectActiveMapCompleted);
+  const { onClose } = usePopup("completed-delete");
 
   const isMyMap = useMemo(() => {
     return activeMapCompleted?.user?.id === userId;
@@ -61,9 +63,10 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
     [dispatch],
   );
 
-  const deleteCompletedMap = useCallback(() => {
+  const deleteCompletedMap = useCallback(async () => {
     if (levelId) {
-      dispatch(deleteCompletedMapThunk({ levelId }));
+      await dispatch(deleteCompletedMapThunk({ levelId }));
+      onClose();
     }
   }, [dispatch, levelId]);
 
@@ -78,6 +81,7 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
   return {
     maps: filteredMaps,
     isMyMap,
+    user: activeMapCompleted?.user,
     onMapClick,
     addCompletedMap,
     deleteCompletedMap,
