@@ -8,16 +8,17 @@ import styles from "./Paper.module.scss"
 
 const Paper: React.FC<PropsWithChildren<PaperProps>> = (props) => {
 
+  const { bgImage, bgColor, color, radius } = props;
   const palette = useAppPalette();
 
   const flexStyles: Pick<React.CSSProperties, 'backgroundImage' | 'backgroundColor' | 'color'> =
     React.useMemo(() => ({
-      backgroundImage: props.bgImage && bg(props.bgImage),
-      backgroundColor: palette.getColor(props.bgColor),
-      color: palette.getColor(props.color),
-      borderRadius: props.radius,
+      backgroundImage: props.bgImage && bg(bgImage),
+      backgroundColor: palette.getColor(bgColor),
+      color: palette.getColor(color),
+      borderRadius: radius,
     }),
-    [props.bgImage, props.bgColor, props.color]
+    [bgImage, bgColor, color, radius]
   );
 
   return (

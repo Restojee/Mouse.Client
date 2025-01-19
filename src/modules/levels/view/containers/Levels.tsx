@@ -1,20 +1,20 @@
 import { Paper, Spacer } from "@ui/Layout";
 import { Button, Form, Input } from "@/common";
-import LevelStore from "@/modules/levels/model/store";
+import LevelService from "@/modules/levels/model/LevelService";
 import React from "react";
 import { LevelMeta } from "@/modules/levels/model/common/constants";
 
-const store = new LevelStore();
+const { createLevel, getLevelCreateForm } = new LevelService();
 const { name, description } = LevelMeta;
 
 const Levels: React.FC = () => {
-  const request = store.getLevelCreateForm();
+  const request = getLevelCreateForm();
 
   return (
     <Paper bgColor="secondary">
       <Spacer pa={5}>
         <Paper bgColor="primary">
-          <Form onSubmit={store.createLevel}>
+          <Form onSubmit={createLevel}>
             <Form.Field {...request.getFieldProps(name)}>
               <Input {...request.getInputProps(name)}/>
             </Form.Field>

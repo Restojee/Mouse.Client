@@ -4,19 +4,30 @@ import FieldProps from "@common/store/form/FieldProps";
 import { InputPropsGetter, InputPropsOptions } from "@common/store/form/types";
 import InputProps from "@common/store/form/InputProps";
 
-export class FormSchema<E> {
+export class FormGroup<E> {
 
   private _value: EntityState<E>;
 
   // remove after fields
-  private validated: Map<string, Validated>;
+  private validatedByField: Map<string, Validated>;
 
   // private fields: Map<string, FieldSchema>
 
-  public handleValueChange = (key: string, value: string) => this._value.setField(key, value);
-  public getValue = () => this._value
-  public getIsValuesValid = () => Array.from(this.validated).every(([_, validate]) => validate.getIsValid());
-  public getValueByFieldKey = (key: string) => this._value.getField(key);
+  public handleFieldValueChange(key: string, value: string){
+    return this._value.setField(key, value);
+  }
+  public getFormStateValue(): EntityState<E>{
+    return this._value;
+  }
+  public getValidatedFields(){
+    return Array.from(this.validatedByField);
+  }
+  public getIsValuesValid(){
+    return this.getValidatedFields().every(([_, validate]) => validate.getIsValid());
+  };
+  public getValueByFieldKey(key: string){
+    return this._value.getField(key);
+  };
 
   constructor(value: E) {
     this.initEntityState(value);
@@ -29,15 +40,14 @@ export class FormSchema<E> {
 
   public setValidated() {
     for (let key in this._value.getFieldKeys()) {
-      this.validated.set(key, new Validated<{}>(this._value[key]))
+      this.validatedByField.set(key, new Validated<{}>(this._value[key]))
     }
   }
 
   public getInputOptions = (key: string): InputPropsOptions => {
-    const value = this._value.getField(key);
     return {
       value: this.getValueByFieldKey(key),
-      onChange: this.handleValueChange(key, value)
+      onChange: this.handleFieldValueChange(key, this._value.getField(key))
     };
   }
 
@@ -47,6 +57,6 @@ export class FormSchema<E> {
   }
 
   public getFieldProps(key: string) {
-    return new FieldProps(this.validated.get(key)).getProps()
+    return new FieldProps(this.validatedByField.get(key)).getProps()
   }
 }

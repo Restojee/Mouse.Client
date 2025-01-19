@@ -1,4 +1,4 @@
-import { FormSchema } from "@common/store/form/FormSchema";
+import { FormGroup } from "@common/store/form/FormGroup";
 import { ChangeEvent } from "react";
 
 export type GetIsValid = () => boolean;
@@ -17,5 +17,5 @@ export interface InputPropsGetter {
 }
 
 export interface CreateStateArgs {
-  withForm: <E extends {}>(value: E) => FormSchema<E>
+
 }
