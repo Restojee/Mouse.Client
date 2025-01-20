@@ -1,13 +1,4 @@
-import {
-  BorderColorKey,
-  CardColorKey,
-  ColorKey,
-  LineColorKey,
-  PanelColorKey,
-  TextColorKey,
-  ThemeColorKey,
-  ThemeColors,
-} from '@common/themes/common/types';
+import { ThemeColorKey } from '@common/themes/common/types';
 import { Theme } from '@common/themes/core/Theme';
 
 class Palette {
@@ -22,7 +13,7 @@ class Palette {
     return this;
   }
 
-  getColor = (colorKey: ThemeColorKey | string) =>
+  getColor = (colorKey?: ThemeColorKey) =>
     this._theme.get().palette.colors[colorKey]
 }
 

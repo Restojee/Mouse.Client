@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Center, Paper, Text } from '@common/.';
+import { Center, Paper, Typography } from '@common/.';
 import clsx from 'clsx';
 import {
   type ImageFormPropsType,
   type UploaderChangeEventHandler,
-  type UploaderDragEventHandler,
   type UploaderFileChangeEventHandler,
 } from '@ui/Uploader/common/types';
 import { inputAccept } from '@ui/Uploader/common/constants';
@@ -75,7 +74,7 @@ export const Uploader = (props: ImageFormPropsType) => {
 
       {!image && (
         <Center>
-          <Text>Загрузите или перетащите изображение</Text>
+          <Typography>Загрузите или перетащите изображение</Typography>
         </Center>
       )}
     </Paper>

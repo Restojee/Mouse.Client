@@ -1,5 +1,5 @@
 import type * as React from 'react';
-import { CardColorKey, ThemeColorKey } from '@common/themes/common/types';
+import { ThemeColorKey } from '@common/themes/common/types';
 
 export interface ButtonProps extends CoreButtonProps {
   color?: ThemeColorKey;
