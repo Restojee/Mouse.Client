@@ -7,6 +7,7 @@ import LevelEntity from "@/modules/levels/model/entities/LevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
 import { LevelDataAccess } from "@/modules/levels/model/LevelDataAccess";
+import { levelMappers } from "@/modules/levels/common/api/mappers";
 
 const getLoadingMs = 1000;
 const mutateLoadingMs = 500;
@@ -43,7 +44,10 @@ class LevelService {
       .getLevelCreateForm()
       .getFormStateValue()
       .getEntity();
-    await this.getLevelApi()[LevelEndpoints.Create](request);
+    await this.getLevelApi().create({
+      description: request.description,
+      name: request.name
+    });
 
     const level = new LevelEntity();
     level.name = request.name;
@@ -61,7 +65,11 @@ class LevelService {
       .getLevelUpdateForm()
       .getFormStateValue()
       .getEntity();
-    const response = await this.getLevelApi()[LevelEndpoints.Update](request);
+    const response = await this.getLevelApi().update({
+      id: request.id,
+      name: request.name,
+      description: request.description
+    });
 
     const level = this._levelDataAccess.getLevelById(response.id);
     level.name = response.name;
@@ -79,13 +87,19 @@ class LevelService {
 
   @Loading(getLoadingMs)
   public async loadLevelCollection(request: LevelCollectArgs) {
-    const response = await this.getLevelApi()[LevelEndpoints.Collect](request);
-    this._levelDataAccess.upsertLevels(response.records);
+    const response = await this.getLevelApi().collect({
+      ids: request.ids,
+      page: request.page,
+      size: request.size
+    });
+    this._levelDataAccess.upsertLevels(
+      levelMappers.toAppLevels(response.records)
+    );
   }
 
   @Loading(getLoadingMs)
   public async loadLevelById(request: LevelByIdArgs) {
-    const response = await this.getLevelApi()[LevelEndpoints.ById](request);
+    const response = await this.getLevelApi().get(request);
 
     const levelEntity = new LevelEntity();
     levelEntity.name = response.name;

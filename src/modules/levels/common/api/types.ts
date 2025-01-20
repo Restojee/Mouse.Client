@@ -6,7 +6,7 @@ export interface LevelByIdResponse extends Level {}
 export interface LevelRemoveArgs { id: string; }
 export interface LevelRemoveResponse {}
 
-export interface LevelCreateArgs { id: string; name: string; description?: string; }
+export interface LevelCreateArgs { name: string; description?: string; }
 export interface LevelCreateResponse extends Level {}
 
 export interface LevelUpdateArgs { id: string; name?: string; description?: string; }

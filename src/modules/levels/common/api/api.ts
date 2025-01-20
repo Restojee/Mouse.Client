@@ -3,8 +3,7 @@ import { AppInstance } from '@common/instances';
 import { HttpInjectKey } from '@common/services';
 import { HttpHandler } from '@common/http/HttpHandler';
 import {
-  type LevelByIdArgs,
-  type LevelByIdResponse,
+  LevelByIdArgs, LevelByIdResponse,
   type LevelCollectArgs,
   type LevelCollectResponse,
   type LevelCreateArgs,
@@ -12,7 +11,7 @@ import {
   type LevelRemoveArgs, LevelRemoveResponse,
   type LevelUpdateArgs,
   type LevelUpdateResponse,
-} from './types';
+} from "./types";
 
 class LevelsApi {
 
@@ -23,9 +22,16 @@ class LevelsApi {
     this.http = AppInstance.get<HttpHandler>(HttpInjectKey);
   }
 
-  public get(args: LevelCollectArgs): Promise<LevelCollectResponse> {
+  public collect(args: LevelCollectArgs): Promise<LevelCollectResponse> {
     return this.http.get<LevelCollectArgs, LevelCollectResponse>({
       url: LevelUrls[LevelEndpoints.Collect],
+      params: args,
+    })
+  }
+
+  public get(args: LevelByIdArgs): Promise<LevelByIdResponse> {
+    return this.http.get<LevelByIdArgs, LevelByIdResponse>({
+      url: LevelUrls[LevelEndpoints.ById],
       params: args,
     })
   }

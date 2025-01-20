@@ -7,16 +7,27 @@ import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEn
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 
 export class LevelDataAccess extends Store<LevelDataAccess, LevelState> {
-  private readonly _levelEntityManager: EntityManager<LevelEntity>;
 
+  private readonly _levelEntityManager: EntityManager<LevelEntity>;
   private getLevelEntityManager(): EntityManager<LevelEntity>{
     return this._levelEntityManager;
   };
 
-  public getLevelCreateForm = (): FormGroup<CreateLevelEntity> => this.getState().createLevel;
-  public getLevelUpdateForm = (): FormGroup<UpdateLevelEntity> => this.getState().updateLevel;
-  public getLevelCollection = (): Array<LevelEntity> => this.getState().levels.getCollection();
-  public getLevelById = (id: string): LevelEntity => this.getState().levels.getById(id)
+  public getLevelCreateForm(): FormGroup<CreateLevelEntity>{
+    return this.getState().createLevel;
+  };
+
+  public getLevelUpdateForm(): FormGroup<UpdateLevelEntity>{
+    return this.getState().updateLevel
+  };
+
+  public getLevelCollection(): Array<LevelEntity>{
+    return this.getState().levels.getCollection()
+  };
+
+  public getLevelById(id: string): LevelEntity{
+    return this.getState().levels.getById(id);
+  }
 
   constructor() {
     super()

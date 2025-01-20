@@ -1,17 +1,18 @@
 import { Field } from "@common/store/entity/utils";
 import { IsString } from "class-validator";
 import Entity from "@common/store/entity/Entity";
+import { LevelMeta } from "@/modules/levels/model/common/constants";
 
 export class UpdateLevelEntity extends Entity {
 
-  @Field('id')
+  @Field(LevelMeta.id)
   private _id: string;
 
-  @Field('name')
+  @Field(LevelMeta.name)
   @IsString()
   private _name: string;
 
-  @Field('description')
+  @Field(LevelMeta.description)
   @IsString()
   private _description: string;
 

@@ -12,7 +12,7 @@ const Levels: React.FC = () => {
 
   return (
     <Paper bgColor="secondary">
-      <Spacer pa={5}>
+      <Spacer pa="sm">
         <Paper bgColor="primary">
           <Form onSubmit={createLevel}>
             <Form.Field {...request.getFieldProps(name)}>
@@ -25,7 +25,7 @@ const Levels: React.FC = () => {
               <Input {...request.getInputProps(description)}/>
             </Form.Field>
             <Form.Field>
-              <Button type="submit" disabled={!request.getIsValuesValid()} />
+              <Button {...request.getSubmitProps()} />
             </Form.Field>
           </Form>
         </Paper>

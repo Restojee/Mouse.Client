@@ -3,6 +3,7 @@ import { Validated } from "@common/store/validate";
 import FieldProps from "@common/store/form/FieldProps";
 import { InputPropsGetter, InputPropsOptions } from "@common/store/form/types";
 import InputProps from "@common/store/form/InputProps";
+import { SubmitProps } from "@common/store/form/SubmitProps";
 
 export class FormGroup<E> {
 
@@ -58,5 +59,9 @@ export class FormGroup<E> {
 
   public getFieldProps(key: string) {
     return new FieldProps(this.validatedByField.get(key)).getProps()
+  }
+
+  public getSubmitProps() {
+    return new SubmitProps();
   }
 }
