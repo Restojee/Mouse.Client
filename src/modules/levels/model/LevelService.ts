@@ -8,6 +8,9 @@ import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEn
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
 import { LevelDataAccess } from "@/modules/levels/model/LevelDataAccess";
 import { levelMappers } from "@/modules/levels/common/api/mappers";
+import { ModalService } from "@common/services/modal/ModalService";
+import CreateLevelModal from "@/modules/levels/view/containers/CreateLevelModal";
+import { ModalEntity } from "@common/services/modal/ModalEntity";
 
 const getLoadingMs = 1000;
 const mutateLoadingMs = 500;
@@ -15,6 +18,7 @@ const mutateLoadingMs = 500;
 class LevelService {
   private readonly _levelApi: LevelsApi;
   private readonly _levelDataAccess: LevelDataAccess;
+  private readonly _modalService: ModalService;
 
   private getLevelApi(): LevelsApi{
     return this._levelApi;
@@ -23,6 +27,8 @@ class LevelService {
   constructor() {
     this._levelApi = new LevelsApi();
     this._levelDataAccess = new LevelDataAccess();
+    this._modalService = new ModalService(); // GLOBAL SCOPE
+    this._modalService.registerModal(new ModalEntity(CreateLevelModal))
   }
 
   public getLevelCreateForm() {
@@ -40,14 +46,8 @@ class LevelService {
   @Validate({ entity: CreateLevelEntity })
   public async createLevel() {
 
-    const request = this._levelDataAccess
-      .getLevelCreateForm()
-      .getFormStateValue()
-      .getEntity();
-    await this.getLevelApi().create({
-      description: request.description,
-      name: request.name
-    });
+    const request = this._levelDataAccess.getLevelCreateForm().getFormStateValue().getEntity();
+    await this.getLevelApi().create({ description: request.description, name: request.name });
 
     const level = new LevelEntity();
     level.name = request.name;
@@ -61,15 +61,8 @@ class LevelService {
   @Validate({ entity: UpdateLevelEntity })
   public async updateLevel() {
 
-    const request = this._levelDataAccess
-      .getLevelUpdateForm()
-      .getFormStateValue()
-      .getEntity();
-    const response = await this.getLevelApi().update({
-      id: request.id,
-      name: request.name,
-      description: request.description
-    });
+    const request = this._levelDataAccess.getLevelUpdateForm().getFormStateValue().getEntity();
+    const response = await this.getLevelApi().update({ id: request.id, name: request.name, description: request.description });
 
     const level = this._levelDataAccess.getLevelById(response.id);
     level.name = response.name;
@@ -87,14 +80,8 @@ class LevelService {
 
   @Loading(getLoadingMs)
   public async loadLevelCollection(request: LevelCollectArgs) {
-    const response = await this.getLevelApi().collect({
-      ids: request.ids,
-      page: request.page,
-      size: request.size
-    });
-    this._levelDataAccess.upsertLevels(
-      levelMappers.toAppLevels(response.records)
-    );
+    const response = await this.getLevelApi().collect({ ids: request.ids, page: request.page, size: request.size });
+    this._levelDataAccess.upsertLevels(levelMappers.toAppLevels(response.records));
   }
 
   @Loading(getLoadingMs)
