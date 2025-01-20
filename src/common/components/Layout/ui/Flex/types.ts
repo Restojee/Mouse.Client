@@ -28,6 +28,11 @@ export interface FlexProps extends MouseEvents, GeoProps {
   height?: number;
 }
 
+export type Sizes =
+  | "sm"
+  | "md"
+  | "lg"
+
 export interface GeoProps {
   gutter?: Gap;
   wrap?: Wrap;
@@ -36,5 +41,5 @@ export interface GeoProps {
   colGap?: number;
   justify?: Justify;
   align?: Align;
-  pa?: number;
+  pa?: Sizes;
 }

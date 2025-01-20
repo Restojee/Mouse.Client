@@ -10,10 +10,11 @@ const SpacerStyles = {
 
 interface SpaceProps extends FlexProps {}
 export const Spacer: React.FC<SpaceProps> = (props) => {
-  const { className, children } = props;
+  const { className, children, direction } = props;
+  const flexStyles = cn([SpacerStyles[direction], className]);
 
   return (
-    <Flex className={cn([SpacerStyles[props.direction], className])} {...props}>
+    <Flex className={flexStyles} {...props}>
       {children}
     </Flex>
   );

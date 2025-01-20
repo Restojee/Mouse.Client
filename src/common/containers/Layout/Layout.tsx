@@ -1,13 +1,17 @@
 import React, { PropsWithChildren } from "react";
-import { Paper, Spacer } from '@ui/Layout';
-import styles from './Layout.module.scss';
+import { Paper, Row, Spacer } from "@ui/Layout";
+import styles from "./Layout.module.scss";
+import SidePanel from "@common/containers/SidePanel/SidePanel";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Paper className={styles.root} bgColor="primary">
-      <Spacer pa={15}>
-        <Paper bgColor="secondary" radius={15}>
-          { children }
+      <Spacer pa="lg">
+        <Paper bgColor="secondary" radius="lg">
+          <Row>
+            <SidePanel />
+            { children }
+          </Row>
         </Paper>
       </Spacer>
     </Paper>
