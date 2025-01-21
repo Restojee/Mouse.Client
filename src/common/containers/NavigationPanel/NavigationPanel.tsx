@@ -1,14 +1,14 @@
 import * as React from "react";
 import { Column, Paper } from "@/common";
 
-const SidePanel = () => {
+const NavigationPanel: React.FC = () => {
   return (
-    <Column width={300} height={1}>
+    <Column height={1}>
       <Paper bgColor="primary">
-
+        Panel
       </Paper>
     </Column>
   )
 }
 
-export default React.memo(SidePanel);
+export default React.memo(NavigationPanel);
