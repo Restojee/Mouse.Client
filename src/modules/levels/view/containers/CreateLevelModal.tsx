@@ -1,18 +1,17 @@
 import React from "react";
 import { Button, Form, Input, Paper, Spacer } from "@/common";
 import { LevelMeta } from "@/modules/levels/model/common/constants";
-import LevelService from "@/modules/levels/model/LevelService";
+import { LevelModuleProps } from "@/modules/levels/model/common/types";
 
-const { createLevel, getLevelCreateForm } = new LevelService();
 const { name, description } = LevelMeta;
 
-const CreateLevelModal: React.FC = () => {
-  const request = getLevelCreateForm();
+const CreateLevelModal: React.FC<LevelModuleProps> = ({ levelService }) => {
+  const request = levelService.getLevelCreateForm();
   return (
     <Paper bgColor="secondary">
       <Spacer pa="sm">
         <Paper bgColor="primary">
-          <Form onSubmit={createLevel}>
+          <Form onSubmit={levelService.createLevel}>
             <Form.Field {...request.getFieldProps(name)}>
               <Input {...request.getInputProps(name)}/>
             </Form.Field>
@@ -32,4 +31,4 @@ const CreateLevelModal: React.FC = () => {
   )
 }
 
-export default CreateLevelModal;
+export default React.memo(CreateLevelModal);

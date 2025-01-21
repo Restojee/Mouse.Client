@@ -6,11 +6,11 @@ import { LevelByIdArgs, LevelCollectArgs, LevelRemoveArgs } from "@/modules/leve
 import LevelEntity from "@/modules/levels/model/entities/LevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
-import { LevelDataAccess } from "@/modules/levels/model/LevelDataAccess";
 import { levelMappers } from "@/modules/levels/common/api/mappers";
 import { ModalService } from "@common/services/modal/ModalService";
 import CreateLevelModal from "@/modules/levels/view/containers/CreateLevelModal";
 import { ModalEntity } from "@common/services/modal/ModalEntity";
+import { LevelDataAccess } from "@/modules/levels/model/services/LevelDataAccess";
 
 const getLoadingMs = 1000;
 const mutateLoadingMs = 500;
@@ -24,11 +24,11 @@ class LevelService {
     return this._levelApi;
   };
 
-  constructor() {
-    this._levelApi = new LevelsApi();
-    this._levelDataAccess = new LevelDataAccess();
-    this._modalService = new ModalService(); // GLOBAL SCOPE
-    this._modalService.registerModal(new ModalEntity(CreateLevelModal))
+  constructor(levelsApi: LevelsApi, levelDataAccess: LevelDataAccess, modalService: ModalService,) {
+    this._levelApi = levelsApi;
+    this._levelDataAccess = levelDataAccess;
+    this._modalService = modalService;
+    this._modalService.registerModal(new ModalEntity(CreateLevelModal));
   }
 
   public getLevelCreateForm() {
