@@ -30,6 +30,8 @@ export const DropdownContainer = styled(StyledBox)<DropdownContainerProps>(({ wi
   position: "relative",
   maxWidth: width,
   width: width,
+  backgroundColor: "white",
+  borderRadius: 20,
 }));
 
 export const DropdownList = styled(StyledBox)<DropdownListProps>(({ theme }) => ({
@@ -42,6 +44,7 @@ export const DropdownList = styled(StyledBox)<DropdownListProps>(({ theme }) => 
   backgroundColor: theme.colors.secondary,
   zIndex: theme.order.dropdown,
   borderRadius: "10px",
+  color: theme.colors.textOnSecondary,
   boxShadow: "0 0 10px 1px rgba(0, 0, 0, 0.3)",
   width: "100%",
   overflow: "hidden",

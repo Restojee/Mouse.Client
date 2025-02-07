@@ -8,7 +8,7 @@ export const Divider = () => {
     <StyledBox
       height={1}
       width={"100%"}
-      bgColor={theme.colors.secondaryAccent}
+      bgColor={theme.colors.iconOnSecondary}
       opacity={0.5}
     ></StyledBox>
   );

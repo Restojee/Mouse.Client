@@ -14,7 +14,7 @@ const MAP_SORT_VARIANTS = [
 export const MapSortSection = () => {
   return (
     <Dropdown
-      dropdownItemsArray={MAP_SORT_VARIANTS}
+      options={MAP_SORT_VARIANTS}
       width="150px"
     />
   );

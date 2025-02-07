@@ -18,7 +18,7 @@ export const useUser = () => {
   const getMapsPercent = useCallback(
     (mapsCount: number = 0) => {
       const totalCount = staticMapsInfo?.totalItems || 0;
-      return (mapsCount / totalCount) * 100;
+      return Math.round((mapsCount / totalCount) * 100);
     },
     [staticMapsInfo],
   );

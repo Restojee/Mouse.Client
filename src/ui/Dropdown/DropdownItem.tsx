@@ -1,24 +1,28 @@
 import { Typography } from "@/ui/Typography/styles/Typography";
 import React from "react";
 import { DropdownItemStyled } from "./dropdownElements";
+import { DefaultOption } from "@/ui/Dropdown/Dropdown";
 
 type PropsType = {
-  onClick: () => void;
-  index: string;
-  label: string;
+  onClick: (option: DefaultOption) => void;
+  label?: string | number;
+  option?: DefaultOption;
 };
 
 function DropdownItem(props: PropsType) {
-  const ItemClick = () => {
-    props.onClick();
+  const onClick = () => {
+    if (!props.option) {
+      return;
+    }
+    props.onClick?.(props.option);
   };
 
   return (
     <>
       {props.label ? (
         <DropdownItemStyled
-          key={props.index}
-          onClick={() => ItemClick()}
+          key={props.option?.id}
+          onClick={onClick}
         >
           {/*{ props.leftIcon && <StyledIconContainer left>{ props.leftIcon }</StyledIconContainer> }*/}
           <Typography>{props.label}</Typography>
@@ -27,7 +31,7 @@ function DropdownItem(props: PropsType) {
       ) : (
         <DropdownItemStyled
           blockedItem
-          onClick={() => ItemClick()}
+          onClick={onClick}
         >
           <Typography>Не найдено</Typography>
         </DropdownItemStyled>

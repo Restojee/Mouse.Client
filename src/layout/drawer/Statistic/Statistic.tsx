@@ -2,7 +2,6 @@ import { getAvatarImageLink } from "@/common/utils";
 import { formatDateTime } from "@/common/utils/formatDateTime";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import useFilterQueryParams from "@/hooks/useFilterQueryParams";
-import { StyledStatisticIconContainer, StyledStatisticIconText } from "@/layout/drawer/Statistic/styled";
 import { StyledDrawerBlock, StyledDrawerHeader } from "@/layout/drawer/styled";
 import { useUser } from "@/modules/user/hooks/useUser";
 import { getUsersThunk } from "@/modules/user/slice";
@@ -13,14 +12,24 @@ import { InIcon } from "@/svg/InIcon";
 import { Avatar } from "@/ui/Avatar";
 import { StyledBox } from "@/ui/Box";
 import { Typography } from "@/ui/Typography/styles/Typography";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
+import StarRating from "@/ui/StarRating/StarRating";
+import { getStarsByUserId } from "@/modules/user/utils/getStarsByUserId";
+import { User } from "@/api/codegen/genMouseMapsApi";
+import { StatisticCircle } from "@/layout/drawer/Statistic/components/StatisticCircle";
 
 export const Statistic = () => {
   const dispatch = useAppDispatch();
 
-  const { users, getMapsPercent, currentUser } = useUser();
-
+  const { users, currentUser } = useUser();
   const { changeFilterNavigate } = useFilterQueryParams();
+
+  const getUserStarsCount = useCallback(
+    (id: User["id"]) => {
+      return getStarsByUserId(id, users);
+    },
+    [users],
+  );
 
   useEffect(() => {
     dispatch(getUsersThunk());
@@ -65,6 +74,7 @@ export const Statistic = () => {
                   align="center"
                 >
                   <Typography>{user.username}</Typography>
+                  <StarRating count={getUserStarsCount(user.id)} />
                 </StyledBox>
                 <StyledBox overflow={"hidden"}>
                   <Typography
@@ -78,50 +88,39 @@ export const Statistic = () => {
               </StyledBox>
             </StyledBox>
             <StyledBox align="center">
-              <StyledBox
-                grow="1"
-                justify="center"
+              <StatisticCircle
                 title="Выполнено"
-                onClick={() => changeFilterNavigate({ isCompleted: true, userId: user.id })}
-              >
-                <StyledStatisticIconContainer fillingPercent={`${getMapsPercent(user.completedCount)}%`}>
-                  <BookCheckFillIcon />
-                  <StyledStatisticIconText>{user.completedCount}</StyledStatisticIconText>
-                </StyledStatisticIconContainer>
-              </StyledBox>
-              <StyledBox
-                onClick={() => changeFilterNavigate({ isCreatedByUser: true, userId: user.id })}
-                grow="1"
-                justify="center"
+                onClick={changeFilterNavigate}
+                filters={{ isCompleted: true }}
+                count={user.completedCount || 0}
+                userId={user.id}
+                icon={<BookCheckFillIcon />}
+                showPercent
+              />
+              <StatisticCircle
                 title="Добавлено"
-              >
-                <StyledStatisticIconContainer fillingPercent={`${getMapsPercent(user.levelsCount)}%`}>
-                  <InIcon />
-                  <StyledStatisticIconText>{user.levelsCount}</StyledStatisticIconText>
-                </StyledStatisticIconContainer>
-              </StyledBox>
-              <StyledBox
-                onClick={() => changeFilterNavigate({ isFavorite: true, userId: user.id })}
-                grow="1"
-                justify="center"
+                onClick={changeFilterNavigate}
+                filters={{ isCreatedByUser: true }}
+                count={user.levelsCount || 0}
+                userId={user.id}
+                icon={<InIcon />}
+              />
+              <StatisticCircle
                 title="В избранном"
-              >
-                <StyledStatisticIconContainer>
-                  <FavoriteIcon />
-                  <StyledStatisticIconText>{user.favoritesCount}</StyledStatisticIconText>
-                </StyledStatisticIconContainer>
-              </StyledBox>
-              <StyledBox
-                onClick={() => changeFilterNavigate({ isWithComment: true, userId: user.id })}
-                grow="1"
-                justify="center"
+                onClick={changeFilterNavigate}
+                filters={{ isFavorite: true }}
+                count={user.favoritesCount || 0}
+                userId={user.id}
+                icon={<FavoriteIcon />}
+              />
+              <StatisticCircle
                 title="Оставлено комментариев"
-              >
-                <StyledStatisticIconContainer>
-                  <CommentFillIcon />
-                  <StyledStatisticIconText>{user.commentsCount}</StyledStatisticIconText>
-                </StyledStatisticIconContainer>
-              </StyledBox>
+                onClick={changeFilterNavigate}
+                filters={{ isWithComment: true }}
+                count={user.commentsCount || 0}
+                userId={user.id}
+                icon={<CommentFillIcon />}
+              />
             </StyledBox>
           </StyledDrawerBlock>
         ))}

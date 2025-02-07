@@ -15,7 +15,6 @@ export const StyledStatisticIconContainer = styled.div<StyledStatisticIconContai
     backgroundColor: theme.colors.secondary,
     width: 44,
     height: 44,
-    marginBottom: 25,
     borderRadius: "50%",
     boxShadow: `0 0 2px 1px ${theme.colors.iconOnSecondary}`,
     cursor: "pointer",
@@ -33,8 +32,7 @@ export const StyledStatisticIconContainer = styled.div<StyledStatisticIconContai
 );
 
 export const StyledStatisticIconText = styled(Typography)(({ theme }) => ({
-  position: "absolute",
-  bottom: -20,
+  textAlign: "center",
   fontSize: `calc(${theme.font.fontSize} - 2px)`,
   opacity: 0.6,
 }));

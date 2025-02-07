@@ -3,12 +3,13 @@ import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectCurrentUser, selectIsAuth } from "@/modules/auth/slice";
-import { Map } from "@/api/codegen/genMouseMapsApi";
+import { Map, User } from "@/api/codegen/genMouseMapsApi";
 import { useMapComments } from "./useMapComments";
 import { StyledBox } from "@/ui/Box";
 import { Display } from "@/ui/Display/Display";
 import { Message } from "@/ui/Message";
 import { MessageSendFormContainer } from "@/ui/Message/MessagesSendForm";
+import { getStarsByUserId } from "@/modules/user/utils/getStarsByUserId";
 
 type MapContentSidebarCommentsPropsType = {
   levelId: Map["id"];
@@ -25,12 +26,19 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
     isCommentCreateFetching,
   } = useMapComments();
 
-  const { onOpenUserModal } = useUser();
+  const { onOpenUserModal, users } = useUser();
 
   const isAuth = useAppSelector(selectIsAuth);
   const currentUser = useAppSelector(selectCurrentUser);
 
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
+
+  const getUserStarsCount = useCallback(
+    (id: User["id"]) => {
+      return getStarsByUserId(id, users);
+    },
+    [users],
+  );
 
   const scrollToBottomHandler = (isNotSmooth?: boolean) => {
     const ref = scrollToBottomRef.current;
@@ -96,6 +104,7 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
             <Message
               key={mapComment.id}
               comment={mapComment}
+              getStarsCount={getUserStarsCount}
               onDelete={onCommentDelete}
               onUsernameClick={onUsernameClickHandler}
               isDeleteView={currentUser?.id === mapComment.user?.id}

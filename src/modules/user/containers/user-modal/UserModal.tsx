@@ -3,7 +3,6 @@ import { getAvatarImageLink } from "@/common/utils";
 import { formatDateTime } from "@/common/utils/formatDateTime";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useFilterQueryParams from "@/hooks/useFilterQueryParams";
-import { StyledStatisticIconContainer, StyledStatisticIconText } from "@/layout/drawer/Statistic/styled";
 import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
 import { useUser } from "@/modules/user/hooks/useUser";
 import { BookCheckFillIcon } from "@/svg/BookCheckFillIcon";
@@ -15,16 +14,20 @@ import { StyledBox } from "@/ui/Box";
 import { Button } from "@/ui/Button";
 import { Modal } from "@/ui/Modal/Modal";
 import { Typography } from "@/ui/Typography";
-import React from "react";
+import React, { useMemo } from "react";
+import { getStarsByUserId } from "@/modules/user/utils/getStarsByUserId";
+import StarRating from "@/ui/StarRating/StarRating";
+import { StatisticCircle } from "@/layout/drawer/Statistic/components/StatisticCircle";
 
 const UserModal = () => {
-  const { onCloseUserModal, currentUserView, getMapsPercent } = useUser();
-
+  const { onCloseUserModal, currentUserView, users } = useUser();
   const { theme } = useAppTheme();
-
   const { closeMap, levelId } = useMapView();
-
   const { changeFilterNavigate } = useFilterQueryParams();
+
+  const getUserStarsCount = useMemo(() => {
+    return getStarsByUserId(currentUserView?.id, users);
+  }, [currentUserView?.id, users]);
 
   const onFilterClick = async (filter: Partial<GetMapsApiArg>) => {
     await changeFilterNavigate(filter);
@@ -60,6 +63,12 @@ const UserModal = () => {
             image={getAvatarImageLink(currentUserView?.avatar)}
             username={currentUserView?.username}
           />
+          <StyledBox align="center">
+            <StarRating
+              count={getUserStarsCount}
+              size={"lg"}
+            />
+          </StyledBox>
           <StyledBox
             gap="5px"
             direction="column"
@@ -81,50 +90,39 @@ const UserModal = () => {
           align="center"
           justify={"space-between"}
         >
-          <StyledBox
-            grow="1"
-            justify="center"
+          <StatisticCircle
             title="Выполнено"
-            onClick={() => onFilterClick({ isCompleted: true, userId: currentUserView?.id })}
-          >
-            <StyledStatisticIconContainer fillingPercent={`${getMapsPercent(currentUserView?.completedCount)}%`}>
-              <BookCheckFillIcon />
-              <StyledStatisticIconText>{currentUserView?.completedCount}</StyledStatisticIconText>
-            </StyledStatisticIconContainer>
-          </StyledBox>
-          <StyledBox
-            onClick={() => onFilterClick({ isCreatedByUser: true, userId: currentUserView?.id })}
-            grow="1"
-            justify="center"
+            onClick={onFilterClick}
+            filters={{ isCompleted: true }}
+            count={currentUserView?.completedCount || 0}
+            userId={currentUserView?.id}
+            icon={<BookCheckFillIcon />}
+            showPercent
+          />
+          <StatisticCircle
             title="Добавлено"
-          >
-            <StyledStatisticIconContainer fillingPercent={`${getMapsPercent(currentUserView?.levelsCount)}%`}>
-              <InIcon />
-              <StyledStatisticIconText>{currentUserView?.levelsCount}</StyledStatisticIconText>
-            </StyledStatisticIconContainer>
-          </StyledBox>
-          <StyledBox
-            onClick={() => onFilterClick({ isFavorite: true, userId: currentUserView?.id })}
-            grow="1"
-            justify="center"
+            onClick={onFilterClick}
+            filters={{ isCreatedByUser: true }}
+            count={currentUserView?.levelsCount || 0}
+            userId={currentUserView?.id}
+            icon={<InIcon />}
+          />
+          <StatisticCircle
             title="В избранном"
-          >
-            <StyledStatisticIconContainer>
-              <FavoriteIcon />
-              <StyledStatisticIconText>{currentUserView?.favoritesCount}</StyledStatisticIconText>
-            </StyledStatisticIconContainer>
-          </StyledBox>
-          <StyledBox
-            onClick={() => onFilterClick({ isWithComment: true, userId: currentUserView?.id })}
-            grow="1"
-            justify="center"
+            onClick={onFilterClick}
+            filters={{ isFavorite: true }}
+            count={currentUserView?.favoritesCount || 0}
+            userId={currentUserView?.id}
+            icon={<FavoriteIcon />}
+          />
+          <StatisticCircle
             title="Оставлено комментариев"
-          >
-            <StyledStatisticIconContainer>
-              <CommentFillIcon />
-              <StyledStatisticIconText>{currentUserView?.commentsCount}</StyledStatisticIconText>
-            </StyledStatisticIconContainer>
-          </StyledBox>
+            onClick={onFilterClick}
+            filters={{ isWithComment: true }}
+            count={currentUserView?.commentsCount || 0}
+            userId={currentUserView?.id}
+            icon={<CommentFillIcon />}
+          />
         </StyledBox>
         <Button
           color={theme.colors.brandColorContrastText}

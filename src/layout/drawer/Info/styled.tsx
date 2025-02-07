@@ -4,6 +4,8 @@ export const StyledInfoList = styled.div({
   display: "flex",
   flexDirection: "column",
   maxHeight: "100%",
+  overflow: "auto",
+  padding: "0 20px 20px 20px",
 });
 export const StyledInfoBlock = styled.div(({ theme }) => ({
   display: "flex",

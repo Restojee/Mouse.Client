@@ -1,0 +1,28 @@
+.starContainer {
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  z-index: 1;
+  opacity: 0.8;
+  margin-left: 4px;
+  margin-right: auto;
+}
+
+.md {
+  gap: 3px;
+}
+
+.lg {
+  gap: 8px;
+}
+
+.md .star svg {
+  min-height: 8px;
+  min-width: 8px;
+}
+
+.lg .star svg {
+  min-height: 16px;
+  min-width: 16px;
+}

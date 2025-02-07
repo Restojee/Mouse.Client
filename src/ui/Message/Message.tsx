@@ -12,6 +12,7 @@ import { Property } from "csstype";
 import React, { useMemo, useState } from "react";
 import { StyledMessageText } from "./styled";
 import { Spoiler } from "./Spoiler";
+import StarRating from "@/ui/StarRating/StarRating";
 
 type PropsType = {
   comment: Comment;
@@ -19,11 +20,11 @@ type PropsType = {
   onUsernameClick?: (id: number) => void;
   padding?: Property.Padding;
   isDeleteView?: boolean;
+  getStarsCount?: (id: number) => number;
 };
 export const Message = (props: PropsType) => {
-  const { comment, onDelete, padding, onUsernameClick, isDeleteView } = props;
+  const { comment, onDelete, padding, onUsernameClick, isDeleteView, getStarsCount } = props;
   const [isHovered, setIsHovered] = useState(false);
-
   const { theme } = useAppTheme();
 
   const onDeleteHandler = () => {
@@ -31,6 +32,14 @@ export const Message = (props: PropsType) => {
       onDelete(comment);
     }
   };
+
+  const starsCount = useMemo(() => {
+    if (!props.comment.user?.id) {
+      return 0;
+    }
+
+    return getStarsCount?.(props.comment.user?.id);
+  }, [props.comment, getStarsCount]);
 
   const renderMessage = () => {
     const spoilerRegex = /\|\|(.+?)\|\|/g;
@@ -85,15 +94,16 @@ export const Message = (props: PropsType) => {
           minHeight={25}
         >
           <Typography
-            margin={"0 auto 0 0"}
             isEllipsis
             onClick={onAuthorClickHandler}
             isLink
           >
             {comment.user?.username}
           </Typography>
+          <StarRating count={starsCount} />
           <Typography
             title={time}
+            margin={"0 0 0 auto"}
             fontSize={"0.7rem"}
           >
             {dateTime}

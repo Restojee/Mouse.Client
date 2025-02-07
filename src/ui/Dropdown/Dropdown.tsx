@@ -4,23 +4,32 @@ import React, { useState } from "react";
 import { DropdownContainer, DropdownList } from "./dropdownElements";
 import DropdownItem from "./DropdownItem";
 
+export interface DefaultOption {
+  label?: string;
+  name?: string;
+  id?: string | number;
+}
+
 interface Props {
   width: string;
   leftIcon?: boolean;
   rightIcon?: boolean;
-  dropdownItemsArray: Array<{ id: number; label: string }>;
+  options: DefaultOption[];
+  value?: DefaultOption;
+  placeholder?: string;
+  onChange?: (option: DefaultOption) => void;
+  optionKey?: keyof DefaultOption;
 }
 
 export default function Dropdown(props: Props) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(0);
 
   const onInputClickHandler = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  const onItemClickHandler = (index: number) => {
+  const onItemClickHandler = (value: DefaultOption) => {
     setIsDropdownOpen(!isDropdownOpen);
-    setSelectedItem(index);
+    props.onChange?.(value);
   };
 
   return (
@@ -32,7 +41,7 @@ export default function Dropdown(props: Props) {
         readOnly
         isOpen={isDropdownOpen}
         onClick={onInputClickHandler}
-        placeholder={props.dropdownItemsArray[selectedItem].label}
+        placeholder={props.placeholder || String(props.value?.[props.optionKey || "label"]) || ""}
         name="selected"
         type="text"
         inputPrepend={props.leftIcon}
@@ -50,12 +59,12 @@ export default function Dropdown(props: Props) {
           width="100%"
           isOpen={isDropdownOpen}
         >
-          {props.dropdownItemsArray.map((obj, index) => (
+          {props.options.map((el, index) => (
             <DropdownItem
-              {...obj}
+              option={el}
+              label={el[props.optionKey || "label"]}
               key={index}
-              index={index.toString()}
-              onClick={() => onItemClickHandler(index)}
+              onClick={onItemClickHandler}
             />
           ))}
         </DropdownList>

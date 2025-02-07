@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { StyledTab } from "@/layout/drawer/Notifications/styled";
 import { StyledDrawerHeader } from "@/layout/drawer/styled";
 import { Typography } from "@/ui/Typography";
+import { Divider } from "@/ui/Divider/Divider";
 
 export const Notifications = () => {
   const [tabIndex, setIsTabIndex] = useState(2);
@@ -29,7 +30,17 @@ export const Notifications = () => {
           </StyledTab>
         ))}
       </StyledBox>
-      <Typography opacity={0.5}>Обновление 07 декабря 2025 (v 1.4.2)</Typography>
+      <Typography opacity={0.5}>Обновление 07 февраля 2025 (v 1.4.3)</Typography>
+      <br />
+      <Typography>• Добавлены звезды самым активным шаманам ヽ(￣ω￣(。。 )ゝ</Typography>
+      <br />
+      <Typography>• Добавлено отображение процента пройденных карт</Typography>
+      <br />
+      <Typography>• Исправлен баг заголовка полезной инфы</Typography>
+      <br />
+      <Divider />
+      <br />
+      <Typography opacity={0.5}>Обновление 07 декабря 2024 (v 1.4.2)</Typography>
       <br />
       <Typography>
         • Теперь во вкладке уведомлений можно посмотреть информацию об обновлениях на сайте ⸜( ´ ꒳ ` )⸝

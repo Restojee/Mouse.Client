@@ -31,7 +31,6 @@ export const Info = () => {
   return (
     <StyledBox
       direction="column"
-      padding="0 20px 20px 20px"
       overflow={"auto"}
       grow={1}
     >

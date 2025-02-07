@@ -10,6 +10,8 @@ import { Message } from "@/ui/Message";
 import { MessageSendFormContainer } from "@/ui/Message/MessagesSendForm";
 import { StyledDrawerHeader } from "@/layout/drawer/styled";
 import { StyledBox } from "@/ui/Box";
+import { User } from "@/api/codegen/genMouseMapsApi";
+import { getStarsByUserId } from "@/modules/user/utils/getStarsByUserId";
 
 export const Chat = () => {
   const isAuth = useAppSelector(selectIsAuth);
@@ -18,12 +20,16 @@ export const Chat = () => {
   const { setValue } = useLocalStorage(localStorageKeys.CHAT_MESSAGES_COUNT);
   const { messages, messageText, onMessageAdd, isSendLoading, onInputKeyUp, onInputChange, onMessageDelete } =
     useChat();
-
   const { theme } = useAppTheme();
-
-  const { onOpenUserModal } = useUser();
-
+  const { onOpenUserModal, users } = useUser();
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
+
+  const getUserStarsCount = useCallback(
+    (id: User["id"]) => {
+      return getStarsByUserId(id, users);
+    },
+    [users],
+  );
 
   const scrollToBottomHandler = useCallback((isNotSmooth?: boolean) => {
     const ref = scrollToBottomRef.current;
@@ -81,6 +87,7 @@ export const Chat = () => {
               key={el.id}
               comment={el}
               padding={"10px"}
+              getStarsCount={getUserStarsCount}
               onDelete={onMessageDelete}
               isDeleteView={currentUser?.id === el.user?.id}
               onUsernameClick={onUsernameClickHandler}
