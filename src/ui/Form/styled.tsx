@@ -92,6 +92,7 @@ export const StyledInput = styled.input((props) => ({
   boxShadow: "inherit",
   textOverflow: "ellipsis",
   cursor: props.readOnly ? "pointer" : "auto",
+  height: props.size,
   "&::placeholder": {
     opacity: 0.6,
   },

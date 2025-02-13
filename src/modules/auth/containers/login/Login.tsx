@@ -9,6 +9,9 @@ import { Input } from "@/ui/Input";
 import { Typography } from "@/ui/Typography";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
+import { useState } from "react";
+import { Display } from "@/ui/Display";
+import { Divider } from "@/ui/Divider/Divider";
 
 export const Login = () => {
   const {
@@ -21,6 +24,11 @@ export const Login = () => {
 
   const { login } = useLogin();
   const { theme } = useAppTheme();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
+  };
 
   const onSubmit = async (data: LoginRequest) => {
     await login(data);
@@ -34,7 +42,7 @@ export const Login = () => {
         gap={30}
       >
         <Typography
-          fontSize={"1.5rem"}
+          fontSize={"1.8rem"}
           margin={"0 0 10px 0"}
         >
           Вход
@@ -50,6 +58,7 @@ export const Login = () => {
               disabled={field.disabled}
               value={field.value}
               enterKeyHint={"next"}
+              size={46}
               type={"name"}
               error={errors.userName?.message}
               placeholder={"Логин"}
@@ -67,18 +76,39 @@ export const Login = () => {
               disabled={field.disabled}
               value={field.value}
               type={"password"}
+              size={46}
               error={errors.password?.message}
               enterKeyHint={"send"}
               placeholder={"Пароль"}
             />
           )}
         />
+
         <Button
           margin={"auto"}
           color={theme.colors.brandColorContrastText}
           label={"Войти"}
           type={"submit"}
+          size={"lg"}
         />
+        <Divider />
+        <Typography
+          margin={"-10px 0 0  0"}
+          opacity={0.8}
+          onClick={toggleOpen}
+          isLink
+        >
+          Регистрация
+        </Typography>
+        <Display condition={isOpen}>
+          <Typography
+            fontSize={"0.8rem"}
+            margin={"-10px 0 0 0"}
+            opacity={0.5}
+          >
+            На данный момент регистрация возможна только по приглашению
+          </Typography>
+        </Display>
       </StyledBox>
     </Form>
   );

@@ -10,7 +10,7 @@ const LoginModal = () => {
       withoutTitle
       isOpen={true}
       onClose={onLoginModalClose}
-      width={300}
+      width={350}
       withoutButtons
     >
       <Login />
