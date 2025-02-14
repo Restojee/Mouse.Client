@@ -4,8 +4,9 @@ import LevelService from "./LevelService";
 import LevelsApi from "@/modules/levels/common/api/api";
 import { Module } from "@common/hocs/types";
 import CoreModule from "@common/hocs/CoreModule";
-import { ModalServiceInjectKey } from "@common/services";
+import { HttpInjectKey, ModalServiceInjectKey } from "@common/services";
 import { LevelModuleProps } from "@/modules/levels/model/common/types";
+import { HttpHandler } from "@common/http/HttpHandler";
 
 export class LevelModule extends CoreModule implements Module<LevelModuleProps> {
 
@@ -15,7 +16,9 @@ export class LevelModule extends CoreModule implements Module<LevelModuleProps> 
 
   public create(): void {
     this.appInstance.add(LevelModule.LevelServiceInjectKey, new LevelService(
-      this.appInstance.add(LevelModule.LevelApiInjectKey, new LevelsApi()),
+      this.appInstance.add(LevelModule.LevelApiInjectKey, new LevelsApi(
+        this.appInstance.get<HttpHandler>(HttpInjectKey)
+      )),
       this.appInstance.add(LevelModule.LevelDataAccessInjectKey, new LevelDataAccess()),
       this.appInstance.get<ModalService>(ModalServiceInjectKey)
     ))

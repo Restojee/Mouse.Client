@@ -18,8 +18,8 @@ class LevelsApi {
   public static GlobalInjectKey = 'LevelsApiKey';
   private readonly http: HttpHandler;
 
-  constructor() {
-    this.http = AppInstance.get<HttpHandler>(HttpInjectKey);
+  constructor(httpHandler: HttpHandler) {
+    this.http = httpHandler;
   }
 
   public collect(args: LevelCollectArgs): Promise<LevelCollectResponse> {
