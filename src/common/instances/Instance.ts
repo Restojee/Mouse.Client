@@ -1,4 +1,4 @@
-import { Container } from "@common/utils/di/DIContainer";
+import { Container } from "@common/utils/di/Container";
 
 export class Instance {
   public static add<T>(key: symbol): T {
