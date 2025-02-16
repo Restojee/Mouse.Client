@@ -1,17 +1,16 @@
 import { LevelEndpoints, LevelUrls } from './endpoints';
-import { AppInstance } from '@common/instances';
-import { HttpInjectKey } from '@common/services';
-import { HttpHandler } from '@common/http/HttpHandler';
+import { HttpHandler } from "@common/http/HttpHandler";
 import {
-  LevelByIdArgs, LevelByIdResponse,
-  type LevelCollectArgs,
-  type LevelCollectResponse,
-  type LevelCreateArgs,
-  type LevelCreateResponse,
-  type LevelRemoveArgs, LevelRemoveResponse,
-  type LevelUpdateArgs,
-  type LevelUpdateResponse,
-} from "./types";
+  LevelByIdArgs,
+  LevelByIdResponse,
+  LevelCollectArgs, LevelCollectResponse,
+  LevelCreateArgs,
+  LevelCreateResponse,
+  LevelRemoveArgs,
+  LevelRemoveResponse,
+  LevelUpdateArgs,
+  LevelUpdateResponse,
+} from "@/modules/levels/common/api/types";
 
 class LevelsApi {
 

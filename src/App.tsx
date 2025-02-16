@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Router } from './Router';
-import Services from "@common/services";
-
-new Services().init();
+import AppServices from "@/Init";
 
 const App: React.FC = () => <Router />;
+AppServices.init();
 
 export default App;

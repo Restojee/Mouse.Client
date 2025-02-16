@@ -1,16 +1,16 @@
 export class Instance {
-  private instances: Map<string, any> = new Map();
+  private instances: Map<symbol, any> = new Map();
 
-  public add<T extends object>(key: string, object: T) {
+  public add<T extends object>(key: symbol, object: T) {
     this.instances.set(key, object)
     return this.get<T>(key);
   }
 
-  public get<T extends object>(key: string): T {
+  public get<T extends object>(key: symbol): T {
     return this.instances.get(key)
   }
 
-  public remove(key: string) {
+  public remove(key: symbol) {
     this.instances.delete(key);
   }
 }

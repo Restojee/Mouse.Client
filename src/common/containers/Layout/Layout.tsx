@@ -11,7 +11,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         <SidePanel />
         <Column pa="lg" width={1}>
           <Paper bgColor="secondary" radius="lg">
-              {children}
+            {children}
           </Paper>
         </Column>
         <ContentPanel />

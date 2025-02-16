@@ -1,24 +1,26 @@
 import { Theme } from '@common/themes/core/Theme';
-import { AppInstance } from '@common/instances';
 import Palette from '@common/themes/core/Pallete';
 import { ModalService } from "@common/services/modal/ModalService";
 import { HttpHandler } from "@common/http/HttpHandler";
+import { Inject } from "@common/utils/di/Inject";
+import { Register } from "@common/utils/di/Register";
 
-export const ThemeInjectKey = 'Theme';
-export const PaletteInjectKey = 'Palette';
-export const HttpInjectKey = 'Http';
-export const ModalServiceInjectKey = 'ModalServiceInjectKey';
+export const ThemeInjectKey = Symbol('Theme');
+export const PaletteInjectKey = Symbol('Palette');
+export const HttpInjectKey = Symbol('Http');
+export const ModalServiceInjectKey = Symbol('ModalServiceInjectKey');
+export const ServicesInjectKey = Symbol('ServicesInjectKey');
 
-export default class Services {
-  constructor() {
-    return this;
-  }
+@Register(ServicesInjectKey)
+class Services {
+  constructor(
+    @Inject(ThemeInjectKey) theme: Theme,
+    @Inject(PaletteInjectKey) palette: Palette,
+    @Inject(ModalServiceInjectKey) modalService: ModalService,
+    @Inject(HttpInjectKey) httpHandler: HttpHandler
+  ) {
 
-  init() {
-    AppInstance.add(ThemeInjectKey, new Theme());
-    AppInstance.add(PaletteInjectKey, new Palette());
-    AppInstance.add(ModalServiceInjectKey, new ModalService());
-    AppInstance.add(HttpInjectKey, new HttpHandler('', () => ''));
   }
 }
 
+export default Services;

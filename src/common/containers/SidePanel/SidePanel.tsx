@@ -1,5 +1,7 @@
 import * as React from "react";
 import { Column, Paper } from "@/common";
+import withModule from "@common/hocs/withModule";
+import { SidePanelService } from "@common/containers/SidePanel/SidePanelService";
 
 const SidePanel = () => {
   return (
@@ -11,4 +13,4 @@ const SidePanel = () => {
   )
 }
 
-export default React.memo(SidePanel);
+export default SidePanel;

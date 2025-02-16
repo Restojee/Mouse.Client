@@ -1,20 +1,26 @@
 import { Roles } from "@common/types/roles";
 import { GuardRole, Loading, Validate } from "@common/store/async/utils";
-import LevelsApi from "@/modules/levels/common/api/api";
 import { LevelEndpoints } from "@/modules/levels/common/api/endpoints";
 import { LevelByIdArgs, LevelCollectArgs, LevelRemoveArgs } from "@/modules/levels/common/api/types";
 import LevelEntity from "@/modules/levels/model/entities/LevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
-import { levelMappers } from "@/modules/levels/common/api/mappers";
 import { ModalService } from "@common/services/modal/ModalService";
 import CreateLevelModal from "@/modules/levels/view/containers/CreateLevelModal";
 import { ModalEntity } from "@common/services/modal/ModalEntity";
 import { LevelDataAccess } from "@/modules/levels/model/services/LevelDataAccess";
+import { Inject } from "@common/utils/di/Inject";
+import { LevelModule } from "@/modules/levels/model/services/LevelModule";
+import { ModalServiceInjectKey } from "@common/services";
+import LevelsApi from "@common/api/levels";
+import { levelMappers } from "@/modules/levels/model/common/mappers";
+import { Register } from "@common/utils/di/Register";
+import { LifecycleType } from "@common/utils/di";
 
 const getLoadingMs = 1000;
 const mutateLoadingMs = 500;
 
+@Register(LevelModule.LevelServiceInjectKey, LifecycleType.Singleton)
 class LevelService {
   private readonly _levelApi: LevelsApi;
   private readonly _levelDataAccess: LevelDataAccess;
@@ -24,7 +30,11 @@ class LevelService {
     return this._levelApi;
   };
 
-  constructor(levelsApi: LevelsApi, levelDataAccess: LevelDataAccess, modalService: ModalService,) {
+  constructor(
+    @Inject(LevelModule.LevelApiInjectKey) levelsApi: LevelsApi,
+    @Inject(LevelModule.LevelDataAccessInjectKey) levelDataAccess: LevelDataAccess,
+    @Inject(ModalServiceInjectKey) modalService: ModalService
+  ) {
     this._levelApi = levelsApi;
     this._levelDataAccess = levelDataAccess;
     this._modalService = modalService;

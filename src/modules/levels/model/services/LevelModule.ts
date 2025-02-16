@@ -1,33 +1,39 @@
-import { LevelDataAccess } from "@/modules/levels/model/services/LevelDataAccess";
-import { ModalService } from "@common/services/modal/ModalService";
 import LevelService from "./LevelService";
-import LevelsApi from "@/modules/levels/common/api/api";
 import { Module } from "@common/hocs/types";
 import CoreModule from "@common/hocs/CoreModule";
-import { HttpInjectKey, ModalServiceInjectKey } from "@common/services";
 import { LevelModuleProps } from "@/modules/levels/model/common/types";
-import { HttpHandler } from "@common/http/HttpHandler";
+import { Inject } from "@common/utils/di/Inject";
+import { Register } from "@common/utils/di/Register";
 
+@Register(LevelModule.LevelModuleInjectKey)
 export class LevelModule extends CoreModule implements Module<LevelModuleProps> {
 
-  public static LevelApiInjectKey = 'LevelApi';
-  public static LevelDataAccessInjectKey = 'LevelDataAccess';
-  public static LevelServiceInjectKey ='LevelService';
+  public static LevelModuleInjectKey = Symbol('LevelModule');
+  public static LevelApiInjectKey = Symbol('LevelApi');
+  public static LevelDataAccessInjectKey = Symbol('LevelDataAccess');
+  public static LevelServiceInjectKey = Symbol('LevelService');
+
+  public levelService: LevelService;
+
+  constructor(@Inject(LevelModule.LevelServiceInjectKey) levelService: LevelService) {
+    super();
+    this.levelService = levelService;
+  }
 
   public create(): void {
-    this.appInstance.add(LevelModule.LevelServiceInjectKey, new LevelService(
-      this.appInstance.add(LevelModule.LevelApiInjectKey, new LevelsApi(
-        this.appInstance.get<HttpHandler>(HttpInjectKey)
-      )),
-      this.appInstance.add(LevelModule.LevelDataAccessInjectKey, new LevelDataAccess()),
-      this.appInstance.get<ModalService>(ModalServiceInjectKey)
-    ))
+    // this.appInstance.add(LevelModule.LevelServiceInjectKey, new LevelService(
+    //   this.appInstance.add(LevelModule.LevelApiInjectKey, new LevelsApi(
+    //     this.appInstance.get<HttpHandler>(HttpInjectKey)
+    //   )),
+    //   this.appInstance.add(LevelModule.LevelDataAccessInjectKey, new LevelDataAccess()),
+    //   this.appInstance.get<ModalService>(ModalServiceInjectKey)
+    // ))
   }
 
   public destroy(): void {
-    this.appInstance.remove(LevelModule.LevelApiInjectKey);
-    this.appInstance.remove(LevelModule.LevelDataAccessInjectKey);
-    this.appInstance.remove(LevelModule.LevelServiceInjectKey)
+    // this.appInstance.remove(LevelModule.LevelApiInjectKey);
+    // this.appInstance.remove(LevelModule.LevelDataAccessInjectKey);
+    // this.appInstance.remove(LevelModule.LevelServiceInjectKey)
   }
 
   public getProps(): LevelModuleProps {

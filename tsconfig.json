@@ -9,6 +9,7 @@
     "typeRoots": ["node_modules/@types"],
     "types": [ "node"],
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "declaration": true,
     "declarationDir": "./types",
     "allowJs": false,
