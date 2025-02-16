@@ -1,13 +1,22 @@
 import * as React from "react";
 import { Module } from "@common/hocs/types";
+import { Constructor } from "@common/utils/di/types";
+import { Instance } from "@common/instances/Instance";
 
-const withModule = <P extends {}>(Component: React.FunctionComponent<P>, module: Module<P>): React.FC => {
+interface Options<P> {
+  container: React.FunctionComponent<P>,
+  moduleKey: symbol,
+  module: Constructor
+}
+const withModule = <P extends {}>({ moduleKey, module, container }: Options<P>): React.FC => {
+  const moduleInstance: Module<P> = Instance.add(moduleKey)
+  const Component = container;
   return () => {
     React.useEffect(() => {
-      module.create();
-      return module.destroy
+      moduleInstance.create();
+      return moduleInstance.destroy
     }, [Component, module])
-    return <Component { ...module.getProps() } />
+    return <Component { ...moduleInstance.getProps() } />
   };
 }
 

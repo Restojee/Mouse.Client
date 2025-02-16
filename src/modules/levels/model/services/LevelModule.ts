@@ -1,44 +1,27 @@
 import LevelService from "./LevelService";
 import { Module } from "@common/hocs/types";
-import CoreModule from "@common/hocs/CoreModule";
 import { LevelModuleProps } from "@/modules/levels/model/common/types";
 import { Inject } from "@common/utils/di/Inject";
 import { Register } from "@common/utils/di/Register";
+import { LifecycleType } from "@common/utils/di";
 
-@Register(LevelModule.LevelModuleInjectKey)
-export class LevelModule extends CoreModule implements Module<LevelModuleProps> {
+export const LevelModuleInjectKey = Symbol('LevelModule');
+export const LevelApiInjectKey = Symbol('LevelApi');
+export const LevelDataAccessInjectKey = Symbol('LevelDataAccess');
+export const LevelServiceInjectKey = Symbol('LevelService');
 
-  public static LevelModuleInjectKey = Symbol('LevelModule');
-  public static LevelApiInjectKey = Symbol('LevelApi');
-  public static LevelDataAccessInjectKey = Symbol('LevelDataAccess');
-  public static LevelServiceInjectKey = Symbol('LevelService');
+@Register(LevelModuleInjectKey, LifecycleType.Singleton)
+export class LevelModule implements Module<LevelModuleProps> {
 
-  public levelService: LevelService;
+  constructor(
+    @Inject(LevelServiceInjectKey) private levelService: LevelService
+  ) {}
 
-  constructor(@Inject(LevelModule.LevelServiceInjectKey) levelService: LevelService) {
-    super();
-    this.levelService = levelService;
-  }
-
-  public create(): void {
-    // this.appInstance.add(LevelModule.LevelServiceInjectKey, new LevelService(
-    //   this.appInstance.add(LevelModule.LevelApiInjectKey, new LevelsApi(
-    //     this.appInstance.get<HttpHandler>(HttpInjectKey)
-    //   )),
-    //   this.appInstance.add(LevelModule.LevelDataAccessInjectKey, new LevelDataAccess()),
-    //   this.appInstance.get<ModalService>(ModalServiceInjectKey)
-    // ))
-  }
-
-  public destroy(): void {
-    // this.appInstance.remove(LevelModule.LevelApiInjectKey);
-    // this.appInstance.remove(LevelModule.LevelDataAccessInjectKey);
-    // this.appInstance.remove(LevelModule.LevelServiceInjectKey)
-  }
-
+  public create(): void {}
+  public destroy(): void {}
   public getProps(): LevelModuleProps {
     return {
-      levelService: this.appInstance.get(LevelModule.LevelServiceInjectKey)
+      levelService: this.levelService
     }
   }
 }

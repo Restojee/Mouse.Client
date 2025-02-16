@@ -1,8 +1,5 @@
-import { AppInstance } from '@common/instances';
-import { PaletteInjectKey, ThemeInjectKey } from "@common/services";
-import Palette from '@common/themes/core/Pallete';
+import Palette, { PaletteInjectKey } from "@common/themes/core/Pallete";
+import { container } from "@common/utils/di/DIContainer";
 
 export const useAppPalette = () =>
-  AppInstance
-    .get<Palette>(PaletteInjectKey)
-    .from(AppInstance.get(ThemeInjectKey));
+  container.resolve<Palette>(PaletteInjectKey)

@@ -1,7 +1,6 @@
-import { AppInstance } from '@common/instances';
-import { ThemeInjectKey } from '@common/services';
-import { Theme } from '@common/themes/core/Theme';
+import { Theme, ThemeInjectKey } from "@common/themes/core/Theme";
+import { container } from "@common/utils/di/DIContainer";
 
-const useTheme = () => AppInstance.get<Theme>(ThemeInjectKey)
+const useTheme = () => container.resolve<Theme>(ThemeInjectKey)
 
 export default useTheme;

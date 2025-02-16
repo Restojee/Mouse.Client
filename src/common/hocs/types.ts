@@ -1,6 +1,6 @@
-export interface Module<Props extends {}> {
+export interface Module<Props extends {} = {}> {
   create(): void;
-  destroy(): void;
-  getProps(): Props
+  destroy?(): void;
+  getProps?(): Props
   //TODO extends IDisposable
 }

@@ -1,8 +1,11 @@
 import { type Http } from '@common/http/types';
+import { Register } from "@common/utils/di/Register";
 
+export const HttpInjectKey = Symbol.for('HttpServiceInjectKey');
 
-
+@Register(HttpInjectKey)
 export class HttpHandler implements Http.ClientHandler {
+
   private static readonly Methods: Record<string, string> = {
     GET: 'GET',
     DELETE: 'DELETE',

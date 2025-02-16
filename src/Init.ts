@@ -1,10 +1,9 @@
-import { DIContainer } from "@common/utils/di";
-import Services, { ServicesInjectKey } from "@common/services";
+import { AppModuleInjectKey } from "@common/services";
+import { Instance } from "@common/instances/Instance";
 
 class AppServices {
   public static init() {
-    const container = new DIContainer();
-    container.register(ServicesInjectKey, Services);
+    Instance.add(AppModuleInjectKey)
   }
 }
 

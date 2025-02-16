@@ -1,9 +1,10 @@
 import { LevelEndpoints, LevelUrls } from './endpoints';
-import { HttpHandler } from "@common/http/HttpHandler";
+import { HttpHandler, HttpInjectKey } from "@common/http/HttpHandler";
 import {
   LevelByIdArgs,
   LevelByIdResponse,
-  LevelCollectArgs, LevelCollectResponse,
+  LevelCollectArgs,
+  LevelCollectResponse,
   LevelCreateArgs,
   LevelCreateResponse,
   LevelRemoveArgs,
@@ -11,13 +12,16 @@ import {
   LevelUpdateArgs,
   LevelUpdateResponse,
 } from "@/modules/levels/common/api/types";
+import { Register } from "@common/utils/di/Register";
+import { LevelApiInjectKey } from "@/modules/levels/model/services/LevelModule";
+import { Inject } from "@common/utils/di/Inject";
 
+@Register(LevelApiInjectKey)
 class LevelsApi {
 
-  public static GlobalInjectKey = 'LevelsApiKey';
   private readonly http: HttpHandler;
 
-  constructor(httpHandler: HttpHandler) {
+  constructor(@Inject(HttpInjectKey) httpHandler: HttpHandler) {
     this.http = httpHandler;
   }
 

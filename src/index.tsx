@@ -2,7 +2,7 @@ import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 
 import '@styles/style.scss';
-import App from "./Services";
+import App from "@/App";
 
 const container = document.getElementById('root');
 
