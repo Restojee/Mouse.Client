@@ -8,9 +8,9 @@ import { Register } from "@common/utils/di/Register";
 @Register(NavigationModule.NavigationModuleInjectKey)
 class NavigationModule implements Module<NavigationModuleProps> {
   
-    public static NavigationDataAccessInjectKey = Symbol('NavigationDataAccess');
-    public static NavigationServiceInjectKey = Symbol('NavigationService');
-    public static NavigationModuleInjectKey = Symbol('NavigationModule');
+    public static NavigationDataAccessInjectKey = 'NavigationDataAccess';
+    public static NavigationServiceInjectKey = 'NavigationService';
+    public static NavigationModuleInjectKey = 'NavigationModule';
 
     public readonly navigationService: NavigationService;
     public readonly navigationDataAccess: NavigationDataAccess;

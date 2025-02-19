@@ -4,7 +4,7 @@ import { ThemeSizes } from "@common/themes/common/types";
 import { calcSize, getBorderRadius, getPaddingStyles } from "@common/themes/common/utils";
 import { Register } from "@common/utils/di/Register";
 
-export const ThemeInjectKey = Symbol.for('Theme');
+export const ThemeInjectKey = 'Theme';
 
 @Register(ThemeInjectKey)
 export class Theme {

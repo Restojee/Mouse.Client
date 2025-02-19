@@ -14,3 +14,5 @@ export interface RegistrationOptions {
 export interface Disposable {
   dispose(): void;
 }
+
+export type InstanceKey = string;

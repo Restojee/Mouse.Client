@@ -13,17 +13,14 @@ import {
   LevelUpdateResponse,
 } from "@/modules/levels/common/api/types";
 import { Register } from "@common/utils/di/Register";
-import { LevelApiInjectKey } from "@/modules/levels/model/services/LevelModule";
 import { Inject } from "@common/utils/di/Inject";
+
+export const LevelApiInjectKey = 'LevelApi';
 
 @Register(LevelApiInjectKey)
 class LevelsApi {
 
-  private readonly http: HttpHandler;
-
-  constructor(@Inject(HttpInjectKey) httpHandler: HttpHandler) {
-    this.http = httpHandler;
-  }
+  constructor(@Inject(HttpInjectKey) private http: HttpHandler) {}
 
   public collect(args: LevelCollectArgs): Promise<LevelCollectResponse> {
     return this.http.get<LevelCollectArgs, LevelCollectResponse>({

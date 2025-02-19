@@ -1,7 +1,7 @@
-import { DIContainer } from "./DIContainer";
 import { LifecycleType } from "./types";
+import { Container } from "./Container";
 
 export {
-  DIContainer,
+  Container,
   LifecycleType
 }

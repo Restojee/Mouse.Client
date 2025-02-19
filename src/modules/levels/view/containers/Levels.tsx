@@ -1,7 +1,6 @@
 import React from "react";
-import { LevelModuleProps } from "@/modules/levels/model/common/types";
 
-const Levels: React.FC<LevelModuleProps> = ({ levelService }) => {
+const Levels: React.FC = () => {
   return (
     <div />
   )

@@ -1,5 +1,4 @@
-import { Validated } from "@common/store/validate";
-import { GetError, GetIsValid } from "@common/store/form/types";
+import { FieldPropsOptions, GetError, GetIsValid } from "@common/store/form/types";
 
 class FieldProps {
   private readonly _getIsValid: GetIsValid;
@@ -12,9 +11,9 @@ class FieldProps {
     return this._getIsValid;
   }
 
-  constructor(validate: Validated<any>) {
-    this._getIsValid = validate.getIsValid
-    this._getError = validate.getError
+  constructor({ validate }: FieldPropsOptions) {
+    this._getIsValid = validate.getIsValid;
+    this._getError = validate.getError;
     return this;
   }
 

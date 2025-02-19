@@ -1,7 +1,7 @@
 import { type Http } from '@common/http/types';
 import { Register } from "@common/utils/di/Register";
 
-export const HttpInjectKey = Symbol.for('HttpServiceInjectKey');
+export const HttpInjectKey = 'HttpServiceInjectKey';
 
 @Register(HttpInjectKey)
 export class HttpHandler implements Http.ClientHandler {

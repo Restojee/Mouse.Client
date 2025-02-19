@@ -1,9 +1,9 @@
-import { container } from "@common/utils/di/DIContainer";
-import { LifecycleType } from "@common/utils/di/types";
+import { InstanceKey, LifecycleType } from "@common/utils/di/types";
+import { Container } from "@common/utils/di/Container";
 
-export function Register(token: symbol, lifecycle: LifecycleType = LifecycleType.Transient) {
+export function Register(token: InstanceKey, lifecycle: LifecycleType = LifecycleType.Transient) {
   return function <T extends { new(...args: any[]): {} }>(constructor: T) {
     console.log(`Registering class: ${constructor.name}`);
-    container.register(token, constructor);
+    Container.register(token, constructor);
   }
 }

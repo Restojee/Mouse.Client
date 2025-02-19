@@ -2,7 +2,7 @@ import { ModalDataAccess } from "@common/services/modal/ModalDataAccess";
 import { ModalEntity } from "@common/services/modal/ModalEntity";
 import { Register } from "@common/utils/di/Register";
 
-export const ModalServiceInjectKey = Symbol.for('ModalServiceInjectKey');
+export const ModalServiceInjectKey = 'ModalServiceInjectKey';
 
 @Register(ModalServiceInjectKey)
 export class ModalService {

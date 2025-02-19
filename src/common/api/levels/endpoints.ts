@@ -8,8 +8,8 @@ export enum LevelEndpoints {
 
 export const LevelUrls: Record<LevelEndpoints, string> = {
   [LevelEndpoints.Collect]: 'maps/collect',
-  [LevelEndpoints.ById]: 'maps/by-id',
-  [LevelEndpoints.Remove]: 'maps/remove',
+  [LevelEndpoints.ById]: `maps/by-id/{id}`,
+  [LevelEndpoints.Remove]: 'maps/remove/{id}',
   [LevelEndpoints.Create]: 'maps/create',
   [LevelEndpoints.Update]: 'maps/update',
 };

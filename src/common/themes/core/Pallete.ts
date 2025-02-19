@@ -3,7 +3,7 @@ import { Theme, ThemeInjectKey } from "@common/themes/core/Theme";
 import { Register } from "@common/utils/di/Register";
 import { Inject } from "@common/utils/di/Inject";
 
-export const PaletteInjectKey = Symbol.for('Palette');
+export const PaletteInjectKey = 'Palette';
 
 @Register(PaletteInjectKey)
 class Palette {

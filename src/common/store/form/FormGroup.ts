@@ -1,67 +1,80 @@
 import EntityState from "@common/store/entity/EntityState";
-import { Validated } from "@common/store/validate";
 import FieldProps from "@common/store/form/FieldProps";
-import { InputPropsGetter, InputPropsOptions } from "@common/store/form/types";
+import {
+  FieldPropsOptions,
+  InputPropsOptions,
+  SubmitPropsOptions,
+} from "@common/store/form/types";
 import InputProps from "@common/store/form/InputProps";
-import { SubmitProps } from "@common/store/form/SubmitProps";
+import FormBuilder from "@common/store/form/FormBuilder";
+import FormField from "@common/store/form/FormField";
+import FormValidator from "@common/store/form/FormValidator";
+import SubmitProps from "@common/store/form/SubmitProps";
 
 export class FormGroup<E> {
 
   private _value: EntityState<E>;
+  private _formFields: Map<string, FormField>;
+  private _formValidator: FormValidator<E>
 
-  // remove after fields
-  private validatedByField: Map<string, Validated>;
-
-  // private fields: Map<string, FieldSchema>
-
-  public handleFieldValueChange(key: string, value: string){
-    return this._value.setField(key, value);
+  private initValidator() {
+    this._formValidator = new FormValidator<E>(this._value, this._formFields);
   }
-  public getFormStateValue(): EntityState<E>{
-    return this._value;
-  }
-  public getValidatedFields(){
-    return Array.from(this.validatedByField);
-  }
-  public getIsValuesValid(){
-    return this.getValidatedFields().every(([_, validate]) => validate.getIsValid());
-  };
-  public getValueByFieldKey(key: string){
-    return this._value.getField(key);
-  };
-
-  constructor(value: E) {
-    this.initEntityState(value);
-    this.setValidated();
-  }
-
-  public initEntityState(value: E) {
+  private initEntityState(value: E) {
     this._value = new EntityState(value);
   }
 
-  public setValidated() {
-    for (let key in this._value.getFieldKeys()) {
-      this.validatedByField.set(key, new Validated<{}>(this._value[key]))
-    }
+  constructor(value: E, private configure?: (builder: FormBuilder<E>) => void) {
+    const builder = new FormBuilder(value);
+    this.configure(builder)
+    this.initEntityState(value);
+    this.initValidator();
+  }
+
+  public getFormStateValue(): EntityState<E>{
+    return this._value;
+  }
+  public handleInputChange(key: string, value: string){
+    return this._value.setField(key, value);
+  }
+  public getFormField(key: string) {
+    return this._value.getField(key);
+  }
+  public getValidatedFields() {
+    return this._formValidator.getValidatedFields();
+  }
+  public getValidatedField(key: string) {
+    return this.getValidatedFields().get(key);
+  };
+  public getValidatedForm(){
+    return this._formValidator.validateAllFields();
   }
 
   public getInputOptions = (key: string): InputPropsOptions => {
+    const fieldValue = this.getFormField(key);
     return {
-      value: this.getValueByFieldKey(key),
-      onChange: this.handleFieldValueChange(key, this._value.getField(key))
+      value: fieldValue,
+      onChange: this.handleInputChange(key, fieldValue)
     };
   }
-
-  public getInputProps = (key: string): InputPropsGetter => {
-    // this.validated.validate(fieldValue)
-    return new InputProps(this.getInputOptions(key)).getProps()
+  public getFieldOptions = (key: string): FieldPropsOptions => {
+    return {
+      validate: this.getValidatedField(key),
+    }
+  }
+  public getSubmitOptions = (): SubmitPropsOptions => {
+    return {
+      validate: this.getValidatedForm()
+    }
   }
 
+  public getInputProps(key: string)  {
+    return new InputProps(this.getInputOptions(key)).getProps();
+  }
   public getFieldProps(key: string) {
-    return new FieldProps(this.validatedByField.get(key)).getProps()
+    return new FieldProps(this.getFieldOptions(key)).getProps();
   }
-
   public getSubmitProps() {
-    return new SubmitProps();
+    return new SubmitProps(this.getSubmitOptions()).getProps();
   }
 }

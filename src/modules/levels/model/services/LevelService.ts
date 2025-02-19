@@ -8,29 +8,28 @@ import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEn
 import { ModalService, ModalServiceInjectKey } from "@common/services/modal/ModalService";
 import CreateLevelModal from "@/modules/levels/view/containers/CreateLevelModal";
 import { ModalEntity } from "@common/services/modal/ModalEntity";
-import { LevelDataAccess } from "@/modules/levels/model/services/LevelDataAccess";
 import { Inject } from "@common/utils/di/Inject";
-import {
-  LevelApiInjectKey,
-  LevelDataAccessInjectKey,
-  LevelServiceInjectKey,
-} from "@/modules/levels/model/services/LevelModule";
 import LevelsApi from "@common/api/levels";
 import { levelMappers } from "@/modules/levels/model/common/mappers";
 import { Register } from "@common/utils/di/Register";
-import { LifecycleType } from "@common/utils/di";
+import LevelDataAccess from "@/modules/levels/model/services/LevelDataAccess";
+import { LevelApiInjectKey } from "@common/api/levels/api";
 
 const getLoadingMs = 1000;
 const mutateLoadingMs = 500;
 
-@Register(LevelServiceInjectKey, LifecycleType.Singleton)
+export const LevelServiceInjectKey = 'LevelService';
+
+@Register(LevelServiceInjectKey)
 class LevelService {
 
   constructor(
     @Inject(LevelApiInjectKey) private levelsApi: LevelsApi,
-    @Inject(LevelDataAccessInjectKey) private levelDataAccess: LevelDataAccess,
+    @Inject(LevelServiceInjectKey) private levelDataAccess: LevelDataAccess,
     @Inject(ModalServiceInjectKey) private modalService: ModalService
   ) {
+    console.log('test')
+    console.log(levelsApi, levelDataAccess, modalService)
     this.modalService.registerModal(new ModalEntity(CreateLevelModal));
   }
 
