@@ -6,53 +6,44 @@ import LevelEntity from "@/modules/levels/model/entities/LevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
 import { ModalService, ModalServiceInjectKey } from "@common/services/modal/ModalService";
-import CreateLevelModal from "@/modules/levels/view/containers/CreateLevelModal";
+import CreateLevelModal from "@/modules/levels/view/containers/CreateLevel";
 import { ModalEntity } from "@common/services/modal/ModalEntity";
 import { Inject } from "@common/utils/di/Inject";
-import LevelsApi from "@common/api/levels";
 import { levelMappers } from "@/modules/levels/model/common/mappers";
 import { Register } from "@common/utils/di/Register";
-import LevelDataAccess from "@/modules/levels/model/services/LevelDataAccess";
-import { LevelApiInjectKey } from "@common/api/levels/api";
+import LevelDataAccess, { LevelDataAccessInjectKey } from "@/modules/levels/model/services/LevelDataAccess";
+import LevelSelectors, { LevelSelectorsInjectKey } from "@/modules/levels/model/services/LevelSelectors";
+import LevelsApi, { LevelApiInjectKey } from "@common/api/levels/api";
 
 const getLoadingMs = 1000;
 const mutateLoadingMs = 500;
+export const LevelActionsInjectKey = 'LevelService';
 
-export const LevelServiceInjectKey = 'LevelService';
-
-@Register(LevelServiceInjectKey)
-class LevelService {
+@Register(LevelActionsInjectKey)
+class LevelActions {
 
   constructor(
     @Inject(LevelApiInjectKey) private levelsApi: LevelsApi,
-    @Inject(LevelServiceInjectKey) private levelDataAccess: LevelDataAccess,
-    @Inject(ModalServiceInjectKey) private modalService: ModalService
+    @Inject(LevelDataAccessInjectKey) private levelDataAccess: LevelDataAccess,
+    @Inject(ModalServiceInjectKey) private modalService: ModalService,
+    @Inject(LevelSelectorsInjectKey) private levelSelectors: LevelSelectors,
   ) {
-    console.log('test')
-    console.log(levelsApi, levelDataAccess, modalService)
     this.modalService.registerModal(new ModalEntity(CreateLevelModal));
   }
-
   private getLevelApi(): LevelsApi{
     return this.levelsApi;
   };
-  public getLevelCreateForm() {
-    return this.levelDataAccess.getLevelCreateForm();
-  }
-  public getLevelUpdateForm() {
-    return this.levelDataAccess.getLevelUpdateForm();
-  }
-  public getLevelCollection() {
-    return this.levelDataAccess.getLevelCollection();
-  }
 
   @GuardRole(Roles.Common)
   @Loading(getLoadingMs)
   @Validate({ entity: CreateLevelEntity })
   public async createLevel() {
 
-    const request = this.levelDataAccess.getLevelCreateForm().getFormStateValue().getEntity();
-    await this.getLevelApi().create({ description: request.description, name: request.name });
+    const request = this.levelSelectors.getLevelCreateForm().getEntity();
+    await this.getLevelApi().create({
+      description: request.description,
+      name: request.name
+    });
 
     const level = new LevelEntity();
     level.name = request.name;
@@ -66,8 +57,12 @@ class LevelService {
   @Validate({ entity: UpdateLevelEntity })
   public async updateLevel() {
 
-    const request = this.levelDataAccess.getLevelUpdateForm().getFormStateValue().getEntity();
-    const response = await this.getLevelApi().update({ id: request.id, name: request.name, description: request.description });
+    const request = this.levelSelectors.getLevelUpdateForm().getEntity();
+    const response = await this.getLevelApi().update({
+      id: request.id,
+      name: request.name,
+      description: request.description
+    });
 
     const level = this.levelDataAccess.getLevelById(response.id);
     level.name = response.name;
@@ -85,7 +80,11 @@ class LevelService {
 
   @Loading(getLoadingMs)
   public async loadLevelCollection(request: LevelCollectArgs) {
-    const response = await this.getLevelApi().collect({ ids: request.ids, page: request.page, size: request.size });
+    const response = await this.getLevelApi().collect({
+      ids: request.ids,
+      page: request.page,
+      size: request.size
+    });
     this.levelDataAccess.upsertLevels(levelMappers.toAppLevels(response.records));
   }
 
@@ -101,4 +100,4 @@ class LevelService {
   }
 }
 
-export default LevelService;
+export default LevelActions;

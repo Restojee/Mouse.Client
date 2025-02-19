@@ -5,18 +5,9 @@ import { FormGroup } from "@common/store/form/FormGroup";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 import Store from "@common/store/Store";
-import Validated from "@common/store/Validate";
 import { Register } from "@common/utils/di/Register";
 
 export const LevelDataAccessInjectKey = 'LevelDataAccess';
-function handleValidate(value: string) {
-  const validated = new Validated(value);
-  validated.setIsValid(false);
-  validated.setError('Все ошибаются')
-  return validated;
-}
-function handleClick() {}
-function handleBlur() {}
 
 @Register(LevelDataAccessInjectKey)
 class LevelDataAccess extends Store<LevelDataAccess, LevelState> {
@@ -43,13 +34,7 @@ class LevelDataAccess extends Store<LevelDataAccess, LevelState> {
     super()
     this.createState({
       levels: new EntityManager<LevelEntity>(),
-      createLevel: new FormGroup(new CreateLevelEntity(),
-        builder => {
-          builder.getField('name').addEvent('onBlur', handleBlur);
-          builder.getFields('name', 'description').addEvent('onClick', handleClick);
-          builder.getField('name').addValidator(handleValidate);
-        }
-      ),
+      createLevel: new FormGroup(new CreateLevelEntity()),
       updateLevel: new FormGroup(new UpdateLevelEntity()),
     });
   }

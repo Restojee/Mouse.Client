@@ -14,11 +14,11 @@ class FormBuilder<E> {
     });
   }
 
-  getField(fieldName: string): FormField {
+  public getField(fieldName: string): FormField {
     return this.fields.get(fieldName)!;
   }
 
-  getFields(...fieldNames: string[]): FormFieldCollection {
+  public getFields(...fieldNames: string[]): FormFieldCollection {
     return new FormFieldCollection(fieldNames.map(name => this.fields.get(name)!));
   }
 }

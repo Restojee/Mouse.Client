@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 import Validated from "@common/store/Validate";
+import FormBuilder from "@common/store/form/FormBuilder";
 
 export type GetIsValid = () => boolean;
 export type GetError = () => string
@@ -10,6 +11,7 @@ export interface InputPropsOptions {
   value: GetValue,
   onChange: HandleChange
 }
+export type Configure<E> = (builder: FormBuilder<E>) => void;
 
 export interface InputPropsGetter {
   value: string;
