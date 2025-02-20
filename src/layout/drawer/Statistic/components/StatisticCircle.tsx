@@ -43,7 +43,9 @@ export const StatisticCircle = (props: Props) => {
       title={title}
       onClick={onClickHandler}
     >
-      <StyledStatisticIconContainer fillingPercent={`${getMapsPercent(count)}%`}>{icon}</StyledStatisticIconContainer>
+      <StyledStatisticIconContainer fillingPercent={showPercent ? `${getMapsPercent(count)}%` : "0"}>
+        {icon}
+      </StyledStatisticIconContainer>
       <StyledStatisticIconText>
         {count}
         <Display condition={showPercent}>

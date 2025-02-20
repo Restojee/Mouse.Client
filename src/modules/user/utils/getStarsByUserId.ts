@@ -1,7 +1,7 @@
 import { User } from "@/api/codegen/genMouseMapsApi";
 
 const getStatistic = (user: User) => {
-  return user.completedCount! + user.levelsCount!;
+  return user.completedCount!;
 };
 
 export const getStarsByUserId = (userId: User["id"], users: User[] = []) => {
