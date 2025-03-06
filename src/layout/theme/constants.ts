@@ -108,9 +108,9 @@ export const DefaultTheme = {
     popup: 3,
     leftSidebar: 5,
     rightSidebar: 5,
-    megaShadow: 10,
-    notifications: 15,
-    modal: 11,
+    megaShadow: 200,
+    notifications: 1500,
+    modal: 201,
     dropdown: 5,
   },
 };

@@ -139,6 +139,7 @@ export type RemoveFavoriteMapApiArg = {
 export type RemoveCompletedMapApiResponse = /** status 200 OK */ string;
 export type RemoveCompletedMapApiArg = {
   levelId: number;
+  completedId: number;
 };
 export type DeleteMapApiResponse = /** status 200 OK */ string;
 export type DeleteMapApiArg = {
@@ -176,6 +177,7 @@ export type User = {
 export type MapCompleted = {
   user: User;
   image: Map["image"];
+  id: number;
   createdUtcDate: Map["createdUtcDate"];
   modifiedUtcDate: Map["modifiedUtcDate"];
 };

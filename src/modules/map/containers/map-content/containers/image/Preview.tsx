@@ -1,71 +1,145 @@
-import { Map } from "@/api/codegen/genMouseMapsApi";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { selectIsAuth } from "@/modules/auth/slice";
-import { selectIsMapFetching } from "@/modules/map/containers/map-content/slice";
-import { StyledBox } from "@/ui/Box";
-import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
+import { MapCompleted } from "@/api/codegen/genMouseMapsApi";
 import { Display } from "@/ui/Display";
-import { StyledMapContentPreview } from "@/ui/Message/styled";
-import { ImageLoaderProps } from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
-import { ImageActions } from "../image-actions/ImageActions";
-import { PreviewImage } from "./components/PreviewImage";
+import { StyledMapContentCount } from "@/ui/Message/styled";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { SwiperClass, SwiperSlide } from "swiper/react";
+import ImageModal from "@/ui/ImageModal/ImageModal";
+import { ImagesSwiper } from "@/ui/ImagesSwiper/ImagesSwiper";
+import { PreviewImageWrapper } from "./components/PreviewImageWrapper";
+import { StyledBox } from "@/ui/Box";
+import { DeleteModal } from "@/modules/map/containers/map-content/containers/image/components/DeleteModal";
+import Swiper from "swiper";
 
 type MapContentPreviewPropsType = {
-  image: Map["image"];
+  images: MapCompleted[] | null;
+  image?: string | null;
+  mapCompleted?: MapCompleted | null;
+  setActiveMapCompleted?: (map: MapCompleted) => void;
 };
-export const Preview = React.memo(({ image }: MapContentPreviewPropsType) => {
-  const { theme } = useAppTheme();
-  const isMapFetching = useAppSelector(selectIsMapFetching);
-  const isAuth = useAppSelector(selectIsAuth);
+export const Preview = React.memo(
+  ({ images, image, setActiveMapCompleted, mapCompleted }: MapContentPreviewPropsType) => {
+    const [openedImage, setOpenedImage] = useState<string | null>(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [actualImages, setActualImages] = useState(images);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [showLoader, setShowLoader] = useState(false);
+    const swiperRef = useRef<Swiper | null>(null);
 
-  const onLoadingHandler = useCallback(({ width, src }: ImageLoaderProps) => {
-    return src + "?w=" + width;
-  }, []);
+    const onCloseImage = useCallback(() => {
+      setOpenedImage(null);
+    }, []);
 
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setShowLoader(true);
-    }, 500); // Показываем Loader через 2 секунды
+    const onOpenImage = useCallback((image: string) => {
+      setOpenedImage(image);
+    }, []);
 
-    return () => {
-      clearTimeout(timer); // Очистка таймера при размонтировании компонента или смене изображения
-      setShowLoader(false); // Сброс состояния при смене изображения
-    };
-  }, [image]);
+    const onCloseDeleteModal = useCallback(() => {
+      setIsDeleteOpen(false);
+    }, []);
 
-  useEffect(() => {
-    if (!isLoading && !isMapFetching) {
-      setShowLoader(false); // Скрываем Loader, если загрузка завершена
+    const onOpenDeleteModal = useCallback(() => {
+      setIsDeleteOpen(true);
+    }, []);
+
+    const onSwiper = useCallback((swiper: SwiperClass) => {
+      swiperRef.current = swiper;
+    }, []);
+
+    const onActiveIndexChange = useCallback(
+      (swiper: SwiperClass) => {
+        if (!images) {
+          return;
+        }
+
+        setActiveIndex(swiper.activeIndex);
+        setActiveMapCompleted?.(images[swiper.activeIndex]);
+      },
+      [images, setActiveMapCompleted],
+    );
+
+    const imagesCount = useMemo(() => {
+      return images?.length;
+    }, [images]);
+
+    const onSlideChange = useCallback(
+      (map: MapCompleted, length: number) => {
+        setActiveMapCompleted?.(map);
+        setActiveIndex(length);
+        swiperRef.current?.slideTo(length);
+      },
+      [setActiveMapCompleted],
+    );
+    useEffect(() => {
+      const currentUserId = images?.[0].user.id;
+      const actualUserId = actualImages?.[0].user.id;
+      const isUserChanged = currentUserId !== actualUserId;
+
+      const lastMap = images?.at(-1);
+
+      if (!currentUserId || !images?.length || !actualImages) {
+        return;
+      }
+      console.log("awdawd");
+
+      setActualImages(images);
+
+      if (images.length > actualImages.length && lastMap && !isUserChanged) {
+        onSlideChange(lastMap, images?.length);
+        return;
+      }
+
+      onSlideChange(images?.[0], 0);
+    }, [images?.length]);
+
+    if (!images?.length) {
+      return (
+        <>
+          <ImageModal
+            altText={"map"}
+            onClose={onCloseImage}
+            imageSrc={openedImage}
+          />
+          <PreviewImageWrapper
+            onClick={onOpenImage}
+            image={image}
+          />
+        </>
+      );
     }
-  }, [isLoading, isMapFetching]);
 
-  return (
-    <StyledMapContentPreview
-      bgColor={theme.colors.mapBackground}
-      maxHeight="400px"
-      height="100%"
-    >
-      <Display condition={isAuth}>
-        <ImageActions />
-      </Display>
-      <StyledBox
-        height={"100%"}
-        transition={"0.2s"}
-      >
-        <PreviewImage
-          isMapFetching={isMapFetching}
-          setIsLoading={setIsLoading}
-          image={image}
-          onLoadingHandler={onLoadingHandler}
+    return (
+      <StyledBox position={"relative"}>
+        <ImageModal
+          altText={"map"}
+          onClose={onCloseImage}
+          imageSrc={openedImage}
         />
+        <DeleteModal
+          isOpen={isDeleteOpen}
+          onClose={onCloseDeleteModal}
+        />
+        <Display condition={imagesCount && imagesCount > 1}>
+          <StyledMapContentCount>
+            {activeIndex + 1} из {imagesCount}
+          </StyledMapContentCount>
+        </Display>
+        <ImagesSwiper
+          onInit={onSwiper}
+          onActiveIndexChange={onActiveIndexChange}
+        >
+          {images?.map((el) => (
+            <SwiperSlide key={el.id}>
+              <PreviewImageWrapper
+                onDeleteOpen={onOpenDeleteModal}
+                onClick={onOpenImage}
+                imagesCount={imagesCount}
+                image={el.image}
+                mapCompleted={mapCompleted}
+              />
+            </SwiperSlide>
+          ))}
+        </ImagesSwiper>
       </StyledBox>
-      <BoxLoader isLoading={(isMapFetching || isLoading) && showLoader} />
-    </StyledMapContentPreview>
-  );
-});
+    );
+  },
+);

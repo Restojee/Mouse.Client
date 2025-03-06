@@ -1,4 +1,4 @@
-import { MapCompleted, RemoveCompletedMapApiArg, User } from "@/api/codegen/genMouseMapsApi";
+import { MapCompleted, RemoveCompletedMapApiArg } from "@/api/codegen/genMouseMapsApi";
 import { mapsApi } from "@/api/mapsApi";
 import { setAppMessage } from "@/bll/appReducer";
 import { convertDataUrlToBlob } from "@/common/utils/convertDataUrlToBlob";
@@ -13,17 +13,11 @@ export const addCompletedMapThunk = createAsyncThunk(
   async (arg: UpdateMapImageThunkArgType, thunkAPI) => {
     try {
       const file = convertDataUrlToBlob(arg.file);
-      const state = thunkAPI.getState() as RootState;
-      const currentUserId = state.auth.user?.id;
-      const maps = state.completedMaps.completedMapsList;
 
       if (arg.levelId) {
         await mapsApi.addCompletedMap({ levelId: arg.levelId, body: { file } });
         await thunkAPI.dispatch(getMapByIdThunk({ levelId: arg.levelId }));
 
-        const updatedMapContent = maps.find((map) => map.user?.id === currentUserId);
-
-        thunkAPI.dispatch(setActiveMapCompletedById(updatedMapContent?.user?.id));
         thunkAPI.dispatch(setAppMessage({ severity: "success", text: "Успешно добавлено" }));
       }
       return thunkAPI.fulfillWithValue(true);
@@ -41,7 +35,6 @@ export const deleteCompletedMapThunk = createAsyncThunk(
       await mapsApi.removeCompletedMap(arg);
 
       thunkAPI.dispatch(getMapByIdThunk(arg));
-      thunkAPI.dispatch(setActiveMapCompletedById(null));
       thunkAPI.dispatch(setAppMessage({ severity: "success", text: "Успешно удалено" }));
     } catch (error) {
       thunkAPI.dispatch(setAppMessage({ severity: "error", text: "Ошибка удаления" }));
@@ -61,23 +54,11 @@ const slice = createSlice({
     setCompletedMaps: (state, action: PayloadAction<MapCompleted[]>) => {
       state.completedMapsList = action.payload;
     },
-    addCompletedMap: (state, action: PayloadAction<MapCompleted>) => {
-      state.completedMapsList.push(action.payload);
-    },
     setIsCompletedMapModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isModalOpen = action.payload;
     },
-    setActiveMapCompletedById: (state, action: PayloadAction<User["id"] | null>) => {
-      if (action.payload === null) {
-        state.activeMapCompleted = null;
-        return;
-      }
-
-      const map = state.completedMapsList.find((map) => map.user.id === action.payload);
-
-      if (action.payload && map) {
-        state.activeMapCompleted = map;
-      }
+    setActiveMapCompleted: (state, action: PayloadAction<MapCompleted | null>) => {
+      state.activeMapCompleted = action.payload;
     },
   },
 });
@@ -86,6 +67,5 @@ export const selectActiveMapCompleted = (state: RootState) => state.completedMap
 export const selectCompletedMaps = (state: RootState) => state.completedMaps?.completedMapsList;
 export const selectIsCompletedModalOpen = (state: RootState) => state.completedMaps?.isModalOpen;
 
-export const { setCompletedMaps, addCompletedMap, setIsCompletedMapModalOpen, setActiveMapCompletedById } =
-  slice.actions;
+export const { setCompletedMaps, setIsCompletedMapModalOpen, setActiveMapCompleted } = slice.actions;
 export const completedMapsReducer = slice.reducer;
