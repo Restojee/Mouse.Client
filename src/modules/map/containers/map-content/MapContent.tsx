@@ -24,7 +24,7 @@ export const MapContent = React.memo(() => {
   const { theme } = useAppTheme();
   const { closeMap } = useMapView();
   const { map } = useMap();
-  const { activeMapCompleted } = useCompletedMap();
+  const { activeMapCompleted, changeActiveCompletedMap, selectedCompletedMaps } = useCompletedMap();
   const isAuth = useAppSelector(selectIsAuth);
 
   const fixEventPropagation = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -58,7 +58,12 @@ export const MapContent = React.memo(() => {
           commentsCount={map?.commentsCount}
           title={isVanilla ? removeNonDigits(map?.name) : map?.name}
         />
-        <Preview image={activeMapCompleted?.image || map?.image} />
+        <Preview
+          image={map?.image}
+          setActiveMapCompleted={changeActiveCompletedMap}
+          images={selectedCompletedMaps}
+          mapCompleted={activeMapCompleted}
+        />
         <MiniMapImages />
         <Display condition={isAuth}>
           <Note />

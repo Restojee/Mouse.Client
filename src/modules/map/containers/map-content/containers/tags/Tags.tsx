@@ -55,7 +55,7 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
       <Display condition={!tags?.length}>
         <Button
           disabled={!isAuth}
-          size={"lg"}
+          size={"md"}
           onClick={onOpenModalHandler}
           label={"Изменить теги"}
           prepend={<EditFillIcon />}

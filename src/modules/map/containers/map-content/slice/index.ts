@@ -18,7 +18,7 @@ import { setMapNote } from "@/modules/map/containers/map-content/containers/note
 import { deleteMap, getMapsThunk, updateMapDataByIdThunk } from "@/modules/map/containers/map-list/slice";
 import { RootState } from "@/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { setActiveMapCompletedById, setCompletedMaps } from "../containers/completed-images/slice";
+import { setActiveMapCompleted, setCompletedMaps } from "../containers/completed-images/slice";
 import { MapContentStateType, UpdateMapImageThunkArgType } from "../types";
 
 let mapByIdAbortController = new AbortController();
@@ -41,7 +41,7 @@ export const onCloseMapContentThunk = createAsyncThunk("map/close-map", async (a
   try {
     thunkAPI.dispatch(setCompletedMaps([]));
     thunkAPI.dispatch(setSelectedTagIds([]));
-    thunkAPI.dispatch(setActiveMapCompletedById(null));
+    thunkAPI.dispatch(setActiveMapCompleted(null));
     thunkAPI.dispatch(setIsMapContentImageFetching(true));
     thunkAPI.dispatch(setMapContent(null));
     thunkAPI.dispatch(setMapNote(""));

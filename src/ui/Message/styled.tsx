@@ -68,6 +68,19 @@ export const StyledMessageSendFormIcon = styled.div<{ isFetching: boolean; isDis
   `,
 );
 
+export const StyledMapContentCount = styled.div({
+  position: "absolute",
+  zIndex: 10,
+  bottom: 10,
+  right: 10,
+  backgroundColor: "rgba(255, 255, 255, 0.2)",
+  borderRadius: 25,
+  padding: "2px 10px",
+  backdropFilter: "blur(4px)",
+  textShadow: "0 0 1px rgba(0, 0, 0, 1)",
+  boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.1)",
+});
+
 type StyledImageContainerPropsType = {
   borderRadius?: Property.BorderRadius;
   margin?: Property.Margin;

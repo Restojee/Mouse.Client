@@ -5,50 +5,61 @@ import Image from "next/image";
 import React from "react";
 import { MINI_IMAGES_HEIGHT, MINI_IMAGES_WIDTH } from "./constants";
 import { useCompletedMap } from "./hooks/useCompletedMap";
-import { StyledMiniMapImageContainer } from "./styles";
+import { StyledMiniMapCount, StyledMiniMapImageContainer, StyledMiniMapLabel } from "./styles";
+import { CardsSwiper } from "@/ui/CardsSwiper/CardsSwiper";
+import { SwiperSlide } from "swiper/react";
+import { Display } from "@/ui/Display";
 
 export const MiniMapImages = () => {
   const { levelId } = useMapView();
 
   const { maps, onMapClick, activeMapCompleted } = useCompletedMap(levelId);
 
-  if (!maps?.length) {
+  if (!maps) {
     return null;
   }
 
   return (
     <StyledBox>
-      <StyledBox
-        minHeight={MINI_IMAGES_HEIGHT}
-        overflow={"auto"}
-        gap={10}
-      >
-        <StyledMiniMapImageContainer
-          onClick={(e) => onMapClick(e, null)}
-          isActive={!activeMapCompleted}
-          username="Карта"
-        >
-          Карта
-        </StyledMiniMapImageContainer>
-        {maps?.map((item) => (
+      <CardsSwiper>
+        <SwiperSlide style={{ width: "auto" }}>
           <StyledMiniMapImageContainer
-            key={item.createdUtcDate}
-            onClick={(e) => onMapClick(e, item.user?.id)}
-            isActive={activeMapCompleted?.user.id === item.user?.id}
-            username={item.user?.username}
-            isVisible
+            onClick={() => onMapClick(null)}
+            isActive={!activeMapCompleted}
           >
-            <Image
-              alt={item.user?.username}
-              src={getMapImageLink(item?.image)}
-              height={MINI_IMAGES_HEIGHT}
-              width={MINI_IMAGES_WIDTH}
-              objectPosition={"center"}
-              objectFit={"cover"}
-            />
+            Карта
           </StyledMiniMapImageContainer>
+        </SwiperSlide>
+
+        {maps?.map((item) => (
+          <SwiperSlide
+            key={item.id}
+            style={{ width: "auto" }}
+          >
+            <StyledMiniMapImageContainer
+              key={item.createdUtcDate}
+              onClick={() => onMapClick(item)}
+              isActive={activeMapCompleted?.user.id === item.user.id}
+              isVisible
+            >
+              <StyledMiniMapLabel isActive={activeMapCompleted?.user.id === item.user.id}>
+                {item.user.username}
+              </StyledMiniMapLabel>
+              <Display condition={item.count && item.count > 1}>
+                <StyledMiniMapCount>{item.count}</StyledMiniMapCount>
+              </Display>
+              <Image
+                alt={item.user?.username}
+                src={getMapImageLink(item?.image)}
+                height={MINI_IMAGES_HEIGHT}
+                width={MINI_IMAGES_WIDTH}
+                objectPosition={"center"}
+                objectFit={"cover"}
+              />
+            </StyledMiniMapImageContainer>
+          </SwiperSlide>
         ))}
-      </StyledBox>
+      </CardsSwiper>
     </StyledBox>
   );
 };

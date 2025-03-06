@@ -2,14 +2,14 @@ import { Map, MapCompleted } from "@/api/codegen/genMouseMapsApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectCurrentUserId } from "@/modules/auth/slice";
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import {
   addCompletedMapThunk,
   deleteCompletedMapThunk,
   selectActiveMapCompleted,
   selectCompletedMaps,
   selectIsCompletedModalOpen,
-  setActiveMapCompletedById,
+  setActiveMapCompleted,
   setIsCompletedMapModalOpen,
 } from "../slice";
 import { usePopup } from "@/hooks/usePopup";
@@ -27,29 +27,28 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
     return activeMapCompleted?.user?.id === userId;
   }, [activeMapCompleted?.user?.id, userId]);
 
-  const filteredMaps = useMemo(() => {
-    // Бэк при невыясненных обстоятельствах возвращает дублированные карты
-    const resultMaps: MapCompleted[] = [];
+  const mapsByUser = useMemo(() => {
+    const resultMaps: Record<number, MapCompleted & { count?: number }> = {};
 
     maps?.forEach((el) => {
-      const isMapAlreadyExist = resultMaps?.find((map) => el.user.id === map.user.id);
-      if (!isMapAlreadyExist) resultMaps.push(el);
+      const userId = el.user?.id;
+      if (!userId) {
+        return;
+      }
+
+      if (!resultMaps[userId]) {
+        resultMaps[userId] = { ...el, count: 0 };
+      }
+
+      resultMaps[userId].count! += 1;
     });
 
-    return resultMaps;
+    return Object.values(resultMaps);
   }, [maps]);
 
   const onMapClick = useCallback(
-    (e?: React.MouseEvent<HTMLDivElement>, id?: MapCompleted["user"]["id"] | null) => {
-      const currentElement: HTMLDivElement | undefined = e?.currentTarget;
-      if (currentElement) {
-        currentElement.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "center",
-        });
-      }
-      dispatch(setActiveMapCompletedById(id));
+    (map: MapCompleted | null) => {
+      dispatch(setActiveMapCompleted(map));
     },
     [dispatch],
   );
@@ -63,12 +62,15 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
     [dispatch],
   );
 
-  const deleteCompletedMap = useCallback(async () => {
-    if (levelId) {
-      await dispatch(deleteCompletedMapThunk({ levelId }));
-      onClose();
-    }
-  }, [dispatch, levelId]);
+  const deleteCompletedMap = useCallback(
+    async (completedId: MapCompleted["id"]) => {
+      if (levelId && completedId) {
+        await dispatch(deleteCompletedMapThunk({ levelId, completedId }));
+        onClose();
+      }
+    },
+    [dispatch, levelId, onClose],
+  );
 
   const onCompletedMapModalClose = useCallback(() => {
     dispatch(setIsCompletedMapModalOpen(false));
@@ -78,14 +80,28 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
     dispatch(setIsCompletedMapModalOpen(true));
   }, [dispatch]);
 
+  const selectedCompletedMaps = useMemo(() => {
+    const result = maps?.filter((el) => el && el.user.id === activeMapCompleted?.user.id);
+    return result.length ? result : null;
+  }, [activeMapCompleted?.user.id, maps]);
+
+  const changeActiveCompletedMap = useCallback(
+    (map: MapCompleted) => {
+      dispatch(setActiveMapCompleted(map));
+    },
+    [dispatch],
+  );
+
   return {
-    maps: filteredMaps,
+    maps: mapsByUser,
+    selectedCompletedMaps,
     isMyMap,
     user: activeMapCompleted?.user,
     onMapClick,
     addCompletedMap,
     deleteCompletedMap,
     activeMapCompleted,
+    changeActiveCompletedMap,
     isCompletedMapModalOpen,
     onCompletedMapModalOpen,
     onCompletedMapModalClose,

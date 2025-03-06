@@ -1,11 +1,12 @@
 import { getMapImageLink } from "@/common/utils";
-import ImageModal from "@/ui/ImageModal/ImageModal";
 import Image, { ImageLoader } from "next/image";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
+import { StyledBox } from "@/ui/Box";
 
 type PreviewImagePropsType = {
   setIsLoading: (isLoading: boolean) => void;
-  image?: string;
+  onClick?: (image: string) => void;
+  image?: string | null;
   onLoadingHandler: ImageLoader;
   isMapFetching: boolean;
 };
@@ -16,14 +17,22 @@ export const PreviewImage = (props: PreviewImagePropsType) => {
     return getMapImageLink(image);
   }, [image]);
 
+  const onImageOpen = useCallback(() => {
+    if (!image) {
+      return;
+    }
+
+    props.onClick?.(mapImage);
+  }, [image, mapImage, props]);
+
   if (!image && isMapFetching) {
     return null;
   }
 
   return (
-    <ImageModal
-      altText={"map"}
-      imageSrc={mapImage}
+    <StyledBox
+      onClick={onImageOpen}
+      cursor={props.image ? "zoom-in" : "default"}
     >
       <Image
         onLoadStart={() => setIsLoading(true)}
@@ -37,6 +46,6 @@ export const PreviewImage = (props: PreviewImagePropsType) => {
         alt={"map"}
         priority
       />
-    </ImageModal>
+    </StyledBox>
   );
 };

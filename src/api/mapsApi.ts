@@ -75,7 +75,7 @@ export const mapsApi = {
     const res = await api.delete<
       apiTypes.RemoveCompletedMapApiArg,
       AxiosResponse<apiTypes.RemoveCompletedMapApiResponse>
-    >(`/levels/${params.levelId}/completed/remove`);
+    >(`/levels/${params.levelId}/completed/${params.completedId}/remove`);
     return res.data;
   },
   addFavorite: async (params: apiTypes.AddFavoriteMapApiArg) => {

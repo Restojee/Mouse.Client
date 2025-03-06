@@ -3,7 +3,6 @@ import { MINI_IMAGES_HEIGHT, MINI_IMAGES_WIDTH } from "../constants";
 
 type StyledMiniMapImageContainerPropsType = {
   isVisible?: boolean;
-  username?: string;
   isActive?: boolean;
   isWithShadows?: boolean;
 };
@@ -17,12 +16,16 @@ export const StyledMiniMapImageContainer = styled.div<StyledMiniMapImageContaine
   alignItems: "center",
   minWidth: MINI_IMAGES_WIDTH,
   maxWidth: MINI_IMAGES_WIDTH,
-  borderRadius: 10,
+  borderRadius: 15,
   backgroundColor: theme.colors.primaryLight,
   cursor: "pointer",
   position: "relative",
   transition: "0.1s",
   transitionProperty: "background-color, transform, box-shadow",
+  img: {
+    filter: "blur(4px)",
+    "-webkit-filter": "blur(4px)",
+  },
 
   "&:hover": {
     transform: "scale(0.97)",
@@ -33,19 +36,18 @@ export const StyledMiniMapImageContainer = styled.div<StyledMiniMapImageContaine
   },
   ...(props.isVisible && {
     "&::after": {
-      content: `' ${props.username} '` || "' '",
+      content: "' '",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: "rgba(0, 0, 0, 0.7)",
+      overflow: "hidden",
       position: "absolute",
-      top: 0,
-      left: 0,
-      bottom: 0,
-      right: 0,
+      top: -20,
+      left: -20,
+      bottom: -20,
+      right: -20,
       borderRadius: "inherit",
-      backdropFilter: "blur(4px)",
-      "-webkit-backdrop-filter": "blur(4px)",
       transition: "0.7s",
       transitionProperty: "opacity",
     },
@@ -56,11 +58,40 @@ export const StyledMiniMapImageContainer = styled.div<StyledMiniMapImageContaine
     },
   }),
   ...(props.isActive && {
+    img: {
+      filter: "none",
+      "-webkit-filter": "none",
+    },
     backgroundColor: theme.colors.mapBackground,
-    boxShadow: "0 0 5px 0 rgba(255, 255, 255, 0.3)",
     pointerEvents: "none",
     "&::after": {
       opacity: 0.3,
     },
   }),
+}));
+
+export const StyledMiniMapLabel = styled.div<{ isActive?: boolean }>(({ isActive }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  position: "absolute",
+  zIndex: 1,
+  ...(isActive && {
+    opacity: 0,
+  }),
+}));
+
+export const StyledMiniMapCount = styled.div(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  top: 5,
+  right: 5,
+  position: "absolute",
+  backgroundColor: theme.colors.brandColor,
+  borderRadius: 25,
+  width: 16,
+  height: 16,
+  fontSize: "0.7rem",
+  zIndex: 1,
 }));

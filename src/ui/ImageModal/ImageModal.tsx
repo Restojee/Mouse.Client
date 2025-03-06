@@ -1,24 +1,19 @@
 import { CloseIcon } from "@/svg/CloseIcon";
-import { StyledBox } from "@/ui/Box";
-import React, { ReactNode, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.scss";
 
 interface ImageModalProps {
-  imageSrc: string;
-  children: ReactNode;
+  imageSrc: string | null;
+  onClose: () => void;
   altText: string;
 }
 
-const ImageModal: React.FC<ImageModalProps> = ({ imageSrc, altText, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const ImageModal: React.FC<ImageModalProps> = ({ imageSrc, altText, onClose }) => {
   const [dragging, setDragging] = useState(false);
   const [position, setPosition] = useState(0);
   const [startX, setStartX] = useState(0);
 
   const overlayRef = useRef<HTMLDivElement>(null);
-
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
 
   // Handle drag start for both mouse and touch events
   const startDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) => {
@@ -41,52 +36,51 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageSrc, altText, children }) 
   // Handle drag end for both mouse and touch events
   const stopDrag = () => setDragging(false);
 
-  return (
-    <>
-      <StyledBox
-        onClick={openModal}
-        cursor={"zoom-in"}
-      >
-        {children}
-      </StyledBox>
+  useEffect(() => {
+    if (!imageSrc) {
+      setPosition(0);
+    }
+  }, [imageSrc]);
 
-      {isOpen && (
+  if (!imageSrc) {
+    return null;
+  }
+
+  return (
+    <div
+      className={styles.modalOverlay}
+      onClick={onClose}
+      ref={overlayRef}
+    >
+      <div
+        className={styles.closeIcon}
+        onClick={onClose}
+      >
+        <CloseIcon />
+      </div>
+      <div className={styles.modalContent}>
         <div
-          className={styles.modalOverlay}
-          onClick={closeModal}
-          ref={overlayRef}
+          onClick={(e) => e.stopPropagation()}
+          className={styles.dragOverlay}
+          onMouseDown={startDrag}
+          onMouseMove={onDrag}
+          onMouseUp={stopDrag}
+          onMouseLeave={stopDrag}
+          // Handling touch events
+          onTouchStart={startDrag}
+          onTouchMove={onDrag}
+          onTouchEnd={stopDrag}
+          style={{ transform: `translateX(${position}px)` }}
         >
-          <div
-            className={styles.closeIcon}
-            onClick={closeModal}
-          >
-            <CloseIcon />
-          </div>
-          <div className={styles.modalContent}>
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className={styles.dragOverlay}
-              onMouseDown={startDrag}
-              onMouseMove={onDrag}
-              onMouseUp={stopDrag}
-              onMouseLeave={stopDrag}
-              // Handling touch events
-              onTouchStart={startDrag}
-              onTouchMove={onDrag}
-              onTouchEnd={stopDrag}
-              style={{ transform: `translateX(${position}px)` }}
-            >
-              <img
-                src={imageSrc}
-                alt={altText}
-                className={styles.modalImage}
-                draggable={false}
-              />
-            </div>
-          </div>
+          <img
+            src={imageSrc}
+            alt={altText}
+            className={styles.modalImage}
+            draggable={false}
+          />
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 
