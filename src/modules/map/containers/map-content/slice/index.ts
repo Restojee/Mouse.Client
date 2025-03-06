@@ -99,7 +99,7 @@ export const getMapByIdThunk = createAsyncThunk("map/get-by-id", async (arg: Get
     const tagIds = map.tags?.map((el) => el.id as number) || [];
 
     if (cachedMap) {
-      thunkAPI.dispatch(setMapContent({ ...cachedMap }));
+      thunkAPI.dispatch(setMapContent({ ...cachedMap, image: map.image }));
     } else {
       thunkAPI.dispatch(setMapContent(map));
     }

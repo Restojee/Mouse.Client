@@ -6,6 +6,7 @@ import { useAppSelector } from "@/hooks/useAppSelector";
 import {
   addFavorite,
   deleteMapThunk,
+  getMapByIdThunk,
   removeFavorite,
   selectIsMapImageModalOpen,
   selectMapContent,
@@ -50,6 +51,7 @@ export const useMap = (levelId?: Map["id"]) => {
     async (file: string) => {
       if (levelId) {
         const res = await dispatch(updateMapImageThunk({ levelId, file }));
+        await dispatch(getMapByIdThunk({ levelId }));
         return res.payload;
       }
     },

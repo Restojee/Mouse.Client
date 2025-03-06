@@ -21,7 +21,7 @@ export const Preview = React.memo(
     const [openedImage, setOpenedImage] = useState<string | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-    const [actualImages, setActualImages] = useState(images);
+    const [actualImages, setActualImages] = useState(images || []);
 
     const swiperRef = useRef<Swiper | null>(null);
 
@@ -70,26 +70,24 @@ export const Preview = React.memo(
       [setActiveMapCompleted],
     );
     useEffect(() => {
-      const currentUserId = images?.[0].user.id;
-      const actualUserId = actualImages?.[0].user.id;
+      const currentUserId = images?.[0]?.user.id;
+      const actualUserId = actualImages?.[0]?.user.id;
       const isUserChanged = currentUserId !== actualUserId;
 
-      const lastMap = images?.at(-1);
+      const lastMap = images?.at(1);
 
-      if (!currentUserId || !images?.length || !actualImages) {
+      if (!currentUserId || !images?.length) {
         return;
       }
-      console.log("awdawd");
 
       setActualImages(images);
-
       if (images.length > actualImages.length && lastMap && !isUserChanged) {
         onSlideChange(lastMap, images?.length);
         return;
       }
 
       onSlideChange(images?.[0], 0);
-    }, [images?.length]);
+    }, [images]);
 
     if (!images?.length) {
       return (
