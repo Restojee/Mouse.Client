@@ -1,16 +1,15 @@
-import { Inject } from "@common/utils/di/Inject";
-import { LevelActionsInjectKey } from "@/modules/levels/model/services/LevelActions";
-import { Register } from "@common/utils/di/Register";
 import LevelDataAccess from "@/modules/levels/model/services/LevelDataAccess";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 import { FormGroup } from "@common/store/form/FormGroup";
+import { inject, injectable } from "inversify";
 
-export const LevelSelectorsInjectKey = 'LevelSelectors';
-
-@Register(LevelSelectorsInjectKey)
+@injectable()
 class LevelSelectors {
-  constructor(@Inject(LevelActionsInjectKey) private levelDataAccess: LevelDataAccess) {}
+  constructor(
+    @inject(LevelDataAccess)
+    private readonly levelDataAccess: LevelDataAccess
+  ) {}
 
   public getLevelCreateForm(): FormGroup<CreateLevelEntity> {
     return this.levelDataAccess.getLevelCreateForm();

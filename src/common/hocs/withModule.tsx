@@ -1,27 +1,35 @@
 import * as React from "react";
-import { InstanceKey } from "@common/utils/di/types";
-import { Instance } from "@common/instances/Instance";
+import { DIContext } from "@common/hooks/useInjection";
+import { Instances } from "@common/instances/Instances";
 import { ModuleOptions } from "@common/hocs/types";
+import { PropsWithChildren } from "react";
 
-const withModule = <P extends Record<InstanceKey, any>>(props: ModuleOptions<P>) => {
-  const { services, container, onDestroy, onCreate } = props;
-  return () => {
-    const Component = container;
+const withModule = <P extends {}>(options: ModuleOptions<P>) => {
 
-    const servicesMap = React.useMemo((): P => {
-      const servicesMap = {};
-      for (const serviceKey in services) {
-        servicesMap[serviceKey] = Instance.add(serviceKey);
-      }
-      return servicesMap as P;
-    }, [services])
+  const { providers, component } = options;
 
-    React.useEffect(() => {
-      onCreate?.();
-      return onDestroy;
-    }, [Component, module]);
+  return (props: PropsWithChildren<P>) => {
+    const [container] = React.useState(() => {
+      const newContainer = new Instances();
 
-    return <Component { ...servicesMap } />
+      newContainer.bind(providers);
+
+      console.log('newContainer ready for:', providers)
+
+      return newContainer;
+    });
+
+    const Component = component;
+
+    if (!container) {
+      return null;
+    }
+
+    return (
+      <DIContext.Provider value={container}>
+        <Component {...props} />
+      </DIContext.Provider>
+    );
   };
 }
 

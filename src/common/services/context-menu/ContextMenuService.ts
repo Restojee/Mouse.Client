@@ -1,5 +1,8 @@
-import { ContextMenuEntity } from "@common/services/context-menu/ContextMenuEntity";
+import { ContextMenu } from "@common/services/context-menu/ContextMenu";
 import { ContextMenuDataAccess } from "@common/services/context-menu/ContextMenuDataAccess";
+
+import { ContextMenuDataAccessInjectKey } from "@common/services/context-menu/constants";
+import { inject, injectable } from "inversify";
 
 // this._contextMenuService.create(ExampleOptionsContextMenu)
 // this._contextMenuService.open(ExampleOptionsContextMenu)
@@ -8,14 +11,18 @@ import { ContextMenuDataAccess } from "@common/services/context-menu/ContextMenu
 //      <Dashboard />
 //   </ContextMenu>
 
+@injectable()
 export class ContextMenuService {
-  private readonly _contextMenuDataAccess: ContextMenuDataAccess;
+  constructor(
+    @inject(ContextMenuDataAccessInjectKey)
+    private readonly contextMenuDataAccess: ContextMenuDataAccess
+  ) {}
 
-  public registerContextMenu(contextMenu: ContextMenuEntity) {
-    this._contextMenuDataAccess.registerContextMenu(contextMenu);
+  public registerContextMenu(contextMenu: ContextMenu) {
+    this.contextMenuDataAccess.registerContextMenu(contextMenu);
   }
 
-  public unregisterContextMenu(contextMenu: ContextMenuEntity) {
-    this._contextMenuDataAccess.unregisterContextMenu(contextMenu.id);
+  public unregisterContextMenu(contextMenu: ContextMenu) {
+    this.contextMenuDataAccess.unregisterContextMenu(contextMenu.getId());
   }
 }

@@ -2,11 +2,9 @@ import defaultTheme from '../resources/theme.json';
 import { ThemePaddingSizesMap } from "@ui/Layout/ui/Flex/types";
 import { ThemeSizes } from "@common/themes/common/types";
 import { calcSize, getBorderRadius, getPaddingStyles } from "@common/themes/common/utils";
-import { Register } from "@common/utils/di/Register";
+import { injectable } from "inversify";
 
-export const ThemeInjectKey = 'Theme';
-
-@Register(ThemeInjectKey)
+@injectable()
 export class Theme {
 
   get() {

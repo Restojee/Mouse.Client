@@ -6,13 +6,15 @@ import FormBuilder from "@common/store/form/FormBuilder";
 import FormField from "@common/store/form/FormField";
 import FormValidator from "@common/store/form/FormValidator";
 import SubmitProps from "@common/store/form/SubmitProps";
+import Entity from "@common/store/entity/Entity";
 
-export class FormGroup<E> {
+export class FormGroup<E extends Entity> {
 
   private _value: EntityState<E>;
   private _formFields: Map<string, FormField>;
   private _formValidator: FormValidator<E>;
   private _formBuilder: FormBuilder<E>;
+  private _configure: Configure<E>;
 
   private _initValidator() {
     this._formValidator = new FormValidator<E>(this._value, this._formFields);
@@ -20,21 +22,26 @@ export class FormGroup<E> {
   private _initEntityState(value: E) {
     this._value = new EntityState(value);
   }
+  private _initConfigure(configure: Configure<E>) {
+    this._configure = configure;
+  }
   private _initFormBuilder(value: E) {
     return this._formBuilder = new FormBuilder(value);
   }
 
   constructor(value: E, configure?: Configure<E>) {
+    this._initConfigure(configure);
     this._initFormBuilder(value);
     this._initEntityState(value);
-    this.configure(configure);
     this._initValidator();
   }
 
-  public configure(configure?: Configure<E>) {
-    configure(this._formBuilder);
+  public configure(formBuilder?: FormBuilder<E>) {
+    this._configure(formBuilder);
   }
-
+  getFormBuilder(): FormBuilder<E> {
+    return this._formBuilder;
+  }
   public getEntity(): E {
     return this.getFormStateValue().getEntity();
   }

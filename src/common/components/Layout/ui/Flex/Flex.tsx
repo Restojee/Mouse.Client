@@ -21,7 +21,6 @@ const Flex: React.FC<PropsWithChildren<FlexProps>> = (props) => {
     props.direction && classes[props.direction],
     props.className
   );
-  console.log(props.pa)
   /* Root styles */
   const styles: Pick<React.CSSProperties, "width" | "height" | "gap"> =
     React.useMemo(

@@ -1,26 +1,20 @@
 import React from "react";
 import { Controls, Form, Paper, Spacer } from "@/common";
-import { LevelMeta } from "@/modules/levels/model/common/constants";
 import { LevelModuleProps } from "@/modules/levels/model/common/types";
-import { LevelActionsInjectKey } from "@/modules/levels/model/services/LevelActions";
 
-const { name, description } = LevelMeta;
-
-const CreateLevel: React.FC<LevelModuleProps> = ({ [LevelActionsInjectKey]: levelService }) => {
+const CreateLevel: React.FC<LevelModuleProps> = (props) => {
   return (
     <Paper bgColor="secondary">
       <Spacer pa="sm">
         <Paper bgColor="primary">
-          {/*<ContextMenu model={contextMenu}>*/}
-            <Form
-              // from={createForm}
-            >
+          {/*<ContextMenu provider={contextMenu}>*/}
+            <Form>
               <Controls>
                 <Controls.Item>
-                  <Form.Field.Input key={name} />
+                  <Form.Field.Input />
                 </Controls.Item>
                 <Controls.Item>
-                  <Form.Field.Input key={description} />
+                  <Form.Field.Input />
                 </Controls.Item>
               </Controls>
               <Form.Field.Submit />

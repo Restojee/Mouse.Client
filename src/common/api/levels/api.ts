@@ -1,57 +1,55 @@
 import { LevelEndpoints, LevelUrls } from './endpoints';
-import { HttpHandler, HttpInjectKey } from "@common/http/HttpHandler";
+import { HttpHandler } from "@common/http/HttpHandler";
+
+import { inject, injectable } from "inversify";
 import {
-  LevelByIdArgs,
+  LevelByIdRequest,
   LevelByIdResponse,
-  LevelCollectArgs,
+  LevelCollectRequest,
   LevelCollectResponse,
-  LevelCreateArgs,
+  LevelCreateRequest,
   LevelCreateResponse,
-  LevelRemoveArgs,
-  LevelRemoveResponse,
-  LevelUpdateArgs,
+  LevelRemoveRequest, LevelRemoveResponse,
+  LevelUpdateRequest,
   LevelUpdateResponse,
-} from "@/modules/levels/common/api/types";
-import { Register } from "@common/utils/di/Register";
-import { Inject } from "@common/utils/di/Inject";
+} from "@common/api/levels/models";
+import { HttpHandlerInjectKey } from "@common/http/constants";
 
-export const LevelApiInjectKey = 'LevelApi';
-
-@Register(LevelApiInjectKey)
+@injectable()
 class LevelsApi {
 
-  constructor(@Inject(HttpInjectKey) private http: HttpHandler) {}
+  constructor(@inject(HttpHandlerInjectKey) private readonly http: HttpHandler) {}
 
-  public collect(args: LevelCollectArgs): Promise<LevelCollectResponse> {
-    return this.http.get<LevelCollectArgs, LevelCollectResponse>({
+  public collect(args: LevelCollectRequest): Promise<LevelCollectResponse> {
+    return this.http.get<LevelCollectRequest, LevelCollectResponse>({
       url: LevelUrls[LevelEndpoints.Collect],
       params: args,
     })
   }
 
-  public get(args: LevelByIdArgs): Promise<LevelByIdResponse> {
-    return this.http.get<LevelByIdArgs, LevelByIdResponse>({
+  public get(args: LevelByIdRequest): Promise<LevelByIdResponse> {
+    return this.http.get<LevelByIdRequest, LevelByIdResponse>({
       url: LevelUrls[LevelEndpoints.ById],
       params: args,
     })
   }
 
-  public create(args: LevelCreateArgs): Promise<LevelCreateResponse> {
-    return this.http.put<LevelCreateArgs, LevelCreateResponse>({
+  public create(args: LevelCreateRequest): Promise<LevelCreateResponse> {
+    return this.http.put<LevelCreateRequest, LevelCreateResponse>({
       url: LevelUrls[LevelEndpoints.Create],
       params: args,
     })
   }
 
-  public update(args: LevelUpdateArgs): Promise<LevelUpdateResponse> {
-    return this.http.put<LevelUpdateArgs, LevelUpdateResponse>({
+  public update(args: LevelUpdateRequest): Promise<LevelUpdateResponse> {
+    return this.http.put<LevelUpdateRequest, LevelUpdateResponse>({
       url: LevelUrls[LevelEndpoints.Update],
       params: args,
     })
   }
 
-  public remove(args: LevelRemoveArgs): Promise<LevelRemoveResponse> {
-    return this.http.delete<LevelRemoveArgs, LevelRemoveResponse>({
+  public remove(args: LevelRemoveRequest): Promise<LevelRemoveResponse> {
+    return this.http.delete<LevelRemoveRequest, LevelRemoveResponse>({
       url: LevelUrls[LevelEndpoints.Remove],
       params: args,
     })

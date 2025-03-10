@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import { InstanceKey } from "@common/utils/di/types";
 
 export function Inject(token: InstanceKey) {

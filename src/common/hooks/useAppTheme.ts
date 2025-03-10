@@ -1,6 +1,9 @@
-import { Theme, ThemeInjectKey } from "@common/themes/core/Theme";
-import { Instance } from "@common/instances/Instance";
+import { Theme } from "@common/themes/core/Theme";
+import { useInjection } from "@common/hooks/useInjection";
+import { ThemeInjectKey } from "@common/themes/common/constants";
 
-const useTheme = () => Instance.get<Theme>(ThemeInjectKey)
+const useTheme = () => {
+  return useInjection<Theme>(ThemeInjectKey);
+}
 
 export default useTheme;

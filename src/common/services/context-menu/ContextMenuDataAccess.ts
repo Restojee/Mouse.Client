@@ -1,13 +1,20 @@
 import EntityManager from "@common/store/entity/EntityManager";
-import { ContextMenuEntity } from "@common/services/context-menu/ContextMenuEntity";
+import { ContextMenu } from "@common/services/context-menu/ContextMenu";
+import { injectable } from "inversify";
 
+@injectable()
 export class ContextMenuDataAccess {
-  private readonly _contextMenuEntityManager: EntityManager<ContextMenuEntity>;
-  private getContextMenuEntityManager(): EntityManager<ContextMenuEntity>{
-    return this._contextMenuEntityManager;
+  private readonly contextMenuEntityManager: EntityManager<ContextMenu>;
+
+  constructor() {
+    this.contextMenuEntityManager = new EntityManager<ContextMenu>();
+  }
+
+  private getContextMenuEntityManager(): EntityManager<ContextMenu>{
+    return this.contextMenuEntityManager;
   };
 
-  public registerContextMenu(contextMenuEntity: ContextMenuEntity) {
+  public registerContextMenu(contextMenuEntity: ContextMenu) {
     this.getContextMenuEntityManager().create(contextMenuEntity);
   }
 

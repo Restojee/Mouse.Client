@@ -1,5 +1,5 @@
 import LevelEntity from "@/modules/levels/model/entities/LevelEntity";
-import { Level } from "@/modules/levels/common/api/types";
+import { Level } from "@common/api/levels/models";
 
 export const levelMappers = {
   toAppLevels(levels: Level[]): LevelEntity[] {

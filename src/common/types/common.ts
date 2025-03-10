@@ -1,1 +1,1 @@
-export type Callback<A extends [], R> = (...args: A) => R;
+export type Callback<A extends [] | undefined = undefined, R = void> = (...args: A) => R;

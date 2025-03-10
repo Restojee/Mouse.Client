@@ -5,11 +5,9 @@ import { FormGroup } from "@common/store/form/FormGroup";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 import Store from "@common/store/Store";
-import { Register } from "@common/utils/di/Register";
+import { injectable } from "inversify";
 
-export const LevelDataAccessInjectKey = 'LevelDataAccess';
-
-@Register(LevelDataAccessInjectKey)
+@injectable()
 class LevelDataAccess extends Store<LevelDataAccess, LevelState> {
 
   private readonly _levelEntityManager: EntityManager<LevelEntity>;

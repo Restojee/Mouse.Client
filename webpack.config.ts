@@ -33,14 +33,9 @@ module.exports = () => {
           type: 'asset/resource',
         },
         {
-          test: /\.(ts|js)x?$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
-            },
-          },
+          test: /\.(ts|tsx)$/,      // Применяем для файлов .js и .jsx
+          use: 'babel-loader',        // Используем babel-loader
+          exclude: /node_modules/,    // Исключаем node_modules
         },
       ],
     },

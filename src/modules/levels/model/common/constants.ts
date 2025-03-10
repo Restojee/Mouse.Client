@@ -7,3 +7,11 @@ export const LevelMeta = {
   id: 'id',
   user: 'user',
 }
+
+export const LevelActionsInjectKey = 'LevelActions'
+export const LevelDataAccessInjectKey = 'LevelDataAccess'
+export const LevelCreateFormInjectKey = 'LevelCreateForm'
+export const LevelsApiInjectKey = 'LevelsApi'
+export const LevelSelectorsInjectKey = 'LevelSelectors'
+export const LevelContextMenuId = 'LevelContextMenu'
+export const LevelContextSubMenuId = 'LevelContextSubMenu'

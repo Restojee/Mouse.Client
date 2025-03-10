@@ -23,4 +23,11 @@ export namespace Http {
     BadRequest = 400,
     NotAccess = 403
   }
+
+  export type GetToken = () => string;
+
+  export interface HttpConfig {
+    url: string;
+    getToken: GetToken;
+  }
 }

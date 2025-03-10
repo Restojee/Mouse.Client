@@ -1,4 +1,6 @@
 import type * as React from 'react';
+import ConfigurableForm from "@common/store/form/ConfigurableForm";
+import Entity from "@common/store/entity/Entity";
 
 export interface FormItemProps {
   label?: string;
@@ -14,4 +16,5 @@ export interface FormRowProps {
 export interface FormProps {
   children?: React.ReactNode;
   onSubmit?(): void;
+  // provider: ConfigurableForm
 }

@@ -11,8 +11,8 @@ const Paper: React.FC<PropsWithChildren<PaperProps>> = (props) => {
 
   const { bgImage, bgColor, color, radius, className } = props;
   const flexClasses = cn(styles.root, className);
-  const palette = useAppPalette();
   const theme = useAppTheme();
+  const palette = useAppPalette();
 
   const flexStyles: Pick<React.CSSProperties,
     | 'backgroundImage'

@@ -1,19 +1,20 @@
 import { ThemeColorKey } from '@common/themes/common/types';
-import { Theme, ThemeInjectKey } from "@common/themes/core/Theme";
-import { Register } from "@common/utils/di/Register";
-import { Inject } from "@common/utils/di/Inject";
+import { Theme } from "@common/themes/core/Theme";
+import { inject, injectable } from "inversify";
+import { ThemeInjectKey } from "@common/themes/common/constants";
 
-export const PaletteInjectKey = 'Palette';
-
-@Register(PaletteInjectKey)
+@injectable()
 class Palette {
 
-  constructor(@Inject(ThemeInjectKey) private theme: Theme) {
+  constructor(
+    @inject(ThemeInjectKey) public readonly theme: Theme
+  ) {
     return this;
   }
 
-  public getColor = (colorKey?: ThemeColorKey) =>
-    this.theme.get().palette.colors[colorKey]
+  public getColor = (colorKey?: ThemeColorKey) => {
+    return this.theme.get().palette.colors[colorKey]
+  }
 }
 
 export default Palette;

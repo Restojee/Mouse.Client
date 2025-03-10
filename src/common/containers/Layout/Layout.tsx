@@ -1,10 +1,10 @@
-import React, { PropsWithChildren } from "react";
-import { Column, Paper, Row, Spacer } from "@ui/Layout";
+import * as React from "react";
+import { Column, Paper, Row } from "@ui/Layout";
 import styles from "./Layout.module.scss";
 import SidePanel from "@common/containers/SidePanel/SidePanel";
 import ContentPanel from "@common/containers/NavigationPanel/NavigationPanel";
 
-const Layout: React.FC<PropsWithChildren> = ({ children }) => {
+const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <Paper className={styles.root} bgColor="primary">
       <Row>

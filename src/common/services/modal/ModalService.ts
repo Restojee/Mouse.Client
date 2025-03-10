@@ -1,10 +1,8 @@
 import { ModalDataAccess } from "@common/services/modal/ModalDataAccess";
 import { ModalEntity } from "@common/services/modal/ModalEntity";
-import { Register } from "@common/utils/di/Register";
+import { injectable } from "inversify";
 
-export const ModalServiceInjectKey = 'ModalServiceInjectKey';
-
-@Register(ModalServiceInjectKey)
+@injectable()
 export class ModalService {
 
   private readonly _modalDataAccess: ModalDataAccess;

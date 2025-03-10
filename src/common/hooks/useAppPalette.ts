@@ -1,5 +1,8 @@
-import Palette, { PaletteInjectKey } from "@common/themes/core/Pallete";
-import { Instance } from "@common/instances/Instance";
+import Palette from "@common/themes/core/Pallete";
+import { Instances } from "@common/instances/Instances";
+import { PaletteInjectKey } from "@common/themes/common/constants";
+import { useInjection } from "@common/hooks/useInjection";
 
-export const useAppPalette = () =>
-  Instance.get<Palette>(PaletteInjectKey)
+export const useAppPalette = () => {
+  return useInjection<Palette>(PaletteInjectKey);
+}

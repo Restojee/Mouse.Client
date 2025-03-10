@@ -40,27 +40,3 @@ export const Form = Object.assign(FormComponent, {
   }),
   Row: FormRowComponent,
 });
-
-const t = () => (
-  <Form>
-    <Form.Row>
-      <Input.Text />
-    </Form.Row>
-    <Form.Row>
-      <Form.Field label="test 1" error="error">
-
-      </Form.Field>
-      <Form.Field label="test 2" />
-    </Form.Row>
-    <Form.Field>
-      <Controls>
-        <Controls.Item>
-          <Button.Submit />
-        </Controls.Item>
-        <Controls.Item>
-          <Button.Cancel />
-        </Controls.Item>
-      </Controls>
-    </Form.Field>
-  </Form>
-);

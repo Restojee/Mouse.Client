@@ -1,32 +1,36 @@
 import { Roles } from "@common/types/roles";
 import { GuardRole, Loading, Validate } from "@common/store/async/utils";
-import { LevelEndpoints } from "@/modules/levels/common/api/endpoints";
-import { LevelByIdArgs, LevelCollectArgs, LevelRemoveArgs } from "@/modules/levels/common/api/types";
 import LevelEntity from "@/modules/levels/model/entities/LevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
-import { ModalService, ModalServiceInjectKey } from "@common/services/modal/ModalService";
+import { ModalService } from "@common/services/modal/ModalService";
 import CreateLevelModal from "@/modules/levels/view/containers/CreateLevel";
 import { ModalEntity } from "@common/services/modal/ModalEntity";
-import { Inject } from "@common/utils/di/Inject";
 import { levelMappers } from "@/modules/levels/model/common/mappers";
-import { Register } from "@common/utils/di/Register";
-import LevelDataAccess, { LevelDataAccessInjectKey } from "@/modules/levels/model/services/LevelDataAccess";
-import LevelSelectors, { LevelSelectorsInjectKey } from "@/modules/levels/model/services/LevelSelectors";
-import LevelsApi, { LevelApiInjectKey } from "@common/api/levels/api";
+import LevelDataAccess from "@/modules/levels/model/services/LevelDataAccess";
+import LevelsApi from "@common/api/levels";
+import LevelSelectors from "@/modules/levels/model/services/LevelSelectors";
+import { inject, injectable } from "inversify";
+import { ModalServiceInjectKey } from "@common/services/modal/common/constants";
+import {
+  LevelDataAccessInjectKey,
+  LevelsApiInjectKey,
+  LevelSelectorsInjectKey,
+} from "@/modules/levels/model/common/constants";
+import { LevelEndpoints } from "@common/api/levels/endpoints";
+import { LevelByIdRequest, LevelCollectRequest, LevelRemoveRequest } from "@common/api/levels/models";
 
 const getLoadingMs = 1000;
 const mutateLoadingMs = 500;
-export const LevelActionsInjectKey = 'LevelService';
 
-@Register(LevelActionsInjectKey)
+@injectable()
 class LevelActions {
 
   constructor(
-    @Inject(LevelApiInjectKey) private levelsApi: LevelsApi,
-    @Inject(LevelDataAccessInjectKey) private levelDataAccess: LevelDataAccess,
-    @Inject(ModalServiceInjectKey) private modalService: ModalService,
-    @Inject(LevelSelectorsInjectKey) private levelSelectors: LevelSelectors,
+    @inject(ModalServiceInjectKey) private readonly modalService: ModalService,
+    @inject(LevelsApiInjectKey) private readonly levelsApi: LevelsApi,
+    @inject(LevelDataAccessInjectKey) private readonly levelDataAccess: LevelDataAccess,
+    @inject(LevelSelectorsInjectKey) private readonly levelSelectors: LevelSelectors,
   ) {
     this.modalService.registerModal(new ModalEntity(CreateLevelModal));
   }
@@ -73,13 +77,13 @@ class LevelActions {
 
   @GuardRole(Roles.Common)
   @Loading(mutateLoadingMs)
-  public async removeLevel(request: LevelRemoveArgs) {
+  public async removeLevel(request: LevelRemoveRequest) {
     await this.getLevelApi()[LevelEndpoints.Remove](request);
     this.levelDataAccess.removeLevel(request.id)
   }
 
   @Loading(getLoadingMs)
-  public async loadLevelCollection(request: LevelCollectArgs) {
+  public async loadLevelCollection(request: LevelCollectRequest) {
     const response = await this.getLevelApi().collect({
       ids: request.ids,
       page: request.page,
@@ -89,7 +93,7 @@ class LevelActions {
   }
 
   @Loading(getLoadingMs)
-  public async loadLevelById(request: LevelByIdArgs) {
+  public async loadLevelById(request: LevelByIdRequest) {
     const response = await this.getLevelApi().get(request);
 
     const levelEntity = new LevelEntity();
