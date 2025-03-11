@@ -17,39 +17,39 @@
       "brand": "#2B2B2B"
     },
     "background": {
-      "primary": "{primary}",
-      "hover": "{primary}",
-      "secondary": "{primary}"
+      "primary": "{palette.colors.primary}",
+      "hover": "{palette.colors.primary}",
+      "secondary": "{palette.colors.primary}"
     },
     "text": {
-      "normal": "{secondary}",
-      "label": "{secondary}",
-      "description": "{secondary}",
-      "disabled": "{secondary}",
-      "error": "{red}",
-      "link": "{brand}",
-      "button": "{secondary}"
+      "normal": "{palette.colors.secondary}",
+      "label": "{palette.colors.secondary}",
+      "description": "{palette.colors.secondary}",
+      "disabled": "{palette.colors.secondary}",
+      "error": "{palette.colors.red}",
+      "link": "{palette.colors.brand}",
+      "button": "{palette.colors.secondary}"
     },
     "icon": {
-      "normal": "{secondary}",
-      "hover": "{secondary}",
-      "pressed": "{secondary}",
-      "active": "{primary}",
-      "disabled": "{secondary}"
+      "normal": "{palette.colors.secondary}",
+      "hover": "{palette.colors.secondary}",
+      "pressed": "{palette.colors.secondary}",
+      "active": "{palette.colors.primary}",
+      "disabled": "{palette.colors.secondary}"
     },
-    "divider": "{secondary}",
+    "divider": "{palette.colors.secondary}",
     "border": {
-      "normal": "{secondary}",
-      "hover": "{secondary}",
-      "active": "{secondary}",
-      "focus": "{secondary}",
-      "disabled": "{secondary}",
-      "error": "{red}"
+      "normal": "{palette.colors.secondary}",
+      "hover": "{palette.colors.secondary}",
+      "active": "{palette.colors.secondary}",
+      "focus": "{palette.colors.secondary}",
+      "disabled": "{palette.colors.secondary}",
+      "error": "{palette.colors.red}"
     },
     "line": {
-      "normal": "{secondary}",
-      "hover": "{secondary}",
-      "focus": "{secondary}"
+      "normal": "{palette.colors.secondary}",
+      "hover": "{palette.colors.secondary}",
+      "focus": "{palette.colors.secondary}"
     }
   },
   "layout": {
@@ -67,7 +67,7 @@
     }
   },
   "typography": {
-    "fontFamily": "Roboto, sans.serif",
+    "fontFamily": "Roboto, sans-serif",
     "fontSize": "14px",
     "fontWeight": "400",
     "lineHeight": "20px",

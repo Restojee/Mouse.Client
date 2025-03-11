@@ -3,6 +3,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import path from "path";
 import webpack from "webpack";
+import StyleVariablesPlugin from "./StylesVariablesPlugin";
 
 module.exports = () => {
   const config: Configuration = {
@@ -65,6 +66,10 @@ module.exports = () => {
       liveReload: true,
     },
     plugins: [
+      new StyleVariablesPlugin({
+        input: path.resolve(__dirname, 'src/common/themes/resources/theme.json'),
+        output: 'src/resources/styles/variables.scss'
+      }),
       /*
         new Dotenv({
           path: './.env',
