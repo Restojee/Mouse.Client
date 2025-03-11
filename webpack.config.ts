@@ -10,24 +10,27 @@ module.exports = () => {
     entry: './src/index.tsx',
     module: {
       rules: [
+        // {
+        //   test: /\.module\.(scss|css|sass|less)$/,
+        //   use: [
+        //     'style-loader',
+        //     {
+        //       loader: 'css-loader',
+        //       options: {
+        //         importLoaders: 1,
+        //         modules: {
+        //           localIdentName: '[local]--[hash:base64:5]',
+        //         },
+        //       },
+        //     },
+        //     'sass-loader',
+        //   ],
+        // },
+        // Глобальные SCSS (без модулей)
         {
-          test: /\.(css|sass|scss)$/,
-          use: [
-            // Creates `style` nodes from JS strings
-            'style-loader',
-            // Translates CSS into CommonJS
-            {
-              loader: 'css-loader',
-              options: {
-                importLoaders: 1,
-                modules: {
-                  localIdentName: '[local]--[hash:base64:5]',
-                },
-              },
-            },
-            // Compiles Sass to CSS
-            'sass-loader',
-          ],
+          test: /\.(scss|css|sass|less)$/,
+          // exclude: /\.module\.(scss|css|sass|less)$/,
+          use: ['style-loader', 'css-loader', 'sass-loader'],
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
@@ -67,8 +70,9 @@ module.exports = () => {
     },
     plugins: [
       new StyleVariablesPlugin({
-        input: path.resolve(__dirname, 'src/common/themes/resources/theme.json'),
-        output: 'src/resources/styles/variables.scss'
+        input: path.resolve(__dirname, 'src/resources/theme.json'),
+        output: 'src/resources/styles/variables.scss',
+        typesOutput: 'src/common/themes/common/variables.ts'
       }),
       /*
         new Dotenv({

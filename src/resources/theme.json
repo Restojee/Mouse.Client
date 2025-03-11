@@ -19,7 +19,7 @@
     "background": {
       "primary": "{palette.colors.primary}",
       "hover": "{palette.colors.primary}",
-      "secondary": "{palette.colors.primary}"
+      "secondary": "{palette.colors.secondary}"
     },
     "text": {
       "normal": "{palette.colors.secondary}",
@@ -50,6 +50,12 @@
       "normal": "{palette.colors.secondary}",
       "hover": "{palette.colors.secondary}",
       "focus": "{palette.colors.secondary}"
+    },
+    "status": {
+      "success": "#70c073",
+      "danger": "#ff8935",
+      "info": "#6b88e9",
+      "error": "#ce5252"
     }
   },
   "layout": {
@@ -109,12 +115,6 @@
         "fontSize": "14px",
         "lineHeight": "20px",
         "fontWeight": "700"
-      },
-      "status": {
-        "success": "#70c073",
-        "danger": "#ff8935",
-        "info": "#6b88e9",
-        "error": "#ce5252"
       }
     }
   },
