@@ -81,7 +81,17 @@ class StyleVariablesPlugin {
 
             // Сохранение в файловую систему
             const outputPath = path.resolve(process.cwd(),
-              path.resolve(__dirname, 'src/resources/variables.scss'));
+              path.resolve(__dirname, output));
+
+            // Проверяем, изменился ли файл, чтобы избежать лишней записи и пересборки
+            if (fs.existsSync(outputPath)) {
+              const existingContent = fs.readFileSync(outputPath, 'utf8');
+              if (existingContent === cssContent) {
+                console.log(`StyleVariablesPlugin: Файл не изменился, пропускаем запись.`);
+                return callback();
+              }
+            }
+
             fs.mkdirSync(path.dirname(output), { recursive: true }); // Создание директорий, если их нет
             fs.writeFileSync(output, cssContent, 'utf8');
             console.log(`StyleVariablesPlugin: CSS файл сохранен в ${outputPath}`);
