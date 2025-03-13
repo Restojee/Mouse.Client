@@ -1,4 +1,4 @@
-import type { FlexProps } from '@/common';
+import { FlexProps } from "@ui/Layout";
 
 export type Orientation = 'vertical' | 'horizontal';
 export interface StackProps extends Pick<FlexProps, 'children' | 'className' | 'gap' | 'height' | 'width'> {

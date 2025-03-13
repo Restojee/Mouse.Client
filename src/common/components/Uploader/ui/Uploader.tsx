@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Center, Paper, Typography } from '@common/.';
 import clsx from 'clsx';
 import {
   type ImageFormPropsType,
@@ -8,6 +7,8 @@ import {
 } from '@ui/Uploader/common/types';
 import { inputAccept } from '@ui/Uploader/common/constants';
 import styles from './Uploader.module.scss';
+import { Center, Paper } from "@ui/Layout";
+import { Typography } from "@ui/Typography";
 
 export const Uploader = (props: ImageFormPropsType) => {
   const { onImageUpload, className, name, image } = props;

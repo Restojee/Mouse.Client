@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import { ListItem } from '@ui/List/ui/Item/ListItem';
 import { type ListProps } from '@ui/List/common/types';
 import { Stack } from '@ui/Layout';

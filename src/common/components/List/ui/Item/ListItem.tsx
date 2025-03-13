@@ -4,7 +4,7 @@ import classNames from 'clsx';
 import { ListItemIconPositions, type ListItemProps } from '@ui/Select/common/types';
 import { useListItemIcons } from '@ui/List/hooks/useListItemIcons';
 import styles from './ListItem.module.scss';
-import { Typography } from "@/common";
+import { Typography } from "@ui/Typography";
 
 export const ListItem: React.FC<ListItemProps> = (props) => {
   const { onClick, label, blocked, rightIcons, leftIcons, leftIcon, rightIcon, disabled } = props;

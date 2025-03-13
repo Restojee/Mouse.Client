@@ -22,7 +22,6 @@ export interface FlexProps extends MouseEvents, GeoProps {
   bgColor?: ColorKey | string;
   color?: ColorKey | string;
   children?: React.ReactNode;
-  styles?: React.CSSProperties;
   direction?: Direction;
   width?: number;
   height?: number;

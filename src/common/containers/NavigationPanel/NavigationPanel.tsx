@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Column, Paper } from "@/common";
+import { Column, Paper } from "@ui/Layout";
 
 const NavigationPanel: React.FC = () => {
   return (
     <Column height={1}>
-      <Paper bgColor="primary">
+      <Paper bgColor="paletteBackgroundPrimary">
         Panel
       </Paper>
     </Column>

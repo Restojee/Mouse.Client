@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react';
-import { Center, Paper } from '@common/.';
 import clsx from 'clsx';
 import styles from './Modal.module.scss';
+import { Center, Paper } from "@ui/Layout";
 
 interface ModalProps {
   children?: ReactNode;

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Column, Paper, type TextInputProps } from '@common/index';
 import clsx from 'clsx';
 import { memo } from 'react';
 import styles from './Input.module.scss';
+import { TextInputProps } from "@ui/Input";
+import { Column, Paper } from "@ui/Layout";
 
 export const InputText: React.FC<TextInputProps> = memo((props) => {
   const {

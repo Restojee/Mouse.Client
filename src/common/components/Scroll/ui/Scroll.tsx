@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Column, Paper } from '@common/.';
 import clsx from 'clsx';
 import styles from './Scroll.module.scss';
-import { ColumnProps } from '@ui/Layout/ui/Column/Column';
+import { ColumnProps } from '@ui/Layout/ui/Column/ui/Column';
+import { Column, Paper } from "@ui/Layout";
 
 interface ScrollProps extends ColumnProps {
   children?: React.ReactNode;

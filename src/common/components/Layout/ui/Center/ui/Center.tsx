@@ -2,7 +2,7 @@ import React from 'react';
 import { FlexProps, Spacer } from '@ui/Layout';
 
 export interface CenterProps extends FlexProps {}
-export const Center: React.FC<CenterProps> = (props) => {
+const Center: React.FC<CenterProps> = (props) => {
   const {
     justify = 'center',
     align = 'center',
@@ -24,3 +24,5 @@ export const Center: React.FC<CenterProps> = (props) => {
     </Spacer>
   );
 };
+
+export default React.memo(Center);

@@ -1,5 +1,5 @@
-import defaultTheme from '../resources/theme.json';
-import { ThemePaddingSizesMap } from "@ui/Layout/ui/Flex/types";
+import defaultTheme from '../../../resources/theme.json';
+import { ThemePaddingSizesMap } from "@ui/Layout/ui/Flex/common/types";
 import { ThemeSizes } from "@common/themes/common/types";
 import { calcSize, getBorderRadius, getPaddingStyles } from "@common/themes/common/utils";
 import { injectable } from "inversify";

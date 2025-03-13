@@ -1,4 +1,4 @@
-import { FlexPropsByOrientationMapping } from '@ui/Layout/ui/Stack/types';
+import { FlexPropsByOrientationMapping } from '@ui/Layout/ui/Stack/common/types';
 
 export const flexPropsByOrientationMapping: FlexPropsByOrientationMapping = {
   horizontal: {

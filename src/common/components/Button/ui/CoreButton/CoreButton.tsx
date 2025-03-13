@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { type ButtonProps, Typography } from '@common/.';
 import classNames from 'clsx';
 import styles from './CoreButton.module.scss';
-import { useAppPalette } from '@common/hooks/useAppPalette';
+import { ButtonProps } from "@ui/Button";
+import { Typography } from "@ui/Typography";
 
 const Component = 'button';
 
@@ -18,14 +18,12 @@ export const CoreButton: React.FC<ButtonProps> = (props) => {
     ...otherProps
   } = props;
 
-  const palette = useAppPalette();
-
   return (
     <Component
       className={
         classNames(
           styles.CoreButton,
-          palette.getColor(color)
+          color
         )
       }
       {...otherProps}

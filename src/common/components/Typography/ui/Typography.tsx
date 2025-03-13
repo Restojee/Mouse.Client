@@ -21,8 +21,6 @@ const Typography: React.FC<TypographyProps> = (props) => {
 
   const Component = tag || TextTags.Span;
 
-  const palette = useAppPalette();
-
   const textStyles = React.useMemo(() => (
     clsx(
       ellipsis && styles.ellipsis,
@@ -42,7 +40,7 @@ const Typography: React.FC<TypographyProps> = (props) => {
   return (
     <Component
       style={wrapperStyles}
-      className={`${textStyles} ${palette.getColor(color)}`}
+      className={`${textStyles} ${color}`}
     >
       {children}
     </Component>

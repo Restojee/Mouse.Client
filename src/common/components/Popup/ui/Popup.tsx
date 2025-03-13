@@ -1,6 +1,6 @@
 import React, { type ReactElement } from 'react';
-import { Column, Paper, Row } from '@common/.';
 import styles from './Popup.module.scss';
+import { Column, Paper, Row } from "@ui/Layout";
 
 interface PopupProps {
   header?: ReactElement;

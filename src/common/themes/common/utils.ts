@@ -1,6 +1,6 @@
 // TODO Вынести в Тему
 
-import { ThemePaddingSizesMap } from "@ui/Layout/ui/Flex/types";
+import { ThemePaddingSizesMap } from "@ui/Layout/ui/Flex/common/types";
 import { ThemeSizes } from "@common/themes/common/types";
 
 export const getPaddingStyles = (

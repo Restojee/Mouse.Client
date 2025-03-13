@@ -1,0 +1,17 @@
+.UiPaper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  .borderRadiusSm {
+    border-radius: var(--layoutBorderRadiusSm);
+  }
+
+  .borderRadiusMd {
+    border-radius: var(--layoutBorderRadiusMd);
+  }
+
+  .borderRadiusLg {
+    border-radius: var(--layoutBorderRadiusLg);
+  }
+}
