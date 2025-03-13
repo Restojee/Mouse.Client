@@ -1,12 +1,11 @@
 import * as React from "react";
-import { Column, Paper } from "@ui/Layout";
+import { Column } from "@ui/Layout";
+import CategoriesView from "@/modules/navigation/view/Categories/CategoriesView";
 
 const NavigationPanel: React.FC = () => {
   return (
     <Column height={1}>
-      <Paper bgColor="paletteBackgroundPrimary">
-        Panel
-      </Paper>
+      <CategoriesView userId="testId" />
     </Column>
   )
 }

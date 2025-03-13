@@ -1,0 +1,143 @@
+:root {
+  --paletteColorsBlack: #000000;
+  --paletteColorsWhite: #FFFFFF;
+  --paletteColorsGreen: #34C75A;
+  --paletteColorsRed: #FF3B31;
+  --paletteColorsBlue: #007AFF;
+  --paletteColorsOrange: #FF9501;
+  --paletteColorsYellow: #FFCC01;
+  --paletteColorsPink: #FF486C;
+  --paletteColorsTeal: #5AC8FB;
+  --paletteColorsIndigo: #5856D7;
+  --paletteColorsPurple: #AF52DF;
+  --paletteColorsPrimary: #2B2B2B;
+  --paletteColorsSecondary: #FFFFFF;
+  --paletteColorsBrand: #2B2B2B;
+  --paletteBackgroundPrimary: #2B2B2B;
+  --paletteBackgroundHover: #2B2B2B;
+  --paletteBackgroundSecondary: #FFFFFF;
+  --paletteTextNormal: #FFFFFF;
+  --paletteTextLabel: #FFFFFF;
+  --paletteTextDescription: #FFFFFF;
+  --paletteTextDisabled: #FFFFFF;
+  --paletteTextError: #FF3B31;
+  --paletteTextLink: #2B2B2B;
+  --paletteTextButton: #FFFFFF;
+  --paletteIconNormal: #FFFFFF;
+  --paletteIconHover: #FFFFFF;
+  --paletteIconPressed: #FFFFFF;
+  --paletteIconActive: #2B2B2B;
+  --paletteIconDisabled: #FFFFFF;
+  --paletteDivider: #FFFFFF;
+  --paletteBorderNormal: #FFFFFF;
+  --paletteBorderHover: #FFFFFF;
+  --paletteBorderActive: #FFFFFF;
+  --paletteBorderFocus: #FFFFFF;
+  --paletteBorderDisabled: #FFFFFF;
+  --paletteBorderError: #FF3B31;
+  --paletteLineNormal: #FFFFFF;
+  --paletteLineHover: #FFFFFF;
+  --paletteLineFocus: #FFFFFF;
+  --paletteStatusSuccess: #70c073;
+  --paletteStatusDanger: #ff8935;
+  --paletteStatusInfo: #6b88e9;
+  --paletteStatusError: #ce5252;
+  --layoutSpaceSm: 5px;
+  --layoutSpaceMd: 10px;
+  --layoutSpaceLg: 15px;
+  --layoutBorderRadiusSm: 5px;
+  --layoutBorderRadiusMd: 10px;
+  --layoutBorderRadiusLg: 15px;
+  --typographyFontFamily: Roboto, sans-serif;
+  --typographyFontSize: 14px;
+  --typographyFontWeight: 400;
+  --typographyLineHeight: 20px;
+  --typographyFontSizeSm: 10px;
+  --typographyFontSizeMd: 14px;
+  --typographyFontSizeLg: 16px;
+  --typographyH1FontSize: 32px;
+  --typographyH1LineHeight: 44px;
+  --typographyH1FontWeight: 700;
+  --typographyH2FontSize: 24px;
+  --typographyH2LineHeight: 36px;
+  --typographyH2FontWeight: 700;
+  --typographyH3FontSize: 20px;
+  --typographyH3LineHeight: 32px;
+  --typographyH3FontWeight: 700;
+  --typographyH4FontSize: 18px;
+  --typographyH4LineHeight: 28px;
+  --typographyH4FontWeight: 700;
+  --typographyLabelFontSize: 12px;
+  --typographyLabelLineHeight: 16px;
+  --typographyLabelFontWeight: 400;
+  --typographyTextNormalFontSize: 14px;
+  --typographyTextNormalLineHeight: 20px;
+  --typographyTextNormalFontWeight: 400;
+  --typographyTextBoldFontSize: 14px;
+  --typographyTextBoldLineHeight: 20px;
+  --typographyTextBoldFontWeight: 700;
+  --inputSmFontSize: 14px;
+  --inputSmBorderRadius: 5px;
+  --inputMdFontSize: 16px;
+  --inputMdBorderRadius: 5px;
+  --inputLgBorderRadius: 7px;
+  --inputLgFontSize: 16px;
+  --buttonSmBorderRadius: 3px;
+  --buttonSmFontSize: 14px;
+  --buttonMdBorderRadius: 5px;
+  --buttonMdFontSize: 16px;
+  --buttonLgBorderRadius: 7px;
+  --buttonLgFontSize: 16px;
+  --buttonBorderRadiusSm: 3px;
+  --buttonBorderRadiusMd: 5px;
+  --buttonBorderRadiusLg: 7px;
+  --cardSmBorderRadius: 7px;
+  --cardMdBorderRadius: 9px;
+  --cardLgBorderRadius: 11px;
+  --panelSmBorderRadius: 7px;
+  --panelMdBorderRadius: 9px;
+  --panelLgBorderRadius: 11px;
+}
+
+.paletteColorsBlack { color: var(--paletteColorsBlack); }
+.paletteColorsWhite { color: var(--paletteColorsWhite); }
+.paletteColorsGreen { color: var(--paletteColorsGreen); }
+.paletteColorsRed { color: var(--paletteColorsRed); }
+.paletteColorsBlue { color: var(--paletteColorsBlue); }
+.paletteColorsOrange { color: var(--paletteColorsOrange); }
+.paletteColorsYellow { color: var(--paletteColorsYellow); }
+.paletteColorsPink { color: var(--paletteColorsPink); }
+.paletteColorsTeal { color: var(--paletteColorsTeal); }
+.paletteColorsIndigo { color: var(--paletteColorsIndigo); }
+.paletteColorsPurple { color: var(--paletteColorsPurple); }
+.paletteColorsPrimary { color: var(--paletteColorsPrimary); }
+.paletteColorsSecondary { color: var(--paletteColorsSecondary); }
+.paletteColorsBrand { color: var(--paletteColorsBrand); }
+.paletteBackgroundPrimary { background-color: var(--paletteBackgroundPrimary); }
+.paletteBackgroundHover { background-color: var(--paletteBackgroundHover); }
+.paletteBackgroundSecondary { background-color: var(--paletteBackgroundSecondary); }
+.paletteTextNormal { color: var(--paletteTextNormal); }
+.paletteTextLabel { color: var(--paletteTextLabel); }
+.paletteTextDescription { color: var(--paletteTextDescription); }
+.paletteTextDisabled { color: var(--paletteTextDisabled); }
+.paletteTextError { color: var(--paletteTextError); }
+.paletteTextLink { color: var(--paletteTextLink); }
+.paletteTextButton { color: var(--paletteTextButton); }
+.paletteIconNormal { color: var(--paletteIconNormal); }
+.paletteIconHover { color: var(--paletteIconHover); }
+.paletteIconPressed { color: var(--paletteIconPressed); }
+.paletteIconActive { color: var(--paletteIconActive); }
+.paletteIconDisabled { color: var(--paletteIconDisabled); }
+.paletteBorderNormal { color: var(--paletteBorderNormal); }
+.paletteBorderHover { color: var(--paletteBorderHover); }
+.paletteBorderActive { color: var(--paletteBorderActive); }
+.paletteBorderFocus { color: var(--paletteBorderFocus); }
+.paletteBorderDisabled { color: var(--paletteBorderDisabled); }
+.paletteBorderError { color: var(--paletteBorderError); }
+.paletteLineNormal { color: var(--paletteLineNormal); }
+.paletteLineHover { color: var(--paletteLineHover); }
+.paletteLineFocus { color: var(--paletteLineFocus); }
+.paletteStatusSuccess { color: var(--paletteStatusSuccess); }
+.paletteStatusDanger { color: var(--paletteStatusDanger); }
+.paletteStatusInfo { color: var(--paletteStatusInfo); }
+.paletteStatusError { color: var(--paletteStatusError); }

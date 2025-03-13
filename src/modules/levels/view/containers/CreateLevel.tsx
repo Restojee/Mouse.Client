@@ -1,12 +1,15 @@
 import React from "react";
-import { Controls, Form, Paper, Spacer } from "@/common";
 import { LevelModuleProps } from "@/modules/levels/model/common/types";
+import { Spacer } from "@ui/Layout/ui/Spacer/ui/Spacer";
+import { Form } from "@ui/FormGroup";
+import { Controls } from "@ui/GroupControls";
+import { Paper } from "@common/components/Layout";
 
 const CreateLevel: React.FC<LevelModuleProps> = (props) => {
   return (
-    <Paper bgColor="secondary">
+    <Paper bgColor="paletteBackgroundPrimary">
       <Spacer pa="sm">
-        <Paper bgColor="primary">
+        <Paper bgColor="paletteBackgroundSecondary">
           {/*<ContextMenu provider={contextMenu}>*/}
             <Form>
               <Controls>

@@ -18,16 +18,18 @@ class LevelCreateContextMenu {
       levelContextMenu.addSubMenuWithCondition(
         isUserHasAccessToEdit,
         new ContextMenu(LevelContextSubMenuId)
-          .addItem(new ContextMenuItem('delete', 'Delete', () => {}, 'Icon.Delete')
-            .withDisabled(true)
-            .withDivider()
+          .addItem(
+            new ContextMenuItem('delete', 'Delete', () => {}, 'Icon.Delete')
+              .withDisabled(true)
+              .withDivider()
           )
           .addItem(new ContextMenuItem('copy', 'Copy', () => {}, 'Icon.Check'))
           .addItem(new ContextMenuItem('paste', 'Paste', () => {}, 'Icon.Paste')),
       )
-      levelContextMenu.addItem(new ContextMenuItem('name', 'Name', () => {})
+      levelContextMenu.addItem(
+        new ContextMenuItem('name', 'Name', () => {})
           .withIcon('Icon.Check')
-        );
+      );
 
     this.contextMenu.registerContextMenu(levelContextMenu)
     // this.contextMenu.showContextMenu(

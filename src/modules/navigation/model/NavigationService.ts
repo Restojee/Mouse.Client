@@ -1,12 +1,11 @@
 import { NavigationDataAccess } from "@/modules/navigation/model/NavigationDataAccess";
-import { Inject } from "@common/utils/di/Inject";
-import NavigationModule from "@/modules/navigation/model/NavigationModule";
-import { Register } from "@common/utils/di/Register";
+import { NavigationDataAccessInjectKey } from "@/modules/navigation/common/constants";
+import { inject, injectable } from "inversify";
 
-@Register(NavigationModule.NavigationServiceInjectKey)
+@injectable()
 export class NavigationService {
-  private readonly _navigationDataAccess: NavigationDataAccess;
-  constructor(@Inject(NavigationModule.NavigationDataAccessInjectKey)navigationDataAccess: NavigationDataAccess) {
-    this._navigationDataAccess = navigationDataAccess;
-  }
+  constructor(
+    @inject(NavigationDataAccessInjectKey)
+    private readonly navigationDataAccess: NavigationDataAccess
+  ) {}
 }

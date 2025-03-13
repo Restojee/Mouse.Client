@@ -1,4 +1,4 @@
-export type Constructor<T = any> = new (...args: any[]) => T;
+export type Constructor<T = any, Args extends any[] = any[]> = new (...args: Args) => T;
 
 export enum LifecycleType {
   Singleton,
