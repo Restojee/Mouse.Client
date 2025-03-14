@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Column, Paper } from "@ui/Layout";
-import NavigationPanel from "@common/containers/NavigationPanel/NavigationPanel";
+import NavigationModule from "@/modules/navigation/view";
 
 const SidePanel = () => {
   return (
-    <Column width={300} height={1}>
+    <Column width={300} py="sm" px="xs">
       <Paper bgColor="paletteBackgroundPrimary">
-        <NavigationPanel />
+        <NavigationModule />
       </Paper>
     </Column>
   )

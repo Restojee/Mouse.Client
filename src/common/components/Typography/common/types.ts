@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TextTags } from "@common/constants/textTags";
-import { TextColorKey } from "@common/themes/common/types";
+import { ThemeColorKey } from "@common/themes/common/types";
 
 export interface TypographyProps {
   fontSize?: number | string;
@@ -14,5 +14,5 @@ export interface TypographyProps {
   size?: string;
   opacity?: number;
   tag?: TextTags;
-  color?: TextColorKey;
+  color?: ThemeColorKey;
 }

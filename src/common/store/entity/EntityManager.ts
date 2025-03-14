@@ -2,8 +2,13 @@ import EntityState from "@common/store/entity/EntityState";
 
 class EntityManager<E extends { id: string }> {
 
-  private _entities: Map<string, EntityState<E>>;
+  private readonly _entities: Map<string, EntityState<E>>;
   protected _ids: string[];
+
+  constructor() {
+    this._entities = new Map();
+    this._ids = [];
+  }
 
   public create(entity: E) {
     this._entities.set(entity.id, new EntityState(entity))

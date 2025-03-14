@@ -5,7 +5,11 @@ abstract class ViewModelWithLifecycle<Props = {}, Deps extends any[] = []> {
 
   protected constructor(..._deps: Deps) {}
 
-  setProps(props: Props) {
+  public useProps(): Props {
+    return this.props;
+  }
+
+  public setProps(props: Props) {
     this.props = props;
     this.notifyObservers(props);
   }

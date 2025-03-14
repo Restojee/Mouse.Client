@@ -2,13 +2,13 @@ import { FlexPropsByOrientationMapping } from '@ui/Layout/ui/Stack/common/types'
 
 export const flexPropsByOrientationMapping: FlexPropsByOrientationMapping = {
   horizontal: {
-    direction: 'column',
-    justify: 'center',
+    direction: 'row',
+    justify: 'start',
     width: 1,
   },
   vertical: {
-    direction: 'row',
-    align: 'center',
+    direction: 'column',
+    justify: 'start',
     height: 1,
   }
 }

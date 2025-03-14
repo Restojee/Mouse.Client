@@ -1,6 +1,6 @@
 import defaultTheme from '../../../resources/theme.json';
 import { ThemePaddingSizesMap } from "@ui/Layout/ui/Flex/common/types";
-import { ThemeSizes } from "@common/themes/common/types";
+import { ThemeSizes, ThemeSizeValue } from "@common/themes/common/types";
 import { calcSize, getBorderRadius, getPaddingStyles } from "@common/themes/common/utils";
 import { injectable } from "inversify";
 
@@ -22,7 +22,7 @@ export class Theme {
   getBorderRadiusMap() {
     return this.get().layout.border.radius
   }
-  getCalculatedSize(size: number) {
+  getCalculatedSize(size: ThemeSizeValue) {
     return calcSize(size);
   }
 }

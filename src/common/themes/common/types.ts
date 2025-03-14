@@ -16,4 +16,8 @@ export type ThemeColors =
   | Palette["line"]
   | Palette["border"]
 
-export type ThemeSizes = "sm" | "md" | "lg"
+export type ThemeSizes = "xs" | "sm" | "md" | "lg" | "xl"
+
+export type ThemeResultsByBySize<Val = string> = Partial<Record<ThemeSizes, Val>>
+
+export type ThemeSizeValue = string | number;

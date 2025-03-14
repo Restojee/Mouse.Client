@@ -2,7 +2,7 @@ import { ThemeSizes } from "@common/themes/common/types";
 
 export const paperPrx = 'UiPaper';
 
-const paperFlexRadius: Record<ThemeSizes, string> = {
+const paperFlexRadius: Partial<Record<ThemeSizes, string>> = {
   sm: 'borderRadiusSm',
   md: 'borderRadiusMd',
   lg: 'borderRadiusLg',
@@ -13,7 +13,7 @@ export const paperFlexClasses = {
   ...paperFlexRadius,
 }
 
-export const paperRadiusClassBySizeMap: Record<ThemeSizes, string> = {
+export const paperRadiusClassBySizeMap: Partial<Record<ThemeSizes, string>> = {
   lg: paperFlexClasses.lg,
   md: paperFlexClasses.md,
   sm: paperFlexClasses.sm,

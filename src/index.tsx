@@ -3,6 +3,7 @@ import * as ReactDOMClient from 'react-dom/client';
 
 import './resources/styles/style.scss';
 import './resources/styles/variables.scss';
+import './resources/styles/fonts.scss';
 
 import App from "@/App";
 

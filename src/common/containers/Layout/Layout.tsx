@@ -1,25 +1,24 @@
 import * as React from "react";
 import { Column, Paper, Row } from "@ui/Layout";
 import SidePanel from "@common/containers/SidePanel/SidePanel";
-import ContentPanel from "@common/containers/NavigationPanel/NavigationPanel";
 import { layoutClassPrx } from "@common/containers/Layout/constants";
 
 import "./Layout.scss";
 
-const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return (
+const Layout = React.memo<React.PropsWithChildren>(
+  ({ children }) => (
     <Paper className={layoutClassPrx} bgColor="paletteBackgroundPrimary">
-      <Row>
+      <Row py="sm">
         <SidePanel />
-        <Column pa="lg" width={1}>
+        <Column width={1}>
           <Paper bgColor="paletteBackgroundSecondary" radius="lg">
             {children}
           </Paper>
         </Column>
-        <ContentPanel />
+        123
       </Row>
     </Paper>
-  );
-};
+  )
+);
 
 export default Layout;

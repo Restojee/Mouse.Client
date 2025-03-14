@@ -11,50 +11,58 @@
   --paletteColorsIndigo: #5856D7;
   --paletteColorsPurple: #AF52DF;
   --paletteColorsPrimary: #2B2B2B;
-  --paletteColorsSecondary: #FFFFFF;
+  --paletteColorsSecondary: #EAEAEA;
+  --paletteColorsTertiary: #A3A1A3;
   --paletteColorsBrand: #2B2B2B;
   --paletteBackgroundPrimary: #2B2B2B;
   --paletteBackgroundHover: #2B2B2B;
-  --paletteBackgroundSecondary: #FFFFFF;
-  --paletteTextNormal: #FFFFFF;
-  --paletteTextLabel: #FFFFFF;
-  --paletteTextDescription: #FFFFFF;
-  --paletteTextDisabled: #FFFFFF;
+  --paletteBackgroundSecondary: #EAEAEA;
+  --paletteTextPrimary: #EAEAEA;
+  --paletteTextNormal: #EAEAEA;
+  --paletteTextLabel: #EAEAEA;
+  --paletteTextDescription: #EAEAEA;
+  --paletteTextDisabled: #EAEAEA;
   --paletteTextError: #FF3B31;
   --paletteTextLink: #2B2B2B;
-  --paletteTextButton: #FFFFFF;
-  --paletteIconNormal: #FFFFFF;
-  --paletteIconHover: #FFFFFF;
-  --paletteIconPressed: #FFFFFF;
+  --paletteTextButton: #EAEAEA;
+  --paletteIconNormal: #EAEAEA;
+  --paletteIconHover: #EAEAEA;
+  --paletteIconPressed: #EAEAEA;
   --paletteIconActive: #2B2B2B;
-  --paletteIconDisabled: #FFFFFF;
-  --paletteDivider: #FFFFFF;
-  --paletteBorderNormal: #FFFFFF;
-  --paletteBorderHover: #FFFFFF;
-  --paletteBorderActive: #FFFFFF;
-  --paletteBorderFocus: #FFFFFF;
-  --paletteBorderDisabled: #FFFFFF;
+  --paletteIconDisabled: #EAEAEA;
+  --paletteDivider: #EAEAEA;
+  --paletteBorderNormal: #EAEAEA;
+  --paletteBorderHover: #EAEAEA;
+  --paletteBorderActive: #EAEAEA;
+  --paletteBorderFocus: #EAEAEA;
+  --paletteBorderDisabled: #EAEAEA;
   --paletteBorderError: #FF3B31;
-  --paletteLineNormal: #FFFFFF;
-  --paletteLineHover: #FFFFFF;
-  --paletteLineFocus: #FFFFFF;
+  --paletteLineNormal: #EAEAEA;
+  --paletteLineHover: #EAEAEA;
+  --paletteLineFocus: #EAEAEA;
   --paletteStatusSuccess: #70c073;
   --paletteStatusDanger: #ff8935;
   --paletteStatusInfo: #6b88e9;
   --paletteStatusError: #ce5252;
-  --layoutSpaceSm: 5px;
-  --layoutSpaceMd: 10px;
-  --layoutSpaceLg: 15px;
+  --palettePanelSection: #A3A1A3;
+  --palettePanelCategory: #EAEAEA;
+  --layoutSpaceXs: 5px;
+  --layoutSpaceSm: 10px;
+  --layoutSpaceMd: 15px;
+  --layoutSpaceLg: 20px;
+  --layoutSpaceXl: 25px;
   --layoutBorderRadiusSm: 5px;
   --layoutBorderRadiusMd: 10px;
   --layoutBorderRadiusLg: 15px;
-  --typographyFontFamily: Roboto, sans-serif;
+  --typographyFontFamily: 'Montserrat', sans-serif;
   --typographyFontSize: 14px;
   --typographyFontWeight: 400;
   --typographyLineHeight: 20px;
+  --typographyFontSizeXs: 8px;
   --typographyFontSizeSm: 10px;
-  --typographyFontSizeMd: 14px;
-  --typographyFontSizeLg: 16px;
+  --typographyFontSizeMd: 12px;
+  --typographyFontSizeLg: 14px;
+  --typographyFontSizeXl: 16px;
   --typographyH1FontSize: 32px;
   --typographyH1LineHeight: 44px;
   --typographyH1FontWeight: 700;
@@ -112,10 +120,12 @@
 .paletteColorsPurple { color: var(--paletteColorsPurple); }
 .paletteColorsPrimary { color: var(--paletteColorsPrimary); }
 .paletteColorsSecondary { color: var(--paletteColorsSecondary); }
+.paletteColorsTertiary { color: var(--paletteColorsTertiary); }
 .paletteColorsBrand { color: var(--paletteColorsBrand); }
 .paletteBackgroundPrimary { background-color: var(--paletteBackgroundPrimary); }
 .paletteBackgroundHover { background-color: var(--paletteBackgroundHover); }
 .paletteBackgroundSecondary { background-color: var(--paletteBackgroundSecondary); }
+.paletteTextPrimary { color: var(--paletteTextPrimary); }
 .paletteTextNormal { color: var(--paletteTextNormal); }
 .paletteTextLabel { color: var(--paletteTextLabel); }
 .paletteTextDescription { color: var(--paletteTextDescription); }
@@ -141,3 +151,5 @@
 .paletteStatusDanger { color: var(--paletteStatusDanger); }
 .paletteStatusInfo { color: var(--paletteStatusInfo); }
 .paletteStatusError { color: var(--paletteStatusError); }
+.palettePanelSection { color: var(--palettePanelSection); }
+.palettePanelCategory { color: var(--palettePanelCategory); }

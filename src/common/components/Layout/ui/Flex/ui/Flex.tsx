@@ -14,15 +14,23 @@ const Flex: React.FC<PropsWithChildren<FlexProps>> = (props) => {
   const theme = useAppTheme();
 
   const flexClassNames: string = cn(
-    justify && flexClasses[justify],
-    align && flexClasses[align],
-    direction && flexClasses[direction],
+    justify && flexClasses.justify[justify],
+    align && flexClasses.align[align],
+    direction && flexClasses.direction[direction],
     className,
     flexClasses.root,
   );
 
   const styles = {
-    padding: pa && theme.getPadding({ pa: props.pa }),
+    padding: theme.getPadding({
+      pa: props.pa,
+      px: props.px,
+      py: props.py,
+      pl: props.pl,
+      pr: props.pr,
+      pt: props.pt,
+      pb: props.pb
+    }),
     width: width && theme.getCalculatedSize(props.width),
     height: height && theme.getCalculatedSize(props.height),
     gap: gap && theme.getCalculatedSize(props.gap),

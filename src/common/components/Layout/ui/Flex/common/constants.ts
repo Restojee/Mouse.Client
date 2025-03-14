@@ -14,6 +14,6 @@ export const flexClasses = {
   },
   direction: {
     row: 'row',
-    column: 'col',
+    column: 'column',
   },
 } as const;

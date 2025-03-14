@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorKey, ThemeSizes } from '@common/themes/common/types';
+import { ColorKey, ThemeSizes, ThemeSizeValue } from "@common/themes/common/types";
 
 export type Justify = 'center' | 'start' | 'end' | 'between' | 'around';
 export type Align = 'center' | 'start' | 'end';
@@ -23,11 +23,11 @@ export interface FlexProps extends MouseEvents, GeoProps {
   color?: ColorKey | string;
   children?: React.ReactNode;
   direction?: Direction;
-  width?: number;
-  height?: number;
+  width?: ThemeSizeValue;
+  height?: ThemeSizeValue;
 }
 
-export interface GeoProps {
+export interface GeoProps extends ThemePaddingSizesMap {
   gutter?: Gap;
   wrap?: Wrap;
   gap?: number;
@@ -35,7 +35,6 @@ export interface GeoProps {
   colGap?: number;
   justify?: Justify;
   align?: Align;
-  pa?: ThemeSizes;
 }
 
 export type ThemePaddingSizesMap = Partial<

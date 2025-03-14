@@ -6,36 +6,42 @@ import ViewModelWithLifecycle from "@common/hocs/withView/ViewModelWithLifecycle
 import { WithoutViewModel, WithViewProps } from "@common/hocs/withView/types";
 
 function withView<
-  Instance extends ViewModelWithLifecycle<Props, Deps>,
-  Props extends {} = {},
-  Deps extends any[] = []>(
-  ViewComponent: React.FC<WithViewProps<Instance, Props, Deps>>,
-  ViewModelClass: Constructor<Instance, Deps>
+  Instance extends ViewModelWithLifecycle<Props>,
+  Props extends {} = {},>(
+  ViewComponent: React.FC<WithViewProps<Instance, Props>>,
+  ViewModelClass: Constructor<Instance>
 ) {
   const ObservedView = observer(ViewComponent);
 
+
   return (props: WithoutViewModel<Props>) => {
     const container = React.useContext(DIContext);
+
+    const [viewModel] = React.useState<Instance>(
+      () => {
+        let viewModel: Instance;
+        try {
+          viewModel = container.get(ViewModelClass);
+        } catch (e) {
+          // перехватывать только ошибки контейнера
+          container.add(ViewModelClass, ViewModelClass);
+          viewModel = container.get(ViewModelClass);
+        }
+
+        viewModel.setProps(props as Props)
+
+        return viewModel;
+      }
+    );
+
     if (!container) {
       throw new Error("DI container not found. Ensure withModule is used.");
     }
 
-    let viewModel: Instance;
-    try {
-      viewModel = container.get(ViewModelClass);
-    } catch (e) {
-      container.add(ViewModelClass, ViewModelClass);
-      viewModel = container.get(ViewModelClass);
-    }
-
-    React.useEffect(() => {
-      viewModel.setProps(props as Props);
-    }, [props])
-
     React.useEffect(() => {
       viewModel.init?.();
       return viewModel.destroy?.();
-    }, [viewModel, props]);
+    }, [viewModel]);
 
     return <ObservedView {...props as Props} viewModel={viewModel} />;
   };

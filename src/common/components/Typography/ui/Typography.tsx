@@ -1,50 +1,36 @@
-import clsx from 'clsx';
 import * as React from 'react';
-import styles from './Typography.module.scss';
-import { useAppPalette } from '@common/hooks/useAppPalette';
 import { TextTags } from '@common/constants/textTags';
 import { TypographyProps } from "@ui/Typography/common/types";
+import { classByThemeSize, rootClass } from "@ui/Typography/common/constants";
+import withAutoClasses, { WithAutoClassProps } from "@common/hooks/useAutoClasses";
 
-const Typography: React.FC<TypographyProps> = (props) => {
+import "./Typography.scss";
+
+const Typography: React.FC<WithAutoClassProps<TypographyProps>> = (props) => {
   const {
-    color,
-    fontSize,
-    ellipsis,
-    upperCase,
-    clickable,
-    link,
-    cantSelect,
+    color = 'paletteColorsSecondary',
     children,
-    className,
     tag,
+    autoClasses,
   } = props;
 
   const Component = tag || TextTags.Span;
 
-  const textStyles = React.useMemo(() => (
-    clsx(
-      ellipsis && styles.ellipsis,
-      cantSelect && styles.unselectable,
-      clickable && styles.clickable,
-      upperCase && styles.upperCase,
-      link && styles.link,
-      className,
-    )
-  ), [ellipsis, cantSelect, clickable, link, className])
-
-  const wrapperStyles = React.useMemo(() => ({
-    // Шрифт в классы
-    fontSize,
-  }), [fontSize])
-
   return (
-    <Component
-      style={wrapperStyles}
-      className={`${textStyles} ${color}`}
-    >
+    <Component className={`${autoClasses} ${color}`}>
       {children}
     </Component>
   );
 };
 
-export default Typography;
+export default withAutoClasses(Typography, {
+  bindings: [
+    'ellipsis',
+    'cantSelect',
+    'clickable',
+    'upperCase',
+    'link',
+    ['fontSize', classByThemeSize]
+  ],
+  root: rootClass,
+});
