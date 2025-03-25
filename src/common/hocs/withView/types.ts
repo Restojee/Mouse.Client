@@ -1,6 +1,6 @@
 import ViewModelWithLifecycle from "@common/hocs/withView/ViewModelWithLifecycle";
 
-export type WithViewProps<Instance extends ViewModelWithLifecycle<Props, Deps>, Props = {}, Deps extends any[] = []> = {
+export type WithViewProps<Instance extends ViewModelWithLifecycle<Props>, Props = {}> = {
   viewModel: Instance;
 } & Props;
 

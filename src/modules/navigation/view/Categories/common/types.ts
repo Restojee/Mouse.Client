@@ -1,9 +1,10 @@
 export interface CategoryItem {
   title: string;
+  icon: string;
   caption?: string;
 }
 
-type CategoryMainOptions = Pick<CategoryItem, 'title' | 'caption'>;
+type CategoryMainOptions = Pick<CategoryItem, 'title' | 'caption' | 'icon'>;
 interface CategoryMainProps {
   isCompact?: boolean;
 }

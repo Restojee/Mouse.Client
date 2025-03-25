@@ -1,10 +1,5 @@
 import * as React from "react";
-
-interface CollectionProps<ItemType> {
-  itemKey: keyof ItemType;
-  items: ItemType[];
-  Component: React.FC<ItemType>;
-}
+import { CollectionProps } from "@ui/Collection/types";
 
 const Collection = <ItemType extends {}>({
  items,
@@ -12,8 +7,8 @@ const Collection = <ItemType extends {}>({
  itemKey
 }: CollectionProps<ItemType>) => {
   const ItemComponent = Component;
-  return React.useMemo(() => items?.map((item) => (
-    <ItemComponent key={item[itemKey] as React.Key} {...item} />
+  return React.useMemo(() => items.map((item) => (
+    <ItemComponent key={item[itemKey as keyof ItemType] as React.Key} {...item} />
   )), [items, itemKey, Component])
 };
 

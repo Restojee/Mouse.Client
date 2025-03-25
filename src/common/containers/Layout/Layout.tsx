@@ -5,20 +5,18 @@ import { layoutClassPrx } from "@common/containers/Layout/constants";
 
 import "./Layout.scss";
 
-const Layout = React.memo<React.PropsWithChildren>(
-  ({ children }) => (
-    <Paper className={layoutClassPrx} bgColor="paletteBackgroundPrimary">
-      <Row py="sm">
-        <SidePanel />
-        <Column width={1}>
-          <Paper bgColor="paletteBackgroundSecondary" radius="lg">
-            {children}
-          </Paper>
-        </Column>
-        123
-      </Row>
-    </Paper>
-  )
+const Layout: React.FC<React.PropsWithChildren> = ({ children }) => (
+  <Paper className={layoutClassPrx} bgColor="paletteBackgroundPrimary">
+    <Row py="sm">
+      <SidePanel />
+      <Column width={1}>
+        <Paper bgColor="paletteBackgroundSecondary" radius="lg">
+          {children}
+        </Paper>
+      </Column>
+      123
+    </Row>
+  </Paper>
 );
 
-export default Layout;
+export default React.memo(Layout);

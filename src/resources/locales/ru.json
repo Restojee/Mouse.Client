@@ -1,0 +1,9 @@
+{
+  "Navigation.Section.Main": "Общие разделы",
+  "Navigation.Section.MyCollection": "Моя коллекция",
+  "Navigation.Category.Favorites": "Избранные",
+  "Navigation.Category.Completed": "Выполненные",
+  "Navigation.Category.Uncompleted": "Невыполненные",
+  "Navigation.Category.Commented": "Прокомментированные",
+  "Navigation.Category.HasNote": "Карты с заметкой"
+}

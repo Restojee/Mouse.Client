@@ -1,0 +1,9 @@
+{
+  "Navigation.Section.Main": "General Sections",
+  "Navigation.Section.MyCollection": "My Collection",
+  "Navigation.Category.Favorites": "Favorites",
+  "Navigation.Category.Completed": "Completed",
+  "Navigation.Category.Uncompleted": "Uncompleted",
+  "Navigation.Category.Commented": "Commented",
+  "Navigation.Category.HasNote": "Maps with a Note"
+}

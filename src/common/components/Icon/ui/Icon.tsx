@@ -1,9 +1,21 @@
-import { getIconPath } from '@ui/Icon/common/utils';
 import { IconProps } from '@ui/Icon/common/types';
+import * as React from "react";
+import { Suspense } from "react";
 
-export const Icon = (props: IconProps) => {
+export type IconComponent = React.FC<IconProps>;
+export const Icon: IconComponent = (props) => {
 
-  const { icon } = props;
+  const { color = "paletteIconNormal", icon } = props;
 
-  return <img src={getIconPath(icon)} alt={icon?.toString()} />
+  const LazyIcon: React.LazyExoticComponent<React.FC<React.SVGProps<SVGSVGElement>>> = React.lazy(() =>
+    import(`/src/resources/icons/${icon}.svg`).then((module) => ({
+      default: module.ReactComponent,
+    }))
+  );
+
+  return (
+    <Suspense fallback={null}>
+      <LazyIcon {...props} className={color} />
+    </Suspense>
+  );
 }

@@ -1,10 +1,16 @@
 import { AutoClassOptions, getAutoClasses } from "@common/themes/common/utils";
+import * as React from "react";
 
 /**
  * Опции для HOC `withAutoClasses`
  * @template Props - Тип пропсов, принимаемых компонентом
  */
-type WithAutoClassesOptions = Pick<AutoClassOptions, 'bindings' | 'root' | 'styles'>
+interface WithAutoClassesOptions<Props extends {} = {}> extends Pick<AutoClassOptions, 'bindings' | 'root' | 'styles'> {
+  /**
+   * CSS-модуль со стилями, используется для получения классов по ключу
+   */
+  defaults?: Partial<Props>
+}
 
 export type WithAutoClassProps<T> = { autoClasses?: string } & T;
 
@@ -32,16 +38,18 @@ export type WithAutoClassProps<T> = { autoClasses?: string } & T;
 const withAutoClasses = <Props extends Record<string, any>>(
   Component: React.ComponentType<Props>,
   options: WithAutoClassesOptions
-): React.FC<Props> => {
+): React.FC<WithAutoClassProps<Props>> => {
   return (props: Props) => {
+    const MemoizedComponent = React.memo(Component) as React.ComponentType<WithAutoClassProps<Props>>;
+    const propsWithDefaults = { ...options.defaults, ...props, }
     const autoClasses = getAutoClasses({
-      props,
+      props: propsWithDefaults,
       bindings: options.bindings,
       root: options.root,
-      styles: options.styles
+      styles: options.styles,
     });
 
-    return <Component {...props} autoClasses={autoClasses} />;
+    return <MemoizedComponent {...props} autoClasses={`${autoClasses} ${props.className}`} />;
   };
 };
 

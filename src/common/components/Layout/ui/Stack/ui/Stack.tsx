@@ -4,6 +4,6 @@ import { StackProps } from '@ui/Layout/ui/Stack/common/types';
 import { flexPropsByOrientationMapping } from '@ui/Layout/ui/Stack/common/constants';
 
 const Stack = (props: StackProps) => {
-  return <Flex {...flexPropsByOrientationMapping[props.orientation]} {...props}  />
+  return <Flex {...flexPropsByOrientationMapping[props.orientation]} {...props} />
 }
 export default React.memo(Stack);

@@ -1,51 +1,25 @@
 .UiFlex {
   display: flex;
 
-  .justifyFlexCenter {
-    justify-content: center;
-  }
+  .jc-center { justify-content: center; }
+  .jc-end { justify-content: flex-end; }
+  .jc-start { justify-content: flex-start; }
+  .jc-around { justify-content: space-between; }
+  .jc-between { justify-content: space-around; }
+  .align-center { align-items: center; }
+  .align-end { align-items: flex-end; }
+  .align-start { align-items: flex-start; }
 
-  .justifyFlexEnd {
-    justify-content: flex-end;
-  }
+  .wrap { flex-wrap: wrap; }
+  .no-wrap { flex-wrap: nowrap; }
 
-  .justifyFlexStart {
-    justify-content: flex-start;
-  }
+  .row { flex-direction: row; }
+  .column { flex-direction: column; }
 
-  .justifySpaceBetween {
-    justify-content: space-between;
-  }
+  .gap-xs { gap: var(--layoutSpaceXs) }
+  .gap-sm { gap: var(--layoutSpaceSm) }
+  .gap-md { gap: var(--layoutSpaceMd) }
+  .gap-lg { gap: var(--layoutSpaceLg) }
+  .gap-xl { gap: var(--layoutSpaceXl) }
 
-  .justifySpaceAround {
-    justify-content: space-around;
-  }
-
-  .alignCenter {
-    align-items: center;
-  }
-
-  .alignEnd {
-    align-items: flex-end;
-  }
-
-  .alignStart {
-    align-items: flex-start;
-  }
-
-  .wrap {
-    flex-wrap: wrap;
-  }
-
-  .noWrap {
-    flex-wrap: nowrap;
-  }
-
-  .row {
-    flex-direction: row;
-  }
-
-  .column {
-    flex-direction: column;
-  }
 }

@@ -5,33 +5,26 @@ import { LevelContextMenuId, LevelContextSubMenuId } from "@/modules/levels/mode
 import { ContextMenuServiceInjectKey } from "@common/services/context-menu/constants";
 import ContextMenuItem from "@common/services/context-menu/ContextMenuItem";
 
-const isUserHasAccessToEdit = () => true;
-
 @injectable()
 class LevelCreateContextMenu {
   constructor(
     @inject(ContextMenuServiceInjectKey)
     private readonly contextMenu: ContextMenuService
   ) {
-    const levelContextMenu = new ContextMenu(LevelContextMenuId)
-      .addItem(new ContextMenuItem('open', 'Open', () => {}, 'Icon.Open'))
-      levelContextMenu.addSubMenuWithCondition(
-        isUserHasAccessToEdit,
-        new ContextMenu(LevelContextSubMenuId)
-          .addItem(
-            new ContextMenuItem('delete', 'Delete', () => {}, 'Icon.Delete')
-              .withDisabled(true)
-              .withDivider()
-          )
-          .addItem(new ContextMenuItem('copy', 'Copy', () => {}, 'Icon.Check'))
-          .addItem(new ContextMenuItem('paste', 'Paste', () => {}, 'Icon.Paste')),
-      )
-      levelContextMenu.addItem(
-        new ContextMenuItem('name', 'Name', () => {})
-          .withIcon('Icon.Check')
-      );
-
-    this.contextMenu.registerContextMenu(levelContextMenu)
+    this.contextMenu.registerContextMenu(
+      new ContextMenu(LevelContextMenuId)
+        .addItem(new ContextMenuItem('open', 'Open', () => {}, 'Icon.Open'))
+        .addDivider()
+        .addItem(new ContextMenuItem('open', 'Open', () => {}, 'Icon.Open'))
+        .withSubMenu(
+          new ContextMenu(LevelContextSubMenuId)
+            .addItem(new ContextMenuItem('delete', 'Delete', () => {}, 'Icon.Delete', true))
+            .addItem(new ContextMenuItem('copy', 'Copy', () => {}, 'Icon.Check'))
+            .addItem(new ContextMenuItem('paste', 'Paste', () => {}, 'Icon.Paste'))
+        )
+        .addDivider()
+        .addItem(new ContextMenuItem('name', 'Name', () => {}, 'Icon.Check'))
+    )
     // this.contextMenu.showContextMenu(
     //   new Anchor('elementId'),
     //   new Position(),

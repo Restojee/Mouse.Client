@@ -1,15 +1,11 @@
-import { IContextMenu } from "@common/services/context-menu/IContextMenu";
-import { ReactNode } from "react";
 import { Callback } from "@common/types/common";
-import { bool } from "yup";
+import { ContextMenu } from "@common/services/context-menu/ContextMenu";
 
-class ContextMenuItem implements IContextMenu {
+class ContextMenuItem {
 
-    private divider: boolean;
+    protected divider: boolean;
+    protected subMenu: ContextMenu;
 
-    render(): ReactNode {
-        throw new Error("Method not implemented.");
-    }
     constructor(
       public id: string,
       public label: string,
@@ -20,6 +16,10 @@ class ContextMenuItem implements IContextMenu {
 
     public setIcon(icon: string): void {
         this.icon = icon;
+    }
+
+    public setSubMenu(items: ContextMenu) {
+        this.subMenu = items;
     }
 
     public setDisabled(disabled: boolean): void {
@@ -36,12 +36,17 @@ class ContextMenuItem implements IContextMenu {
     }
 
     public withIcon(icon: string): this {
-        this.icon = icon;
+        this.setIcon(icon);
         return this;
     }
 
     public withDisabled(disabled: boolean): this {
         this.setDisabled(disabled);
+        return this;
+    }
+
+    public withSubMenu(menu: ContextMenu): this {
+        this.setSubMenu(menu);
         return this;
     }
 }

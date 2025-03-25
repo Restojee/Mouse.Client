@@ -30,7 +30,7 @@ export interface FlexProps extends MouseEvents, GeoProps {
 export interface GeoProps extends ThemePaddingSizesMap {
   gutter?: Gap;
   wrap?: Wrap;
-  gap?: number;
+  gap?: ThemeSizeValue;
   rowGap?: number;
   colGap?: number;
   justify?: Justify;

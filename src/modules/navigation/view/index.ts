@@ -1,5 +1,5 @@
 import withModule from "@common/hocs/withModule";
-import NavigationContainer from "@/modules/navigation/view/NavigationContainer/NavigationContainer.view";
+import NavigationContainer from "@/modules/navigation/view/NavigationContainer/NavigationContainer";
 import { NavigationDataAccess } from "@/modules/navigation/model/NavigationDataAccess";
 import { NavigationDataAccessInjectKey } from "@/modules/navigation/common/constants";
 import { ThemeInjectKey } from "@common/themes/common/constants";

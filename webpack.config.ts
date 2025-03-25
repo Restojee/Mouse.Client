@@ -4,29 +4,17 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import path from "path";
 import webpack from "webpack";
 import StyleVariablesPlugin from "./StylesVariablesPlugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
 
 module.exports = () => {
   const config: Configuration = {
     entry: './src/index.tsx',
     module: {
       rules: [
-        // {
-        //   test: /\.module\.(scss|css|sass|less)$/,
-        //   use: [
-        //     'style-loader',
-        //     {
-        //       loader: 'css-loader',
-        //       options: {
-        //         importLoaders: 1,
-        //         modules: {
-        //           localIdentName: '[local]--[hash:base64:5]',
-        //         },
-        //       },
-        //     },
-        //     'sass-loader',
-        //   ],
-        // },
-        // Глобальные SCSS (без модулей)
+        {
+          test: /\.svg$/i,
+          use: ['@svgr/webpack', 'file-loader'],
+        },
         {
           test: /\.(scss|css|sass|less)$/,
           // exclude: /\.module\.(scss|css|sass|less)$/,
@@ -50,6 +38,7 @@ module.exports = () => {
         '@store': path.resolve(__dirname, 'src/store'),
         '@styles': path.resolve(__dirname, 'src/resources/styles'),
         '@ui': path.resolve(__dirname, 'src/common/components'),
+        '@resources': path.resolve(__dirname, 'src/resources'),
         '@': path.resolve(__dirname, 'src'),
       },
     },
@@ -69,6 +58,12 @@ module.exports = () => {
       liveReload: true,
     },
     plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'src/resources/locales', to: 'locales' },
+          { from: 'src/resources/icons', to: 'icons' }
+        ]
+      }),
       new StyleVariablesPlugin({
         input: path.resolve(__dirname, 'src/resources/theme.json'),
         output: 'src/resources/styles/variables.scss',

@@ -7,7 +7,7 @@ import { PaperProps } from "@ui/Layout/ui/Paper/common/types";
 import "./Paper.scss"
 
 const Paper: React.FC<PropsWithChildren<PaperProps>> = (props) => {
-  const { bgColor, radius, className } = props;
+  const { bgColor, radius, className, color } = props;
   const radiusClassBySize = paperRadiusClassBySizeMap[radius];
   const flexClasses = cn(bgColor, radiusClassBySize, className, paperFlexClasses.root);
 

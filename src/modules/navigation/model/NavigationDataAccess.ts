@@ -2,30 +2,30 @@ import EntityManager from "@common/store/entity/EntityManager";
 import { injectable } from "inversify";
 import { NavigationSectionEntity } from "@/modules/navigation/model/NavigationSectionEntity";
 import { NavigationItemCategoryEntity } from "@/modules/navigation/model/NavigationItemCategoryEntity";
-import { t } from "@common/locales";
+import { tNavCategory, tNavSection } from "@/modules/navigation/common/utils";
 
 @injectable()
 export class NavigationDataAccess {
 
+  //@State() private readonly navigationItems: NavigationSectionEntity
   private readonly navigationItems: EntityManager<NavigationSectionEntity>;
 
   constructor() {
-
     this.navigationItems = new EntityManager<NavigationSectionEntity>();
-    console.log(this.navigationItems)
+
     this.navigationItems.set(
-      new NavigationSectionEntity('main', t('Navigation.Section.Main'), [
-        new NavigationItemCategoryEntity('all', t('Navigation.Category.All')),
+      new NavigationSectionEntity('main', tNavSection('Main'), [
+        new NavigationItemCategoryEntity('all', tNavCategory('All'), 'IconAll'),
       ])
     );
 
     this.navigationItems.set(
-      new NavigationSectionEntity('myCollection', t('Navigation.Section.MyCollection'), [
-        new NavigationItemCategoryEntity('favorites', t('Navigation.Category.Favorites')),
-        new NavigationItemCategoryEntity('completed', t('Navigation.Category.Completed')),
-        new NavigationItemCategoryEntity('uncompleted', t('Navigation.Category.Uncompleted')),
-        new NavigationItemCategoryEntity('commented', t('Navigation.Category.Commented')),
-        new NavigationItemCategoryEntity('hasNote', t('Navigation.Category.HasNote')),
+      new NavigationSectionEntity('myCollection', tNavSection('MyCollection'), [
+        new NavigationItemCategoryEntity('favorites', tNavCategory('Favorites'), 'IconFavorite'),
+        new NavigationItemCategoryEntity('completed', tNavCategory('Completed'), 'IconCompleted'),
+        new NavigationItemCategoryEntity('uncompleted', tNavCategory('Uncompleted'), 'IconUncompleted'),
+        new NavigationItemCategoryEntity('commented', tNavCategory('Commented'), 'IconCommented'),
+        new NavigationItemCategoryEntity('hasNote', tNavCategory('HasNote'), 'IconNote'),
       ])
     );
   }

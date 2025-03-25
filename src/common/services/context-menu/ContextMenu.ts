@@ -1,9 +1,8 @@
-import { IContextMenu } from "@common/services/context-menu/IContextMenu";
 import { ReactNode } from "react";
-import { Callback } from "@common/types/common";
+import ContextMenuItem from "@common/services/context-menu/ContextMenuItem";
 
-export class ContextMenu implements IContextMenu {
-  private _items: IContextMenu[];
+export class ContextMenu {
+  private _items: ContextMenuItem[];
 
   constructor(public id: string) {}
 
@@ -11,37 +10,36 @@ export class ContextMenu implements IContextMenu {
     return this.id;
   }
 
-  public setId(id: string): void {
-    this.id = id;
-  }
-
   public render(): ReactNode {
       throw new Error("Method not implemented.");
   }
 
-  public setItems(items: IContextMenu[]): this {
+  public getItems(): ContextMenuItem[] {
+    return this._items;
+  }
+
+  public getLastItem(): ContextMenuItem {
+    const items = this.getItems();
+    return items[items.length - 1];
+  }
+
+  public setItems(items: ContextMenuItem[]): this {
     this._items = items;
     return this;
   }
 
-  public addItem(item: IContextMenu): this {
+  public addItem(item: ContextMenuItem): this {
     this.setItems(this.getItems().concat(item));
     return this;
   }
 
-  public getItems() {
-    return this._items;
-  }
-
-  public addSubMenuWithCondition(condition: Callback<[], boolean>, menu: ContextMenu, ): this {
-    if (condition) {
-      this.addSubMenu(menu);
-    }
+  public addDivider(): this {
+    this.getLastItem()?.withDivider();
     return this;
   }
 
-  public addSubMenu(menu: ContextMenu): this {
-    this.addItem(menu);
+  public withSubMenu(menu: ContextMenu): this {
+    this.getLastItem()?.withSubMenu(menu);
     return this;
   }
 }

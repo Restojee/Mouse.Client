@@ -31,15 +31,7 @@ export default withModule({
     },
     {
       key: HttpConfigInjectKey,
-      provide: HttpConfig,
-      useFactory() {
-        const httpConfig = new HttpConfig();
-        httpConfig.setConfig({
-          url: 'url',
-          getToken: () => 'token'
-        })
-        return httpConfig;
-      }
+      provide: HttpConfig
     },
     {
       key: HttpHandlerInjectKey,

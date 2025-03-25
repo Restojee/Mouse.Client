@@ -1,7 +1,7 @@
-import CategoryListView from "@/modules/navigation/view/Categories/List/CategoryList.view";
-import CategoryItem from "@/modules/navigation/view/Categories/Item/Category.view";
+import CategoryItemView from "@/modules/navigation/view/Categories/components/Item/CategoryItemView";
+import CategoryListView from "@/modules/navigation/view/Categories/components/List/CategoryListView";
 
-export const Category = {
-  Item: CategoryItem,
+export const Category = Object.assign({
+  Item: CategoryItemView,
   List: CategoryListView
-}
+})

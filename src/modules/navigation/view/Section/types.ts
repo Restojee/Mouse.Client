@@ -1,4 +1,4 @@
-import { CategoryItemViewProps } from "@/modules/navigation/view/Categories/types";
+import { CategoryItemViewProps } from "@/modules/navigation/view/Categories/common/types";
 
 export interface SectionMainViewProps {
   title: string;

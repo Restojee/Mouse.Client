@@ -1,11 +1,11 @@
-abstract class ViewModelWithLifecycle<Props = {}, Deps extends any[] = []> {
+abstract class ViewModelWithLifecycle<Props = {}> {
   public init?(): void;
   public destroy?(): void;
   protected props: Props;
 
-  protected constructor(..._deps: Deps) {}
+  public constructor() {}
 
-  public useProps(): Props {
+  public getProps(): Props {
     return this.props;
   }
 
