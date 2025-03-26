@@ -1,4 +1,4 @@
-import NavigationPanel from "@/modules/navigation/view/NavigationPanel/NavigationPanelView";
+import NavigationPanel from "@/modules/navigation/view/NavigationPanel/NavigationPanel.view";
 
 const NavigationContainer = () => <NavigationPanel />
 

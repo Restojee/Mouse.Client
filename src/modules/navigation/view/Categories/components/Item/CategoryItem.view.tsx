@@ -3,19 +3,19 @@ import { Typography } from "@ui/Typography";
 import { Icon } from "@ui/Icon";
 import * as React from "react";
 import { withView } from "@common/hocs/withView";
-import CategoryItemViewModel from "@/modules/navigation/view/Categories/components/Item/CategoryItemViewModel";
+import CategoryItem from "@/modules/navigation/view/Categories/components/Item/CategoryItem";
 import { WithViewProps } from "@common/hocs/withView/types";
 import { CategoryItemViewProps } from "@/modules/navigation/view/Categories/common/types";
 
-type CategoryItemViewComponent = React.FC<WithViewProps<CategoryItemViewModel, CategoryItemViewProps>>;
+type CategoryItemViewComponent = React.FC<WithViewProps<CategoryItem, CategoryItemViewProps>>;
 
 const CategoryItemView: CategoryItemViewComponent = ({ viewModel }) => (
   <Center gap="sm" pa="sm">
-    <Icon icon={viewModel.getIcon()} />
+    <Icon icon={viewModel.icon} />
     <Typography color="palettePanelCategory" fontSize="lg">
-      {viewModel.getTitle()}
+      {viewModel.title}
     </Typography>
   </Center>
 )
 
-export default withView(CategoryItemView, CategoryItemViewModel);
+export default withView(CategoryItemView, CategoryItem);

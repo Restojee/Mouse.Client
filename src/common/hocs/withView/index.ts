@@ -1,4 +1,4 @@
-import ViewModel from "./ViewModelWithLifecycle";
+import ViewModel from "./ViewModel";
 import withView from "./withView";
 
 export { ViewModel, withView }

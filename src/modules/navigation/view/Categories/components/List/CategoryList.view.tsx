@@ -3,10 +3,10 @@ import * as React from "react";
 import { Column } from "@ui/Layout";
 import Collection from "@ui/Collection/Collection";
 import { WithViewProps } from "@common/hocs/withView/types";
-import CategoryListViewModel from "@/modules/navigation/view/Categories/components/List/CategoryListViewModel";
+import CategoryList from "@/modules/navigation/view/Categories/components/List/CategoryList";
 import { CategoryListViewProps } from "@/modules/navigation/view/Categories/common/types";
 
-type CategoryListViewComponent = React.FC<WithViewProps<CategoryListViewModel, CategoryListViewProps>>;
+type CategoryListViewComponent = React.FC<WithViewProps<CategoryList, CategoryListViewProps>>;
 
 const CategoryListView: CategoryListViewComponent = ({ viewModel }) => (
   <Column gutter={2} py="sm" px="xs">
@@ -14,4 +14,4 @@ const CategoryListView: CategoryListViewComponent = ({ viewModel }) => (
   </Column>
 );
 
-export default withView(CategoryListView, CategoryListViewModel);
+export default withView(CategoryListView, CategoryList);

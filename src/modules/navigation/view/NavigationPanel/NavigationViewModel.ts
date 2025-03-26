@@ -1,11 +1,11 @@
-import ViewModelWithLifecycle from "@common/hocs/withView/ViewModelWithLifecycle";
+import ViewModel from "@common/hocs/withView/ViewModel";
 import { inject } from "inversify";
 import { NavigationDataAccessInjectKey, NavigationItemCategoryMeta } from "@/modules/navigation/common/constants";
 import { NavigationDataAccess } from "@/modules/navigation/model/NavigationDataAccess";
 import { Section } from "@/modules/navigation/view/Section";
 import { CollectionProps } from "@ui/Collection/types";
 
-class NavigationViewModel extends ViewModelWithLifecycle {
+class NavigationViewModel extends ViewModel {
 
   // @Prop() selectedSection: string;
   // @Prop() selectedCategory: string;

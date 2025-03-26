@@ -1,6 +1,7 @@
 {
   "Navigation.Section.Main": "Общие разделы",
   "Navigation.Section.MyCollection": "Моя коллекция",
+  "Navigation.Category.All": "Все карты",
   "Navigation.Category.Favorites": "Избранные",
   "Navigation.Category.Completed": "Выполненные",
   "Navigation.Category.Uncompleted": "Невыполненные",
