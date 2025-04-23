@@ -7,6 +7,9 @@ import { CategoryItemViewProps } from "@/modules/navigation/view/Categories/comm
 
 class CategoryItem extends ViewModel<CategoryItemViewProps> {
   @Prop()
+  public id: string;
+
+  @Prop()
   public title: string;
 
   @Prop()

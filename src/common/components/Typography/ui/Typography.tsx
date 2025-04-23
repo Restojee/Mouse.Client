@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { TextTags } from '@common/constants/textTags';
+import * as React from "react";
+import { TextTags } from "@common/constants/textTags";
 import { TypographyProps } from "@ui/Typography/common/types";
 import { classByThemeSize, rootClass } from "@ui/Typography/common/constants";
 import withAutoClasses, { WithAutoClassProps } from "@common/hooks/useAutoClasses";
@@ -12,12 +12,14 @@ const Typography: React.FC<WithAutoClassProps<TypographyProps>> = (props) => {
     children,
     tag,
     autoClasses,
+    href,
+    onClick,
   } = props;
 
   const Component = tag || TextTags.Span;
 
   return (
-    <Component className={`${autoClasses} ${color}`}>
+    <Component className={`${autoClasses} ${color}`} href={href} onClick={onClick}>
       {children}
     </Component>
   );

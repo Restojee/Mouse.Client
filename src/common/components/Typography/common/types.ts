@@ -1,6 +1,7 @@
 import * as React from "react";
 import { TextTags } from "@common/constants/textTags";
 import { ThemeColorKey } from "@common/themes/common/types";
+import { MouseEvent } from "react";
 
 export interface TypographyProps {
   fontSize?: number | string;
@@ -15,4 +16,6 @@ export interface TypographyProps {
   opacity?: number;
   tag?: TextTags;
   color?: ThemeColorKey;
+  href?: string;
+  onClick?(event: MouseEvent): void;
 }

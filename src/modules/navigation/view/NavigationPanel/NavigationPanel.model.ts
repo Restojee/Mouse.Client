@@ -5,7 +5,7 @@ import { NavigationDataAccess } from "@/modules/navigation/model/NavigationDataA
 import { Section } from "@/modules/navigation/view/Section";
 import { CollectionProps } from "@ui/Collection/types";
 
-class NavigationViewModel extends ViewModel {
+class NavigationPanelModel extends ViewModel {
 
   // @Prop() selectedSection: string;
   // @Prop() selectedCategory: string;
@@ -27,4 +27,4 @@ class NavigationViewModel extends ViewModel {
   }
 }
 
-export default NavigationViewModel;
+export default NavigationPanelModel;

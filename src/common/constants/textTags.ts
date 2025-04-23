@@ -6,5 +6,6 @@ export enum TextTags {
   H5 = 'h5' ,
   H6 = 'h6' ,
   Span = 'span',
-  P = 'p'
+  P = 'p',
+  A = 'a',
 }

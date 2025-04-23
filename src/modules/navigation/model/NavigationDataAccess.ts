@@ -3,11 +3,12 @@ import { injectable } from "inversify";
 import { NavigationSectionEntity } from "@/modules/navigation/model/NavigationSectionEntity";
 import { NavigationItemCategoryEntity } from "@/modules/navigation/model/NavigationItemCategoryEntity";
 import { tNavCategory, tNavSection } from "@/modules/navigation/common/utils";
+import State from "@common/hocs/withView/decorators/State";
 
 @injectable()
 export class NavigationDataAccess {
 
-  //@State() private readonly navigationItems: NavigationSectionEntity
+  @State()
   private readonly navigationItems: EntityManager<NavigationSectionEntity>;
 
   constructor() {
