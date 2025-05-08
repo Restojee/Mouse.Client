@@ -4,6 +4,7 @@ import { Metadata } from "@common/hocs/withView/constants";
 const initializedInstances = new WeakSet<object>();
 
 abstract class ViewModel<Props extends {} = {}> {
+
   constructor() {
     this.callOnInit();
   }

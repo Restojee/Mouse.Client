@@ -13,7 +13,6 @@ function withView<
 ) {
   const ObservedView = observer(ViewComponent);
 
-
   return (props: WithoutViewModel<Props>) => {
     const container = React.useContext(DIContext);
 

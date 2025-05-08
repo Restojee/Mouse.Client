@@ -1,8 +1,8 @@
 .UiTypography {
 
   font-family: var(--typographyFontFamily);
-  font-size: var(--typographyFontSizeMd);
   font-weight: normal;
+  text-decoration: none;
 
   &.upperCase {
     text-transform: uppercase;

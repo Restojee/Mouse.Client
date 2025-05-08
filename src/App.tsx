@@ -8,6 +8,8 @@ import { PaletteInjectKey, ThemeInjectKey } from "@common/themes/common/constant
 import HttpConfig from "@common/http/HttpConfig";
 import { HttpHandler } from "@common/http/HttpHandler";
 import { HttpConfigInjectKey, HttpHandlerInjectKey } from "@common/http/constants";
+import { HistoryServiceInjectKey } from "@common/services/router/common/constants";
+import HistoryService from "@common/services/router/HistoryService";
 
 const App: React.FC = () => {
   return (
@@ -36,6 +38,10 @@ export default withModule({
     {
       key: HttpHandlerInjectKey,
       provide: HttpHandler
+    },
+    {
+      key: HistoryServiceInjectKey,
+      provide: HistoryService
     },
   ]
 })

@@ -20,6 +20,8 @@ const Flex: React.FC<PropsWithChildren<WithAutoClassProps<FlexProps>>> = (props)
     pb,
 
     width,
+    minWidth,
+    maxWidth,
     height,
     autoClasses,
     children,
@@ -32,6 +34,8 @@ const Flex: React.FC<PropsWithChildren<WithAutoClassProps<FlexProps>>> = (props)
   const styles = {
     padding: theme.getPadding({ pa, px, py, pl, pr, pt, pb }),
     width: width && theme.getCalculatedSize(width),
+    minWidth: minWidth && theme.getCalculatedSize(minWidth),
+    maxWidth: maxWidth && theme.getCalculatedSize(maxWidth),
     height: height && theme.getCalculatedSize(height),
   };
 

@@ -24,6 +24,8 @@ export interface FlexProps extends MouseEvents, GeoProps {
   children?: React.ReactNode;
   direction?: Direction;
   width?: ThemeSizeValue;
+  minWidth?: ThemeSizeValue;
+  maxWidth?: ThemeSizeValue;
   height?: ThemeSizeValue;
 }
 

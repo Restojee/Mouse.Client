@@ -8,8 +8,9 @@ import { CategoryListViewProps } from "@/modules/navigation/view/Categories/comm
 
 type CategoryListViewComponent = React.FC<WithViewProps<CategoryList, CategoryListViewProps>>;
 
+const classRoot = 'CategoryListView';
 const CategoryListView: CategoryListViewComponent = ({ viewModel }) => (
-  <Column gutter={2} py="sm" px="xs">
+  <Column width={1} className={classRoot} py="sm" px="xs">
     <Collection {...viewModel.getCategoryItemProps()} />
   </Column>
 );
