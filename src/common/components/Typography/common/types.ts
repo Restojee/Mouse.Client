@@ -5,6 +5,7 @@ import { MouseEvent } from "react";
 
 export interface TypographyProps {
   fontSize?: number | string;
+  fontWeight?: 'light' | 'normal' | 'medium' | 'semiBold' | 'bold';
   ellipsis?: boolean;
   upperCase?: boolean;
   link?: boolean;

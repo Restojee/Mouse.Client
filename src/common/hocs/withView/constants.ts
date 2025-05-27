@@ -1,10 +1,10 @@
 export const Metadata = {
-  prop: 'prop',
+  input: 'input',
   state: 'state',
+  action: 'action',
   computed: 'computed',
   watchers: 'watchers',
   onInit: 'onInit',
   onDestroy: 'onDestroy',
   inject: 'inject',
-  PropFieldsKey: 'propFields'
 };

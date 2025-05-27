@@ -1,6 +1,6 @@
 .CoreButton {
   justify-content: center;
-  font-weight: 600;
+  font-weight: var(--typographyFontWeightSemiBold);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -8,18 +8,48 @@
   border: none;
   white-space: nowrap;
   text-align: center;
-  transition: 0.2s;
+  transition: all 0.2s ease;
   cursor: pointer;
-  gap: 10px;
-  column-gap: 10px;
-  row-gap: 10px;
-  padding: 7px 10px;
+  gap: var(--layoutSpaceSm);
+  padding: var(--layoutSpaceSm) var(--layoutSpaceMd);
+  border-radius: var(--layoutBorderRadiusSm);
+  font-size: var(--typographyTextNormalFontSize);
 
   &:hover {
-    opacity: 0.7;
+    opacity: 0.8;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  // Стили для кастомных hover эффектов
+  &.hasHoverEffects {
+    &:hover {
+      opacity: 1; // Отключаем стандартную opacity
+    }
+  }
+
+  // Стили для активного состояния
+  &.isActive {
+    // Активное состояние через классы токенов
   }
 }
 
-.Bold {
-  font-weight: 600;
-}
+// Классы для весов шрифта
+.fontWeightLight { font-weight: var(--typographyFontWeightLight); }
+.fontWeightNormal { font-weight: var(--typographyFontWeightNormal); }
+.fontWeightMedium { font-weight: var(--typographyFontWeightMedium); }
+.fontWeightSemiBold { font-weight: var(--typographyFontWeightSemiBold); }
+.fontWeightBold { font-weight: var(--typographyFontWeightBold); }
+
+// Классы для бордеров
+.borderThinNormal { border: var(--borderThinNormal); }
+.borderNormalNormal { border: var(--borderNormalNormal); } 
+.borderThickNormal { border: var(--borderThickNormal); }
+
+// Классы для радиусов
+.borderRadiusSm { border-radius: var(--layoutBorderRadiusSm); }
+.borderRadiusMd { border-radius: var(--layoutBorderRadiusMd); }
+.borderRadiusLg { border-radius: var(--layoutBorderRadiusLg); }

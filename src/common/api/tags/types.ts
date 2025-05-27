@@ -9,5 +9,5 @@ export interface TagCreateResponse extends Tag {}
 export interface TagUpdateArgs { id: string; name?: string; description?: string; }
 export interface TagUpdateResponse extends Tag {}
 
-export interface TagCollectArgs { page: number; size: number; ids?: number[] }
-export interface TagCollectResponse { total: number; records: Array<Tag> }
+export interface TagCollectArgs { }
+export type TagCollectResponse = Array<Tag>

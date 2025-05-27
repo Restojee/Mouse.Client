@@ -1,0 +1,108 @@
+{
+  "navigation": {
+    "backButton": "← Назад",
+    "title": "🎯 Эталонный MVVM компонент"
+  },
+  "mainContent": {
+    "initialTitle": "Пример архитектуры MVVM",
+    "description": "Эталонный компонент, демонстрирующий архитектуру MVVM с withView"
+  },
+  "documentation": {
+    "title": "📚 Документация",
+    "sections": {
+      "architecture": {
+        "title": "🏗️ Архитектура",
+        "items": [
+          {
+            "label": "withView HOC",
+            "description": "связывает View с ViewModel"
+          },
+          {
+            "label": "withModule HOC", 
+            "description": "предоставляет DI контейнер"
+          },
+          {
+            "label": "MobX реактивность",
+            "description": "автоматическое обновление UI"
+          },
+          {
+            "label": "Decorator Pattern",
+            "description": "метаданные-ориентированный подход"
+          }
+        ]
+      },
+      "decorators": {
+        "title": "🎯 Декораторы состояния",
+        "items": [
+          {
+            "label": "@State()",
+            "description": "observable свойства"
+          },
+          {
+            "label": "@Computed()",
+            "description": "вычисляемые значения"
+          },
+          {
+            "label": "@Action()",
+            "description": "методы изменения состояния"
+          },
+          {
+            "label": "@Prop()",
+            "description": "входные параметры от родителя"
+          }
+        ]
+      },
+      "lifecycle": {
+        "title": "👀 Жизненный цикл",
+        "items": [
+          {
+            "label": "@OnMounted()",
+            "description": "инициализация компонента"
+          },
+          {
+            "label": "@OnWatch()",
+            "description": "реакция на изменения"
+          },
+          {
+            "label": "@OnDestroy()",
+            "description": "очистка ресурсов"
+          },
+          {
+            "label": "Автоматическое DI",
+            "description": "внедрение зависимостей"
+          }
+        ]
+      },
+      "advantages": {
+        "title": "🔧 Преимущества",
+        "items": [
+          {
+            "label": "Декларативность",
+            "description": "поведение через аннотации"
+          },
+          {
+            "label": "Автоматизация",
+            "description": "настройка MobX без кода"
+          },
+          {
+            "label": "Разделение",
+            "description": "четкая граница View/ViewModel"
+          },
+          {
+            "label": "Тестируемость",
+            "description": "изолированная бизнес-логика"
+          }
+        ]
+      },
+      "howToUse": {
+        "title": "💡 Как использовать",
+        "steps": [
+          "Создайте ViewModel класс с декораторами",
+          "Создайте View компонент с withView HOC",
+          "Оберните в withModule для DI контейнера",
+          "Наслаждайтесь автоматической реактивностью!"
+        ]
+      }
+    }
+  }
+} 

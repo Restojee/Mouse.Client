@@ -1,5 +1,5 @@
 import { Roles } from "@common/types/roles";
-import { GuardRole, Loading, Validate } from "@common/store/async/utils";
+import { GuardRole, AsyncAction, Validate } from "@common/store/async/utils";
 import LevelEntity from "@/modules/levels/model/entities/LevelEntity";
 import { UpdateLevelEntity } from "@/modules/levels/model/entities/UpdateLevelEntity";
 import { CreateLevelEntity } from "@/modules/levels/model/entities/CreateLevelEntity";
@@ -10,13 +10,7 @@ import { levelMappers } from "@/modules/levels/model/common/mappers";
 import LevelDataAccess from "@/modules/levels/model/services/LevelDataAccess";
 import LevelsApi from "@common/api/levels";
 import LevelSelectors from "@/modules/levels/model/services/LevelSelectors";
-import { inject, injectable } from "inversify";
-import { ModalServiceInjectKey } from "@common/services/modal/common/constants";
-import {
-  LevelDataAccessInjectKey,
-  LevelsApiInjectKey,
-  LevelSelectorsInjectKey,
-} from "@/modules/levels/model/common/constants";
+import { injectable } from "inversify";
 import { LevelEndpoints } from "@common/api/levels/endpoints";
 import { LevelByIdRequest, LevelCollectRequest, LevelRemoveRequest } from "@common/api/levels/models";
 
@@ -27,10 +21,10 @@ const mutateLoadingMs = 500;
 class LevelActions {
 
   constructor(
-    @inject(ModalServiceInjectKey) private readonly modalService: ModalService,
-    @inject(LevelsApiInjectKey) private readonly levelsApi: LevelsApi,
-    @inject(LevelDataAccessInjectKey) private readonly levelDataAccess: LevelDataAccess,
-    @inject(LevelSelectorsInjectKey) private readonly levelSelectors: LevelSelectors,
+    private readonly modalService: ModalService,
+    private readonly levelsApi: LevelsApi,
+    private readonly levelDataAccess: LevelDataAccess,
+    private readonly levelSelectors: LevelSelectors,
   ) {
     this.modalService.registerModal(new ModalEntity(CreateLevelModal));
   }
@@ -39,11 +33,11 @@ class LevelActions {
   };
 
   @GuardRole(Roles.Common)
-  @Loading(getLoadingMs)
+  @AsyncAction(getLoadingMs)
   @Validate({ entity: CreateLevelEntity })
   public async createLevel() {
 
-    const request = this.levelSelectors.getLevelCreateForm().getEntity();
+    const request = this.levelSelectors.getLevelCreateForm().getEntity;
     await this.getLevelApi().create({
       description: request.description,
       name: request.name
@@ -57,11 +51,11 @@ class LevelActions {
   }
 
   @GuardRole(Roles.Common)
-  @Loading(mutateLoadingMs)
+  @AsyncAction(mutateLoadingMs)
   @Validate({ entity: UpdateLevelEntity })
   public async updateLevel() {
 
-    const request = this.levelSelectors.getLevelUpdateForm().getEntity();
+    const request = this.levelSelectors.getLevelUpdateForm().getEntity;
     const response = await this.getLevelApi().update({
       id: request.id,
       name: request.name,
@@ -76,13 +70,13 @@ class LevelActions {
   }
 
   @GuardRole(Roles.Common)
-  @Loading(mutateLoadingMs)
+  @AsyncAction(mutateLoadingMs)
   public async removeLevel(request: LevelRemoveRequest) {
     await this.getLevelApi()[LevelEndpoints.Remove](request);
     this.levelDataAccess.removeLevel(request.id)
   }
 
-  @Loading(getLoadingMs)
+  @AsyncAction(getLoadingMs)
   public async loadLevelCollection(request: LevelCollectRequest) {
     const response = await this.getLevelApi().collect({
       ids: request.ids,
@@ -92,7 +86,7 @@ class LevelActions {
     this.levelDataAccess.upsertLevels(levelMappers.toAppLevels(response.records));
   }
 
-  @Loading(getLoadingMs)
+  @AsyncAction(getLoadingMs)
   public async loadLevelById(request: LevelByIdRequest) {
     const response = await this.getLevelApi().get(request);
 

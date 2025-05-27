@@ -1,6 +1,4 @@
-import ViewModel from "@common/hocs/withView/ViewModel";
-
-export type WithViewProps<Instance extends ViewModel<Props>, Props = {}> = {
+export type WithViewProps<Instance, Props = {}> = {
   viewModel: Instance;
 } & Props;
 

@@ -1,11 +1,11 @@
 import { makeAutoObservable } from 'mobx';
 import { getCurrentState } from "@common/services/router/common/utils";
-import UrlBuilder from "@common/services/router/common/UrlBuilder";
 import { injectable } from "inversify";
+import UrlBuilder from "@common/services/router/common/UrlBuilder";
 
 @injectable()
 class HistoryService {
-  location = getCurrentState();
+  public location = getCurrentState();
 
   constructor() {
     makeAutoObservable(this);

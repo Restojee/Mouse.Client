@@ -5,7 +5,7 @@ import { Http } from "@common/http/types";
 @injectable()
 class HttpConfigService {
   private config: HttpConfig = {
-    url: '',
+    url: 'https://api.onlyplanks.fun',
     getToken: () => '',
   };
 

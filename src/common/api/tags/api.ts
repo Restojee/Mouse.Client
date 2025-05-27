@@ -9,20 +9,22 @@ import {
   type TagUpdateArgs,
   type TagUpdateResponse,
 } from "./types";
+import { inject, injectable } from "inversify";
+import { HttpHandlerInjectKey } from "@common/http/constants";
 
+@injectable()
 class TagsApi {
 
   public static GlobalInjectKey = 'TagsApiKey';
   private readonly http: HttpHandler;
 
-  constructor(httpHandler: HttpHandler) {
+  constructor(@inject(HttpHandlerInjectKey) httpHandler: HttpHandler) {
     this.http = httpHandler;
   }
 
-  public collect(args: TagCollectArgs): Promise<TagCollectResponse> {
+  public collect(): Promise<TagCollectResponse> {
     return this.http.get<TagCollectArgs, TagCollectResponse>({
       url: TagUrls[TagEndpoints.Collect],
-      params: args,
     })
   }
 

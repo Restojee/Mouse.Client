@@ -13,7 +13,7 @@ export default withModule({
   providers: [
     {
       key: NavigationDataAccessInjectKey,
-      provide: NavigationDataAccess
+      provide: NavigationDataAccess,
     },
     {
       // Глобально определить

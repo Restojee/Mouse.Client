@@ -2,11 +2,32 @@
   display: flex;
   width: 100%;
   border-radius: var(--layoutBorderRadiusMd);
+  transition: all 0.2s ease;
+  
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
   }
+  
   &.Active {
     background-color: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Исправление для центрирования иконок */
+  .UiCenter {
+    align-items: center;
+    justify-content: flex-start;
+    
+    svg, 
+    img,
+    .UiIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      min-height: 24px;
+      width: 24px;
+      height: 24px;
+    }
   }
 }

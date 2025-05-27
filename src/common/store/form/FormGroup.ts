@@ -42,8 +42,8 @@ export class FormGroup<E extends Entity> {
   getFormBuilder(): FormBuilder<E> {
     return this._formBuilder;
   }
-  public getEntity(): E {
-    return this.getFormStateValue().getEntity();
+  public get getEntity(): E {
+    return this.getFormStateValue().getEntity;
   }
   public getFormStateValue(): EntityState<E>{
     return this._value;
@@ -66,9 +66,10 @@ export class FormGroup<E extends Entity> {
 
   public getInputOptions = (key: string): InputPropsOptions => {
     const fieldValue = this.getFormField(key);
+    // @ts-ignore
     return {
-      value: fieldValue,
-      onChange: this.handleInputChange(key, fieldValue)
+      // value: fieldValue,
+      // onChange: this.handleInputChange(key, fieldValue)
     };
   }
   public getFieldOptions = (key: string): FieldPropsOptions => {

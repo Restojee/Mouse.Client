@@ -1,0 +1,62 @@
+.ProgressBar {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: var(--layoutBorderRadiusMd);
+  
+  &.success {
+    background-color: var(--paletteColorsGreenDark);
+  }
+  
+  &.danger {
+    background-color: var(--paletteColorsRedDark);
+  }
+}
+
+.FloatingNavigation {
+  border-radius: var(--layoutBorderRadiusLg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  margin-bottom: var(--layoutSpaceLg);
+  
+  &:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg, 
+      var(--paletteBackgroundStatusInfoDark) 0%, 
+      var(--paletteBackgroundStatusSuccessDark) 100%
+    );
+    opacity: 0.9;
+    z-index: -1;
+    border-radius: var(--layoutBorderRadiusLg);
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+  
+  // Анимация появления при загрузке
+  animation: floatIn 0.6s ease-out;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+} 

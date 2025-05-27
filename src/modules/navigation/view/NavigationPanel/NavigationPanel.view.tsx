@@ -12,7 +12,7 @@ type NavigationPanelComponent = React.FC<WithViewProps<NavigationPanelModel>>
 const NavigationPanel: NavigationPanelComponent =
   ({ viewModel }) => (
     <Column width={1} nonIntegrated>
-      <Collection {...viewModel.getNavigationItemsProps() } />
+      <Collection {...viewModel.getNavigationItemsProps } />
     </Column>
   )
 

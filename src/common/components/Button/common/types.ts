@@ -3,9 +3,28 @@ import { ThemeColorKey } from '@common/themes/common/types';
 
 export interface ButtonProps extends CoreButtonProps {
   color?: ThemeColorKey;
+  bgColor?: ThemeColorKey;
   label?: string;
   append?: React.ReactElement;
   prepend?: React.ReactElement;
+  border?: string;
+  borderColor?: ThemeColorKey | string;
+  borderRadius?: string | number;
+  padding?: string;
+  fontSize?: string | number;
+  fontWeight?: 'light' | 'normal' | 'medium' | 'semiBold' | 'bold';
+  minWidth?: string | number;
+  maxWidth?: string | number;
+  width?: string | number;
+  height?: string | number;
+  hoverBorderColor?: ThemeColorKey;
+  hoverBgColor?: ThemeColorKey;
+  hoverColor?: ThemeColorKey;
+  hoverTransform?: string;
+  activeBorderColor?: ThemeColorKey;
+  activeBgColor?: ThemeColorKey;
+  activeColor?: ThemeColorKey;
+  isActive?: boolean;
 }
 
 export interface CoreButtonProps {

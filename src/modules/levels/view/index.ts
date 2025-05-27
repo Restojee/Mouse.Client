@@ -11,8 +11,6 @@ import {
   LevelDataAccessInjectKey,
   LevelsApiInjectKey, LevelSelectorsInjectKey,
 } from "@/modules/levels/model/common/constants";
-import { HistoryServiceInjectKey } from "@common/services/router/common/constants";
-import HistoryService from "@common/services/router/HistoryService";
 
 export default withModule({
   key: 'LevelModule',

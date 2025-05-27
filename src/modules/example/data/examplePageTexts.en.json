@@ -1,0 +1,108 @@
+{
+  "navigation": {
+    "backButton": "← Back",
+    "title": "🎯 Reference MVVM Component"
+  },
+  "mainContent": {
+    "initialTitle": "MVVM Architecture Example",
+    "description": "Reference component demonstrating MVVM architecture with withView"
+  },
+  "documentation": {
+    "title": "📚 Documentation",
+    "sections": {
+      "architecture": {
+        "title": "🏗️ Architecture",
+        "items": [
+          {
+            "label": "withView HOC",
+            "description": "connects View with ViewModel"
+          },
+          {
+            "label": "withModule HOC", 
+            "description": "provides DI container"
+          },
+          {
+            "label": "MobX reactivity",
+            "description": "automatic UI updates"
+          },
+          {
+            "label": "Decorator Pattern",
+            "description": "metadata-oriented approach"
+          }
+        ]
+      },
+      "decorators": {
+        "title": "🎯 State Decorators",
+        "items": [
+          {
+            "label": "@State()",
+            "description": "observable properties"
+          },
+          {
+            "label": "@Computed()",
+            "description": "computed values"
+          },
+          {
+            "label": "@Action()",
+            "description": "state modification methods"
+          },
+          {
+            "label": "@Prop()",
+            "description": "input parameters from parent"
+          }
+        ]
+      },
+      "lifecycle": {
+        "title": "👀 Lifecycle",
+        "items": [
+          {
+            "label": "@OnMounted()",
+            "description": "component initialization"
+          },
+          {
+            "label": "@OnWatch()",
+            "description": "reaction to changes"
+          },
+          {
+            "label": "@OnDestroy()",
+            "description": "resource cleanup"
+          },
+          {
+            "label": "Automatic DI",
+            "description": "dependency injection"
+          }
+        ]
+      },
+      "advantages": {
+        "title": "🔧 Advantages",
+        "items": [
+          {
+            "label": "Declarative",
+            "description": "behavior through annotations"
+          },
+          {
+            "label": "Automation",
+            "description": "MobX setup without code"
+          },
+          {
+            "label": "Separation",
+            "description": "clear View/ViewModel boundary"
+          },
+          {
+            "label": "Testability",
+            "description": "isolated business logic"
+          }
+        ]
+      },
+      "howToUse": {
+        "title": "💡 How to Use",
+        "steps": [
+          "Create ViewModel class with decorators",
+          "Create View component with withView HOC",
+          "Wrap with withModule for DI container",
+          "Enjoy automatic reactivity!"
+        ]
+      }
+    }
+  }
+} 

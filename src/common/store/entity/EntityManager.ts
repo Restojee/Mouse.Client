@@ -1,46 +1,46 @@
 import EntityState from "@common/store/entity/EntityState";
+import { makeAutoObservable, observable, ObservableMap } from "mobx";
 
 class EntityManager<E extends { id: string }> {
 
-  private readonly _entities: Map<string, EntityState<E>>;
-  protected _ids: string[];
+  public readonly entities: ObservableMap<string, EntityState<E>> = observable.map();
+  public ids: string[] = [];
 
   constructor() {
-    this._entities = new Map();
-    this._ids = [];
+    makeAutoObservable(this)
   }
 
-  public create(entity: E) {
-    this._entities.set(entity.id, new EntityState(entity))
+  public get getCollection(): Array<E> {
+    return Array.from(this.entities.values()).map((value: EntityState<E>) => value.getEntity);
   }
 
-  public remove(id: string) {
-    this._entities.delete(id)
+  public create(entity: E): void {
+    this.entities.set(entity.id, new EntityState(entity));
+    this.updateIds();
   }
 
-  public upsert(entityList: E[]) {
-    entityList.forEach(this.set)
+  public remove(id: string): void {
+    this.entities.delete(id);
+    this.updateIds();
   }
 
-  public update(id: string, updates: Partial<Record<string, any>>) {
-    const entity = this._entities[id];
-    const fieldKeys = entity.getFieldKeys();
-
-    for (const [key, value] of Object.entries(updates)) {
-      entity[fieldKeys[key]] = value;
-    }
+  public upsert(entityList: E[]): void {
+    entityList.forEach(entity => this.set(entity));
   }
 
-  public set(entity: E) {
-    this._entities.set(entity.id, new EntityState<E>(entity));
+  public update(id: string, updates: Partial<E>): void {
+    const entity = this.entities.get(id);
+    if (!entity) return;
+    Object.assign(entity, updates);
   }
 
-  public getCollection(): Array<E> {
-    return Array.from(this._entities.values()).map(value => value.getEntity());
+  public set(entity: E): void {
+    this.entities.set(entity.id, new EntityState<E>(entity));
+    this.updateIds();
   }
 
-  public getById(entityId: string): E {
-    return this._entities.get(entityId).getEntity();
+  public updateIds(): void {
+    this.ids = Array.from(this.entities.keys());
   }
 }
 

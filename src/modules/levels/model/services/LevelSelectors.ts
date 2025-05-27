@@ -7,7 +7,6 @@ import { inject, injectable } from "inversify";
 @injectable()
 class LevelSelectors {
   constructor(
-    @inject(LevelDataAccess)
     private readonly levelDataAccess: LevelDataAccess
   ) {}
 
@@ -17,8 +16,8 @@ class LevelSelectors {
   public getLevelUpdateForm(): FormGroup<UpdateLevelEntity> {
     return this.levelDataAccess.getLevelUpdateForm();
   }
-  public getLevelCollection() {
-    return this.levelDataAccess.getLevelCollection();
+  public get getLevelCollection() {
+    return this.levelDataAccess.getLevelCollection;
   }
 }
 export default LevelSelectors;

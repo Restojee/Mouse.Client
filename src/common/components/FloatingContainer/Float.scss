@@ -1,0 +1,23 @@
+.Float {
+  box-sizing: border-box;
+  
+  /* Обеспечиваем гладкие переходы при изменении свойств */
+  transition: all 0.2s ease;
+  
+  /* Базовые значения для корректного отображения */
+  &[style*="position: fixed"],
+  &[style*="position: sticky"] {
+    will-change: transform;
+  }
+  
+  /* Улучшаем производительность для фиксированных элементов */
+  &[style*="position: fixed"] {
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Для sticky элементов обеспечиваем корректное поведение */
+  &[style*="position: sticky"] {
+    align-self: flex-start;
+  }
+} 

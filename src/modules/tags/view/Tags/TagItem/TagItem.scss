@@ -1,0 +1,12 @@
+.UiTagItem  {
+  display: flex;
+  width: 100%;
+  border-radius: var(--layoutBorderRadiusMd);
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  &.Active {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}

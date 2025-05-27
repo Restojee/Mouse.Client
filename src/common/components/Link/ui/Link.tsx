@@ -16,9 +16,7 @@ const Link: LinkViewComponent= ({ viewModel, ...props }) => (
     href={viewModel.linkUrl}
     className={viewModel.classPrx}
     {...props}
-  >
-    {viewModel.children}
-  </Typography>
+  />
 )
 
 export default withView(Link, LinkViewModel);

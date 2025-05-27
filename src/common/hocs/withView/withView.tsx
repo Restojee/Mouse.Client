@@ -2,20 +2,21 @@ import * as React from "react";
 import { observer } from "mobx-react-lite";
 import { DIContext } from "@common/hooks/useInjection";
 import { Constructor } from "@common/utils/di/types";
-import ViewModel from "@common/hocs/withView/ViewModel";
 import { WithoutViewModel, WithViewProps } from "@common/hocs/withView/types";
+import { createInputs } from "@common/hocs/withView/utils/createInputs";
+import { createObservers } from "@common/hocs/withView/utils/createObservers";
+import { createWatchers } from "@common/hocs/withView/utils/createWatchers";
+import { callOnInit } from "@common/hocs/withView/utils/callOnInit";
 
 function withView<
-  Instance extends ViewModel<Props>,
+  Instance,
   Props extends {} = {},>(
   ViewComponent: React.FC<WithViewProps<Instance, Props>>,
   ViewModelClass: Constructor<Instance>
 ) {
-  const ObservedView = observer(ViewComponent);
 
   return (props: WithoutViewModel<Props>) => {
     const container = React.useContext(DIContext);
-
     const [viewModel] = React.useState<Instance>(
       () => {
         let viewModel: Instance;
@@ -27,21 +28,22 @@ function withView<
           viewModel = container.get(ViewModelClass);
         }
 
-        viewModel.setProps(props as Props)
+        createInputs(viewModel, props);
+        createObservers(viewModel);
+        createWatchers(viewModel);
+        callOnInit(viewModel);
 
         return viewModel;
       }
     );
 
-    React.useEffect(() => {
-      viewModel.setProps(props as Props);
-    }, [props]);
-
     if (!container) {
       throw new Error("DI container not found. Ensure withModule is used.");
     }
 
-    return <ObservedView {...props as Props} viewModel={viewModel} />;
+    const ObservableViewComponent = observer(ViewComponent)
+
+    return <ObservableViewComponent {...props as Props} viewModel={viewModel} />;
   };
 }
 

@@ -4,18 +4,31 @@ import styles from './Scroll.module.scss';
 import { ColumnProps } from '@ui/Layout/ui/Column/ui/Column';
 import { Column, Paper } from "@ui/Layout";
 
-interface ScrollProps extends ColumnProps {
+export interface ScrollProps extends Omit<ColumnProps, 'className'> {
   children?: React.ReactNode;
   className?: string;
+  containerClassName?: string;
 }
-export const Scroll = (props: ScrollProps) => {
-  const { children, className } = props;
+
+export const Scroll: React.FC<ScrollProps> = (props) => {
+  const { 
+    children, 
+    className,
+    containerClassName,
+    ...otherProps 
+  } = props;
 
   return (
-    <Column className={styles.Content} gap={4}>
-      <Paper className={clsx([styles.Scroll, className])}>
-        {children}
-      </Paper>
+    <Column 
+      className={clsx(styles.Scroll, containerClassName)}
+      gap={4} 
+      {...otherProps}
+    >
+      <Column className={styles.Wrapper}>
+        <Paper className={clsx(styles.Content, className)}>
+          {children}
+        </Paper>
+      </Column>
     </Column>
   );
 };

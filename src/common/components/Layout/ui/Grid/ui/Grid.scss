@@ -1,0 +1,57 @@
+.UiGrid {
+  display: grid;
+  
+  // Default grid template columns
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  
+  // AutoFit variations
+  &.autoFit {
+    grid-template-columns: repeat(auto-fit, minmax(var(--gridMinColumnWidth, 300px), 1fr));
+  }
+  
+  // Width variations
+  &.width100 { width: 100%; }
+  
+  // Gap variations using theme variables (applies to both row and column gaps)
+  &.gapXs { 
+    gap: var(--layoutSpaceXs); 
+    row-gap: var(--layoutSpaceXs);
+  }
+  &.gapSm { 
+    gap: var(--layoutSpaceSm); 
+    row-gap: var(--layoutSpaceSm);
+  }
+  &.gapMd { 
+    gap: var(--layoutSpaceMd); 
+    row-gap: var(--layoutSpaceMd);
+  }
+  &.gapLg { 
+    gap: var(--layoutSpaceLg); 
+    row-gap: var(--layoutSpaceLg);
+  }
+  &.gapXl { 
+    gap: var(--layoutSpaceXl); 
+    row-gap: var(--layoutSpaceXl);
+  }
+  
+  // Column gap variations
+  &.columnGapXs { column-gap: var(--layoutSpaceXs); }
+  &.columnGapSm { column-gap: var(--layoutSpaceSm); }
+  &.columnGapMd { column-gap: var(--layoutSpaceMd); }
+  &.columnGapLg { column-gap: var(--layoutSpaceLg); }
+  &.columnGapXl { column-gap: var(--layoutSpaceXl); }
+  
+  // Row gap variations
+  &.rowGapXs { row-gap: var(--layoutSpaceXs); }
+  &.rowGapSm { row-gap: var(--layoutSpaceSm); }
+  &.rowGapMd { row-gap: var(--layoutSpaceMd); }
+  &.rowGapLg { row-gap: var(--layoutSpaceLg); }
+  &.rowGapXl { row-gap: var(--layoutSpaceXl); }
+  
+  // Min column width variations
+  &.minColumnWidth120 { --gridMinColumnWidth: 120px; }
+  &.minColumnWidth200 { --gridMinColumnWidth: 200px; }
+  &.minColumnWidth250 { --gridMinColumnWidth: 250px; }
+  &.minColumnWidth300 { --gridMinColumnWidth: 300px; }
+  &.minColumnWidth400 { --gridMinColumnWidth: 400px; }
+} 

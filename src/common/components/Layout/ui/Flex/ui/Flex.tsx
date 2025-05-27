@@ -3,6 +3,7 @@ import { FlexProps } from '@ui/Layout/ui/Flex/common/types';
 import { PropsWithChildren } from "react";
 import useAppTheme from "@common/hooks/useAppTheme";
 import { flexClasses } from "@ui/Layout/ui/Flex/common/constants";
+import cn from "clsx";
 
 import './Flex.scss';
 import withAutoClasses, { WithAutoClassProps } from "@common/hooks/useAutoClasses";
@@ -25,6 +26,8 @@ const Flex: React.FC<PropsWithChildren<WithAutoClassProps<FlexProps>>> = (props)
     height,
     autoClasses,
     children,
+    nonIntegration,
+    align,
   } = props;
 
   const Element = element;
@@ -39,13 +42,14 @@ const Flex: React.FC<PropsWithChildren<WithAutoClassProps<FlexProps>>> = (props)
     height: height && theme.getCalculatedSize(height),
   };
 
+  const flexClassNames = cn(autoClasses, nonIntegration && 'nonIntegration');
+  console.log(align)
   return (
-    <Element className={autoClasses} style={styles}>
+    <Element className={flexClassNames} style={styles}>
       {children}
     </Element>
   );
 };
-
 export default withAutoClasses(Flex, {
   bindings: [
     ['gap', flexClasses.gap],

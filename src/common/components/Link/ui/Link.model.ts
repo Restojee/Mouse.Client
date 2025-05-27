@@ -1,26 +1,30 @@
 import { HistoryServiceInjectKey } from "@common/services/router/common/constants";
 import HistoryService from "@common/services/router/HistoryService";
-import ViewModel from "../../../hocs/withView/ViewModel";
 import React, { MouseEvent } from "react";
 import Prop from "@common/hocs/withView/decorators/Prop";
 import { UrlBuilder } from "@common/services/router";
 import { inject } from "inversify";
 
-class LinkViewModel extends ViewModel {
+class LinkViewModel {
 
-  @Prop() public to: UrlBuilder;
-  @Prop() public linkUrl: string;
-  @Prop() public classPrx: string;
-  @Prop() public children: React.ReactNode;
+  @Prop()
+  public to: UrlBuilder;
+
+  @Prop()
+  public linkUrl: string;
+
+  @Prop()
+  public classPrx: string;
+
+  @Prop()
+  public children: React.ReactNode;
 
   constructor(
     @inject(HistoryServiceInjectKey)
     private readonly historyService: HistoryService
-  ) {
-    super();
-  }
+  ) {}
 
-  public push = (event: MouseEvent) => {
+  public push(event: MouseEvent): void {
     event.preventDefault();
     this.historyService.push(this.to)
   }

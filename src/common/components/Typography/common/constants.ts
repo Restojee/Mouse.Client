@@ -8,4 +8,12 @@ export const classByThemeSize: ThemeResultsByBySize = {
   xl: 'fontSizeXl',
 }
 
+export const classByFontWeight: { [key: string]: string } = {
+  light: 'fontWeightLight',
+  normal: 'fontWeightNormal',
+  medium: 'fontWeightMedium',
+  semiBold: 'fontWeightSemiBold',
+  bold: 'fontWeightBold',
+}
+
 export const rootClass = 'UiTypography';

@@ -41,6 +41,7 @@ const withAutoClasses = <Props extends Record<string, any>>(
 ): React.FC<WithAutoClassProps<Props>> => {
   return (props: Props) => {
     const MemoizedComponent = React.memo(Component) as React.ComponentType<WithAutoClassProps<Props>>;
+    console.log(options.defaults, props, { ...options.defaults, ...props, })
     const propsWithDefaults = { ...options.defaults, ...props, }
     const autoClasses = getAutoClasses({
       props: propsWithDefaults,

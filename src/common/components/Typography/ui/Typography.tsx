@@ -1,7 +1,7 @@
 import * as React from "react";
 import { TextTags } from "@common/constants/textTags";
 import { TypographyProps } from "@ui/Typography/common/types";
-import { classByThemeSize, rootClass } from "@ui/Typography/common/constants";
+import { classByThemeSize, classByFontWeight, rootClass } from "@ui/Typography/common/constants";
 import withAutoClasses, { WithAutoClassProps } from "@common/hooks/useAutoClasses";
 
 import "./Typography.scss";
@@ -32,7 +32,8 @@ export default withAutoClasses(Typography, {
     'clickable',
     'upperCase',
     'link',
-    ['fontSize', classByThemeSize]
+    ['fontSize', classByThemeSize],
+    ['fontWeight', classByFontWeight]
   ],
   root: rootClass,
 });

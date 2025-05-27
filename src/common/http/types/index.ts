@@ -8,7 +8,7 @@ export namespace Http {
 
   export interface ClientOptions<T extends {}> {
     url: string;
-    params: T;
+    params?: T;
   }
 
   export type EndpointFunction<Args = any, ReturnType = any> = (

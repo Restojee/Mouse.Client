@@ -1,21 +1,22 @@
 .Wrapper {
   display: flex;
-  border-radius: 10px;
+  border-radius: var(--layoutBorderRadiusSm);
   position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--paletteBorderNormal);
   transition: 0.2s;
   transition-property: opacity, background-color, border, box-shadow;
 
   &:hover {
-
+    border-color: var(--paletteBorderHover);
   }
 
-  &:focus {
-
+  &:focus-within {
+    border-color: var(--paletteBorderFocus);
+    box-shadow: 0 0 0 2px var(--paletteStatusInfoDark);
   }
 }
 
-.Input {
+.TextInput {
   background-color: transparent;
   border: none;
   outline: none;
@@ -25,46 +26,49 @@
   width: 100%;
   max-width: 100%;
   color: inherit;
-  border-radius: 10px;
-  padding: 7px 15px;
+  border-radius: var(--layoutBorderRadiusSm);
+  padding: var(--layoutSpaceSm) var(--layoutSpaceMd);
   box-shadow: inherit;
   text-overflow: ellipsis;
+  font-size: var(--typographyTextNormalFontSize);
 
   &::placeholder {
     opacity: 0.6;
+    color: var(--paletteTextDescription);
   }
 
-  .cursor {
+  &.cursor {
     cursor: pointer
   }
 }
 
-.Container {
+.Prepend,
+.Append {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 7px 0;
+  padding: var(--layoutSpaceSm) 0;
 
   svg {
     width: 18px;
     height: 18px;
   }
+}
 
-  .left {
-    margin-right: -10px;
-    margin-left: 10px;
-  }
+.Prepend {
+  margin-right: calc(-1 * var(--layoutSpaceSm));
+  margin-left: var(--layoutSpaceSm);
+}
 
-  .right {
-    margin-right: 10px;
-    margin-left: -10px;
-    cursor: pointer;
+.Append {
+  margin-right: var(--layoutSpaceSm);
+  margin-left: calc(-1 * var(--layoutSpaceSm));
+  cursor: pointer;
 
-    svg {
-      &:hover {
-        transform: scale(1.1);
-      }
+  svg {
+    &:hover {
+      transform: scale(1.1);
     }
   }
 }

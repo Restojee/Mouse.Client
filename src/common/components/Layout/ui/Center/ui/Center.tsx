@@ -1,11 +1,9 @@
 import React from 'react';
 import { FlexProps, Spacer } from '@ui/Layout';
 
-export interface CenterProps extends FlexProps {}
+export interface CenterProps extends Omit<FlexProps, "align" | "justify"> {}
 const Center: React.FC<CenterProps> = (props) => {
   const {
-    justify = 'center',
-    align = 'center',
     direction = 'row',
     children,
     className,
@@ -14,10 +12,10 @@ const Center: React.FC<CenterProps> = (props) => {
 
   return (
     <Spacer
-      justify={justify}
-      align={align}
       className={className}
       direction={direction}
+      {...direction === "column" && { align: "center" }}
+      {...direction === "row" && { justify: "center" }}
       {...otherProps}
     >
       {children}

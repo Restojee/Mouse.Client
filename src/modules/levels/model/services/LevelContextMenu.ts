@@ -8,7 +8,6 @@ import ContextMenuItem from "@common/services/context-menu/ContextMenuItem";
 @injectable()
 class LevelCreateContextMenu {
   constructor(
-    @inject(ContextMenuServiceInjectKey)
     private readonly contextMenu: ContextMenuService
   ) {
     this.contextMenu.registerContextMenu(

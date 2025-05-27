@@ -47,4 +47,11 @@
   &.fontSizeMd { font-size: var(--typographyFontSizeMd); }
   &.fontSizeLg { font-size: var(--typographyFontSizeLg); }
   &.fontSizeXl { font-size: var(--typographyFontSizeXl); }
+  
+  // Font weights
+  &.fontWeightLight { font-weight: var(--typographyFontWeightLight); }
+  &.fontWeightNormal { font-weight: var(--typographyFontWeightNormal); }
+  &.fontWeightMedium { font-weight: var(--typographyFontWeightMedium); }
+  &.fontWeightSemiBold { font-weight: var(--typographyFontWeightSemiBold); }
+  &.fontWeightBold { font-weight: var(--typographyFontWeightBold); }
 }

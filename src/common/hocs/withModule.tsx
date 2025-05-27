@@ -8,7 +8,7 @@ const withModule = <P extends {}>(options: ModuleOptions<P>) => {
 
   const { providers, component } = options;
 
-  return (props: PropsWithChildren<P>) => {
+  return React.memo((props: PropsWithChildren<P>) => {
     const [container] = React.useState(() => {
       const newContainer = new Instances();
 
@@ -30,7 +30,7 @@ const withModule = <P extends {}>(options: ModuleOptions<P>) => {
         <Component {...props} />
       </DIContext.Provider>
     );
-  };
+  });
 }
 
 export default withModule;

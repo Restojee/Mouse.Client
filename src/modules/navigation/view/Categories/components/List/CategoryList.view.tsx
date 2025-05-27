@@ -11,7 +11,7 @@ type CategoryListViewComponent = React.FC<WithViewProps<CategoryList, CategoryLi
 const classRoot = 'CategoryListView';
 const CategoryListView: CategoryListViewComponent = ({ viewModel }) => (
   <Column width={1} className={classRoot} py="sm" px="xs">
-    <Collection {...viewModel.getCategoryItemProps()} />
+    <Collection {...viewModel.getCategoryItemProps} />
   </Column>
 );
 

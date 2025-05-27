@@ -1,3 +1,5 @@
+import { makeAutoObservable } from "mobx";
+
 class EntityState<E extends {}> {
 
   private _entity: E;
@@ -11,9 +13,10 @@ class EntityState<E extends {}> {
 
   constructor(entity: E) {
     this._entity = entity;
+    makeAutoObservable(this)
   }
 
-  getEntity() {
+  get getEntity() {
     return this._entity;
   }
 

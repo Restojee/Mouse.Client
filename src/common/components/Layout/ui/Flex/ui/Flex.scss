@@ -1,6 +1,11 @@
 .UiFlex {
   display: flex;
 
+  &.nonIntegration {
+    height: auto !important;
+    width: auto !important;
+  }
+
   .jc-center { justify-content: center; }
   .jc-end { justify-content: flex-end; }
   .jc-start { justify-content: flex-start; }

@@ -1,20 +1,28 @@
-import ViewModel from "@common/hocs/withView/ViewModel";
 import { CollectionProps } from "@ui/Collection/types";
-import { CategoryItem, CategoryListViewProps } from "@/modules/navigation/view/Categories/common/types";
+import { CategoryItem } from "@/modules/navigation/view/Categories/common/types";
 import { Category } from "@/modules/navigation/view/Categories";
 import { CategoryItemMeta } from "@/modules/navigation/view/Categories/common/constants";
 import Prop from "@common/hocs/withView/decorators/Prop";
+import Computed from "@common/hocs/withView/decorators/Computed";
+import OnWatch from "@common/hocs/withView/decorators/OnWatch";
 
-class CategoryList extends ViewModel<CategoryListViewProps> {
+class CategoryList {
 
-  @Prop() categories: CategoryItem[];
+  @Prop()
+  private categories: CategoryItem[];
 
-  public getCategoryItemProps(): CollectionProps {
+  @Computed()
+  public get getCategoryItemProps(): CollectionProps {
     return {
       items: this.categories,
       itemKey: CategoryItemMeta.Title,
       Component: Category.Item
     }
+  }
+
+  @OnWatch<CategoryList>(viewModel => viewModel.categories)
+  public handleCategoriesChange(prev: CategoryItem[], next: CategoryItem[]) {
+    console.log('handleCategoriesChange', next)
   }
 }
 
