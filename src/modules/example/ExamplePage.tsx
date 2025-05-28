@@ -34,7 +34,7 @@ const ExamplePageComponent: React.FC<ExamplePageProps> = (props) => {
         >
           {t(titleKey)}
         </Typography>
-        <Column gap="xs">
+        <Column gap="md">
           {itemsKeys.map((item, index) => (
             <Typography key={index} fontSize="typographyTextNormalFontSize" color="paletteTextOnColor">
               <Typography fontSize="typographyTextNormalFontSize" fontWeight="bold" color="paletteTextOnColor">

@@ -54,4 +54,19 @@
   &.minColumnWidth250 { --gridMinColumnWidth: 250px; }
   &.minColumnWidth300 { --gridMinColumnWidth: 300px; }
   &.minColumnWidth400 { --gridMinColumnWidth: 400px; }
+  
+  // Columns count variations
+  &.columns1 { grid-template-columns: repeat(1, 1fr); }
+  &.columns2 { grid-template-columns: repeat(2, 1fr); }
+  &.columns3 { grid-template-columns: repeat(3, 1fr); }
+  &.columns4 { grid-template-columns: repeat(4, 1fr); }
+  &.columns5 { grid-template-columns: repeat(5, 1fr); }
+  &.columns6 { grid-template-columns: repeat(6, 1fr); }
+  
+  // Rows count variations
+  &.rows1 { grid-template-rows: repeat(1, 1fr); }
+  &.rows2 { grid-template-rows: repeat(2, 1fr); }
+  &.rows3 { grid-template-rows: repeat(3, 1fr); }
+  &.rows4 { grid-template-rows: repeat(4, 1fr); }
+  &.rows5 { grid-template-rows: repeat(5, 1fr); }
 } 

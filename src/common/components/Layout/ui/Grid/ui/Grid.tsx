@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlexProps } from "@ui/Layout";
 import withAutoClasses, { WithAutoClassProps } from "@common/hooks/useAutoClasses";
+import { columnsClassByCount, columnGapClassBySize, gapClassBySize, gridPrx, minColumnWidthClassBySize, rowGapClassBySize, rowsClassByCount, widthClassBySize } from "../common/constants";
 
 import "./Grid.scss";
 
@@ -33,6 +34,15 @@ const Grid: React.FC<WithAutoClassProps<GridProps>> = (props) => {
 };
 
 export default withAutoClasses(Grid, { 
-  bindings: ['columns', 'rows', 'gap', 'columnGap', 'rowGap', 'autoFit', 'minColumnWidth', 'width'], 
-  root: 'UiGrid' 
+  bindings: [
+    'autoFit',
+    ['columns', columnsClassByCount],
+    ['rows', rowsClassByCount],
+    ['gap', gapClassBySize],
+    ['columnGap', columnGapClassBySize],
+    ['rowGap', rowGapClassBySize],
+    ['minColumnWidth', minColumnWidthClassBySize],
+    ['width', widthClassBySize]
+  ], 
+  root: gridPrx 
 }); 
