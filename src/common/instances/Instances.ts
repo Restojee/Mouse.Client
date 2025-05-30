@@ -1,5 +1,5 @@
 import { Constructor, InstanceKey } from "@common/utils/di/types";
-import { Container as DIContainer } from "inversify";
+import { BindingScope, Container as DIContainer } from "inversify";
 import { Provider } from "@common/instances/types";
 
 type InstanceType = InstanceKey | Constructor;
@@ -15,13 +15,14 @@ export class Instances {
    *
    * @param providers - Массив провайдеров, которые нужно добавить в контейнер.
    * Каждый провайдер может быть классом или фабрикой.
+   * @param scope
    */
-  public bind(providers: Provider[]): void {
+  public bind(providers: Provider[], scope?: BindingScope): void {
     providers.forEach(service => {
       if (service.provide && service.useFactory) {
         this.addWithFactory(service.key, service.useFactory);
       } else {
-        this.add(service.key, service.provide);
+        this.add(service.key, service.provide, scope);
       }
     });
   }
@@ -32,9 +33,24 @@ export class Instances {
    *
    * @param key - Ключ (или тип) для привязки.
    * @param constructor - Класс, который будет привязан.
+   * @param scope - Область видимости
    */
-  public add(key: InstanceType, constructor: Constructor): void {
-    this.Container.bind(key).to(constructor);
+  public add(key: InstanceType, constructor: Constructor, scope?: BindingScope): void {
+    const instance = this.Container.bind(key).to(constructor);
+    switch (scope) {
+      case "Request": {
+        instance.inRequestScope();
+        break;
+      }
+      case "Transient": {
+        instance.inTransientScope();
+        break;
+      }
+      case "Singleton": {
+        instance.inSingletonScope();
+        break;
+      }
+    }
   }
 
   /**

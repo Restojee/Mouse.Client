@@ -12,7 +12,7 @@ const withModule = <P extends {}>(options: ModuleOptions<P>) => {
     const [container] = React.useState(() => {
       const newContainer = new Instances();
 
-      newContainer.bind(providers);
+      newContainer.bind(providers, "Singleton");
 
       console.log('newContainer ready for:', providers)
 
