@@ -1,51 +1,30 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { NavigationSectionEntity } from "@/modules/navigation/model/NavigationSectionEntity";
 import { NavigationItemCategoryEntity } from "@/modules/navigation/model/NavigationItemCategoryEntity";
-import { tNavCategory, tNavSection } from "@/modules/navigation/common/utils";
-import { makeAutoObservable, computed, observable } from "mobx";
-import i18n from 'i18next';
-
-const sleep = (ms: number) => new Promise(resolve => {
-  setTimeout(resolve, ms)
-})
+import { makeAutoObservable } from "mobx";
+import { IntlService, IntlServiceInjectKey } from "@common/services/intl";
+import { getNavCategory, getNavSection } from "@/modules/navigation/common/utils";
 
 @injectable()
 export class NavigationDataAccess {
 
-  // Observable для отслеживания изменений языка
-  @observable
-  private currentLanguage: string = i18n.language;
-
-  constructor() {
+  constructor(@inject(IntlServiceInjectKey) private intlService: IntlService) {
     makeAutoObservable(this);
-    
-    // Подписываемся на изменения языка
-    i18n.on('languageChanged', (lng: string) => {
-      this.currentLanguage = lng;
-    });
   }
 
-  @computed
-  public get getNavigationItems(): NavigationSectionEntity[]{
-    // Обращаемся к currentLanguage чтобы MobX видел зависимость
-    const _ = this.currentLanguage;
-    
-    // Создаем элементы навигации каждый раз с актуальными переводами
+  public get getNavigationItems(): NavigationSectionEntity[] {
+    const { t } = this.intlService;
     return [
-      new NavigationSectionEntity('main', tNavSection('Main'), [
-        new NavigationItemCategoryEntity('all', tNavCategory('All'), 'IconAll'),
+      new NavigationSectionEntity('main', t(getNavSection('Main')), [
+        new NavigationItemCategoryEntity('all', t(getNavCategory('All')), 'IconAll'),
       ]),
-      new NavigationSectionEntity('myCollection', tNavSection('MyCollection'), [
-        new NavigationItemCategoryEntity('favorites', tNavCategory('Favorites'), 'IconFavorite'),
-        new NavigationItemCategoryEntity('completed', tNavCategory('Completed'), 'IconCompleted'),
-        new NavigationItemCategoryEntity('uncompleted', tNavCategory('Uncompleted'), 'IconUncompleted'),
-        new NavigationItemCategoryEntity('commented', tNavCategory('Commented'), 'IconCommented'),
-        new NavigationItemCategoryEntity('hasNote', tNavCategory('HasNote'), 'IconNote'),
+      new NavigationSectionEntity('myCollection', t(getNavSection('MyCollection')), [
+        new NavigationItemCategoryEntity('favorites', t(getNavCategory('Favorites')), 'IconFavorite'),
+        new NavigationItemCategoryEntity('completed', t(getNavCategory('Completed')), 'IconCompleted'),
+        new NavigationItemCategoryEntity('uncompleted', t(getNavCategory('Uncompleted')), 'IconUncompleted'),
+        new NavigationItemCategoryEntity('commented', t(getNavCategory('Commented')), 'IconCommented'),
+        new NavigationItemCategoryEntity('hasNote', t(getNavCategory('HasNote')), 'IconNote'),
       ])
     ];
   };
-
-  public createNavigationItems() {
-    // Метод больше не нужен, но оставляем для совместимости
-  }
 }

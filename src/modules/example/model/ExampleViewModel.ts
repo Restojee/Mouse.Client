@@ -110,9 +110,7 @@ export class ExampleViewModel {
   // 👀 Наблюдатели за изменениями (автоматические реакции)
   @OnWatch((vm: ExampleViewModel) => vm.count)
   onCountChange(newValue: number, oldValue: number): void {
-    console.log(`Счетчик изменился с ${oldValue} на ${newValue}`);
-    
-    if (newValue === 0) {
+     if (newValue === 0) {
       this.message = "Счетчик обнулен";
     } else if (newValue === this.maxCount) {
       this.message = "Достигнут максимум!";
@@ -138,15 +136,12 @@ export class ExampleViewModel {
   // 🚀 Инициализация (вызывается автоматически после создания)
   @OnMounted()
   async initialize(): Promise<void> {
-    console.log("ExampleViewModel инициализируется...");
-    
+
     // Устанавливаем начальные значения из props
     this.title = this.initialTitle;
     this.message = "Компонент инициализирован";
     
     // Можем выполнить асинхронную инициализацию
     await new Promise(resolve => setTimeout(resolve, 500));
-    
-    console.log("ExampleViewModel готов к работе!");
   }
 } 

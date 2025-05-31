@@ -4,6 +4,7 @@ import React, { MouseEvent } from "react";
 import Prop from "@common/hocs/withView/decorators/Prop";
 import { UrlBuilder } from "@common/services/router";
 import { inject } from "inversify";
+import Action from "@common/hocs/withView/decorators/Action";
 
 class LinkViewModel {
 
@@ -24,6 +25,7 @@ class LinkViewModel {
     private readonly historyService: HistoryService
   ) {}
 
+  @Action()
   public push(event: MouseEvent): void {
     event.preventDefault();
     this.historyService.push(this.to)

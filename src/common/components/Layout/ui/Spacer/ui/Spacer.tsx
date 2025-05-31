@@ -10,19 +10,21 @@ const SpacerStyles = {
 
 interface SpaceProps extends FlexProps {}
 export const Spacer: React.FC<SpaceProps> = (props) => {
-  const { className, children, direction } = props;
+  const { className, children } = props;
+
+  const {
+    justify = 'center',
+    align = 'start',
+    direction = 'column',
+    wrap = 'wrap',
+    ...otherProps
+  } = props;
+
   const flexStyles = cn([SpacerStyles[direction], className]);
 
   return (
-    <Flex className={flexStyles} {...props}>
+    <Flex className={flexStyles} width={wrap} align={align} justify={justify} {...otherProps}>
       {children}
     </Flex>
   );
 };
-
-Spacer.defaultProps = {
-  justify: 'center',
-  align: 'start',
-  direction: 'column',
-  wrap: 'wrap',
-}

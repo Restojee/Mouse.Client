@@ -14,6 +14,7 @@ import HistoryService from "@common/services/router/HistoryService";
 import { observer } from "mobx-react-lite";
 import { Column } from "@common/components/Layout";
 import { ExampleNavigation, CurrentPage } from "@common/components/ExampleNavigation";
+import { IntlService, IntlServiceInjectKey } from "@common/services/intl";
 
 const App: React.FC = observer(() => {
   const [currentPage, setCurrentPage] = React.useState<CurrentPage>('levels');
@@ -30,13 +31,11 @@ const App: React.FC = observer(() => {
 
   return (
     <Column>
-      {/* Фиксированная навигация */}
       <ExampleNavigation
         currentPage={currentPage}
         onPageChange={setCurrentPage}
       />
 
-      {/* Основной контент с отступом сверху */}
       <Column>
         <Layout>
           {renderCurrentPage()}
@@ -52,7 +51,7 @@ export default withModule({
   providers: [
     {
       key: ThemeInjectKey,
-      provide: Theme
+      provide: Theme,
     },
     {
       key: PaletteInjectKey,
@@ -67,8 +66,12 @@ export default withModule({
       provide: HttpHandler
     },
     {
+      key: IntlServiceInjectKey,
+      provide: IntlService
+    },
+    {
       key: HistoryServiceInjectKey,
       provide: HistoryService
-    },
+    }
   ]
 })

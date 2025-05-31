@@ -6,14 +6,12 @@ type PluginOptions = {
   input: string;
   output?: string;
   typesOutput?: string;
-  componentName?: string; // Название компонента для префикса классов
 };
 
 class StyleVariablesPlugin {
   private options: PluginOptions;
   private output: string;
   private typesOutput: string;
-  private componentName: string;
 
   constructor(options: PluginOptions) {
     if (!options.output || !options.typesOutput) {
@@ -22,7 +20,6 @@ class StyleVariablesPlugin {
     this.options = options;
     this.output = path.resolve(process.cwd(), options.output);
     this.typesOutput = path.resolve(process.cwd(), options.typesOutput);
-    this.componentName = options.componentName || '';
   }
 
   /**
@@ -34,12 +31,6 @@ class StyleVariablesPlugin {
     compilation.compiler.inputFileSystem.readFile(input, (err, data) => {
       if (err) {
         compilation.errors.push(new WebpackError(`StyleVariablesPlugin: Failed to read ${input}`));
-        return callback();
-      }
-
-      // Проверка на наличие данных
-      if (!data) {
-        compilation.errors.push(new WebpackError(`StyleVariablesPlugin: No data in ${input}`));
         return callback();
       }
 
@@ -89,43 +80,22 @@ class StyleVariablesPlugin {
     return str.replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : '')).replace(/^./, (c) => c.toLowerCase());
   }
 
-  /**
-   * Форматирует имя класса в формате ComponentName-className
-   */
-  private formatClassName(key: string, prefix: string = ''): string {
-    // Создаем базовое имя класса в camelCase
-    let className = this.toCamelCase(`${prefix}${key.charAt(0).toUpperCase()}${key.slice(1)}`);
-    
-    // Если задано имя компонента, добавляем его в качестве префикса
-    if (this.componentName) {
-      // Если это базовый класс root, просто используем имя компонента
-      if (className === 'root') {
-        return this.componentName;
-      }
-      // Иначе формируем имя в формате ComponentName-className
-      return `${this.componentName}-${className}`;
-    }
-    
-    return className;
-  }
-
   private generateCssClasses(
     obj: Record<string, any>,
     prefix = '',
     isPalette = false
   ): string {
     return Object.entries(obj).reduce((acc, [key, value]) => {
-      // Форматируем имя класса с учетом имени компонента
-      const newKey = this.formatClassName(key, prefix);
+      const newKey = this.toCamelCase(`${prefix}${key.charAt(0).toUpperCase()}${key.slice(1)}`);
 
       if (typeof value === 'object') {
         return acc + this.generateCssClasses(value, newKey, prefix.toLowerCase() === 'palette');
       }
 
       if (isPalette) {
-        let classContent = `.${newKey} { color: var(--${this.toCamelCase(`${prefix}${key.charAt(0).toUpperCase()}${key.slice(1)}`)}) }\n`;
+        let classContent = `.${newKey} { color: var(--${newKey}); }\n`;
         if (prefix.toLowerCase().includes('background')) {
-          classContent = `.${newKey} { background-color: var(--${this.toCamelCase(`${prefix}${key.charAt(0).toUpperCase()}${key.slice(1)}`)}) }\n`;
+          classContent = `.${newKey} { background-color: var(--${newKey}); }\n`;
         }
         return acc + classContent;
       }

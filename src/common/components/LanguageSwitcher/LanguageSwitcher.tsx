@@ -5,27 +5,20 @@ import { LanguageSwitcherViewModel } from "./LanguageSwitcherViewModel";
 import { Button } from "@common/components/Button";
 import { Row, Center } from "@common/components/Layout";
 
-interface LanguageSwitcherProps {
-  // Пропсы если нужны в будущем
-}
-
-const LanguageSwitcherComponent: React.FC<WithViewProps<LanguageSwitcherViewModel, LanguageSwitcherProps>> = ({ 
+const LanguageSwitcherComponent: React.FC<WithViewProps<LanguageSwitcherViewModel>> = ({
   viewModel 
-}) => {
-  return (
-    <Row nonIntegration>
-      {viewModel.supportedLanguages.map((language) => (
-        <Button
-          key={language}
-          label={viewModel.getLanguageName(language)}
-          color={viewModel.isLanguageActive(language) ? "paletteTextOnColor" : "paletteTextDescription"}
-          bgColor={viewModel.isLanguageActive(language) ? "paletteBackgroundStatusSuccessDark" : "paletteBackgroundHover"}
-          onClick={() => viewModel.changeLanguage(language)}
-        />
-      ))}
-    </Row>
-  );
-};
-
+}) => (
+  <Row nonIntegration>
+    {viewModel.supportedLanguages.map((language) => (
+      <Button
+        key={language}
+        label={viewModel.getLanguageName(language)}
+        color={viewModel.isLanguageActive(language) ? "paletteTextOnColor" : "paletteTextDescription"}
+        bgColor={viewModel.isLanguageActive(language) ? "paletteBackgroundStatusSuccessDark" : "paletteBackgroundHover"}
+        onClick={() => viewModel.changeLanguage(language)}
+      />
+    ))}
+  </Row>
+)
 // Экспортируем компонент, обернутый в withView
 export const LanguageSwitcher = withView(LanguageSwitcherComponent, LanguageSwitcherViewModel);

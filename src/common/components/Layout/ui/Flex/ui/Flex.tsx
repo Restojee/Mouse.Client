@@ -7,8 +7,14 @@ import cn from "clsx";
 
 import './Flex.scss';
 import withAutoClasses, { WithAutoClassProps } from "@common/hooks/useAutoClasses";
+import { withView } from "@common/hocs/withView";
+import { WithViewProps } from "@common/hocs/withView/types";
+import LinkViewModel from "@ui/Link/ui/Link.model";
+import { LinkProps } from "@ui/Link/ui/types";
+import FlexViewModel from "@ui/Layout/ui/Flex/ui/FlexViewModel";
 
-const Flex: React.FC<PropsWithChildren<WithAutoClassProps<FlexProps>>> = (props) => {
+type FlexViewComponent = React.FC<WithAutoClassProps<WithViewProps<FlexViewModel, FlexProps>>>;
+const Flex: FlexViewComponent = (props) => {
   const {
     element = 'div',
 
@@ -27,40 +33,42 @@ const Flex: React.FC<PropsWithChildren<WithAutoClassProps<FlexProps>>> = (props)
     autoClasses,
     children,
     nonIntegration,
-    align,
+
+    viewModel
   } = props;
 
   const Element = element;
 
-  const theme = useAppTheme();
-
   const styles = {
-    padding: theme.getPadding({ pa, px, py, pl, pr, pt, pb }),
-    width: width && theme.getCalculatedSize(width),
-    minWidth: minWidth && theme.getCalculatedSize(minWidth),
-    maxWidth: maxWidth && theme.getCalculatedSize(maxWidth),
-    height: height && theme.getCalculatedSize(height),
+    padding: viewModel.theme.getPadding({ pa, px, py, pl, pr, pt, pb }),
+    width: width && viewModel.theme.getCalculatedSize(width),
+    minWidth: minWidth && viewModel.theme.getCalculatedSize(minWidth),
+    maxWidth: maxWidth && viewModel.theme.getCalculatedSize(maxWidth),
+    height: height && viewModel.theme.getCalculatedSize(height),
   };
 
   const flexClassNames = cn(autoClasses, nonIntegration && 'nonIntegration');
-  console.log(align)
+
   return (
     <Element className={flexClassNames} style={styles}>
       {children}
     </Element>
   );
 };
-export default withAutoClasses(Flex, {
-  bindings: [
-    ['gap', flexClasses.gap],
-    ['align', flexClasses.align],
-    ['direction', flexClasses.direction],
-    ['justify', flexClasses.justify],
-  ],
-  defaults: {
-    justify: 'center',
-    align: 'start',
-    direction: 'row',
-  },
-  root: flexClasses.root
-});
+
+export default withAutoClasses(
+  withView(Flex, FlexViewModel), {
+    bindings: [
+      ['gap', flexClasses.gap],
+      ['align', flexClasses.align],
+      ['direction', flexClasses.direction],
+      ['justify', flexClasses.justify],
+    ],
+    defaults: {
+      justify: 'center',
+      align: 'start',
+      direction: 'row',
+    },
+    root: flexClasses.root
+  }
+)

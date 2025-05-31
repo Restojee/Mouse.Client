@@ -40,7 +40,6 @@ const ExampleNavigation: React.FC<ExampleNavigationProps> = ({ currentPage, onPa
               isActive={currentPage === 'levels'}
               activeBorderColor="paletteBorderActive"
               hoverBorderColor="borderButtonLightHover"
-              hoverTransform="translateY(-1px)"
               bgColor="paletteBackgroundColorsIndigoDark"
               activeBgColor="paletteBackgroundStatusDangerDark"
               onClick={() => onPageChange('levels')}
@@ -57,7 +56,6 @@ const ExampleNavigation: React.FC<ExampleNavigationProps> = ({ currentPage, onPa
               isActive={currentPage === 'example'}
               activeBorderColor="paletteBorderActive"
               hoverBorderColor="borderButtonLightHover"
-              hoverTransform="translateY(-1px)"
               bgColor="paletteBackgroundColorsIndigoDark"
               activeBgColor="paletteBackgroundStatusDangerDark"
               onClick={() => onPageChange('example')}

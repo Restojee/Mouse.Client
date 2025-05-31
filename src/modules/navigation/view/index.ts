@@ -6,6 +6,7 @@ import { ThemeInjectKey } from "@common/themes/common/constants";
 import { Theme } from "@common/themes/core/Theme";
 import { HistoryServiceInjectKey } from "@common/services/router/common/constants";
 import HistoryService from "@common/services/router/HistoryService";
+import { IntlService, IntlServiceInjectKey } from "@common/services/intl";
 
 export default withModule({
   key: 'NavigationModule',
@@ -14,16 +15,6 @@ export default withModule({
     {
       key: NavigationDataAccessInjectKey,
       provide: NavigationDataAccess,
-    },
-    {
-      // Глобально определить
-      key: ThemeInjectKey,
-      provide: Theme
-    },
-    {
-      // Глобально определить
-      key: HistoryServiceInjectKey,
-      provide: HistoryService
     },
   ]
 });

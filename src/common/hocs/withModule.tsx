@@ -1,21 +1,25 @@
 import * as React from "react";
-import { DIContext } from "@common/hooks/useInjection";
-import { Instances } from "@common/instances/Instances";
-import { ModuleOptions } from "@common/hocs/types";
 import { PropsWithChildren } from "react";
+import { DIContext } from "@common/hooks/useInjection";
+import { BindingScope, Instances } from "@common/instances/Instances";
+import { ModuleOptions } from "@common/hocs/types";
 
 const withModule = <P extends {}>(options: ModuleOptions<P>) => {
 
   const { providers, component } = options;
 
   return React.memo((props: PropsWithChildren<P>) => {
+
+    const parentContainer = React.useContext(DIContext);
     const [container] = React.useState(() => {
-      const newContainer = new Instances();
+      let newContainer = new Instances();
 
-      newContainer.bind(providers, "Singleton");
+      if (parentContainer) {
+        newContainer = parentContainer.createChildContainer();
+      }
 
-      console.log('newContainer ready for:', providers)
-
+      newContainer.bind(providers, BindingScope.Singleton);
+      console.log(newContainer)
       return newContainer;
     });
 

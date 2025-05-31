@@ -68,7 +68,6 @@ module.exports = () => {
         input: path.resolve(__dirname, 'src/resources/theme.json'),
         output: 'src/resources/styles/variables.scss',
         typesOutput: 'src/common/themes/common/variables.ts',
-        componentName: 'Example'
       }),
       /*
         new Dotenv({

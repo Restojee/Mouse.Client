@@ -179,7 +179,7 @@ const ExampleViewComponent: React.FC<WithViewProps<ExampleViewModel, ExampleView
             />
           </Row>
 
-                     <Row gap="sm" align="center">
+         <Row gap="sm" align="center">
             <Input 
               placeholder="Новый заголовок"
               value={viewModel.title}
@@ -309,5 +309,4 @@ const ExampleViewComponent: React.FC<WithViewProps<ExampleViewModel, ExampleView
   );
 };
 
-// Экспортируем компонент, обернутый в withView
 export const ExampleView = withView(ExampleViewComponent, ExampleViewModel); 

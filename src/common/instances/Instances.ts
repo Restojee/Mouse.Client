@@ -1,12 +1,23 @@
 import { Constructor, InstanceKey } from "@common/utils/di/types";
-import { BindingScope, Container as DIContainer } from "inversify";
+import { Container as DIContainer } from "inversify";
 import { Provider } from "@common/instances/types";
 
 type InstanceType = InstanceKey | Constructor;
 
+export enum BindingScope {
+  Request = "Request",
+  Transient = "Transient",
+  Singleton = "Singleton"
+}
+
+
 export class Instances {
 
-  private readonly Container = new DIContainer();
+  private readonly Container: DIContainer;
+
+  constructor(parent?: DIContainer) {
+    this.Container = new DIContainer({ parent })
+  }
 
   /**
    * Метод для привязки провайдеров (фабрик или классов) к контейнеру.
@@ -27,6 +38,10 @@ export class Instances {
     });
   }
 
+  public createChildContainer(): Instances {
+    return new Instances(this.Container);
+  }
+
   /**
    * Метод для добавления обычной привязки в контейнер.
    * Используется для привязки классов.
@@ -36,20 +51,16 @@ export class Instances {
    * @param scope - Область видимости
    */
   public add(key: InstanceType, constructor: Constructor, scope?: BindingScope): void {
-    const instance = this.Container.bind(key).to(constructor);
-    switch (scope) {
-      case "Request": {
-        instance.inRequestScope();
-        break;
-      }
-      case "Transient": {
-        instance.inTransientScope();
-        break;
-      }
-      case "Singleton": {
-        instance.inSingletonScope();
-        break;
-      }
+    const binding = this.Container.bind(key).to(constructor);
+
+    if (scope) {
+      const scopeActions = {
+        [BindingScope.Request]: () => binding.inRequestScope(),
+        [BindingScope.Transient]: () => binding.inTransientScope(),
+        [BindingScope.Singleton]: () => binding.inSingletonScope()
+      };
+
+      scopeActions[scope]?.();
     }
   }
 
