@@ -8,7 +8,7 @@ import "./Typography.scss";
 
 const Typography: React.FC<WithAutoClassProps<TypographyProps>> = (props) => {
   const {
-    color = 'paletteColorsSecondary',
+    color = 'paletteTextNormal',
     children,
     tag,
     autoClasses,

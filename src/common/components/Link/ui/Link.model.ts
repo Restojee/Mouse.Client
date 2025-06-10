@@ -1,23 +1,23 @@
 import { HistoryServiceInjectKey } from "@common/services/router/common/constants";
 import HistoryService from "@common/services/router/HistoryService";
 import React, { MouseEvent } from "react";
-import Prop from "@common/hocs/withView/decorators/Prop";
+import Input from "@common/hocs/withView/decorators/Prop";
 import { UrlBuilder } from "@common/services/router";
 import { inject } from "inversify";
 import Action from "@common/hocs/withView/decorators/Action";
 
 class LinkViewModel {
 
-  @Prop()
+  @Input()
   public to: UrlBuilder;
 
-  @Prop()
+  @Input()
   public linkUrl: string;
 
-  @Prop()
+  @Input()
   public classPrx: string;
 
-  @Prop()
+  @Input()
   public children: React.ReactNode;
 
   constructor(
@@ -26,7 +26,7 @@ class LinkViewModel {
   ) {}
 
   @Action()
-  public push(event: MouseEvent): void {
+  public push = (event: MouseEvent): void => {
     event.preventDefault();
     this.historyService.push(this.to)
   }

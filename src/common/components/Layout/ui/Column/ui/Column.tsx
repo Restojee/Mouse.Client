@@ -10,7 +10,8 @@ export interface ColumnProps extends FlexProps {
   nonIntegrated?: boolean;
 }
 
-const Column: React.FC<WithAutoClassProps<ColumnProps>> = (props) =>
-  <Stack className={props.autoClasses} orientation="vertical" {...props} />;
+const Column = React.forwardRef<HTMLElement, WithAutoClassProps<ColumnProps>>(
+  (props, ref) => <Stack ref={ref} className={props.autoClasses} orientation="vertical" {...props} />
+);
 
 export default withAutoClasses(Column, { bindings: ['nonIntegrated'], root: rootClass });

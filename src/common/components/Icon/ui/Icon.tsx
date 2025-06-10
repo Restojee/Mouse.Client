@@ -3,19 +3,25 @@ import * as React from "react";
 import { Suspense } from "react";
 
 export type IconComponent = React.FC<IconProps>;
-export const Icon: IconComponent = (props) => {
+export const Icon: IconComponent = React.memo(
+  (props) => {
 
-  const { color = "paletteIconNormal", icon } = props;
+    React.useEffect(() => {
+      console.log('rerender')
+    }, [])
 
-  const LazyIcon: React.LazyExoticComponent<React.FC<React.SVGProps<SVGSVGElement>>> = React.lazy(() =>
-    import(`/src/resources/icons/${icon}.svg`).then((module) => ({
-      default: module.ReactComponent,
-    }))
-  );
+    const { color = "paletteIconNormal", icon } = props;
 
-  return (
-    <Suspense fallback={null}>
-      <LazyIcon {...props} className={color} />
-    </Suspense>
-  );
-}
+    const LazyIcon: React.LazyExoticComponent<React.FC<React.SVGProps<SVGSVGElement>>> = React.lazy(() =>
+      import(`/src/resources/icons/${icon}.svg`).then((module) => ({
+        default: module.ReactComponent,
+      }))
+    );
+
+    return (
+      <Suspense fallback={null}>
+        <LazyIcon {...props} className={color} />
+      </Suspense>
+    );
+  }
+)

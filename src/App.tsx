@@ -19,28 +19,15 @@ import { IntlService, IntlServiceInjectKey } from "@common/services/intl";
 const App: React.FC = observer(() => {
   const [currentPage, setCurrentPage] = React.useState<CurrentPage>('levels');
 
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'example':
-        return <ExamplePage initialTitle="🎯 Эталонный MVVM компонент" maxCount={15} />;
-      case 'levels':
-      default:
-        return <LevelsModule />;
-    }
-  };
-
   return (
     <Column>
       <ExampleNavigation
         currentPage={currentPage}
         onPageChange={setCurrentPage}
       />
-
-      <Column>
-        <Layout>
-          {renderCurrentPage()}
-        </Layout>
-      </Column>
+      <Layout>
+        <ExamplePage initialTitle="🎯 Эталонный MVVM компонент" maxCount={15} />
+      </Layout>
     </Column>
   );
 })

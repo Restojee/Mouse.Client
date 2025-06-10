@@ -15,36 +15,37 @@ function withView<
   ViewModelClass: Constructor<Instance>
 ) {
 
-  return (props: WithoutViewModel<Props>) => {
-    const container = React.useContext(DIContext);
-    const [viewModel] = React.useState<Instance>(
-      () => {
-        let viewModel: Instance;
-        try {
-          viewModel = container.get(ViewModelClass);
-        } catch (e) {
-          // перехватывать только ошибки контейнера
-          container.add(ViewModelClass, ViewModelClass);
-          viewModel = container.get(ViewModelClass);
+  return React.forwardRef<HTMLElement, WithoutViewModel<Props>>(
+    (props, ref) => {
+      const container = React.useContext(DIContext);
+      const [viewModel] = React.useState<Instance>(
+        () => {
+          let viewModel: Instance;
+          try {
+            viewModel = container.get(ViewModelClass);
+          } catch (e) {
+            container.add(ViewModelClass, ViewModelClass);
+            viewModel = container.get(ViewModelClass);
+          }
+
+          createInputs(viewModel, props);
+          createObservers(viewModel);
+          createWatchers(viewModel);
+          callOnInit(viewModel);
+
+          return viewModel;
         }
+      );
 
-        createInputs(viewModel, props);
-        createObservers(viewModel);
-        createWatchers(viewModel);
-        callOnInit(viewModel);
-
-        return viewModel;
+      if (!container) {
+        throw new Error("DI container not found. Ensure withModule is used.");
       }
-    );
 
-    if (!container) {
-      throw new Error("DI container not found. Ensure withModule is used.");
+      const ObservableViewComponent = observer(ViewComponent)
+
+      return <ObservableViewComponent ref={ref} {...props as Props} viewModel={viewModel} />;
     }
-
-    const ObservableViewComponent = observer(ViewComponent)
-
-    return <ObservableViewComponent {...props as Props} viewModel={viewModel} />;
-  };
+  );
 }
 
 export default withView;

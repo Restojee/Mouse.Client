@@ -3,14 +3,15 @@ import { PropsWithChildren } from "react";
 import { DIContext } from "@common/hooks/useInjection";
 import { BindingScope, Instances } from "@common/instances/Instances";
 import { ModuleOptions } from "@common/hocs/types";
+import { createObservers } from "@common/hocs/withView/utils/createObservers";
 
 const withModule = <P extends {}>(options: ModuleOptions<P>) => {
 
   const { providers, component } = options;
 
   return React.memo((props: PropsWithChildren<P>) => {
-
     const parentContainer = React.useContext(DIContext);
+
     const [container] = React.useState(() => {
       let newContainer = new Instances();
 
@@ -19,7 +20,11 @@ const withModule = <P extends {}>(options: ModuleOptions<P>) => {
       }
 
       newContainer.bind(providers, BindingScope.Singleton);
-      console.log(newContainer)
+
+      providers.forEach(item => {
+        createObservers(newContainer.get(item.key));
+      })
+
       return newContainer;
     });
 

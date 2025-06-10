@@ -13,48 +13,52 @@ import LinkViewModel from "@ui/Link/ui/Link.model";
 import { LinkProps } from "@ui/Link/ui/types";
 import FlexViewModel from "@ui/Layout/ui/Flex/ui/FlexViewModel";
 
-type FlexViewComponent = React.FC<WithAutoClassProps<WithViewProps<FlexViewModel, FlexProps>>>;
-const Flex: FlexViewComponent = (props) => {
-  const {
-    element = 'div',
+type FLexProps = WithAutoClassProps<WithViewProps<FlexViewModel, FlexProps>>;
+const Flex = React.forwardRef<HTMLElement, FLexProps>(
+  (props, ref) => {
+    const {
+      element = 'div',
 
-    pa,
-    px,
-    py,
-    pl,
-    pr,
-    pt,
-    pb,
+      pa,
+      px,
+      py,
+      pl,
+      pr,
+      pt,
+      pb,
 
-    width,
-    minWidth,
-    maxWidth,
-    height,
-    autoClasses,
-    children,
-    nonIntegration,
+      width,
+      minWidth,
+      maxWidth,
+      height,
+      autoClasses,
+      children,
+      nonIntegration,
 
-    viewModel
-  } = props;
+      viewModel,
+      style
+    } = props;
 
-  const Element = element;
+    const Element = element;
 
-  const styles = {
-    padding: viewModel.theme.getPadding({ pa, px, py, pl, pr, pt, pb }),
-    width: width && viewModel.theme.getCalculatedSize(width),
-    minWidth: minWidth && viewModel.theme.getCalculatedSize(minWidth),
-    maxWidth: maxWidth && viewModel.theme.getCalculatedSize(maxWidth),
-    height: height && viewModel.theme.getCalculatedSize(height),
-  };
+    const styles = {
+      padding: viewModel.theme.getPadding({ pa, px, py, pl, pr, pt, pb }),
+      width: width && viewModel.theme.getCalculatedSize(width),
+      minWidth: minWidth && viewModel.theme.getCalculatedSize(minWidth),
+      maxWidth: maxWidth && viewModel.theme.getCalculatedSize(maxWidth),
+      height: height && viewModel.theme.getCalculatedSize(height),
+      ...style,
+    };
 
-  const flexClassNames = cn(autoClasses, nonIntegration && 'nonIntegration');
+    const flexClassNames = cn(autoClasses, nonIntegration && 'nonIntegration');
 
-  return (
-    <Element className={flexClassNames} style={styles}>
-      {children}
-    </Element>
-  );
-};
+    return (
+      <Element ref={ref} className={flexClassNames} style={styles}>
+        {children}
+      </Element>
+    );
+  }
+);
 
 export default withAutoClasses(
   withView(Flex, FlexViewModel), {

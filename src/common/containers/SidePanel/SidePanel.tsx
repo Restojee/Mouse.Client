@@ -6,6 +6,7 @@ import { LanguageSwitcher } from "@common/components/LanguageSwitcher";
 import { observer } from "mobx-react-lite";
 
 import "./SidePanel.scss";
+import { PopupExample } from "@ui/Popup";
 
 const SidePanel = () => (
   <Column minWidth={300} maxWidth={300} py="sm" px="xs" className="SidePanel">
@@ -16,7 +17,10 @@ const SidePanel = () => (
           <TagModule />
         </Column>
         <Center width={1}>
-          <LanguageSwitcher />
+          <Column gap="md">
+            <PopupExample />
+            <LanguageSwitcher />
+          </Column>
         </Center>
       </Column>
     </Paper>

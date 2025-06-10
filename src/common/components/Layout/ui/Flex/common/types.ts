@@ -28,6 +28,7 @@ export interface FlexProps extends MouseEvents, GeoProps {
   maxWidth?: ThemeSizeValue;
   height?: ThemeSizeValue;
   nonIntegration?: boolean;
+  style?: React.CSSProperties;
 }
 
 export interface GeoProps extends ThemePaddingSizesMap {

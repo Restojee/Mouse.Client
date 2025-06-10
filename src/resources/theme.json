@@ -41,7 +41,7 @@
     },
     "text": {
       "primary": "{palette.colors.secondary}",
-      "normal": "{palette.colors.secondary}",
+      "normal": "{palette.colors.primary}",
       "label": "{palette.colors.secondary}",
       "description": "{palette.colors.secondary}",
       "disabled": "{palette.colors.secondary}",

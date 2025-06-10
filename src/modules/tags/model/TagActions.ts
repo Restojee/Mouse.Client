@@ -15,17 +15,12 @@ export class TagActions  {
     @inject(TagDataAccessInjectKey) private readonly tagDataAccess: TagDataAccess,
     @inject(TagsApiInjectKey) private readonly tagsApi: TagsApi,
     @inject(TagMapperInjectKey) private readonly mapper: TagMapper,
-  ) {
-    makeAutoObservable(this)
-  }
+  ) {}
 
-  private getTagApi(): TagsApi {
-    return this.tagsApi;
-  }
-
-  public loadTagCollection() {
-    this.getTagApi().collect().then(response => {
-      this.tagDataAccess.setLevelTags(this.mapper.toAppTags(response));
-    });
+  @Action()
+  public async loadTagCollection() {
+    const response = await this.tagsApi.collect();
+    const tags = this.mapper.toAppTags(response);
+    this.tagDataAccess.setLevelTags(tags);
   }
 }

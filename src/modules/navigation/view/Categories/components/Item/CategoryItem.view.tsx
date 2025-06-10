@@ -9,12 +9,13 @@ import Link from "@ui/Link/ui/Link";
 import { Typography } from "@ui/Typography";
 
 import "./CategoryItem.scss"
+import { useTranslation } from "react-i18next";
 
 const classRoot = 'UiCategoryItem';
 
 type CategoryItemViewComponent = React.FC<WithViewProps<CategoryItem, CategoryItemViewProps>>;
 const CategoryItemView: CategoryItemViewComponent = ({ viewModel }) => {
-
+  const { t } = useTranslation();
   return (
     <Link
       className={classRoot}
@@ -26,7 +27,7 @@ const CategoryItemView: CategoryItemViewComponent = ({ viewModel }) => {
         <Center width={24} height={24} nonIntegration>
         <Icon icon={viewModel.icon} />
         </Center>
-        <Typography ellipsis>
+        <Typography color="paletteTextPrimary" ellipsis>
           {viewModel.title}
         </Typography>
       </Flex>

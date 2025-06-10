@@ -36,31 +36,9 @@ export default withModule({
       key: TagMapperInjectKey,
       provide: TagMapper,
     },
-
     {
-      // Глобально определить
-      key: HttpConfigInjectKey,
-      provide: HttpConfigService
-    },
-    {
-      // Глобально определить
-      key: HttpHandlerInjectKey,
-      provide: HttpHandler
-    },
-    {
-      // Глобально определить
       key: TagsApiInjectKey,
       provide: TagsApi
-    },
-    {
-      // Глобально определить
-      key: ThemeInjectKey,
-      provide: Theme
-    },
-    {
-      // Глобально определить
-      key: HistoryServiceInjectKey,
-      provide: HistoryService
     },
   ]
 });

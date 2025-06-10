@@ -38,19 +38,21 @@ export type WithAutoClassProps<T> = { autoClasses?: string } & T;
 const withAutoClasses = <Props extends Record<string, any>>(
   Component: React.ComponentType<Props>,
   options: WithAutoClassesOptions
-): React.FC<WithAutoClassProps<Props>> => {
-  return (props: Props) => {
-    const MemoizedComponent = React.memo(Component) as React.ComponentType<WithAutoClassProps<Props>>;
-    const propsWithDefaults = { ...options.defaults, ...props, }
-    const autoClasses = getAutoClasses({
-      props: propsWithDefaults,
-      bindings: options.bindings,
-      root: options.root,
-      styles: options.styles,
-    });
+) => {
+  return React.forwardRef<HTMLElement, WithAutoClassProps<Props>>(
+    (props: Props, ref) => {
+      const MemoizedComponent = React.memo(Component) as React.ComponentType<WithAutoClassProps<Props>>;
+      const propsWithDefaults = { ...options.defaults, ...props, }
+      const autoClasses = getAutoClasses({
+        props: propsWithDefaults,
+        bindings: options.bindings,
+        root: options.root,
+        styles: options.styles,
+      });
 
-    return <MemoizedComponent {...props} autoClasses={`${autoClasses} ${props.className}`} />;
-  };
+      return <MemoizedComponent ref={ref} {...props} autoClasses={`${autoClasses} ${props.className}`} />;
+    }
+  );
 };
 
 export default withAutoClasses;

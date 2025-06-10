@@ -20,7 +20,6 @@ export class TagContainerViewModel {
     @inject(TagActionsInjectKey) public tagActions: TagActions,
     @inject(TagDataAccessInjectKey) public tagDataAccess: TagDataAccess,
   ) {
-    makeAutoObservable(this)
   }
 
   public get tagCollectionProps(): CollectionProps<TagItemEntity> {

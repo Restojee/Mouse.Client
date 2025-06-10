@@ -6,10 +6,89 @@
   border-radius: 10px;
   padding: 15px;
   width: 250px;
-  transition: 0.2s;
+  transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: initial;
+  background-color: white;
+  z-index: 1001;
+  opacity: 1;
+
+  // Базовое состояние - скрыт
+  &.position-top {
+    transform: translateY(15px);
+  }
+
+  &.position-bottom {
+    transform: translateY(-15px);
+  }
+
+  &.position-left {
+    transform: translateX(15px);
+  }
+
+  &.position-right {
+    transform: translateX(-15px);
+  }
+
+  // Видимое состояние - с анимацией в зависимости от позиции
+  &.visible {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+// Эффект для выезжающей анимации при закрытии
+.closing {
+  &.position-top {
+    transform: translateY(10px) !important;
+  }
+
+  &.position-bottom {
+    transform: translateY(-10px) !important;
+  }
+
+  &.position-left {
+    transform: translateX(10px) !important;
+  }
+
+  &.position-right {
+    transform: translateX(-10px) !important;
+  }
+
+  opacity: 0 !important;
+}
+
+.PopupContainer {
+  position: absolute;
+  z-index: 1001;
+  pointer-events: none;
 }
 
 .Header {
-  padding: 15px
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+}
+
+.Body {
+  padding: 0 15px;
+}
+
+.Footer {
+  padding: 15px;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.Wrapper {
+  position: relative;
 }
