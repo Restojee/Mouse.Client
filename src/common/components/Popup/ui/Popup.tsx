@@ -1,10 +1,12 @@
-import React, { useLayoutEffect, useEffect, useRef, useCallback, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './Popup.module.scss';
 import { Column, Paper, Row } from "@ui/Layout";
 import clsx from "clsx";
-import { usePopupPosition } from './usePopupPosition';
-import { useResizeObserver } from './useResizeObserver';
+import { usePopupPosition } from "@ui/Popup";
+import { useOutsideClick } from "@ui/Popup/ui/useOutsideClick";
+import { useScrollDetection } from './useScrollDetection';
+import { PositionStyles } from "@ui/Popup/ui/usePopupPosition";
 
 interface PopupProps {
   header?: React.ReactElement;
@@ -17,7 +19,10 @@ interface PopupProps {
   onClose?: () => void;
   position?: 'top' | 'bottom' | 'left' | 'right';
   anchor: React.ReactElement;
+  closeOnScroll?: boolean;
 }
+
+const defaultPosition = { left: 0, top: 0 };
 
 export const Popup: React.FC<PopupProps> = (props) => {
   const { 
@@ -30,54 +35,53 @@ export const Popup: React.FC<PopupProps> = (props) => {
     isVisible,
     position,
     anchor,
-    onClose
+    onClose,
+    closeOnScroll = true
   } = props;
 
-  const anchorRef = useRef(null);
-  const popupRef = useRef(null);
-  const [popupPositionStyles, setPopupPositionStyles] = useState({ left: 0, top: 0 });
+  const anchorRef = React.useRef<HTMLElement>(null);
+  const popupRef = React.useRef<HTMLElement>(null);
+  const [popupPositionStyles, setPopupPositionStyles] = React.useState<PositionStyles>(null);
+  const [isRendered, setIsRendered] = React.useState<boolean>(false);
+
+  const handleScrollDetection = React.useCallback(() => {
+    if (closeOnScroll) {
+      onClose?.();
+    }
+  }, [onClose, closeOnScroll])
 
   const getPopupPosition = usePopupPosition({ position, anchorRef, popupRef });
+  useOutsideClick([popupRef], onClose, isVisible);
+  useScrollDetection(handleScrollDetection, isVisible && closeOnScroll);
 
-  const updatePosition = useCallback(() => {
-    const position = getPopupPosition();
-    if (position) {
-      setPopupPositionStyles(position);
-    }
+  const updatePosition = React.useCallback(() => {
+    setPopupPositionStyles(getPopupPosition());
   }, [getPopupPosition]);
 
   React.useEffect(() => {
-    if (!isVisible || !onClose) return;
-
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target;
-      const popupElement = popupRef.current;
-      const anchorElement = anchorRef.current;
-
-      if (
-        popupElement &&
-        anchorElement &&
-        !popupElement.contains(target) &&
-        !anchorElement.contains(target)
-      ) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isVisible, onClose]);
-
-  // Обновляем позицию при изменении видимости
-  useLayoutEffect(() => {
-    if (isVisible) {
-      updatePosition();
+    if (isVisible && anchorRef && popupRef) {
+      updatePosition()
     }
-  }, [isVisible, updatePosition]);
+  }, [isVisible, anchorRef, popupRef]);
 
-  const style: React.CSSProperties = { width, height, ...popupPositionStyles };
+  React.useEffect(() => {
+    if (popupPositionStyles) {
+      setIsRendered(true);
+    }
+  }, [popupPositionStyles])
+
+  const popupClasses = clsx(
+    styles.Popup, 
+    className,
+    isRendered && styles.visible
+  );
+
+  const style: React.CSSProperties = {
+    width,
+    height,
+    ...defaultPosition,
+    ...popupPositionStyles
+  };
 
   return (
     <Column className={styles.Wrapper}>
@@ -89,12 +93,8 @@ export const Popup: React.FC<PopupProps> = (props) => {
           (
             <Column
               ref={popupRef}
-              className={clsx(
-                styles.Popup,
-                className
-              )}
+              className={popupClasses}
               style={style}
-              nonIntegration
             >
               <Column pa="md">
                 {header && <Row className={styles.Header}>{header}</Row>}

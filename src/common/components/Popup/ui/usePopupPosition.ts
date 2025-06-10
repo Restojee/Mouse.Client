@@ -1,13 +1,12 @@
 import React, { useCallback, useState, useRef } from "react";
 
-interface PositionStyles {
-  top: number;
-  left: number;
-  position: string;
-  opacity?: number;
-}
+export interface PositionStyles extends Pick<React.CSSProperties,
+  | 'top'
+  | 'left'
+  | 'position'
+  | 'opacity'
+> {}
 
-// Определим тип для размеров элемента, чтобы избежать ошибок типизации
 interface ElementRect {
   width: number;
   height: number;
@@ -34,8 +33,12 @@ export const usePopupPosition = ({ position = 'bottom', anchorRef, popupRef }: U
 
   return useCallback((): PositionStyles => {
     const anchorElement = anchorRef.current;
-    const anchorRect = anchorElement.getBoundingClientRect();
     const popupElement = popupRef.current;
+
+    if (!popupElement || !anchorElement) {
+      return null
+    }
+    const anchorRect = anchorElement.getBoundingClientRect();
     const popupRect = popupElement.getBoundingClientRect();
 
     if (popupElement) {

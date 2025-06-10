@@ -19,7 +19,7 @@ export const PopupExample: React.FC = () => {
         header={<Typography>Заголовок попапа</Typography>}
         footer={<Typography>Футер попапа</Typography>}
         width={300}
-        position="top"
+        position="right"
       >
         <Typography>Это содержимое попапа. Здесь может быть любой контент.</Typography>
       </Popup>
