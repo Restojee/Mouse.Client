@@ -1,79 +1,81 @@
-import React, { useCallback, useState, useRef } from "react";
+import { useCallback, useRef } from "react";
+import { 
+  PopupPosition, 
+  BoundaryOptions, 
+  ElementRect, 
+  PositionStyles, 
+  calculatePopupPosition 
+} from "./popupUtils";
 
-export interface PositionStyles extends Pick<React.CSSProperties,
-  | 'top'
-  | 'left'
-  | 'position'
-  | 'opacity'
-> {}
-
-interface ElementRect {
-  width: number;
-  height: number;
-  top: number;
-  left: number;
-  right: number;
-  bottom: number;
-}
-
-const defaultOffset = 15;
+// Значения по умолчанию
+const DEFAULT_OFFSET = 15;
+const DEFAULT_BOUNDARY_OPTIONS: BoundaryOptions = {
+  checkBoundary: true,
+  margin: 10,
+  flip: true
+};
 
 interface UsePopupPositionOptions {
   anchorRef: React.MutableRefObject<HTMLElement>,
   popupRef: React.MutableRefObject<HTMLElement>,
-  position: 'bottom' | 'left' | 'top' | 'right'
+  position?: PopupPosition | keyof typeof PopupPosition,
+  offset?: number,
+  boundary?: BoundaryOptions
 }
 
-export const usePopupPosition = ({ position = 'bottom', anchorRef, popupRef }: UsePopupPositionOptions) => {
-
-  const lastKnownRect = useRef({
-    anchor: null as ElementRect | null,
-    popup: null as ElementRect | null
+/**
+ * Хук для расчета позиции попапа относительно якорного элемента
+ */
+export const usePopupPosition = ({ 
+  position = PopupPosition.BOTTOM, 
+  anchorRef, 
+  popupRef,
+  offset = DEFAULT_OFFSET,
+  boundary = DEFAULT_BOUNDARY_OPTIONS
+}: UsePopupPositionOptions) => {
+  // Кэшируем последние известные размеры элементов
+  const lastKnownRect = useRef<{
+    anchor: ElementRect | null,
+    popup: ElementRect | null
+  }>({
+    anchor: null,
+    popup: null
   });
 
-  return useCallback((): PositionStyles => {
+  return useCallback((): PositionStyles | null => {
     const anchorElement = anchorRef.current;
     const popupElement = popupRef.current;
 
+    // Если элементы не доступны, возвращаем null
     if (!popupElement || !anchorElement) {
-      return null
+      return null;
     }
+
+    // Получаем актуальные размеры элементов
     const anchorRect = anchorElement.getBoundingClientRect();
     const popupRect = popupElement.getBoundingClientRect();
 
-    if (popupElement) {
-      lastKnownRect.current = {
-        anchor: anchorRect,
-        popup: popupRect
-      };
-    }
-
-    let top = 0;
-    let left = 0;
-
-    switch (position) {
-      case 'top':
-        top = anchorRect.top - popupRect.height - defaultOffset;
-        left = anchorRect.left;
-        break;
-      case 'bottom':
-        top = anchorRect.bottom + defaultOffset;
-        left = anchorRect.left;
-        break;
-      case 'left':
-        top = anchorRect.top;
-        left = anchorRect.left - popupRect.width - defaultOffset;
-        break;
-      case 'right':
-        top = anchorRect.top;
-        left = anchorRect.right + defaultOffset;
-        break;
-    }
-
-    return { 
-      top, 
-      left, 
-      position: 'absolute'
+    // Сохраняем размеры для возможного использования в будущем
+    lastKnownRect.current = {
+      anchor: anchorRect,
+      popup: popupRect
     };
-  }, [position, anchorRef, popupRef]);
+
+    // Преобразуем строковое значение позиции в enum, если необходимо
+    const positionEnum = (typeof position === 'string' && position in PopupPosition)
+      ? PopupPosition[position as keyof typeof PopupPosition]
+      : position as PopupPosition;
+
+    // Используем утилитарную функцию для расчета позиции
+    return calculatePopupPosition(
+      positionEnum,
+      anchorRect,
+      popupRect,
+      offset,
+      boundary
+    );
+  }, [position, anchorRef, popupRef, offset, boundary]);
 };
+
+// Экспортируем типы и enum для использования в других компонентах
+export { PopupPosition, type PositionStyles, type BoundaryOptions, type ElementRect };

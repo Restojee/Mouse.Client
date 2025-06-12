@@ -4,9 +4,9 @@ import styles from './Popup.module.scss';
 import { Column, Paper, Row } from "@ui/Layout";
 import clsx from "clsx";
 import { usePopupPosition } from "@ui/Popup";
+import { PopupPosition, type PositionStyles, type BoundaryOptions } from "./usePopupPosition";
 import { useOutsideClick } from "@ui/Popup/ui/useOutsideClick";
 import { useScrollDetection } from './useScrollDetection';
-import { PositionStyles } from "@ui/Popup/ui/usePopupPosition";
 
 interface PopupProps {
   header?: React.ReactElement;
@@ -17,9 +17,13 @@ interface PopupProps {
   isVisible?: boolean;
   className?: string;
   onClose?: () => void;
-  position?: 'top' | 'bottom' | 'left' | 'right';
+  position?: PopupPosition | keyof typeof PopupPosition;
   anchor: React.ReactElement;
   closeOnScroll?: boolean;
+  /** Отступ от якоря в пикселях */
+  offset?: number;
+  /** Настройки предотвращения выхода за границы экрана */
+  boundary?: BoundaryOptions;
 }
 
 const defaultPosition = { left: 0, top: 0 };
@@ -33,15 +37,17 @@ export const Popup: React.FC<PopupProps> = (props) => {
     footer, 
     className, 
     isVisible,
-    position,
+    position = PopupPosition.BOTTOM,
     anchor,
     onClose,
-    closeOnScroll = true
+    closeOnScroll,
+    offset,
+    boundary
   } = props;
 
   const anchorRef = React.useRef<HTMLElement>(null);
   const popupRef = React.useRef<HTMLElement>(null);
-  const [popupPositionStyles, setPopupPositionStyles] = React.useState<PositionStyles>(null);
+  const [popupPositionStyles, setPopupPositionStyles] = React.useState<PositionStyles | null>(null);
   const [isRendered, setIsRendered] = React.useState<boolean>(false);
 
   const handleScrollDetection = React.useCallback(() => {
@@ -50,7 +56,14 @@ export const Popup: React.FC<PopupProps> = (props) => {
     }
   }, [onClose, closeOnScroll])
 
-  const getPopupPosition = usePopupPosition({ position, anchorRef, popupRef });
+  const getPopupPosition = usePopupPosition({ 
+    position, 
+    anchorRef, 
+    popupRef,
+    offset,
+    boundary
+  });
+  
   useOutsideClick([popupRef], onClose, isVisible);
   useScrollDetection(handleScrollDetection, isVisible && closeOnScroll);
 
@@ -62,7 +75,7 @@ export const Popup: React.FC<PopupProps> = (props) => {
     if (isVisible && anchorRef && popupRef) {
       updatePosition()
     }
-  }, [isVisible, anchorRef, popupRef]);
+  }, [isVisible, anchorRef, popupRef, updatePosition]);
 
   React.useEffect(() => {
     if (popupPositionStyles) {

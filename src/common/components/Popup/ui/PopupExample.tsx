@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
-import { Popup } from './Popup';
-import { Button } from '@common/components/Button';
-import { Row, Column } from '@common/components/Layout';
+import React, { useState } from "react";
+import { Popup } from "./Popup";
+import { Button } from "@common/components/Button";
+import { Column } from "@common/components/Layout";
 import { Typography } from "@ui/Typography";
+import { PopupPosition } from "@ui/Popup";
 
 export const PopupExample: React.FC = () => {
   const [isPopupVisible, setPopupVisible] = useState(false);
@@ -19,7 +20,8 @@ export const PopupExample: React.FC = () => {
         header={<Typography>Заголовок попапа</Typography>}
         footer={<Typography>Футер попапа</Typography>}
         width={300}
-        position="right"
+        position={PopupPosition.RIGHT}
+        closeOnScroll
       >
         <Typography>Это содержимое попапа. Здесь может быть любой контент.</Typography>
       </Popup>
