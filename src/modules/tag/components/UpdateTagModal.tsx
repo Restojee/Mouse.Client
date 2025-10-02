@@ -45,6 +45,14 @@ export const UpdateTagModal = (props: Props) => {
     };
   }, [props.tag?.description, props.tag?.name]);
 
+  const onTagNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTagName(e.currentTarget.value);
+  }, []);
+
+  const onTagDescriptionChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTagDescription(e.currentTarget.value);
+  }, []);
+
   return (
     <Modal
       isOpen={modalType === "tag-update"}
@@ -56,12 +64,12 @@ export const UpdateTagModal = (props: Props) => {
         <Input
           placeholder={"Название тега"}
           value={tagName}
-          onChange={(e) => setTagName(e.currentTarget.value)}
+          onChange={onTagNameChange}
         />
         <StyledTextarea
           placeholder={"Описание тега"}
           value={tagDescription}
-          onChange={(e) => setTagDescription(e.currentTarget.value)}
+          onChange={onTagDescriptionChange}
         />
       </StylesUpdateTagModal>
     </Modal>

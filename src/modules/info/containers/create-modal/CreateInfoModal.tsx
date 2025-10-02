@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { StyledInput, StyledInputWrapper } from "@/ui/Form/styled";
 import { Modal } from "@/ui/Modal/Modal";
 import { StyledTextarea } from "@/ui/Textarea/styled";
@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 
 export const CreateInfoModal = () => {
   const { createInfo, onModalClose, isInfoCreateModalOpen, selectedInfo, updateInfo } = useInfo();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { handleSubmit, register, reset } = useForm({
     mode: "onChange",
@@ -25,12 +26,21 @@ export const CreateInfoModal = () => {
 
   const onSubmitHandler = useCallback(
     async (data: CreateTipApiArg) => {
+      setIsLoading(true);
       if (selectedInfo) {
-        await updateInfo({ id: selectedInfo.id, ...data });
-        return;
+        try {
+          await updateInfo({ id: selectedInfo.id, ...data });
+          return;
+        } finally {
+          setIsLoading(false);
+        }
       }
-      await createInfo(data);
-      reset();
+      try {
+        await createInfo(data);
+        reset();
+      } finally {
+        setIsLoading(false);
+      }
     },
     [createInfo, reset, selectedInfo, updateInfo],
   );
@@ -41,6 +51,7 @@ export const CreateInfoModal = () => {
         title={selectedInfo ? "Редактировать" : "Добавить полезную инфу"}
         onClose={onModalClose}
         isOpen={isInfoCreateModalOpen}
+        accessDisabled={isLoading}
       >
         <StyledBox
           direction={"column"}

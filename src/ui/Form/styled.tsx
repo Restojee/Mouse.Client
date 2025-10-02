@@ -87,7 +87,7 @@ export const StyledInput = styled.input((props) => ({
   maxWidth: "100%",
   color: "inherit",
   borderRadius: "50px",
-  padding: "10px 15px",
+  padding: "12px 20px",
   fontSize: "inherit",
   boxShadow: "inherit",
   textOverflow: "ellipsis",
@@ -108,19 +108,19 @@ export const StyledInputIcon = styled.div<StyledInputIconPropsType>(({ theme, ..
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
-  padding: "7px 0",
+  position: "absolute",
+  top: "50%",
+  transform: "translateY(-50%)",
   svg: {
     width: "18px",
     height: "18px",
     zIndex: theme.order.other,
   },
   ...(props.left && {
-    marginRight: "-10px",
-    marginLeft: "10px",
+    left: "15px",
   }),
   ...(props.right && {
-    marginRight: "10px",
-    marginLeft: "-10px",
+    right: "15px",
     cursor: "pointer",
     svg: {
       "&:hover": {

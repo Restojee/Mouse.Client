@@ -5,7 +5,7 @@ import { loginValidateSchema } from "@/modules/auth/schemas/loginValidateSchema"
 import { StyledBox } from "@/ui/Box";
 import { Button } from "@/ui/Button";
 import { Form } from "@/ui/Form/Form";
-import { Input } from "@/ui/Input";
+import { Input, PasswordInput } from "@/ui/Input";
 import { Typography } from "@/ui/Typography";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
@@ -25,13 +25,19 @@ export const Login = () => {
   const { login } = useLogin();
   const { theme } = useAppTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
 
   const onSubmit = async (data: LoginRequest) => {
-    await login(data);
+    try {
+      setIsLoading(true);
+      await login(data);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,7 +61,7 @@ export const Login = () => {
               name={field.name}
               onChange={field.onChange}
               onBlur={field.onBlur}
-              disabled={field.disabled}
+              disabled={field.disabled || isLoading}
               value={field.value}
               enterKeyHint={"next"}
               size={46}
@@ -69,17 +75,17 @@ export const Login = () => {
           control={control}
           name={"password"}
           render={({ field }) => (
-            <Input
+            <PasswordInput
               name={field.name}
               onChange={field.onChange}
               onBlur={field.onBlur}
-              disabled={field.disabled}
+              disabled={field.disabled || isLoading}
               value={field.value}
-              type={"password"}
               size={46}
               error={errors.password?.message}
               enterKeyHint={"send"}
               placeholder={"Пароль"}
+              autoComplete={"current-password"}
             />
           )}
         />
@@ -90,6 +96,7 @@ export const Login = () => {
           label={"Войти"}
           type={"submit"}
           size={"lg"}
+          disabled={isLoading}
         />
         <Divider />
         <Typography

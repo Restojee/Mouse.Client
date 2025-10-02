@@ -43,6 +43,7 @@ export const Input = (props: InputPropsType) => {
         <StyledInput
           {...inputProps}
           ref={null}
+          style={(inputPrepend && { paddingLeft: 40 }) || (inputAppend && { paddingRight: 40 }) || {}}
         />
         {props.inputAppend && <StyledInputIcon right>{inputAppend}</StyledInputIcon>}
       </StyledInputWrapper>

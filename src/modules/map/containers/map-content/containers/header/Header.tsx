@@ -1,11 +1,16 @@
 import { MapById } from "@/api/codegen/genMouseMapsApi";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { updateMapNameThunk } from "@/modules/map/containers/map-content/slice";
 import { useMap } from "@/modules/map/common";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import { selectIsAuth } from "@/modules/auth/slice";
 import { CopyIcon } from "@/svg/CopyIcon";
 import { StyledBox } from "@/ui/Box";
 import { IconButton } from "@/ui/Button/IconButton";
 import { Typography } from "@/ui/Typography";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { MAP_ADDITIONAL_INFO, MapInfoType } from "../../constants";
+import { EditableText } from "@/ui/EditableText/EditableText";
 
 type MapContentHeaderPropsType = {
   completeCount?: number;
@@ -15,8 +20,43 @@ type MapContentHeaderPropsType = {
 };
 export const Header = (props: MapContentHeaderPropsType) => {
   const { completeCount, viewCount, commentsCount, title } = props;
+  const dispatch = useAppDispatch();
+  const { onMapNameCopy, map } = useMap();
+  const isAuth = useAppSelector(selectIsAuth);
 
-  const { onMapNameCopy } = useMap();
+  const [isEditing, setIsEditing] = useState(false);
+  const [value, setValue] = useState<string>(title || "");
+
+  useEffect(() => {
+    if (!isEditing) {
+      setValue(title || "");
+    }
+  }, [title, isEditing]);
+
+  const stopEditAndSave = useCallback(async () => {
+    const newName = value.trim();
+    setIsEditing(false);
+
+    if (!map?.id || !newName) {
+      setValue(title || "");
+      return;
+    }
+
+    if (!isAuth) {
+      setValue(title || "");
+      return;
+    }
+
+    if (newName === (title || "")) {
+      return;
+    }
+
+    try {
+      await dispatch(updateMapNameThunk({ id: map.id, name: newName, description: "" })).unwrap();
+    } catch (err) {
+      setValue(title || "");
+    }
+  }, [dispatch, map?.id, title, value, isAuth]);
 
   const counts: { [key in MapInfoType]?: number } = {
     complete: completeCount,
@@ -37,7 +77,15 @@ export const Header = (props: MapContentHeaderPropsType) => {
         align={"center"}
         gap={10}
       >
-        <Typography fontSize={"1.1rem"}>!map {title}</Typography>
+        <Typography fontSize={"1.1rem"}>!map</Typography>
+        <EditableText
+          value={value}
+          onChange={setValue}
+          onSave={stopEditAndSave}
+          onCancel={() => setValue(title || "")}
+          ariaLabel="Название карты"
+          disabled={!isAuth}
+        />
         <IconButton
           opacity="0.6"
           onClick={onCopyClickHandler}

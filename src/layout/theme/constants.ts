@@ -92,8 +92,8 @@ export const DefaultTheme = {
       },
       md: {
         padding: "12px 25px",
-        fontSize: "0.8rem",
-        svg: { width: "14px", height: "14px" },
+        fontSize: "0.9rem",
+        svg: { width: "16px", height: "16px" },
       },
       lg: {
         padding: "16px 32px",

@@ -1,4 +1,5 @@
 import {
+  ChangePasswordRequest,
   GetCurrentUserApiArg,
   GetCurrentUserApiResponse,
   LoginRequest,
@@ -20,6 +21,10 @@ export const authApi = {
   },
   register: async (body: RegisterRequest) => {
     const res = await api.post<RegisterRequest, AxiosResponse<RegisterResponse>>("/auth/register", body);
+    return res.data;
+  },
+  changePassword: async (body: ChangePasswordRequest) => {
+    const res = await api.post<ChangePasswordRequest>("/auth/change-password", body);
     return res.data;
   },
 };

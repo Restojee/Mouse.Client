@@ -39,6 +39,9 @@ export const MapSearch = () => {
       gap={15}
     >
       <Input
+        autoComplete={"off"}
+        type={"text"}
+        name={"search"}
         onKeyDown={onKeyDown}
         inputPrepend={<SearchIcon />}
         width={240}

@@ -9,10 +9,10 @@ export const StylesUpdateTagModal = styled.div(({ theme }) => ({
 
 export const StyledTagActions = styled.div({
   display: "flex",
+  gap: 10,
   svg: {
-    padding: 4,
-    width: 30,
-    height: 30,
+    width: 18,
+    height: 18,
     opacity: 0.6,
     "&:hover": {
       transform: "scale(1.1)",

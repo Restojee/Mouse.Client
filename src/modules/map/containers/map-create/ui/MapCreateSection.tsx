@@ -11,6 +11,7 @@ import { MapCreatePopup } from "./MapCreatePopup";
 export const MapCreateSection = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isContentVisible, setIsContentVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isAuth = useAppSelector(selectIsAuth);
 
@@ -19,7 +20,12 @@ export const MapCreateSection = () => {
   const { isValid } = useMapCreate();
 
   const onSubmitHandler = async () => {
-    await onMapCreate();
+    try {
+      setIsLoading(true);
+      await onMapCreate();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onIconClickHandler = async () => {
@@ -33,7 +39,7 @@ export const MapCreateSection = () => {
 
   return (
     <PagePanelItem
-      disabled={(!isValid && isContentVisible) || !isAuth}
+      disabled={isLoading || (!isValid && isContentVisible) || !isAuth}
       type={isContentVisible ? "submit" : undefined}
       isContentVisible={isContentVisible}
       onClick={onIconClickHandler}

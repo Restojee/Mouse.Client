@@ -5,11 +5,12 @@ import { registerValidation } from "@/modules/auth/schemas/registerValidation";
 import { StyledBox } from "@/ui/Box";
 import { Button } from "@/ui/Button";
 import { Form } from "@/ui/Form/Form";
-import { Input } from "@/ui/Input";
+import { Input, PasswordInput } from "@/ui/Input";
 import { Typography } from "@/ui/Typography";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import { Controller, useForm } from "react-hook-form";
+import { useState } from "react";
 
 export const Register = () => {
   const router = useRouter();
@@ -25,9 +26,15 @@ export const Register = () => {
 
   const { register } = useRegister();
   const { theme } = useAppTheme();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: RegisterRequest) => {
-    await register(data);
+    try {
+      setIsLoading(true);
+      await register(data);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -51,7 +58,7 @@ export const Register = () => {
               name={field.name}
               onChange={field.onChange}
               onBlur={field.onBlur}
-              disabled={field.disabled}
+              disabled={field.disabled || isLoading}
               value={field.value}
               enterKeyHint={"next"}
               type={"name"}
@@ -64,16 +71,16 @@ export const Register = () => {
           control={control}
           name={"password"}
           render={({ field }) => (
-            <Input
+            <PasswordInput
               name={field.name}
               onChange={field.onChange}
               onBlur={field.onBlur}
-              disabled={field.disabled}
+              disabled={field.disabled || isLoading}
               value={field.value}
-              type={"password"}
               error={errors.password?.message}
               enterKeyHint={"next"}
               placeholder={"Пароль"}
+              autoComplete={"new-password"}
             />
           )}
         />
@@ -81,16 +88,16 @@ export const Register = () => {
           control={control}
           name={"confirmPassword"}
           render={({ field }) => (
-            <Input
+            <PasswordInput
               name={field.name}
               onChange={field.onChange}
               onBlur={field.onBlur}
-              disabled={field.disabled}
+              disabled={field.disabled || isLoading}
               value={field.value}
-              type={"password"}
               error={errors.confirmPassword?.message}
               enterKeyHint={"next"}
               placeholder={"Подтвердите пароль"}
+              autoComplete={"new-password"}
             />
           )}
         />
@@ -99,6 +106,7 @@ export const Register = () => {
           margin={"auto"}
           label={"Создать аккаунт"}
           type={"submit"}
+          disabled={isLoading}
         />
       </StyledBox>
     </Form>

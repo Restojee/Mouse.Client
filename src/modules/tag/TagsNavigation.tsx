@@ -62,7 +62,6 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
       <StyledBox
         direction="column"
         gap={10}
-        padding="5px"
         overflow={"hidden"}
       >
         <Display condition={tagsList.length}>

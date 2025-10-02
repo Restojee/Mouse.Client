@@ -91,4 +91,11 @@ export const mapsApi = {
     >(`/levels/${params.levelId}/favorites/delete`);
     return res.data;
   },
+  updateMap: async (params: apiTypes.UpdateMapApiArg) => {
+    const res = await api.put<apiTypes.UpdateMapApiArg, AxiosResponse<apiTypes.UpdateMapApiResponse>>(
+      `/levels/update`,
+      params,
+    );
+    return res.data;
+  },
 };

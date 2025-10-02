@@ -5,6 +5,7 @@ import {
   Map,
   RemoveFavoriteMapApiArg,
   Tag,
+  UpdateMapApiArg,
 } from "@/api/codegen/genMouseMapsApi";
 import { mapsApi } from "@/api/mapsApi";
 import { setAppMessage, setAppModalType } from "@/bll/appReducer";
@@ -153,6 +154,23 @@ export const updateMapTagsThunk = createAsyncThunk("tag/set-map-tags", async (le
     thunkAPI.dispatch(setAppMessage({ text: "Теги успешно добавлены", severity: "success" }));
   } catch (error) {
     thunkAPI.dispatch(setAppMessage({ text: "Ошибка добавления тегов", severity: "error" }));
+  }
+});
+
+export const updateMapNameThunk = createAsyncThunk("map/update-name", async (arg: UpdateMapApiArg, thunkAPI) => {
+  try {
+    if (!arg?.id || !arg?.name) {
+      return thunkAPI.rejectWithValue(false);
+    }
+    await mapsApi.updateMap(arg);
+    const levelId = arg.id;
+    await thunkAPI.dispatch(getMapByIdThunk({ levelId }));
+    thunkAPI.dispatch(updateMapDataByIdThunk({ levelId }));
+    thunkAPI.dispatch(setAppMessage({ severity: "success", text: "Название обновлено" }));
+    return thunkAPI.fulfillWithValue(true);
+  } catch (error) {
+    thunkAPI.dispatch(setAppMessage({ severity: "error", text: "Ошибка обновления названия" }));
+    return thunkAPI.rejectWithValue(false);
   }
 });
 

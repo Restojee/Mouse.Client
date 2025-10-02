@@ -75,12 +75,14 @@ export const useMapCreate = () => {
   }, [dispatch, removeQuery]);
 
   const onMapCreate = useCallback(async (): Promise<void> => {
-    const nameLength = name?.trim().length;
+    const trimmedName = name?.trim() || "";
+    const nameLength = trimmedName.length;
+    const normalizedName = nameLength > 3 && !trimmedName.startsWith("@") ? `@${trimmedName}` : trimmedName;
     if (nameLength && nameLength < 10) {
-      const getMapByName = await dispatch(getMapByNameThunk({ name }));
+      const getMapByName = await dispatch(getMapByNameThunk({ name: normalizedName }));
       const map = getMapByName.payload as Map;
 
-      if (map?.name === name) {
+      if (map?.name === normalizedName) {
         dispatch(createMapThunk({ id: map?.id }));
         return;
       }

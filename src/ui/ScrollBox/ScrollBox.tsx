@@ -7,6 +7,7 @@ type ScrollBoxType = {
 export const ScrollBox = ({ children }: ScrollBoxType) => {
   return (
     <StyledBox
+      padding={5}
       width={"100%"}
       overflow={"hidden"}
     >

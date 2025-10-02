@@ -56,6 +56,7 @@ const AsyncModalContent = (props: ModalPropsType) => {
                 type={"submit"}
                 onClick={onAccess}
                 label="Подтвердить"
+                disabled={props.accessDisabled}
               />
             </StyledCardActions>
           </Display>

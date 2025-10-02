@@ -19,7 +19,9 @@ export const createMapThunk = createAsyncThunk("map/create", async (arg: { id?: 
     let createdMap: Map;
 
     if (!levelId) {
-      createdMap = await mapsApi.createMap({ name });
+      const trimmedName = (name || "").trim();
+      const normalizedName = trimmedName.length > 3 && !trimmedName.startsWith("@") ? `@${trimmedName}` : trimmedName;
+      createdMap = await mapsApi.createMap({ name: normalizedName });
       levelId = createdMap.id;
     }
 

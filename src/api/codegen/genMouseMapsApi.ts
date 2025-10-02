@@ -10,7 +10,9 @@ export type CreateTagApiArg = {
 };
 export type UpdateMapApiResponse = /** status 200 OK */ Map;
 export type UpdateMapApiArg = {
-  updateMapRequest: UpdateMapRequest;
+  id?: number;
+  name: string;
+  description: string;
 };
 export type UpdateMapImageApiResponse = /** status 200 OK */ Map;
 export type UpdateMapImageApiArg = {
@@ -224,11 +226,6 @@ export type Note = {
   user: User;
   text: string;
 };
-export type UpdateMapRequest = {
-  id?: number;
-  name?: string;
-  description?: string;
-};
 export type Tip = {
   id?: number;
   user?: User;
@@ -269,6 +266,9 @@ export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
   user: User;
+};
+export type ChangePasswordRequest = {
+  newPassword: string;
 };
 export type UpdateUserImageRequest = {
   file: Blob;

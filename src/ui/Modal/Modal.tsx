@@ -6,6 +6,7 @@ export type ModalPropsType = {
   isOpen?: boolean;
   onClose: () => void;
   onAccess?: () => void;
+  accessDisabled?: boolean;
   text?: string;
   title?: string;
   width?: Property.Width<number>;

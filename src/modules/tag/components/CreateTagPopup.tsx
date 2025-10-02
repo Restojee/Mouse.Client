@@ -17,6 +17,7 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
   const [name, setName] = React.useState("");
   const { onTagCreate } = useTag();
   const { isVisible = true } = props;
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const isValid = React.useMemo(() => {
     return Boolean(name.trim().length);
@@ -28,11 +29,13 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
 
   const onFormSubmit = async () => {
     if (isValid) {
+      setIsLoading(true);
       const res = await onTagCreate(name);
       if (res?.payload) {
         setName("");
         props.onClose?.();
       }
+      setIsLoading(false);
     }
   };
 
@@ -60,12 +63,12 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
             placeholder="Введите название..."
           />
           <Button
-            disabled={!isValid}
+            disabled={!isValid || isLoading}
             type="submit"
             width="70px"
             bgColor={theme.colors.status.success}
           >
-            <DoneRoundIcon />
+            <DoneRoundIcon size={30} />
           </Button>
         </Form>
       </PointBlock>
