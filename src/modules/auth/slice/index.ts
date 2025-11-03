@@ -97,6 +97,8 @@ const slice = createSlice({
   },
 });
 
+// Временный список админов
+export const selectIsAdmin = (state: RootState) => [2, 12].includes(Number(state.auth.user?.id));
 export const selectIsAuth = (state: RootState) => state.auth?.isAuth;
 export const selectCurrentUser = (state: RootState) => state.auth.user;
 export const selectCurrentUserId = (state: RootState) => state.auth.user?.id;

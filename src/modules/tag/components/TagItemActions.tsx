@@ -5,6 +5,8 @@ import { useTag } from "@/modules/tag/hooks/useTag";
 import { CloseIcon } from "@/svg/CloseIcon";
 import { EditIcon } from "@/svg/EditIcon";
 import React from "react";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import { selectIsAdmin } from "@/modules/auth/slice";
 
 interface Props {
   tag: Tag;
@@ -13,6 +15,7 @@ interface Props {
 
 export const TagItemActions = (props: Props) => {
   const { onOpenModal } = useTag();
+  const isAdmin = useAppSelector(selectIsAdmin);
 
   const onTagEditHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -25,6 +28,10 @@ export const TagItemActions = (props: Props) => {
     props.setTempTag(props.tag);
     onOpenModal("tag-delete");
   };
+
+  if (!isAdmin) {
+    return null;
+  }
 
   return (
     <StyledTagActions>

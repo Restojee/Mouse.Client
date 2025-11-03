@@ -6,7 +6,7 @@ import { StyledTextarea } from "@/ui/Textarea/styled";
 export const StyledMapContentMain = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  gap: 25,
+  gap: 26,
   minHeight: "100%",
   overflow: "auto",
   color: theme.colors.textOnPrimary,

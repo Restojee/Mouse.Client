@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { selectIsAuth } from "@/modules/auth/slice";
+import { selectIsAdmin, selectIsAuth } from "@/modules/auth/slice";
 import { Display } from "@/ui/Display";
 import React from "react";
 import { StyledBox } from "@/ui/Box";
@@ -23,6 +23,7 @@ type MapContentSidebarIconsPropsType = {
 export const SidebarIcons = ({ levelId, isFavorite, isCompleted, favoritesCount }: MapContentSidebarIconsPropsType) => {
   const { theme } = useAppTheme();
   const isAuth = useAppSelector(selectIsAuth);
+  const isAdmin = useAppSelector(selectIsAdmin);
 
   const { onToggleMapFavorite, onMapShare, onMapDelete } = useMap(levelId);
 
@@ -68,7 +69,7 @@ export const SidebarIcons = ({ levelId, isFavorite, isCompleted, favoritesCount 
         <OutIcon {...iconsProps} />
       </StyledContentSidebarBodyIcon>
       <StyledContentSidebarBodyIcon
-        disabled={!isAuth}
+        disabled={!isAuth || !isAdmin}
         onClick={onMapDelete}
       >
         <TrashIcon {...iconsProps} />
