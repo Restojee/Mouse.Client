@@ -1,0 +1,29 @@
+.headerRow {
+  padding: 12px;
+  background-color: var(--palette-background-default, #fafafa);
+  border-radius: 4px;
+}
+
+.row {
+  padding: 12px;
+  border: 1px solid var(--palette-line-primary, #e0e0e0);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--palette-background-default, #fafafa);
+  }
+}
+
+.moduleCell {
+  flex: 1;
+  min-width: 120px;
+}
+
+.actionCell,
+.toggleCell {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

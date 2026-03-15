@@ -1,0 +1,24 @@
+﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["Mouse.NET.csproj", "./"]
+RUN dotnet restore "Mouse.NET.csproj"
+RUN dotnet tool install --global dotnet-ef --version 7.0.13
+
+COPY . .
+WORKDIR "/src/"
+RUN dotnet build "Mouse.NET.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Mouse.NET.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+
+COPY . /app/source
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Mouse.NET.dll"]

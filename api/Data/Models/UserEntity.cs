@@ -1,0 +1,49 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+using Mouse.NET.Users.Common;
+
+namespace Mouse.NET.Data.Models;
+
+[Table("users")]
+public class UserEntity : IdentityUser
+{
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+    
+    [Column("created_utc_date")]
+    public DateTime? CreatedUtcDate { get; set; } = DateTime.UtcNow;
+
+    [Column("modified_utc_date")]
+    public DateTime? ModifiedUtcDate { get; set; } = DateTime.UtcNow;
+
+    [Column("salt")]
+    public byte[] Salt { get; set; }
+    
+    [Column("avatar")]
+    public string? Avatar { get; set; }
+
+    [Column("role")]
+    public string Role { get; set; } = RoleNames.User;
+    
+    public ICollection<LevelEntity> Levels { get; set; }
+    public ICollection<LevelCommentEntity> Comments { get; set; }
+    public ICollection<LevelNoteEntity> Notes { get; set; }
+    public ICollection<TipEntity> Tips { get; set; }
+    public ICollection<LevelCompletedEntity> Completed { get; set; }
+    public ICollection<LevelFavoriteEntity> Favorites { get; set; }
+    
+    [NotMapped]
+    public int LevelsCount { get; set; }
+    
+    [NotMapped]
+    public int CompletedCount { get; set; }
+    
+    [NotMapped]
+    public int CommentsCount { get; set; }
+    
+    [NotMapped]
+    public int FavoritesCount { get; set; }
+    
+}
