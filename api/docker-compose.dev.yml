@@ -1,0 +1,45 @@
+version: "3"
+services:
+  postgres:
+    container_name: onlyplanks-dev-postgres
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    env_file:
+      - .docker.env
+    volumes:
+      - ../onlyplanks-postgres-data:/var/lib/postgresql/data
+    networks:
+      - app
+  minio:
+    image: minio/minio
+    container_name: onlyplanks-minio-server
+    env_file:
+      - .docker.env
+    ports:
+      - "9030:9000"
+      - "9031:9001"
+    restart: always
+    working_dir: "/minio-image/storage"
+    volumes:
+      - ../onlyplanks-minio/storage:/minio-image/storage
+    command: server /minio-image/storage --console-address :9031
+    networks:
+      - app
+  app:
+    image: mcr.microsoft.com/dotnet/aspnet:7.0
+    container_name: onlyplanks-mouse-maps-api
+    ports:
+      - "8030:8000"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    links:
+      - postgres
+    depends_on:
+      - postgres
+      - minio
+    networks:
+      - app
+networks:
+  app:

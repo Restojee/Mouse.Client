@@ -1,0 +1,31 @@
+version: "3"
+services:
+  postgres:
+    container_name: va-postgres
+    image: postgres:15
+    ports:
+      - "6031:5432"
+    env_file:
+      - .docker.env
+    volumes:
+      - ../onlyplanks-postgres-data:/var/lib/postgresql/data
+    networks:
+      - app
+  minio:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    container_name: minio-server
+    env_file:
+      - .docker.env
+    ports:
+      - "9030:9000"
+      - "9031:9001"
+    restart: always
+    working_dir: "/minio-image/storage"
+    volumes:
+      - ../onlyplanks-minio/storage:/minio-image/storage
+    command: server /minio-image/storage --console-address :9001
+    networks:
+      - app
+networks:
+  app:
+    driver: bridge

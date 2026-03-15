@@ -1,0 +1,48 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--tableToolbarBackground);
+  border-bottom: 1px solid var(--tableToolbarBorder);
+  padding-bottom: var(--layoutSpaceXs);
+  padding-top: var(--layoutSpaceXs);
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--layoutBorderRadiusXs);
+  transition: all 0.2s ease;
+  padding: var(--layoutSpaceXs);
+  color: var(--tableToolbarIconColor);
+
+  &:hover:not(:disabled):not(.active) {
+    background-color: rgba(33, 150, 243, 0.08);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    color: var(--tableToolbarIconColorDisabled);
+  }
+
+  &.active {
+    background-color: var(--tableToolbarActiveBackground);
+    color: var(--tableToolbarIconColorHover);
+  }
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--tableToolbarDividerColor);
+  margin: 0 4px;
+}

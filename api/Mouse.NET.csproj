@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>aspnet-Mouse.NET-A72E7092-4B30-4FD2-9FC5-3EEBDCB30519</UserSecretsId>
+        <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+        <LangVersion>10</LangVersion>
+        <UseAppHost>false</UseAppHost>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.13" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.13" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
+        <PackageReference Include="Minio" Version="5.0.0" />
+        <PackageReference Include="Npgsql" Version="7.0.6" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Migrations" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="Migrations\20231103000938_InitialCreate.Designer.cs" />
+        <Compile Remove="Migrations\20231103000938_InitialCreate.cs" />
+        <Compile Remove="Common\PolicyNames.cs" />
+        <Compile Remove="Common\Permissions.cs" />
+        <Compile Remove="Data\Models\PermissionEntity.cs" />
+        <Compile Remove="Data\Models\RolePermissionEntity.cs" />
+    </ItemGroup>
+
+</Project>
