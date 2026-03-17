@@ -1,13 +1,13 @@
 import React from 'react';
 import { inject } from 'inversify';
-import { Action, Computed, State, OnMounted, OnWatch } from '@common/hocs/withView/decorators';
+import { Action, Computed, State, OnMounted, OnWatch, AsyncAction } from '@common/hocs/withView/decorators';
 import { ViewModel } from '@common/hocs/withView';
 import { AppService } from '@common/services/app';
 import type { PaginationService, AsyncPaginationService, PaginationState } from '@common/services/pagination';
 import { SortingService } from '@common/services/sorting/SortingService';
 import { SortDirection } from '@common/types/sorting';
 import { ToolbarElement } from '@ui/Toolbar';
-import type { TreeNode } from '@ui/DataTreeTable/types';
+import type { DataTreeColumnDef, TreeNode } from '@ui/DataTreeTable/types';
 import { 
   AppServiceInjectKey,
   PaginationServiceInjectKey,
@@ -47,7 +47,7 @@ export interface ContentManagerProps<TData extends { id: RowType } = { id: RowTy
   filters?: FilterConfig[];
   entityToTreeNode: (entity: TData) => TreeNode<TData>;
   onCellEdit?: (rowId: RowType, columnId: string, value: unknown, rowData: TData) => Promise<void>;
-  onPageLoad?: (page: number, pageSize: number) => Promise<PaginationResponse>;
+  onPageLoad?: (page: number, pageSize: number, sortField?: string, sortDirection?: SortDirection) => Promise<PaginationResponse>;
   onDelete?: (items: TreeNode<TData>[]) => void;
   useAsyncPagination?: boolean;
   dataKey: string;
@@ -62,6 +62,8 @@ export interface ContentManagerProps<TData extends { id: RowType } = { id: RowTy
 class ContentManagerViewModel<TData extends { id: RowType } = { id: RowType }> extends ViewModel<ContentManagerProps<TData>> {
   @State() private _searchQuery: string = '';
   @State() public filtersVisible: boolean = false;
+  @State() private serverSortField?: string;
+  @State() private serverSortDirection?: SortDirection;
   @State() private pagination: PaginationState = {
     pageIndex: 0,
     pageSize: 50,
@@ -75,6 +77,9 @@ class ContentManagerViewModel<TData extends { id: RowType } = { id: RowType }> e
     @inject(SortingServiceInjectKey) private sortingService?: SortingService<TreeNode<TData>>
   ) {
     super();
+
+    this.handlePageLoad = this.handlePageLoad.bind(this);
+    this.handleSort = this.handleSort.bind(this);
   }
 
   @OnMounted()
@@ -86,14 +91,17 @@ class ContentManagerViewModel<TData extends { id: RowType } = { id: RowType }> e
     this.paginationService.setPagination(this.pagination);
     this.asyncPagination.setPagination(this.pagination);
 
-    if (this.props.filters && this.props.filters.length > 0) {
-      this.filtersVisible = true;
-    }
+    this.filtersVisible = false;
 
     if (this.props.onPageLoad) {
-      this.asyncPagination.setPageLoadHandler(this.props.onPageLoad)
+      this.asyncPagination.setPageLoadHandler(this.handlePageLoad);
       return;
     }
+  }
+
+  @AsyncAction()
+  private async handlePageLoad(page: number, pageSize: number): Promise<PaginationResponse> {
+    return await this.props.onPageLoad(page, pageSize, this.getSortField, this.getSortDirection);
   }
 
   @OnWatch<ContentManagerViewModel>(vm => vm.reloadData)
@@ -105,10 +113,16 @@ class ContentManagerViewModel<TData extends { id: RowType } = { id: RowType }> e
 
   @OnWatch<ContentManagerViewModel>(vm => vm.props.enableSorting)
   protected watchSortingProps(enableSorting: boolean) {
-    if (enableSorting) {
-      this.sortingService?.setLocalSorting();
-      this.sortingService?.setSortConfig('id', SortDirection.DESC);
+    if (!enableSorting) {
+      return;
     }
+
+    if (this.props.onPageLoad) {
+      return;
+    }
+
+    this.sortingService?.setLocalSorting();
+    this.sortingService?.setSortConfig('id', SortDirection.DESC);
   }
 
   @OnWatch<ContentManagerViewModel>(vm => vm.props.contentElements)
@@ -121,18 +135,18 @@ class ContentManagerViewModel<TData extends { id: RowType } = { id: RowType }> e
 
   @Computed()
   public get dataKey(): string {
-    return this.props.dataKey || 'id';
+    return this.props.dataKey;
   }
 
   @Computed()
-  public get columns(): any[] {
-    return this.props.columns || [];
+  public get columns(): DataTreeColumnDef<unknown>[] {
+    return this.props.columns;
   }
 
   @Action()
   public onCellEdit = async (rowId: RowType, columnId: string, value: unknown, rowData: TData) => {
     if (!this.props.onCellEdit) {
-      return undefined;
+      return;
     }
 
     await this.props.onCellEdit(rowId, columnId, value, rowData);
@@ -207,17 +221,32 @@ class ContentManagerViewModel<TData extends { id: RowType } = { id: RowType }> e
 
   @Computed()
   public get getSortField(): string {
+    if (this.props.onPageLoad) {
+      return this.serverSortField;
+    }
     return this.sortingService?.sortField;
   }
 
   @Computed()
   public get getSortDirection(): SortDirection  {
+    if (this.props.onPageLoad) {
+      return this.serverSortDirection;
+    }
     return this.sortingService?.sortDirection;
   }
 
   @Action()
-  public handleSort = (field: string, direction: SortDirection ): void => {
-    if (!this.sortingService || this.props.onPageLoad) return;
+  public handleSort(field: string, direction: SortDirection ): void {
+    if (this.props.onPageLoad) {
+      this.serverSortField = field;
+      this.serverSortDirection = direction;
+      void this.reloadData();
+      return;
+    }
+
+    if (!this.sortingService) {
+      return;
+    }
     
     if (!field || direction === null) {
       this.sortingService.clearSort();

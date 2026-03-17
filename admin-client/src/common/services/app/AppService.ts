@@ -8,6 +8,16 @@ import { Instances } from '@common/instances/Instances';
 @injectable()
 export class AppService {
 
+  constructor() {
+    this.closeRightSidebar = this.closeRightSidebar.bind(this);
+    this.openLeftSidebar = this.openLeftSidebar.bind(this)
+    this.toggleLeftSidebar = this.toggleLeftSidebar.bind(this);
+    this.setPageTitle = this.setPageTitle.bind(this);
+    this.setLeftSidebarContent = this.setLeftSidebarContent.bind(this);
+    this.setRightSidebarContent = this.setRightSidebarContent.bind(this);
+    this.setPagePath = this.setPagePath.bind(this);
+  }
+  
   @State()
   private _leftSidebarOpen: boolean = false;
 

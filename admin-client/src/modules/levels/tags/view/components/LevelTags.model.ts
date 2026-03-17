@@ -59,11 +59,38 @@ class LevelTagsModel extends ViewModel<LevelTagsProps> {
 
   @Computed()
   public get tagCollection() {
-    return this.dataAccess.sortedTags;
+    const tags = this.dataAccess.sortedTags as any[];
+    const map = new Map<number, TreeNode<TagData>>();
+
+    tags.forEach((tag: any) => {
+      map.set(tag.id, {
+        id: tag.id,
+        data: tag,
+        parentId: tag.parentTagId,
+        children: [],
+      });
+    });
+
+    map.forEach(node => {
+      const parentId = (node.data as any).parentTagId;
+      if (parentId && map.has(parentId)) {
+        map.get(parentId)!.children!.push(node);
+      }
+    });
+
+    const roots: TreeNode<TagData>[] = [];
+    map.forEach(node => {
+      const parentId = (node.data as any).parentTagId;
+      if (!parentId || !map.has(parentId)) {
+        roots.push(node);
+      }
+    });
+
+    return roots;
   }
 
-  public entityToTreeNode = (tag: TagData) => {
-    return { id: tag.id, data: tag };
+  public entityToTreeNode = (tag: TagData): TreeNode<TagData> => {
+    return tag as any;
   }
 
   @Action()

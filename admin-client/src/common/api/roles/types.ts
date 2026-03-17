@@ -15,15 +15,17 @@ export interface RoleCardResponse {
 
 export type RoleCollectResponse = RoleCardResponse[];
 
+export interface RolePolicyPermissionResponse {
+  key: string;
+  label: string;
+  granted: boolean;
+}
+
 export interface RolePolicyInfoResponse {
   key: string;
   name: string;
-  isCrud: boolean;
-  create: boolean;
-  read: boolean;
-  update: boolean;
-  delete: boolean;
-  all: boolean;
+  label: string;
+  permissions: RolePolicyPermissionResponse[];
 }
 
 export interface RoleDetailsResponse {

@@ -6,14 +6,29 @@ import { RoleDataAccessInjectKey } from '@/modules/roles/model/common/constants'
 import type { PolicyInfo } from '@/modules/roles/model/entities/types';
 import type { RolePermissionsProps } from './RolePermissions';
 
-export type ActionKey = 'create' | 'read' | 'update' | 'delete';
+const PERMISSION_LABELS: Record<string, string> = {
+  create: 'Создание',
+  read: 'Чтение',
+  update: 'Ред.',
+  delete: 'Удаление',
+  access: 'Доступ',
+};
 
-const ACTIONS: { key: ActionKey; label: string }[] = [
-  { key: 'create', label: 'Создание' },
-  { key: 'read', label: 'Чтение' },
-  { key: 'update', label: 'Ред.' },
-  { key: 'delete', label: 'Удаление' },
-];
+const GROUP_TITLES: Record<string, string> = {
+  crud: 'Права доступа',
+  other: 'Прочее',
+};
+
+const CRUD_ORDER = ['create', 'read', 'update', 'delete'] as const;
+const OTHER_ORDER = ['access'] as const;
+
+export interface PolicyGroup {
+  label: string;
+  title: string;
+  policies: PolicyInfo[];
+  permissionLabels: string[];
+  isMatrix: boolean;
+}
 
 class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
   constructor(
@@ -23,23 +38,60 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
   }
 
   @Computed()
-  public get actions() {
-    return ACTIONS;
-  }
-
-  @Computed()
   public get policies(): PolicyInfo[] {
-    return this.props.policies || [];
+    return this.dataAccess.editedPolicies || [];
   }
 
   @Computed()
-  public get crudPolicies(): PolicyInfo[] {
-    return this.policies.filter(p => p.isCrud);
+  public get policyGroups(): PolicyGroup[] {
+    const groupedByLabel = new Map<string, PolicyInfo[]>();
+
+    this.policies.forEach(p => {
+      const label = p.label || 'other';
+      if (!groupedByLabel.has(label)) {
+        groupedByLabel.set(label, []);
+      }
+      groupedByLabel.get(label)!.push(p);
+    });
+
+    const groups: PolicyGroup[] = [];
+
+    groupedByLabel.forEach((policies, label) => {
+      const permissionLabels = this.getGroupPermissionLabels(label, policies);
+      const isMatrix = permissionLabels.length > 1;
+
+      groups.push({
+        label,
+        title: GROUP_TITLES[label] || label,
+        policies,
+        permissionLabels,
+        isMatrix,
+      });
+    });
+
+    const order = new Map<string, number>([
+      ['crud', 0],
+      ['other', 1],
+    ]);
+
+    return groups.sort((a, b) => (order.get(a.label) ?? 999) - (order.get(b.label) ?? 999));
   }
 
-  @Computed()
-  public get togglePolicies(): PolicyInfo[] {
-    return this.policies.filter(p => !p.isCrud);
+  private getGroupPermissionLabels(groupLabel: string, policies: PolicyInfo[]): string[] {
+    const labels = new Set<string>();
+    policies.forEach(p => {
+      p.permissions.forEach(perm => labels.add(perm.label));
+    });
+
+    if (groupLabel === 'crud') {
+      return CRUD_ORDER.filter(l => labels.has(l));
+    }
+
+    if (groupLabel === 'other') {
+      return OTHER_ORDER.filter(l => labels.has(l));
+    }
+
+    return Array.from(labels);
   }
 
   @Computed()
@@ -47,13 +99,28 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
     return this.props.disabled || false;
   }
 
+  public getLabelDisplay(label: string): string {
+    return PERMISSION_LABELS[label] || label;
+  }
+
+  public getPermissionByLabel(policy: PolicyInfo, label: string) {
+    return policy.permissions.find(p => p.label === label);
+  }
+
+  public areAllGranted(policy: PolicyInfo): boolean {
+    return policy.permissions.every(p => p.granted);
+  }
+
   @Action()
-  public handleActionChange = (policyKey: string, action: ActionKey, checked: boolean): void => {
+  public handlePermissionChange = (policyKey: string, permKey: string, checked: boolean): void => {
     const updated = this.policies.map(p => {
       if (p.key !== policyKey) return p;
-      const next = { ...p, [action]: checked };
-      next.all = next.create && next.read && next.update && next.delete;
-      return next;
+      return {
+        ...p,
+        permissions: p.permissions.map(perm =>
+          perm.key === permKey ? { ...perm, granted: checked } : perm
+        ),
+      };
     });
 
     this.props.onChange?.(updated);
@@ -65,22 +132,8 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
       if (p.key !== policyKey) return p;
       return {
         ...p,
-        create: checked,
-        read: checked,
-        update: checked,
-        delete: checked,
-        all: checked,
+        permissions: p.permissions.map(perm => ({ ...perm, granted: checked })),
       };
-    });
-
-    this.props.onChange?.(updated);
-  };
-
-  @Action()
-  public handleTogglePolicy = (policyKey: string, checked: boolean): void => {
-    const updated = this.policies.map(p => {
-      if (p.key !== policyKey) return p;
-      return { ...p, all: checked };
     });
 
     this.props.onChange?.(updated);

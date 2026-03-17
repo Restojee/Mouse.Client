@@ -4,13 +4,13 @@ import { AppServiceInjectKey } from '@/constants';
 import Computed from '@common/hocs/withView/decorators/Computed';
 import Action from '@common/hocs/withView/decorators/Action';
 import { ViewModel } from '@common/hocs/withView';
-import sectionHeaderView from '@/modules/navigation/view/Section/components/SectionHeader.view';
 
 class LayoutModel extends ViewModel<{}> {
   constructor(
     @inject(AppServiceInjectKey) public appService: AppService
   ) {
     super();
+    this.closeRightSidebar = this.closeRightSidebar.bind(this);
   }
 
   @Computed()

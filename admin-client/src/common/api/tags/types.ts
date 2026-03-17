@@ -11,7 +11,9 @@ export interface Tag {
   id: number;
   name: string;
   description: string;
+  parentTagId?: number;
   parentTag?: { id: number; name: string };
+  childs?: Tag[];
   createdUtcDate?: string,
   modifiedUtcDate?: string,
   user?: User

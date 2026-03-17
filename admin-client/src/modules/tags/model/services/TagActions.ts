@@ -20,13 +20,16 @@ export class TagActions {
 
     const response = await this.tagsApi.create({
       description: data.description,
-      name: data.name
+      name: data.name,
+      parentTagId: data.parentTagId,
     })
 
     const tag: TagData = {
       description: response.description,
       name: response.name,
       id: response.id,
+      parentTagId: response.parentTagId,
+      parentTag: response.parentTag,
     };
 
     this.dataAccess.add(tag);
@@ -47,7 +50,7 @@ export class TagActions {
       ...data,
     };
 
-    await this.tagsApi.update(payload as any)
+    await this.tagsApi.update(payload)
     Notification.success('Успех', 'Информация о теге обновлена')
     return this.dataAccess.entityManager.update(id, data).getEntityById(id)
   }
@@ -68,8 +71,17 @@ export class TagActions {
   public async loadTags(): Promise<TagData[]> {
     const response = await this.tagsApi.collect();
 
-    this.dataAccess.entityManager.setAll(response);
-    return response;
+    const result: TagData[] = [];
+    const walk = (items: TagData[]): void => {
+      items.forEach(t => {
+        result.push(t);
+        walk(t.childs);
+      });
+    };
+    walk(response);
+
+    this.dataAccess.entityManager.setAll(result);
+    return result;
   }
 }
 

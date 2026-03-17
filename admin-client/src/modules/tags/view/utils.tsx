@@ -47,9 +47,11 @@ export const createTagsToolbarItems = (handlers: {
   formState?: {
     name: string;
     description: string;
+    parentTagId?: number;
   };
   onFormNameChange?: (value: string) => void;
   onFormDescriptionChange?: (value: string) => void;
+  onFormParentChange?: (value?: number) => void;
   onFormCancel?: () => void;
 }): ToolbarElement[] => {
   const items: ToolbarElement[] = [];
@@ -60,8 +62,10 @@ export const createTagsToolbarItems = (handlers: {
       <TagCreateFormIcon
         name={handlers.formState.name}
         description={handlers.formState.description}
+        parentTagId={handlers.formState.parentTagId}
         onNameChange={handlers.onFormNameChange}
         onDescriptionChange={handlers.onFormDescriptionChange}
+        onParentChange={handlers.onFormParentChange}
         onSubmit={handlers.onAdd}
         onCancel={handlers.onFormCancel}
       />

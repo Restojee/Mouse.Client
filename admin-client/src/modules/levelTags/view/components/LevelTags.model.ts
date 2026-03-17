@@ -61,7 +61,6 @@ class LevelTagsGridModel extends ViewModel<LevelTagsProps> {
   constructor(
     @inject(LevelTagsDataAccessInjectKey) public dataAccess: LevelTagsDataAccess,
     @inject(LevelTagsActionsInjectKey) public actions: LevelTagsActions,
-    @inject(AppServiceInjectKey) private appService: AppService,
     @inject(TagsApiInjectKey) private tagsApi: TagsApi
   ) {
     super();
@@ -69,7 +68,16 @@ class LevelTagsGridModel extends ViewModel<LevelTagsProps> {
 
   @OnMounted()
   public async initialize(): Promise<void> {
-    this.tags = await this.tagsApi.collect();
+    const response = await this.tagsApi.collect();
+    const result: Tag[] = [];
+    const walk = (items: Tag[]): void => {
+      items.forEach(t => {
+        result.push(t);
+        walk(t.childs);
+      });
+    };
+    walk(response);
+    this.tags = result;
   }
 
   public onPageLoad = async (page: number, pageSize: number) => {

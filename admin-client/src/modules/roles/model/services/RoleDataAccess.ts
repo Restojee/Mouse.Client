@@ -37,7 +37,7 @@ export class RoleDataAccess {
   public selectedRole: RoleData  = null;
 
   @State()
-  public editedPolicies: PolicyInfo[] = [];
+  private readonly _policyEntityManager: EntityManager<PolicyInfo>;
 
   @State()
   private readonly _entityManager: EntityManager<RoleData>;
@@ -45,6 +45,10 @@ export class RoleDataAccess {
   constructor() {
     this._entityManager = new EntityManager<RoleData>({
       getRowId: row => row.id
+    });
+
+    this._policyEntityManager = new EntityManager<PolicyInfo>({
+      getRowId: row => row.key,
     });
     this.roleFormData = { 
       name: '', 
@@ -157,6 +161,11 @@ export class RoleDataAccess {
     return this._entityManager;
   }
 
+  @Computed()
+  public get editedPolicies(): PolicyInfo[] {
+    return this._policyEntityManager.getCollection;
+  }
+
   @Action()
   public add(role: RoleData): void {
     this._entityManager.create(role);
@@ -190,26 +199,28 @@ export class RoleDataAccess {
   @Action()
   public selectRole(role: RoleData): void {
     this.selectedRole = role;
-    this.editedPolicies = JSON.parse(JSON.stringify(role.policies || []));
+    const cloned = JSON.parse(JSON.stringify(role.policies || []));
+    this._policyEntityManager.setAll(cloned);
   }
 
   @Action()
   public deselectRole(): void {
     this.selectedRole = null;
-    this.editedPolicies = [];
+    this._policyEntityManager.setAll([]);
   }
 
   @Action()
   public updateEditedPolicies(policies: PolicyInfo[]): void {
-    this.editedPolicies = policies;
+    this._policyEntityManager.setAll(policies);
   }
 
   @Action()
   public resetEditedPolicies(): void {
     if (this.selectedRole) {
-      this.editedPolicies = JSON.parse(JSON.stringify(this.selectedRole.policies || []));
+      const cloned = JSON.parse(JSON.stringify(this.selectedRole.policies || []));
+      this._policyEntityManager.setAll(cloned);
     } else {
-      this.editedPolicies = [];
+      this._policyEntityManager.setAll([]);
     }
   }
 

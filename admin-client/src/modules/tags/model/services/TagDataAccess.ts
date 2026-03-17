@@ -17,7 +17,7 @@ export class TagDataAccess {
     this._entityManager = new EntityManager<TagData>({
       getRowId: tag => tag.id
     });
-    this.tagFormData = { name: '', description: '' };
+    this.tagFormData = { name: '', description: '', parentTagId: undefined };
   }
 
   @Computed()

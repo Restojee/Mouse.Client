@@ -15,10 +15,11 @@ import {
   LevelCollectRequest,
   LevelRemoveRequest,
   LevelUpdateRequest,
+  LevelUpdateImageRequest,
 } from '@common/api/levels/models';
 import { LevelDataAccessInjectKey, LevelsApiInjectKey } from '@/modules/levels/model/common/constants';
 import { Action, AsyncAction } from '@common/hocs/withView/decorators';
-import { LevelData } from '@/modules/levels/common/types';
+import type { LevelData } from '@/modules/levels/common/types';
 import { PaginationResponse } from '@ui/ContentManager/ContentManager.model';
 
 const getLoadingMs = 1000;
@@ -55,6 +56,11 @@ class LevelActions {
     this.levelDataAccess.updateLevel(id, updateData);
   }
 
+  @AsyncAction()
+  public async updateLevelImage(args: LevelUpdateImageRequest): Promise<void> {
+    await this.getLevelApi().updateImage(args);
+  }
+
   public async removeLevel(request: LevelRemoveRequest) {
     await this.getLevelApi().remove(request);
     this.levelDataAccess.removeLevel(request.id)
@@ -66,11 +72,14 @@ class LevelActions {
       page: request.page,
       size: request.size,
       name: request.name,
+      description: request.description,
       userId: request.userId,
       isCompleted: request.isCompleted,
       isFavorite: request.isFavorite,
       isCreatedByUser: request.isCreatedByUser,
       isWithComment: request.isWithComment,
+      sortField: request.sortField,
+      sortDirection: request.sortDirection,
     });
     
     

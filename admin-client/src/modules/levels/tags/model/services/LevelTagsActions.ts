@@ -21,8 +21,16 @@ export class LevelTagsActions {
 
   @AsyncAction()
   public async loadAllTags(): Promise<void> {
-    const tags = await this.tagsApi.collect();
-    this.dataAccess.setAllTags(tags);
+    const response = await this.tagsApi.collect();
+    const result: any[] = [];
+    const walk = (items: any[] | undefined): void => {
+      (items || []).forEach(t => {
+        result.push(t);
+        walk(t.childs);
+      });
+    };
+    walk(response as any);
+    this.dataAccess.setAllTags(result as any);
   }
 
   @AsyncAction()

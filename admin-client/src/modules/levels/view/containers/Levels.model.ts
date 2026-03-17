@@ -14,7 +14,8 @@ import { showConfirm } from '@ui/Modal';
 import { getLevelToolbarItems } from '@/modules/levels/view/utils/toolbarItems';
 import { LevelsProps } from '@/modules/levels/view/containers/Levels';
 import type { ContentManagerRef, PaginationResponse } from '@ui/ContentManager/ContentManager.model';
-import { LevelData } from '@/modules/levels/common/types';
+import type { LevelData } from '@/modules/levels/common/types';
+import { SortDirection } from '@common/types/sorting';
 
 class LevelsModel extends ViewModel<LevelsProps> {
 
@@ -57,6 +58,7 @@ class LevelsModel extends ViewModel<LevelsProps> {
     super();
     this.handleCellEdit = this.handleCellEdit.bind(this);
     this.loadLevels = this.loadLevels.bind(this);
+    this.cleanup = this.cleanup.bind(this);
   }
 
   @Computed()
@@ -80,10 +82,20 @@ class LevelsModel extends ViewModel<LevelsProps> {
       onManageTags: this.handleManageTags.bind(this),
       searchQuery: this.searchQuery,
       formState: this.dataAccess.levelFormData,
-      onFormNameChange: (value) => this.handleFormFieldChange('name', value),
-      onFormDescriptionChange: (value) => this.handleFormFieldChange('description', value),
+      onFormNameChange: this.handleFormNameChange,
+      onFormDescriptionChange: this.handleFormDescriptionChange,
       onFormCancel: this.handleFormCancel.bind(this),
     });
+  }
+
+  @Action()
+  public handleFormNameChange = (value: string): void => {
+    this.handleFormFieldChange('name', value);
+  }
+
+  @Action()
+  public handleFormDescriptionChange = (value: string): void => {
+    this.handleFormFieldChange('description', value);
   }
 
   handleSearch(value: string) {
@@ -149,7 +161,7 @@ class LevelsModel extends ViewModel<LevelsProps> {
   }
 
   @AsyncAction()
-  public async loadLevels(page: number, pageSize: number): Promise<PaginationResponse> {
+  public async loadLevels(page: number, pageSize: number, sortField?: string, sortDirection?: SortDirection): Promise<PaginationResponse> {
     const canSearchByName = this.filterSelectedColumns.includes('name');
     const canSearchByDescription = this.filterSelectedColumns.includes('description');
 
@@ -169,6 +181,8 @@ class LevelsModel extends ViewModel<LevelsProps> {
       isFavorite,
       isCreatedByUser,
       isWithComment,
+      sortField,
+      sortDirection,
     })
   }
 
@@ -198,20 +212,27 @@ class LevelsModel extends ViewModel<LevelsProps> {
     }
 
     await this.actions.createLevel({ name, description });
-    this.contentManagerRef.reloadData();
     Notification.success('Успех', 'Уровень добавлен');
+    await this.contentManagerRef.reloadData();
     this.handleFormCancel();
   }
 
   @AsyncAction()
-  public async handleCellEdit(rowId: number, columnId: string, value: string): Promise<void> {
-    await this.actions.updateLevelCell(rowId, columnId, value);
+  public async handleCellEdit(rowId: number, columnId: string, value: unknown, rowData: LevelData): Promise<void> {
+    if (columnId === 'image' && value instanceof File) {
+      await this.actions.updateLevelImage({ id: rowId, image: value });
+      Notification.success('Успех', 'Картинка обновлена');
+      await this.contentManagerRef.reloadData();
+      return;
+    }
+
+    await this.actions.updateLevelCell(rowId, columnId, String(value));
     Notification.success('Успех', 'Уровень обновлен');
   }
 
   @Action()
   public async handleEdit(levels: TreeNode<LevelData>[]): Promise<void> {
-    if (!levels || levels.length === 0) {
+    if (!levels || !levels.length) {
       return;
     }
     const selectedLevel = levels[0].data;
@@ -222,7 +243,7 @@ class LevelsModel extends ViewModel<LevelsProps> {
   async performDelete(levels: TreeNode<LevelData>[]): Promise<void> {
     for (const level of levels) {
       await this.actions.removeLevel({ id: level.data.id });
-      this.contentManagerRef.reloadData();
+      await this.contentManagerRef.reloadData();
     }
     Notification.success('Успех', 'Уровни удалены');
   }
@@ -236,8 +257,15 @@ class LevelsModel extends ViewModel<LevelsProps> {
     showConfirm('Подтверждение удаления', {
       text: 'Вы уверены, что хотите удалить выбранные уровни?',
       size: 'md',
-      onSuccess: () => this.performDelete(levels)
+      onSuccess: this.getDeleteSuccessHandler(levels),
     });
+  }
+
+  private getDeleteSuccessHandler(levels: TreeNode<LevelData>[]): (() => void) {
+    const handler = (): void => {
+      void this.performDelete(levels);
+    }
+    return handler;
   }
 
   public handleManageTags(level: TreeNode<LevelData>): void {
@@ -247,13 +275,20 @@ class LevelsModel extends ViewModel<LevelsProps> {
     }
 
     const levelId = level.data.id;
-    this.appService.openRightSidebar(LevelContentModule, `Управление уровнем ${level.data.name}`, {
-      levelId,
-      onClose: () => {
-        this.appService.closeRightSidebar();
-        this.contentManagerRef?.reloadData();
-      },
-    });
+    this.appService.openRightSidebar(
+      LevelContentModule,
+      `Управление уровнем ${level.data.name}`,
+      {
+        levelId,
+        onClose: this.handleRightSidebarClose,
+      }
+    );
+  }
+
+  @Action()
+  private handleRightSidebarClose = (): void => {
+    this.appService.closeRightSidebar();
+    void this.contentManagerRef?.reloadData();
   }
 
   @OnUnmounted()

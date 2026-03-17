@@ -1,12 +1,14 @@
+export interface PolicyPermission {
+  key: string;
+  label: string;
+  granted: boolean;
+}
+
 export interface PolicyInfo {
   key: string;
   name: string;
-  isCrud: boolean;
-  create: boolean;
-  read: boolean;
-  update: boolean;
-  delete: boolean;
-  all: boolean;
+  label: string;
+  permissions: PolicyPermission[];
 }
 
 export interface RoleFormData {

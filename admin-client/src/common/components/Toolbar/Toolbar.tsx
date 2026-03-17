@@ -10,7 +10,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ items, className }) => {
   const leftItems = items.filter((item) => item.align !== 'right');
   const rightItems = items.filter((item) => item.align === 'right');
 
-  const renderItem =React.useCallback( (element: ToolbarElement) => {
+  const renderItem = React.useCallback(function renderItem(element: ToolbarElement) {
 
     if (element && element.type === 'divider') {
       return (
@@ -24,13 +24,14 @@ const Toolbar: React.FC<ToolbarProps> = ({ items, className }) => {
         className={clsx(styles.iconButton, {
           [styles.active]: element.isActive,
         })}
-        onClick={element.onClick}
+        onClick={element.disabled ? undefined : element.onClick}
         nonIntegration
       >
         {
           element.component ?? (
             <ButtonIcon
               icon={element.icon}
+              className={styles.iconButtonContent}
               disabled={element.disabled}
               size="md"
             />

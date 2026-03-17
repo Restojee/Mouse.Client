@@ -1,41 +1,84 @@
 import { DataTreeColumnDef, TreeNode, editable, DefaultEditor } from '@ui/DataTreeTable';
-import { LevelData } from '@/modules/levels/common/types';
+import type { LevelData } from '@/modules/levels/common/types';
+import React from 'react';
+import { EditableImagePreview } from '@common/components/DataTreeTable/components/EditableImagePreview/EditableImagePreview';
+import type { EditableIntegrateComponentProps } from '@common/components/DataTreeTable/integrations';
+
+function getName(row: TreeNode<LevelData>): string {
+  return row.data.name;
+}
+
+function getDescription(row: TreeNode<LevelData>): string {
+  return row.data.description;
+}
+
+function getImage(row: TreeNode<LevelData>): string {
+  return row.data.image;
+}
+
+function getCreatedUtcDate(row: TreeNode<LevelData>): string {
+  return row.data.createdUtcDate;
+}
+
+function getUsername(row: TreeNode<LevelData>): string {
+  return row.data.user?.username;
+}
+
+function LevelImageEditor(props: EditableIntegrateComponentProps<LevelData>) {
+  const { value, onSave } = props;
+
+  const handleSave = React.useCallback(function handleSave(file: File): void {
+    onSave?.(file);
+  }, [onSave]);
+
+  return (
+    <EditableImagePreview
+      value={String(value)}
+      onSave={handleSave}
+      onlyPreview
+    />
+  );
+}
 
 export const getLevelColumns = (): DataTreeColumnDef<LevelData>[] => {
   return [
     {
       id: 'name',
-      accessorFn: (row) => row.data.name,
+      accessorFn: getName,
       header: 'Название',
-      size: 0.25,
+      size: 0.1,
       enableSorting: true,
       integrate: editable(DefaultEditor),
     },
     {
       id: 'description',
-      accessorFn: (row) => row.data.description,
+      accessorFn: getDescription,
       header: 'Описание',
-      size: 0.35,
+      size: 0.5,
       enableSorting: true,
       integrate: editable(DefaultEditor),
     },
     {
       id: 'image',
-      accessorFn: (row) => row.data.image,
+      accessorFn: getImage,
       header: 'Картинка',
-      size: 0.15,
+      size: 0.2,
+      enableSorting: true,
+      integrate: editable(LevelImageEditor),
     },
     {
       id: 'createdUtcDate',
-      accessorFn: (row) => row.data.createdUtcDate,
+      accessorFn: getCreatedUtcDate,
       header: 'Добавлена',
       size: 0.1,
+      enableSorting: true,
     },
     {
       id: 'username',
-      accessorFn: (row) => row.data.user?.username,
+      accessorFn: getUsername,
       header: 'Автор',
       size: 0.15,
+      enableSorting: true,
     },
   ];
 };

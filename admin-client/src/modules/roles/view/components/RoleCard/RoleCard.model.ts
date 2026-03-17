@@ -47,7 +47,7 @@ class RoleCardModel extends ViewModel<RoleCardProps> {
     }
     
     const totalActions = policies.reduce((sum, p) => {
-      return sum + [p.create, p.read, p.update, p.delete].filter(Boolean).length;
+      return sum + p.permissions.filter(perm => perm.granted).length;
     }, 0);
     
     return `${totalActions} действий`;

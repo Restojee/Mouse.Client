@@ -25,12 +25,20 @@ export class LevelCreateResponse extends Level {}
 export class LevelUpdateRequest { id: number; name?: string; description?: string; }
 export class LevelUpdateResponse extends Level {}
 
+export class LevelUpdateImageRequest {
+  id: number;
+  image: File;
+}
+
 export class LevelCollectRequest {
   page?: number;
   size?: number;
   ids?: number[];
   name?: string;
   description?: string;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 
   userId?: number;
   isCompleted?: boolean;

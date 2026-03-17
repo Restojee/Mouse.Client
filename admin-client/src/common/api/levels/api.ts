@@ -18,6 +18,7 @@ import {
   LevelTagCreateResponse,
   LevelTagDeleteRequest,
   LevelTagDeleteResponse,
+  LevelUpdateImageRequest,
 } from "@common/api/levels/models";
 import { HttpHandlerInjectKey } from "@common/http/constants";
 
@@ -50,6 +51,13 @@ class LevelsApi {
     return this.http.put<LevelUpdateRequest, LevelUpdateResponse>({
       url: LevelUrls[LevelEndpoints.Update],
       params: args,
+    })
+  }
+
+  public updateImage(args: LevelUpdateImageRequest): Promise<string> {
+    return this.http.post<{}, string>({
+      url: `${LevelUrls[LevelEndpoints.UpdateImage]}/${args.id}/update-image`,
+      file: args.image,
     })
   }
 

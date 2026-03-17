@@ -1,6 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { TreeNode } from '@ui/DataTreeTable';
-import { TagData } from '@/modules/levels/common/types';
+import type { TagData } from '@/modules/levels/common/types';
 import { Row } from '@ui/Layout';
 import { Typography } from '@ui/Typography';
 import { Icon } from '@ui/Icon';

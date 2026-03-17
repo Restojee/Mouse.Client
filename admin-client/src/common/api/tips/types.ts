@@ -1,4 +1,4 @@
-import { UserData } from '@/modules/levels/common/types';
+import type { UserData } from '@/modules/levels/common/types';
 
 export interface TipCollectArgs {
   page?: number;

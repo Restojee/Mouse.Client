@@ -39,6 +39,14 @@ export const getLevelToolbarItems = (params: LevelToolbarItemsParams): ToolbarEl
     searchQuery,
   } = params;
 
+  const handleEdit = (): void => {
+    onEdit?.(selectedRows);
+  }
+
+  const handleDelete = (): void => {
+    onDelete?.(selectedRows);
+  }
+
   const items: ToolbarElement[] = [];
 
   items.push({
@@ -60,7 +68,7 @@ export const getLevelToolbarItems = (params: LevelToolbarItemsParams): ToolbarEl
   items.push({
     id: 'edit',
     icon: 'IconEdit',
-    onClick: () => onEdit(selectedRows),
+    onClick: handleEdit,
     tooltip: 'Редактировать',
     align: 'left',
   });
@@ -69,7 +77,7 @@ export const getLevelToolbarItems = (params: LevelToolbarItemsParams): ToolbarEl
   items.push({
     id: 'delete',
     icon: 'IconDelete',
-    onClick: () => onDelete(selectedRows),
+    onClick: handleDelete,
     tooltip: 'Удалить',
     align: 'left',
   });

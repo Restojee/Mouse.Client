@@ -44,7 +44,7 @@ const ContentManager = <TData extends { id: RowType } = { id: RowType }>({ viewM
         onPagination={viewModel.getPaginationCallbacks}
         sortColumn={viewModel.getSortField}
         sortDirection={viewModel.getSortDirection}
-        enableSorting={!viewModel.props.onPageLoad}
+        enableSorting={viewModel.props.enableSorting ?? true}
         showColumnBorders
         enableColumnResizing
         useSingleSelect

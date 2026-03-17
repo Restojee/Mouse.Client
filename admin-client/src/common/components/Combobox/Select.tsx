@@ -56,7 +56,7 @@ export const Select: React.FC<SelectProps> = ({
     ];
   }, [options, value, allowClear]);
 
-  const showClear = allowClear && !disabled && value !== undefined && value !== null;
+  const showClear = allowClear && !disabled && value;
 
   const handleClear = React.useCallback(() => {
     onChange?.({ label: 'Не выбрано', value: undefined });

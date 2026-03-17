@@ -1,8 +1,9 @@
-import { UserData } from '@/modules/levels/common/types';
+import type { UserData } from '@/modules/levels/common/types';
 
 export interface TagFormData {
   name: string;
   description: string;
+  parentTagId?: number;
 }
 
 export interface TagData {
@@ -11,6 +12,7 @@ export interface TagData {
   description: string;
   parentTagId?: number;
   parentTag?: { id: number; name: string };
+  childs?: TagData[];
   createdUtcDate?: string,
   modifiedUtcDate?: string,
   user?: UserData;

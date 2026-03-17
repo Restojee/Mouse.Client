@@ -7,9 +7,11 @@ const TagCreateFormIcon: React.FC<TagCreateFormIcon> = ({
   description,
   onCancel,
   onDescriptionChange,
+  onParentChange,
   onSubmit,
   onNameChange,
-  name
+  name,
+  parentTagId,
 }) => {
   return (
     <ButtonDropDown
@@ -24,6 +26,8 @@ const TagCreateFormIcon: React.FC<TagCreateFormIcon> = ({
         onSubmit={onSubmit}
         onNameChange={onNameChange}
         onDescriptionChange={onDescriptionChange}
+        onParentChange={onParentChange}
+        parentTagId={parentTagId}
       />
     </ButtonDropDown>
   )

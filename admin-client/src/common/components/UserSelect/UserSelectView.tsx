@@ -44,7 +44,6 @@ const UserSelectView: React.FC<UserSelectViewProps> = ({ viewModel }) => {
       onLoadMore={() => viewModel.loadNextPage()}
       hasMore={viewModel.hasMore}
       isLoadingMore={viewModel.isLoadingMore}
-      rightIcon={viewModel.props.append ? undefined : "IconChevronDown"}
     />
   );
 };

@@ -32,7 +32,18 @@ class TagSelectViewModel extends ViewModel<TagSelectViewProps> {
   public async loadTags(): Promise<void> {
     this.loading = true;
     try {
-      this.tags = await this.tagsApi.collect();
+      const response = await this.tagsApi.collect();
+      const result: Tag[] = [];
+
+      const walk = (items: Tag[] | undefined): void => {
+        (items || []).forEach(t => {
+          result.push(t);
+          walk(t.childs);
+        });
+      };
+
+      walk(response);
+      this.tags = result;
     } finally {
       this.loading = false;
     }

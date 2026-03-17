@@ -35,10 +35,14 @@ export const DefaultEditor: React.FC<DefaultEditorProps> = ({
   placeholder,
   size = 'md',
 }) => {
+  const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  }, [onChange]);
+
   return (
     <InputText
       value={String(value )}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={handleChange}
       onBlur={onBlur}
       placeholder={placeholder}
       size={size}
@@ -98,12 +102,20 @@ export const EditableCell: React.FC<EditableCellProps> = ({
     onSave(editValue);
   }, [editValue, onSave]);
 
+  const handleMouseEnter = React.useCallback((): void => {
+    setHovered(true);
+  }, []);
+
+  const handleMouseLeave = React.useCallback((): void => {
+    setHovered(false);
+  }, []);
+
   return (
     <td
       style={style}
       className={classNames(className, styles.editableCell, isEditing && styles.editing)}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className={styles.cellContent}>
         {!isEditing && hovered && !isAnyEditing && (

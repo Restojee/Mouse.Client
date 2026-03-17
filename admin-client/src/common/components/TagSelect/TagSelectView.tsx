@@ -41,7 +41,6 @@ const TagSelectView: React.FC<TagSelectViewProps> = ({ viewModel }) => {
       onLoadMore={() => {}}
       hasMore={false}
       isLoadingMore={false}
-      rightIcon={viewModel.props.append ? undefined : 'IconChevronDown'}
     />
   );
 };
