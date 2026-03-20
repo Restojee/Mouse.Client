@@ -57,6 +57,32 @@ public class UserAuditLogRepository : IUserAuditLogRepository
             );
         }
 
-        return await PaginationExtensions.ToPagedResult(query.OrderByDescending(x => x.CreatedUtcDate), request.Page, request.Size);
+        query = ApplySorting(query, request);
+        return await PaginationExtensions.ToPagedResult(query, request.Page, request.Size);
+    }
+
+    private static IQueryable<UserAuditLogEntity> ApplySorting(IQueryable<UserAuditLogEntity> query, PaginateRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
+        {
+            return query.OrderByDescending(x => x.CreatedUtcDate);
+        }
+
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "createdUtcDate" => isDesc ? query.OrderByDescending(x => x.CreatedUtcDate) : query.OrderBy(x => x.CreatedUtcDate),
+            "action" => isDesc ? query.OrderByDescending(x => x.Action) : query.OrderBy(x => x.Action),
+            "actor" => isDesc ? query.OrderByDescending(x => x.ActorUser.UserName) : query.OrderBy(x => x.ActorUser.UserName),
+            "target" => isDesc ? query.OrderByDescending(x => x.TargetUser.UserName) : query.OrderBy(x => x.TargetUser.UserName),
+            "ip" => isDesc ? query.OrderByDescending(x => x.Ip) : query.OrderBy(x => x.Ip),
+            "metadata" => isDesc ? query.OrderByDescending(x => x.MetadataJson) : query.OrderBy(x => x.MetadataJson),
+            "entity" => isDesc ? query.OrderByDescending(x => x.EntityType).ThenByDescending(x => x.EntityId) : query.OrderBy(x => x.EntityType).ThenBy(x => x.EntityId),
+            _ => query.OrderByDescending(x => x.CreatedUtcDate)
+        };
     }
 }

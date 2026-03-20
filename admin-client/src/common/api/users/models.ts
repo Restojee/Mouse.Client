@@ -35,6 +35,9 @@ export interface DeleteUserResponse {}
 export interface CollectUsersRequest {
   size: number;
   page: number;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 }
 export interface CollectUsersResponse {
   page: number;

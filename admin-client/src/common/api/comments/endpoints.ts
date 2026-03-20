@@ -12,10 +12,10 @@ export enum CommentEndpoints {
 export const CommentUrls: Record<CommentEndpoints, string> = {
   [CommentEndpoints.Collect]: 'comments/collect',
   [CommentEndpoints.CollectPaged]: 'comments/collect-paged',
-  [CommentEndpoints.Create]: 'comments/create',
-  [CommentEndpoints.CreateAdmin]: 'comments/create-admin',
-  [CommentEndpoints.Update]: 'comments/update',
-  [CommentEndpoints.UpdateAdmin]: 'comments/update-admin',
-  [CommentEndpoints.Delete]: 'comments/remove',
-  [CommentEndpoints.DeleteBulk]: 'comments/delete-bulk',
+  [CommentEndpoints.Create]: 'admin/comments/create',
+  [CommentEndpoints.CreateAdmin]: 'admin/comments/create-admin',
+  [CommentEndpoints.Update]: 'admin/comments/update',
+  [CommentEndpoints.UpdateAdmin]: 'admin/comments/update-admin',
+  [CommentEndpoints.Delete]: 'admin/comments/remove',
+  [CommentEndpoints.DeleteBulk]: 'admin/comments/delete-bulk',
 };

@@ -48,6 +48,9 @@ export interface CollectCommentPagedRequest {
   query?: string;
   levelId?: number;
   userId?: number;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 }
 
 export type CollectCommentPagedResponse = PagedResult<CommentRow>;

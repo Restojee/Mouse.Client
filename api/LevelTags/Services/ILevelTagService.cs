@@ -14,6 +14,4 @@ public interface ILevelTagService
     public Task<LevelTagBinding> Update(LevelTagUpdateRequest request);
 
     public Task Delete(long id);
-
-    public Task Remove(long id);
 }

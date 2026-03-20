@@ -50,7 +50,30 @@ public class LevelTagRepository : ILevelTagRepository
             );
         }
 
-        return await PaginationExtensions.ToPagedResult(query.OrderByDescending(r => r.CreatedUtcDate), request.Page, request.Size);
+        query = ApplySorting(query, request);
+        return await PaginationExtensions.ToPagedResult(query, request.Page, request.Size);
+    }
+
+    private static IQueryable<LevelTagRelation> ApplySorting(IQueryable<LevelTagRelation> query, PaginateRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
+        {
+            return query.OrderByDescending(x => x.CreatedUtcDate);
+        }
+
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "tag" => isDesc ? query.OrderByDescending(x => x.Tag.Name) : query.OrderBy(x => x.Tag.Name),
+            "level" => isDesc ? query.OrderByDescending(x => x.Level.Name) : query.OrderBy(x => x.Level.Name),
+            "user" => isDesc ? query.OrderByDescending(x => x.User.UserName) : query.OrderBy(x => x.User.UserName),
+            "createdUtcDate" => isDesc ? query.OrderByDescending(x => x.CreatedUtcDate) : query.OrderBy(x => x.CreatedUtcDate),
+            _ => query.OrderByDescending(x => x.CreatedUtcDate)
+        };
     }
 
     public async Task<LevelTagRelation?> GetById(long id)

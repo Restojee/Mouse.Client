@@ -72,8 +72,8 @@ class TipsModel extends ViewModel<TipsProps> {
   }
 
   @AsyncAction()
-  public async loadTips (pageIndex: number, pageSize: number): Promise<PaginationResponse> {
-    const result = await this.actions.loadTips(pageIndex, pageSize, this.searchQuery);
+  public async loadTips (pageIndex: number, pageSize: number, sortField?: string, sortDirection?: 'asc' | 'desc'): Promise<PaginationResponse> {
+    const result = await this.actions.loadTips(pageIndex, pageSize, this.searchQuery, sortField, sortDirection);
     return {
       totalItems: result.totalItems,
       totalPages: result.totalPages,

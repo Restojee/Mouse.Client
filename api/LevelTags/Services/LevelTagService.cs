@@ -67,9 +67,4 @@ public class LevelTagService : ILevelTagService
     {
         await this.repository.Delete(id);
     }
-
-    public async Task Remove(long id)
-    {
-        await this.Delete(id);
-    }
 }

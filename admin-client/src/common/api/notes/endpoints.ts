@@ -7,7 +7,7 @@ export enum NotesEndpoints {
 
 export const NotesUrls: Record<NotesEndpoints, string> = {
   [NotesEndpoints.Collect]: 'levels/notes/collect',
-  [NotesEndpoints.Create]: 'levels/notes/create',
-  [NotesEndpoints.Update]: 'levels/notes/update',
-  [NotesEndpoints.Remove]: 'levels/notes/remove',
+  [NotesEndpoints.Create]: 'admin/levels/notes/create',
+  [NotesEndpoints.Update]: 'admin/levels/notes/update',
+  [NotesEndpoints.Remove]: 'admin/levels/notes/remove',
 };

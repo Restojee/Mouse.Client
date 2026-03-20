@@ -8,6 +8,7 @@ namespace Mouse.NET.Roles;
 
 [ApiController]
 [Route("roles")]
+[Authorize(Policy = nameof(OtherPolicy.Administration))]
 public class RolesController : ControllerBase
 {
     private readonly IRoleService roleService;
@@ -53,14 +54,14 @@ public class RolesController : ControllerBase
     }
 
     [HttpPut("permissions/set")]
-    [Authorize(Policy = nameof(OtherPolicy.Settings))]
+    [Authorize(Policy = nameof(Policy.RolesUpdate))]
     public async Task<string> SetRolePermissions([FromBody] RolePermissionsSetRequest request)
     {
         return await this.roleService.SetRolePermissions(request);
     }
 
     [HttpPost("assign-to-user")]
-    [Authorize(Policy = nameof(Policy.RolesAll))]
+    [Authorize(Policy = nameof(Policy.UsersEdit))]
     public async Task<string> AssignRoleToUser([FromBody] Mouse.NET.Roles.Models.AssignRoleToUserRequest request)
     {
         return await this.roleService.AssignRoleToUser(request);

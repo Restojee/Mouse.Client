@@ -32,14 +32,14 @@ public class TipController : ControllerBase
         return await this.tipService.GetTip(tipId);
     }
     
-    [Authorize(Policy = nameof(Policy.TipsWrite))]
+    [Authorize(Policy = nameof(Policy.TipsEdit))]
     [HttpPut("update")]
     public async Task<Tip> UpdateTip([FromBody] TipUpdateRequest updateRequest)
     {
-        return await this.tipService.UpdateOwnTip(updateRequest);
+        return await this.tipService.UpdateTip(updateRequest);
     }
     
-    [Authorize(Policy = nameof(Policy.TipsWrite))]
+    [Authorize(Policy = nameof(Policy.TipsCreate))]
     [HttpPost("create")]
     public async Task<Tip> CreateTip([FromBody] TipCreateRequest createRequest)
     {
@@ -47,7 +47,7 @@ public class TipController : ControllerBase
     }
     
     [HttpDelete("delete/{tipId}")]
-    [Authorize(Policy = nameof(Policy.TipsWrite))]
+    [Authorize(Policy = nameof(Policy.TipsDelete))]
     public async Task<string> DeleteTips([FromRoute] int tipId)
     {
         return await this.tipService.DeleteTip(tipId);

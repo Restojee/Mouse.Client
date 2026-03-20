@@ -15,11 +15,13 @@ export class FavoritesActions {
   public async loadPage(
     page: number,
     size: number,
-    filters?: QueryParams<{ levelId?: number; userId?: number }>
+    filters?: QueryParams<{ levelId?: number; userId?: number; sortField?: string; sortDirection?: 'asc' | 'desc' }>
   ): Promise<{ rows: Favorite[]; totalItems: number; totalPages: number; pageSize: number; page: number; }> {
     const resp = await this.dataAccess.collect({
       levelId: filters?.levelId,
       userId: filters?.userId,
+      sortField: filters?.sortField,
+      sortDirection: filters?.sortDirection,
     });
 
     const query = String(filters?.query ).trim().toLowerCase();

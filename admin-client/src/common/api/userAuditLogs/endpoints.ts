@@ -3,5 +3,5 @@ export enum UserAuditLogEndpoints {
 }
 
 export const UserAuditLogUrls: Record<UserAuditLogEndpoints, string> = {
-  [UserAuditLogEndpoints.Collect]: 'user-audit-logs/collect',
+  [UserAuditLogEndpoints.Collect]: 'admin/user-audit-logs/collect',
 };

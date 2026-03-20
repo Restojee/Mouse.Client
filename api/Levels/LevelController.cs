@@ -34,21 +34,21 @@ public class LevelController : ControllerBase
     }
     
     [HttpPut("update")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     public async Task<Level> UpdateLevel([FromBody] LevelUpdateRequest updateRequest)
     {
         return await this.levelService.UpdateLevel(updateRequest);
     }
     
     [HttpPost("create")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsCreate))]
     public async Task<Level> CreateLevel([FromBody] LevelCreateRequest createRequest)
     {
         return await this.levelService.CreateLevel(createRequest);
     }
     
     [HttpPost("{levelId}/update-image")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     public async Task<string> UpdateLevelImage([FromRoute] int levelId, IFormFile formFile)
     {
         await this.levelService.UpdateLevelImage(levelId, formFile);
@@ -56,7 +56,7 @@ public class LevelController : ControllerBase
     }
     
     [HttpPost("update-completed-image/{completedId}")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<string> UpdateLevelCompletedImage([FromRoute] int completedId, IFormFile formFile)
     {
         await this.levelService.UpdateLevelCompletedImage(completedId, formFile);
@@ -64,21 +64,21 @@ public class LevelController : ControllerBase
     }
     
     [HttpDelete("remove/{levelId}")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsDeleteSelf))]
     public async Task<string> DeleteLevel([FromRoute] int levelId)
     {
         return await this.levelService.DeleteLevel(levelId);
     }
     
     [HttpPost("{levelId}/completed/complete")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsCreate))]
     public async Task<LevelCompleted> CompleteLevel([FromRoute] int levelId, IFormFile formFile)
     {
         return await this.levelService.CompleteLevel(levelId, formFile, "");
     }
     
     [HttpDelete("{levelId}/completed/{completedId}/remove")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsDelete))]
     public async Task<string> UnCompleteLevel([FromRoute] int completedId)
     {
         await this.levelService.UnCompleteLevel(completedId);
@@ -86,14 +86,14 @@ public class LevelController : ControllerBase
     }
     
     [HttpPost("completed/create")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsCreate))]
     public async Task<LevelCompleted> CreateCompletedLevel([FromBody] CreateLevelCompletedRequest request)
     {
         return await this.levelService.CreateLevelCompleted(request);
     }
     
     [HttpDelete("completed/remove")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsDelete))]
     public async Task<string> RemoveCompletedLevel([FromQuery] RemoveLevelCompletedRequest request)
     {
         await this.levelService.RemoveLevelCompleted(request);
@@ -101,7 +101,7 @@ public class LevelController : ControllerBase
     }
     
     [HttpDelete("favorite/remove")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsDelete))]
     public async Task<string> RemoveLevelFavorite([FromQuery] RemoveLevelFavoriteRequest request)
     {
         await this.levelService.RemoveLevelFavorite(request);
@@ -123,14 +123,14 @@ public class LevelController : ControllerBase
     }
     
     [HttpPut("completed/update")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<LevelCompleted> UpdateLevelCompleted([FromBody] UpdateLevelCompletedRequest request)
     {
         return await this.levelService.UpdateLevelCompleted(request);
     }
     
     [HttpPost("completed/update-image")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<string> UpdateCompletedImage([FromQuery] int completedId, IFormFile formFile)
     {
         await this.levelService.UpdateLevelCompletedImage(completedId, formFile);
@@ -138,7 +138,7 @@ public class LevelController : ControllerBase
     }
     
     [HttpPost("tags/create")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<string> CreateLevelTag([FromBody] CreateLevelTagRequest request)
     {
         await this.levelService.CreateLevelTag(request);
@@ -146,7 +146,7 @@ public class LevelController : ControllerBase
     }
     
     [HttpDelete("tags/remove")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<string> RemoveLevelTag([FromQuery] RemoveLevelTagRequest request)
     {
         await this.levelService.RemoveLevelTag(request);
@@ -154,7 +154,7 @@ public class LevelController : ControllerBase
     }
     
     [HttpPost("{levelId}/favorites/favorite")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsCreate))]
     public async Task<string> FavoriteLevel([FromRoute] int levelId)
     {
         await this.levelService.FavoriteLevel(levelId);
@@ -162,7 +162,7 @@ public class LevelController : ControllerBase
     }
     
     [HttpDelete("{levelId}/favorites/delete")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsDelete))]
     public async Task<string> UnFavoriteLevel([FromRoute] int levelId)
     {
         await this.levelService.UnFavoriteLevel(levelId);
@@ -170,14 +170,14 @@ public class LevelController : ControllerBase
     }
     
     [HttpPut("set-tags")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<Level> SetLevelTags([FromBody] LevelTagsSetRequest request)
     {
         return await this.levelService.SetLevelTags(request);
     }
     
     [HttpPut("set-note")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<Level> SetLevelNote([FromBody] LevelNoteSetRequest request)
     {
         return await this.levelService.SetLevelNote(request);
@@ -191,21 +191,21 @@ public class LevelController : ControllerBase
     }
 
     [HttpPost("notes/create")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsCreate))]
     public async Task<LevelNote> CreateNote([FromBody] CreateLevelNoteRequest request)
     {
         return await this.levelService.CreateLevelNote(request);
     }
 
     [HttpPut("notes/update")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<LevelNote> UpdateNote([FromBody] UpdateLevelNoteRequest request)
     {
         return await this.levelService.UpdateLevelNote(request);
     }
 
     [HttpDelete("notes/remove")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsDelete))]
     public async Task<string> RemoveNotes([FromQuery] RemoveLevelNotesRequest request)
     {
         await this.levelService.RemoveLevelNotes(request);
@@ -213,7 +213,7 @@ public class LevelController : ControllerBase
     }
     
     [HttpPost("favorite/create")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsCreate))]
     public async Task<string> CreateLevelFavorite([FromBody] CreateLevelFavoriteRequest request)
     {
         await this.levelService.CreateLevelFavorite(request);
@@ -221,7 +221,7 @@ public class LevelController : ControllerBase
     }
 
     [HttpPut("favorite/update")]
-    [Authorize(Policy = nameof(Policy.LevelsWrite))]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<LevelFavorite> UpdateLevelFavorite([FromBody] UpdateLevelFavoriteRequest request)
     {
         return await this.levelService.UpdateLevelFavorite(request);

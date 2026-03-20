@@ -8,7 +8,10 @@ using Mouse.NET.Users.Data;
 using Mouse.NET.Users.Models;
 using Mouse.NET.Users.Audit.Models;
 using Mouse.NET.Users.Audit.Services;
+using Mouse.NET.Roles.Models;
+using Mouse.NET.Roles.services;
 using Mouse.Stick.Controllers.Auth;
+using Mouse.NET.Users.Common;
 
 namespace Mouse.NET.Users.services;
 
@@ -17,21 +20,32 @@ public class UserService : IUserService
     
     private readonly IMapper mapper;
     private readonly IUserRepository userRepository;
+    private readonly IRoleService roleService;
     private readonly IStorageService storageService;
     private readonly IAuthService authService;
     private readonly IAuditLogWriter auditLogWriter;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
     public UserService(
         IMapper mapper,
         IUserRepository userRepository,
+        IRoleService roleService,
         IStorageService storageService,
         IAuthService authService,
-        IAuditLogWriter auditLogWriter) {
+        IAuditLogWriter auditLogWriter,
+        IHttpContextAccessor httpContextAccessor) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
         this.storageService = storageService;
         this.mapper = mapper;
         this.authService = authService;
         this.auditLogWriter = auditLogWriter;
+        this.httpContextAccessor = httpContextAccessor;
+    }
+
+    private bool HasPolicy(string key)
+    {
+        return this.httpContextAccessor.HttpContext?.User?.HasClaim("policy", key) == true;
     }
     
     public async Task<PagedResult<User>> GetUserCollection(UserCollectionGetRequest request)
@@ -81,9 +95,25 @@ public class UserService : IUserService
             userExists.Avatar = request.Avatar;
         }
 
-        if (request.Role != null)
+        if (!string.IsNullOrWhiteSpace(request.Role))
         {
-            userExists.Role = request.Role;
+            var desiredRole = request.Role.Trim();
+            if (!string.Equals(userExists.Role, desiredRole, StringComparison.Ordinal))
+            {
+                if (!HasPolicy(nameof(Policy.RolesUpdate)))
+                {
+                    throw new ApiForbiddenException(
+                        name: "NoRights",
+                        messages: new[] { "Нет прав на смену роли пользователя" });
+                }
+
+                await this.roleService.AssignRoleToUser(new AssignRoleToUserRequest
+                {
+                    UserId = request.Id,
+                    RoleName = desiredRole,
+                });
+                userExists.Role = desiredRole;
+            }
         }
 
         var updated = await this.userRepository.UpdateUser(userExists);

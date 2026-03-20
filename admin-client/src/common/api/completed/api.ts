@@ -26,7 +26,8 @@ class CompletedApi {
 
   public getByLevelId(levelId: number): Promise<CollectCompletedResponse> {
     return this.http.get({
-      url: `${CompletedUrls[CompletedEndpoints.ByLevelId]}/${levelId}`,
+      url: CompletedUrls[CompletedEndpoints.ByLevelId],
+      params: { levelId },
     });
   }
 
@@ -47,7 +48,8 @@ class CompletedApi {
 
   public updateImage(request: UpdateCompletedImageRequest): Promise<UpdateCompletedResponse> {
     return this.http.post({
-      url: `${CompletedUrls[CompletedEndpoints.UpdateImage]}/${request.id}`,
+      url: CompletedUrls[CompletedEndpoints.UpdateImage],
+      params: { completedId: request.id },
       file: request.image
     });
   }

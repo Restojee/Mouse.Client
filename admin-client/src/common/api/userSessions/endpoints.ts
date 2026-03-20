@@ -3,5 +3,5 @@ export enum UserSessionEndpoints {
 }
 
 export const UserSessionUrls: Record<UserSessionEndpoints, string> = {
-  [UserSessionEndpoints.Collect]: 'user-sessions/collect',
+  [UserSessionEndpoints.Collect]: 'admin/user-sessions/collect',
 };

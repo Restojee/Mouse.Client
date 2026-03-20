@@ -17,7 +17,7 @@ export class UserSessionsActions {
   public async loadPage(
     page: number,
     size: number,
-    filters?: QueryParams<{ userId?: number; success?: boolean }>,
+    filters?: QueryParams<{ userId?: number; success?: boolean; sortField?: string; sortDirection?: 'asc' | 'desc' }>,
   ): Promise<{ rows: UserSessionData[]; totalItems: number; totalPages: number; pageSize: number; page: number }> {
     const resp = await this.api.collect({
       page,
@@ -25,6 +25,8 @@ export class UserSessionsActions {
       query: filters?.query,
       userId: filters?.userId,
       success: filters?.success,
+      sortField: filters?.sortField,
+      sortDirection: filters?.sortDirection,
     });
 
     this.dataAccess.setAll(resp.records);

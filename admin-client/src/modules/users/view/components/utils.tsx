@@ -8,15 +8,7 @@ import { Row } from '@ui/Layout';
 import { EditableImagePreview } from '@common/components/DataTreeTable/components/EditableImagePreview';
 import { Avatar } from '@ui/Avatar';
 import { selectable } from '@ui/DataTreeTable';
-import RoleSelect from '@common/components/RoleSelect/RoleSelect';
-
-const ROLE_LABELS: Record<string, string> = {
-  user: 'Пользователь',
-  moder: 'Модератор',
-  admin: 'Администратор',
-  readonly: 'Только чтение',
-  system_admin: 'Системный администратор',
-};
+import { RoleSelect } from '@common/components/RoleSelect';
 
 export const getUserColumns = (options: { storageUrl: string; onAvatarUpdate: (userId: number, file: File) => void }): DataTreeColumnDef<UserData>[] => ([
   {
@@ -24,20 +16,17 @@ export const getUserColumns = (options: { storageUrl: string; onAvatarUpdate: (u
     header: 'Пользователь',
     size: 0.4,
     enableSorting: true,
-    accessorFn: (row) => {
-      return (
-        <Row gap="sm" style={{ alignItems: 'center' }}>
-          <Avatar
-            
-          />
-          <Typography>{row.data.username}</Typography>
-        </Row>
-      );
-    },
+    accessorFn: (row) => row.data.username,
+    cell: (ctx) => (
+      <Row gap="sm" style={{ alignItems: 'center' }}>
+        <Avatar />
+        <Typography>{ctx.row.original.data.username}</Typography>
+      </Row>
+    ),
   },
   {
     id: 'role',
-    accessorFn: (row) => ROLE_LABELS[row.data.role] || row.data.role,
+    accessorFn: (row) => row.data.role,
     header: 'Роль',
     size: 0.15,
     enableSorting: true,
@@ -56,6 +45,7 @@ export const getUserColumns = (options: { storageUrl: string; onAvatarUpdate: (u
     accessorFn: (row) => row.data.createdUtcDate,
     header: 'Дата создания',
     size: 0.15,
+    enableSorting: true,
   },
 ]);
 

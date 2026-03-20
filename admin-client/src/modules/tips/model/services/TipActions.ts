@@ -61,14 +61,14 @@ export class TipActions {
   }
 
   @AsyncAction()
-  public async loadTips(page?: number, size?: number, search?: string): Promise<{ 
+  public async loadTips(page?: number, size?: number, search?: string, sortField?: string, sortDirection?: 'asc' | 'desc'): Promise<{ 
     data: TipData[];
     page: number;
     pageSize: number;
     totalItems: number;
     totalPages: number;
   }> {
-    const response = await this.tipsApi.collect({ page, size, search });
+    const response = await this.tipsApi.collect({ page, size, search, sortField, sortDirection });
 
     this.dataAccess.entityManager.setAll(response.records);
     

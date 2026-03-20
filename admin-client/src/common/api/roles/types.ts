@@ -21,10 +21,13 @@ export interface RolePolicyPermissionResponse {
   granted: boolean;
 }
 
+export type PolicyGroup = 'Moder' | 'Owner' | 'System';
+
 export interface RolePolicyInfoResponse {
   key: string;
   name: string;
   label: string;
+  group: PolicyGroup;
   permissions: RolePolicyPermissionResponse[];
 }
 

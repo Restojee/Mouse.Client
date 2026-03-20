@@ -67,12 +67,18 @@ public class LevelService : ILevelService
 
     public async Task<Level> UpdateLevel(LevelUpdateRequest request)
     {
-        var levelExists = await this.levelRepository.GetLevel(request.Id, this.authService.GetAuthorizedUserId());
+        var levelExists = await this.levelRepository.GetLevel(request.Id);
         if (levelExists == null)
         {
             throw new ApiNotFoundException(
                 name: "LevelNotFound",
                 messages: new[] { "Запрашиваемая карта не найдена" });
+        }
+        if (levelExists.UserId != this.authService.GetAuthorizedUserId())
+        {
+            throw new ApiForbiddenException(
+                name: "Forbidden",
+                messages: new[] { "Нет доступа к редактированию этой карты" });
         }
         return this.mapper.Map<LevelEntity, Level>(await this.levelRepository.UpdateLevel(this.mapper.Map(request, levelExists)));
     }
@@ -85,6 +91,12 @@ public class LevelService : ILevelService
             throw new ApiNotFoundException(
                 name: "LevelNotFound",
                 messages: new[] { "Запрашиваемая карта не найдена" });
+        }
+        if (levelExists.UserId != this.authService.GetAuthorizedUserId())
+        {
+            throw new ApiForbiddenException(
+                name: "Forbidden",
+                messages: new[] { "Нет доступа к удалению этой карты" });
         }
         await this.levelRepository.DeleteLevel(levelExists);
         return "Ok";
@@ -135,16 +147,39 @@ public class LevelService : ILevelService
         var notes = await this.levelRepository.CollectLevelNotes(request.UserId, request.LevelId);
 
         var query = (request.Query ?? string.Empty).Trim().ToLowerInvariant();
-        if (!string.IsNullOrWhiteSpace(query))
+        var filtered = string.IsNullOrWhiteSpace(query) 
+            ? notes
+            : notes.Where(n =>
+                (n.Text != null && n.Text.ToLowerInvariant().Contains(query)) ||
+                (n.Level != null && n.Level.Name != null && n.Level.Name.ToLowerInvariant().Contains(query)) ||
+                (n.User != null && n.User.UserName != null && n.User.UserName.ToLowerInvariant().Contains(query))
+            ).ToList();
+
+        filtered = ApplyNoteSorting(filtered, request);
+
+        return mapper.Map<List<LevelNoteEntity>, List<LevelNote>>(filtered);
+    }
+
+    private static List<LevelNoteEntity> ApplyNoteSorting(List<LevelNoteEntity> notes, LevelNoteCollectRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
         {
-            notes = notes
-                .Where(n => (n.Text ?? string.Empty).ToLowerInvariant().Contains(query)
-                            || (n.User?.UserName ?? string.Empty).ToLowerInvariant().Contains(query)
-                            || (n.Level?.Name ?? string.Empty).ToLowerInvariant().Contains(query))
-                .ToList();
+            return notes.OrderByDescending(x => x.CreatedUtcDate).ToList();
         }
 
-        return this.mapper.Map<List<LevelNoteEntity>, List<LevelNote>>(notes);
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "level" => isDesc ? notes.OrderByDescending(x => x.Level.Name).ToList() : notes.OrderBy(x => x.Level.Name).ToList(),
+            "user" => isDesc ? notes.OrderByDescending(x => x.User.UserName).ToList() : notes.OrderBy(x => x.User.UserName).ToList(),
+            "description" => isDesc ? notes.OrderByDescending(x => x.Text).ToList() : notes.OrderBy(x => x.Text).ToList(),
+            "createdUtcDate" => isDesc ? notes.OrderByDescending(x => x.CreatedUtcDate).ToList() : notes.OrderBy(x => x.CreatedUtcDate).ToList(),
+            _ => notes.OrderByDescending(x => x.CreatedUtcDate).ToList(),
+        };
     }
 
     public async Task<LevelNote> CreateLevelNote(CreateLevelNoteRequest request)
@@ -157,7 +192,8 @@ public class LevelService : ILevelService
                 messages: new[] { "Запрашиваемая карта не найдена" });
         }
 
-        var userExists = await this.userRepository.GetUser(request.UserId);
+        var userId = request.UserId ?? this.authService.GetAuthorizedUserId().GetValueOrDefault();
+        var userExists = await this.userRepository.GetUser(userId);
         if (userExists == null)
         {
             throw new ApiNotFoundException(
@@ -168,7 +204,7 @@ public class LevelService : ILevelService
         var note = new LevelNoteEntity
         {
             LevelId = request.LevelId,
-            UserId = request.UserId,
+            UserId = userId,
             Text = request.Text,
         };
 
@@ -310,6 +346,12 @@ public class LevelService : ILevelService
                 name: "LevelNotFound",
                 messages: new[] { "Запрашиваемая карта не найдена" });
         }
+        if (levelExists.UserId != this.authService.GetAuthorizedUserId())
+        {
+            throw new ApiForbiddenException(
+                name: "Forbidden",
+                messages: new[] { "Нет доступа к редактированию этой карты" });
+        }
         levelExists.Image = await this.storageService.Upload(file);
         await this.levelRepository.UpdateLevel(levelExists);
     }
@@ -328,12 +370,13 @@ public class LevelService : ILevelService
                 name: "LevelNotFound",
                 messages: new[] { "Запрашиваемая карта не найдена" });
         }
+        var userId = request.UserId ?? this.authService.GetAuthorizedUserId().GetValueOrDefault();
         return this.mapper.Map<LevelCompletedEntity, LevelCompleted>(
             await this.levelRepository.CompleteLevel(new LevelCompletedEntity
             {
                 Description = request.Description,
                 LevelId = request.LevelId,
-                UserId = request.UserId,
+                UserId = userId,
                 Image = "",
             }));
     }
@@ -345,7 +388,8 @@ public class LevelService : ILevelService
 
     public async Task CreateLevelTag(CreateLevelTagRequest request)
     {
-        await this.levelRepository.CreateLevelTags(request.LevelIds, request.TagIds, request.UserId);
+        var userId = request.UserId ?? this.authService.GetAuthorizedUserId().GetValueOrDefault();
+        await this.levelRepository.CreateLevelTags(request.LevelIds, request.TagIds, userId);
     }
     
     public async Task RemoveLevelTag(RemoveLevelTagRequest request)
@@ -403,7 +447,8 @@ public class LevelService : ILevelService
 
     public async Task CreateLevelFavorite(CreateLevelFavoriteRequest request)
     {
-        await this.levelRepository.CreateLevelFavorite(request.LevelIds, request.UserId);
+        var userId = request.UserId ?? this.authService.GetAuthorizedUserId().GetValueOrDefault();
+        await this.levelRepository.CreateLevelFavorite(request.LevelIds, userId);
     }
 
     public async Task<LevelFavorite> UpdateLevelFavorite(UpdateLevelFavoriteRequest request)
@@ -431,5 +476,43 @@ public class LevelService : ILevelService
 
         var updated = await this.levelRepository.GetLevelFavorite(request.FavoriteId);
         return this.mapper.Map<LevelFavoriteEntity, LevelFavorite>(updated);
+    }
+
+    public async Task<Level> UpdateLevelAdmin(LevelUpdateRequest request)
+    {
+        var levelExists = await this.levelRepository.GetLevel(request.Id);
+        if (levelExists == null)
+        {
+            throw new ApiNotFoundException(
+                name: "LevelNotFound",
+                messages: new[] { "Запрашиваемая карта не найдена" });
+        }
+        return this.mapper.Map<LevelEntity, Level>(await this.levelRepository.UpdateLevel(this.mapper.Map(request, levelExists)));
+    }
+
+    public async Task<string> DeleteLevelAdmin(int levelId)
+    {
+        var levelExists = await this.levelRepository.GetLevel(levelId);
+        if (levelExists == null)
+        {
+            throw new ApiNotFoundException(
+                name: "LevelNotFound",
+                messages: new[] { "Запрашиваемая карта не найдена" });
+        }
+        await this.levelRepository.DeleteLevel(levelExists);
+        return "Ok";
+    }
+
+    public async Task UpdateLevelImageAdmin(int levelId, IFormFile file)
+    {
+        var levelExists = await this.levelRepository.GetLevel(levelId);
+        if (levelExists == null)
+        {
+            throw new ApiNotFoundException(
+                name: "LevelNotFound",
+                messages: new[] { "Запрашиваемая карта не найдена" });
+        }
+        levelExists.Image = await this.storageService.Upload(file);
+        await this.levelRepository.UpdateLevel(levelExists);
     }
 }

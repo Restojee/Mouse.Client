@@ -15,12 +15,14 @@ export class NotesActions {
   public async loadPage(
     page: number,
     size: number,
-    filters?: QueryParams<{ levelId?: number; userId?: number }>
+    filters?: QueryParams<{ levelId?: number; userId?: number; sortField?: string; sortDirection?: 'asc' | 'desc' }>
   ): Promise<{ rows: Note[]; totalItems: number; totalPages: number; pageSize: number; page: number; }> {
     const resp = await this.dataAccess.collect({
       levelId: filters?.levelId,
       userId: filters?.userId,
       query: filters?.query,
+      sortField: filters?.sortField,
+      sortDirection: filters?.sortDirection,
     });
 
     const totalItems = resp.length;

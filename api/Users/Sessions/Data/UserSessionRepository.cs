@@ -49,6 +49,32 @@ public class UserSessionRepository : IUserSessionRepository
             );
         }
 
-        return await PaginationExtensions.ToPagedResult(query.OrderByDescending(x => x.CreatedUtcDate), request.Page, request.Size);
+        query = ApplySorting(query, request);
+        return await PaginationExtensions.ToPagedResult(query, request.Page, request.Size);
+    }
+
+    private static IQueryable<UserSessionEntity> ApplySorting(IQueryable<UserSessionEntity> query, PaginateRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
+        {
+            return query.OrderByDescending(x => x.CreatedUtcDate);
+        }
+
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "userName" => isDesc ? query.OrderByDescending(x => x.User.UserName) : query.OrderBy(x => x.User.UserName),
+            "ip" => isDesc ? query.OrderByDescending(x => x.Ip) : query.OrderBy(x => x.Ip),
+            "device" => isDesc ? query.OrderByDescending(x => x.Device) : query.OrderBy(x => x.Device),
+            "success" => isDesc ? query.OrderByDescending(x => x.Success) : query.OrderBy(x => x.Success),
+            "failureReason" => isDesc ? query.OrderByDescending(x => x.FailureReason) : query.OrderBy(x => x.FailureReason),
+            "createdUtcDate" => isDesc ? query.OrderByDescending(x => x.CreatedUtcDate) : query.OrderBy(x => x.CreatedUtcDate),
+            "userAgent" => isDesc ? query.OrderByDescending(x => x.UserAgent) : query.OrderBy(x => x.UserAgent),
+            _ => query.OrderByDescending(x => x.CreatedUtcDate)
+        };
     }
 }

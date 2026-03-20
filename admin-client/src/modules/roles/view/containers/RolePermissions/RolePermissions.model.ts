@@ -15,12 +15,14 @@ const PERMISSION_LABELS: Record<string, string> = {
 };
 
 const GROUP_TITLES: Record<string, string> = {
-  crud: 'Права доступа',
-  other: 'Прочее',
+  Moder: 'Права админ. панели',
+  Owner: 'Права пользователей',
+  System: 'Прочие права',
 };
 
 const CRUD_ORDER = ['create', 'read', 'update', 'delete'] as const;
 const OTHER_ORDER = ['access'] as const;
+const GROUP_ORDER = ['Moder', 'Owner', 'System'] as const;
 
 export interface PolicyGroup {
   label: string;
@@ -44,35 +46,34 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
 
   @Computed()
   public get policyGroups(): PolicyGroup[] {
-    const groupedByLabel = new Map<string, PolicyInfo[]>();
+    const groupedByGroup = new Map<string, PolicyInfo[]>();
 
     this.policies.forEach(p => {
-      const label = p.label || 'other';
-      if (!groupedByLabel.has(label)) {
-        groupedByLabel.set(label, []);
+      const group = p.group || 'System';
+      if (!groupedByGroup.has(group)) {
+        groupedByGroup.set(group, []);
       }
-      groupedByLabel.get(label)!.push(p);
+      groupedByGroup.get(group)!.push(p);
     });
 
     const groups: PolicyGroup[] = [];
 
-    groupedByLabel.forEach((policies, label) => {
-      const permissionLabels = this.getGroupPermissionLabels(label, policies);
+    groupedByGroup.forEach((policies, group) => {
+      const permissionLabels = this.getGroupPermissionLabels(group, policies);
       const isMatrix = permissionLabels.length > 1;
 
       groups.push({
-        label,
-        title: GROUP_TITLES[label] || label,
+        label: group,
+        title: GROUP_TITLES[group] || group,
         policies,
         permissionLabels,
         isMatrix,
       });
     });
 
-    const order = new Map<string, number>([
-      ['crud', 0],
-      ['other', 1],
-    ]);
+    const order = new Map<string, number>(
+      GROUP_ORDER.map((g, i) => [g, i])
+    );
 
     return groups.sort((a, b) => (order.get(a.label) ?? 999) - (order.get(b.label) ?? 999));
   }
@@ -83,11 +84,11 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
       p.permissions.forEach(perm => labels.add(perm.label));
     });
 
-    if (groupLabel === 'crud') {
+    if (groupLabel === 'Moder' || groupLabel === 'Owner') {
       return CRUD_ORDER.filter(l => labels.has(l));
     }
 
-    if (groupLabel === 'other') {
+    if (groupLabel === 'System') {
       return OTHER_ORDER.filter(l => labels.has(l));
     }
 

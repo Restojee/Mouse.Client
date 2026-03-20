@@ -46,11 +46,13 @@ class CommentedGridModel extends ViewModel<CommentedProps> {
     super();
   }
 
-  public onPageLoad = async (page: number, pageSize: number) => {
+  public onPageLoad = async (page: number, pageSize: number, sortField?: string, sortDirection?: 'asc' | 'desc') => {
     const result = await this.actions.loadPage(page, pageSize, {
       query: this.dataAccess.filterSearchText,
       levelId: this.dataAccess.filterLevelId,
       userId: this.dataAccess.filterUserId,
+      sortField,
+      sortDirection,
     });
 
     return {

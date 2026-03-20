@@ -4,6 +4,9 @@ export interface TipCollectArgs {
   page?: number;
   size?: number;
   search?: string;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 }
 
 export interface TipCollectResponse {

@@ -15,6 +15,9 @@ export interface CollectCompletedRequest {
   userId?: number;
   page?: number;
   size?: number;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 }
 
 export type CollectCompletedResponse = Completed[]

@@ -27,12 +27,14 @@ export const getTipColumns = (): DataTreeColumnDef<TipData>[] => ([
     accessorFn: (row) => row.data.createdUtcDate,
     header: 'Добавлена',
     size: 0.1,
+    enableSorting: true,
   },
   {
     id: 'username',
     accessorFn: (row) => row.data.user.username,
     header: 'Автор',
     size: 0.1,
+    enableSorting: true,
   },
 ])
 

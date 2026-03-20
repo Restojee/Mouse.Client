@@ -28,11 +28,34 @@ public class LevelRepository : ILevelRepository
         {
             favoritesQuery = favoritesQuery.Where(favorite => favorite.User.Id == request.userId);
         }
+        favoritesQuery = ApplyFavoriteSorting(favoritesQuery, request);
+
         return await favoritesQuery
             .Include(favorite => favorite.User)
             .Include(favorite => favorite.Level)
-            .OrderBy(favorite => favorite.CreatedUtcDate)
             .ToListAsync();
+    }
+
+    private static IQueryable<LevelFavoriteEntity> ApplyFavoriteSorting(IQueryable<LevelFavoriteEntity> query, FavoriteCollectRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
+        {
+            return query.OrderByDescending(x => x.CreatedUtcDate);
+        }
+
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "level" => isDesc ? query.OrderByDescending(x => x.Level.Name) : query.OrderBy(x => x.Level.Name),
+            "user" => isDesc ? query.OrderByDescending(x => x.User.UserName) : query.OrderBy(x => x.User.UserName),
+            "description" => isDesc ? query.OrderByDescending(x => x.Description) : query.OrderBy(x => x.Description),
+            "createdUtcDate" => isDesc ? query.OrderByDescending(x => x.CreatedUtcDate) : query.OrderBy(x => x.CreatedUtcDate),
+            _ => query.OrderByDescending(x => x.CreatedUtcDate)
+        };
     }
 
     public async Task<List<LevelCompletedEntity>> GetLevelCompletedCollection(CompletedCollectRequest request)
@@ -46,11 +69,34 @@ public class LevelRepository : ILevelRepository
         {
             completedQuery = completedQuery.Where(completed => completed.User.Id == request.userId);
         }
+        completedQuery = ApplyCompletedSorting(completedQuery, request);
+
         return await completedQuery
             .Include(completed => completed.User)
             .Include(completed => completed.Level)
-            .OrderByDescending(completed => completed.CreatedUtcDate)
             .ToListAsync();
+    }
+
+    private static IQueryable<LevelCompletedEntity> ApplyCompletedSorting(IQueryable<LevelCompletedEntity> query, CompletedCollectRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
+        {
+            return query.OrderByDescending(x => x.CreatedUtcDate);
+        }
+
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "level" => isDesc ? query.OrderByDescending(x => x.Level.Name) : query.OrderBy(x => x.Level.Name),
+            "user" => isDesc ? query.OrderByDescending(x => x.User.UserName) : query.OrderBy(x => x.User.UserName),
+            "description" => isDesc ? query.OrderByDescending(x => x.Description) : query.OrderBy(x => x.Description),
+            "createdUtcDate" => isDesc ? query.OrderByDescending(x => x.CreatedUtcDate) : query.OrderBy(x => x.CreatedUtcDate),
+            _ => query.OrderByDescending(x => x.CreatedUtcDate)
+        };
     }
 
     public async Task<PagedResult<LevelEntity>> GetLevelCollection(LevelCollectionGetRequest request)
@@ -115,9 +161,35 @@ public class LevelRepository : ILevelRepository
             query = LevelRepositoryFilters.GetFilterByCommentQuery(this.context, query, request.UserId.GetValueOrDefault());
         }
 
-        var levels = await PaginationExtensions.ToPagedResult(query.OrderByDescending(level => level.CreatedUtcDate), request.Page, request.Size);
+        query = ApplySorting(query, request);
+
+        var levels = await PaginationExtensions.ToPagedResult(query, request.Page, request.Size);
 
         return levels;
+    }
+
+    private static IQueryable<LevelEntity> ApplySorting(IQueryable<LevelEntity> query, LevelCollectionGetRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
+        {
+            return query.OrderByDescending(level => level.CreatedUtcDate);
+        }
+
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "name" => isDesc ? query.OrderByDescending(x => x.Name) : query.OrderBy(x => x.Name),
+            "description" => isDesc ? query.OrderByDescending(x => x.Description) : query.OrderBy(x => x.Description),
+            "image" => isDesc ? query.OrderByDescending(x => x.Image) : query.OrderBy(x => x.Image),
+            "createdUtcDate" => isDesc ? query.OrderByDescending(x => x.CreatedUtcDate) : query.OrderBy(x => x.CreatedUtcDate),
+            "modifiedUtcDate" => isDesc ? query.OrderByDescending(x => x.ModifiedUtcDate) : query.OrderBy(x => x.ModifiedUtcDate),
+            "username" => isDesc ? query.OrderByDescending(x => x.User.UserName) : query.OrderBy(x => x.User.UserName),
+            _ => query.OrderByDescending(level => level.CreatedUtcDate)
+        };
     }
     
     public async Task<LevelEntity?> GetLevel(int levelId, int? userId = null)

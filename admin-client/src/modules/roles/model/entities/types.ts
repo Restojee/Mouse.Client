@@ -4,10 +4,13 @@ export interface PolicyPermission {
   granted: boolean;
 }
 
+export type PolicyGroupType = 'Moder' | 'Owner' | 'System';
+
 export interface PolicyInfo {
   key: string;
   name: string;
   label: string;
+  group: PolicyGroupType;
   permissions: PolicyPermission[];
 }
 

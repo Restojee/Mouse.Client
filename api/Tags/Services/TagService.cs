@@ -24,7 +24,28 @@ public class TagService : ITagService
     
     public async Task<ICollection<Tag>> GetTagCollection()
     {
-        return mapper.Map<ICollection<TagEntity>, ICollection<Tag>>(await this.tagRepository.GetTagCollection());
+        var tags = mapper.Map<ICollection<TagEntity>, List<Tag>>(await this.tagRepository.GetTagCollection());
+
+        var byId = tags.ToDictionary(x => x.Id);
+        foreach (var tag in tags)
+        {
+            tag.Childs ??= new List<Tag>();
+        }
+
+        var roots = new List<Tag>();
+        foreach (var tag in tags)
+        {
+            if (tag.ParentTagId.HasValue && byId.TryGetValue(tag.ParentTagId.Value, out var parent))
+            {
+                parent.Childs.Add(tag);
+            }
+            else
+            {
+                roots.Add(tag);
+            }
+        }
+
+        return roots;
     }
 
     public async Task<Tag> GetTag(int tagId)

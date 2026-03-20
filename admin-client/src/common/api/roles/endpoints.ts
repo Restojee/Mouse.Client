@@ -9,11 +9,11 @@ export enum RoleEndpoints {
 }
 
 export const RoleUrls: Record<RoleEndpoints, string> = {
-  [RoleEndpoints.Collect]: 'roles/collect',
-  [RoleEndpoints.Get]: 'roles',
-  [RoleEndpoints.Create]: 'roles/create',
-  [RoleEndpoints.Update]: 'roles/update',
-  [RoleEndpoints.Delete]: 'roles',
-  [RoleEndpoints.SetPermissions]: 'roles/permissions/set',
-  [RoleEndpoints.AssignToUser]: 'roles/assign-to-user',
+  [RoleEndpoints.Collect]: 'admin/roles/collect',
+  [RoleEndpoints.Get]: 'admin/roles',
+  [RoleEndpoints.Create]: 'admin/roles/create',
+  [RoleEndpoints.Update]: 'admin/roles/update',
+  [RoleEndpoints.Delete]: 'admin/roles',
+  [RoleEndpoints.SetPermissions]: 'admin/roles/permissions/set',
+  [RoleEndpoints.AssignToUser]: 'admin/roles/assign-to-user',
 };

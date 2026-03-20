@@ -29,9 +29,32 @@ public class TipRepository : ITipRepository
             );
         }
 
-        return await PaginationExtensions.ToPagedResult(
-            query.OrderByDescending(tip => tip.CreatedUtcDate),
-            request.Page, request.Size);
+        query = ApplySorting(query, request);
+
+        return await PaginationExtensions.ToPagedResult(query, request.Page, request.Size);
+    }
+
+    private static IQueryable<TipEntity> ApplySorting(IQueryable<TipEntity> query, PaginateRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
+        {
+            return query.OrderByDescending(x => x.CreatedUtcDate);
+        }
+
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "title" => isDesc ? query.OrderByDescending(x => x.Title) : query.OrderBy(x => x.Title),
+            "text" => isDesc ? query.OrderByDescending(x => x.Text) : query.OrderBy(x => x.Text),
+            "createdUtcDate" => isDesc ? query.OrderByDescending(x => x.CreatedUtcDate) : query.OrderBy(x => x.CreatedUtcDate),
+            "modifiedUtcDate" => isDesc ? query.OrderByDescending(x => x.ModifiedUtcDate) : query.OrderBy(x => x.ModifiedUtcDate),
+            "username" => isDesc ? query.OrderByDescending(x => x.User.UserName) : query.OrderBy(x => x.User.UserName),
+            _ => query.OrderByDescending(x => x.CreatedUtcDate)
+        };
     }
     
     public async Task<TipEntity?> GetTip(int tipId)

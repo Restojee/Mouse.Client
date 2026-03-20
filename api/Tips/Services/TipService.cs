@@ -93,4 +93,17 @@ public class TipService : ITipService
         await this.tipRepository.DeleteTip(tipExists);
         return "Ok";
     }
+
+    public async Task<string> DeleteTipAdmin(int tipId)
+    {
+        var tipExists = await this.tipRepository.GetTip(tipId);
+        if (tipExists == null)
+        {
+            throw new ApiNotFoundException(
+                name: "TipNotFound",
+                messages: new[] { "Запрашиваемая информация не найдена" });
+        }
+        await this.tipRepository.DeleteTip(tipExists);
+        return "Ok";
+    }
 }

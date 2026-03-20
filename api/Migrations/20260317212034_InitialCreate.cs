@@ -13,6 +13,22 @@ namespace Mouse.NET.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true),
+                    is_system = table.Column<bool>(type: "boolean", nullable: false),
+                    created_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -22,6 +38,7 @@ namespace Mouse.NET.Migrations
                     modified_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     salt = table.Column<byte[]>(type: "bytea", nullable: false),
                     avatar = table.Column<string>(type: "text", nullable: true),
+                    role = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "text", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
@@ -43,22 +60,47 @@ namespace Mouse.NET.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "role_policy_bindings",
+                columns: table => new
+                {
+                    role_id = table.Column<int>(type: "integer", nullable: false),
+                    policy_type = table.Column<int>(type: "integer", nullable: false),
+                    policy_key = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_role_policy_bindings", x => new { x.role_id, x.policy_type, x.policy_key });
+                    table.ForeignKey(
+                        name: "FK_role_policy_bindings_roles_role_id",
+                        column: x => x.role_id,
+                        principalTable: "roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Invites",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<int>(type: "integer", nullable: false),
+                    registered_user_id = table.Column<int>(type: "integer", nullable: true),
                     token = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: false),
                     is_used = table.Column<bool>(type: "boolean", nullable: false),
-                    expiration_date = table.Column<DateTime>(name: "expiration_date ", type: "timestamp with time zone", nullable: false),
+                    expiration_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     modified_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Invites", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invites_users_registered_user_id",
+                        column: x => x.registered_user_id,
+                        principalTable: "users",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Invites_users_user_id",
                         column: x => x.user_id,
@@ -121,6 +163,7 @@ namespace Mouse.NET.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
+                    parent_tag_id = table.Column<int>(type: "integer", nullable: true),
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     created_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     modified_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -128,6 +171,12 @@ namespace Mouse.NET.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tags_tags_parent_tag_id",
+                        column: x => x.parent_tag_id,
+                        principalTable: "tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_tags_users_user_id",
                         column: x => x.user_id,
@@ -157,6 +206,63 @@ namespace Mouse.NET.Migrations
                         principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_audit_logs",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    actor_user_id = table.Column<int>(type: "integer", nullable: true),
+                    target_user_id = table.Column<int>(type: "integer", nullable: true),
+                    action = table.Column<string>(type: "text", nullable: false),
+                    entity_type = table.Column<string>(type: "text", nullable: true),
+                    entity_id = table.Column<string>(type: "text", nullable: true),
+                    ip = table.Column<string>(type: "text", nullable: true),
+                    user_agent = table.Column<string>(type: "text", nullable: true),
+                    metadata_json = table.Column<string>(type: "text", nullable: true),
+                    created_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    modified_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_audit_logs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_user_audit_logs_users_actor_user_id",
+                        column: x => x.actor_user_id,
+                        principalTable: "users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_user_audit_logs_users_target_user_id",
+                        column: x => x.target_user_id,
+                        principalTable: "users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_sessions",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: true),
+                    ip = table.Column<string>(type: "text", nullable: true),
+                    user_agent = table.Column<string>(type: "text", nullable: true),
+                    device = table.Column<string>(type: "text", nullable: true),
+                    success = table.Column<bool>(type: "boolean", nullable: false),
+                    failure_reason = table.Column<string>(type: "text", nullable: true),
+                    created_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    modified_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_sessions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_user_sessions_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -253,6 +359,7 @@ namespace Mouse.NET.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     level_id = table.Column<int>(type: "integer", nullable: false),
                     user_id = table.Column<int>(type: "integer", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true),
                     created_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     modified_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -309,7 +416,10 @@ namespace Mouse.NET.Migrations
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     level_id = table.Column<int>(type: "integer", nullable: false),
-                    tag_id = table.Column<int>(type: "integer", nullable: false)
+                    tag_id = table.Column<int>(type: "integer", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: true),
+                    created_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    modified_utc_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -326,7 +436,17 @@ namespace Mouse.NET.Migrations
                         principalTable: "tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_level_tag_relations_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invites_registered_user_id",
+                table: "Invites",
+                column: "registered_user_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invites_user_id",
@@ -342,6 +462,11 @@ namespace Mouse.NET.Migrations
                 name: "IX_level_tag_relations_tag_id",
                 table: "level_tag_relations",
                 column: "tag_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_level_tag_relations_user_id",
+                table: "level_tag_relations",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_level_visits_level_id",
@@ -404,6 +529,11 @@ namespace Mouse.NET.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tags_parent_tag_id",
+                table: "tags",
+                column: "parent_tag_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tags_user_id",
                 table: "tags",
                 column: "user_id");
@@ -411,6 +541,21 @@ namespace Mouse.NET.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_tips_user_id",
                 table: "tips",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_audit_logs_actor_user_id",
+                table: "user_audit_logs",
+                column: "actor_user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_audit_logs_target_user_id",
+                table: "user_audit_logs",
+                column: "target_user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_sessions_user_id",
+                table: "user_sessions",
                 column: "user_id");
         }
 
@@ -442,13 +587,25 @@ namespace Mouse.NET.Migrations
                 name: "messages");
 
             migrationBuilder.DropTable(
+                name: "role_policy_bindings");
+
+            migrationBuilder.DropTable(
                 name: "tips");
+
+            migrationBuilder.DropTable(
+                name: "user_audit_logs");
+
+            migrationBuilder.DropTable(
+                name: "user_sessions");
 
             migrationBuilder.DropTable(
                 name: "tags");
 
             migrationBuilder.DropTable(
                 name: "levels");
+
+            migrationBuilder.DropTable(
+                name: "roles");
 
             migrationBuilder.DropTable(
                 name: "users");

@@ -8,6 +8,12 @@
         <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
         <LangVersion>10</LangVersion>
         <UseAppHost>false</UseAppHost>
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <NoWarn>$(NoWarn);CS8604;CS8618</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,7 +28,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
         <PackageReference Include="Minio" Version="5.0.0" />
-        <PackageReference Include="Npgsql" Version="7.0.6" />
+        <PackageReference Include="Npgsql" Version="7.0.7" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>

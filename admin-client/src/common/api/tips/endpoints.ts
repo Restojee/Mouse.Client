@@ -7,7 +7,7 @@ export enum TipEndpoints {
 
 export const TipUrls: Record<TipEndpoints, string> = {
   [TipEndpoints.Collect]: 'tips/collect',
-  [TipEndpoints.Remove]: 'tips/delete',
-  [TipEndpoints.Create]: 'tips/create',
-  [TipEndpoints.Update]: 'tips/update',
+  [TipEndpoints.Remove]: 'admin/tips/delete',
+  [TipEndpoints.Create]: 'admin/tips/create',
+  [TipEndpoints.Update]: 'admin/tips/update',
 };

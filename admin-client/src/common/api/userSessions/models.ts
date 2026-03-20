@@ -16,6 +16,9 @@ export interface CollectUserSessionsRequest {
   userId?: number;
   success?: boolean;
   query?: string;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 }
 
 export interface CollectUserSessionsResponse {

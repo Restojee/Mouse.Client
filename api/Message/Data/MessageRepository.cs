@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Mouse.NET.Common;
 using Mouse.NET.Data;
 using Mouse.NET.Data.Models;
@@ -48,7 +48,7 @@ public class MessageRepository : IMessageRepository
     {
         return await PaginationExtensions.ToPagedResult(this.context.Messages
             .Include(message => message.User)
-            .OrderBy(level => level.CreatedUtcDate)
+            .OrderByDescending(level => level.CreatedUtcDate)
             .AsQueryable(),
             request.Page,
             request.Size

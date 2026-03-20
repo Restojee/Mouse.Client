@@ -40,44 +40,22 @@ public class LevelCommentController : ControllerBase
     }
     
     [HttpPut("update")]
-    [Authorize(Policy = nameof(Policy.CommentsWrite))]
+    [Authorize(Policy = nameof(Policy.CommentsEditSelf))]
     public async Task<LevelComment> UpdateLevelComment([FromBody] LevelCommentUpdateRequest updateRequest)
     {
         return await this.levelCommentService.UpdateLevelComment(updateRequest);
     }
-
-    [HttpPut("update-admin")]
-    [Authorize(Policy = nameof(Policy.CommentsWrite))]
-    public async Task<LevelCommentRow> UpdateAdmin([FromBody] LevelCommentAdminUpdateRequest updateRequest)
-    {
-        return await this.levelCommentService.UpdateAdmin(updateRequest);
-    }
     
     [HttpPost("create")]
-    [Authorize(Policy = nameof(Policy.CommentsWrite))]
+    [Authorize(Policy = nameof(Policy.CommentsCreate))]
     public async Task<LevelComment> CreateLevelComment([FromBody] LevelCommentCreateRequest createRequest)
     {
         return await this.levelCommentService.CreateLevelComment(createRequest);
     }
 
-    [HttpPost("create-admin")]
-    [Authorize(Policy = nameof(Policy.CommentsWrite))]
-    public async Task<LevelCommentRow> CreateAdmin([FromBody] LevelCommentAdminCreateRequest createRequest)
-    {
-        return await this.levelCommentService.CreateAdmin(createRequest);
-    }
-
-    [HttpPost("delete-bulk")]
-    [Authorize(Policy = nameof(Policy.CommentsWrite))]
-    public async Task<string> DeleteBulk([FromBody] LevelCommentBulkDeleteRequest request)
-    {
-        await this.levelCommentService.DeleteBulk(request);
-        return "Ok";
-    }
-    
     [HttpDelete("remove/{levelCommentId}")]
-    [Authorize(Policy = nameof(Policy.CommentsWrite))]
-    public async Task<string> DeleteLevelComments([FromRoute] int levelCommentId)
+    [Authorize(Policy = nameof(Policy.CommentsDeleteSelf))]
+    public async Task<string> DeleteLevelComment([FromRoute] int levelCommentId)
     {
         return await this.levelCommentService.DeleteLevelComment(levelCommentId);
     }

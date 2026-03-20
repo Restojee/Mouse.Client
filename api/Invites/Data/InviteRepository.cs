@@ -49,6 +49,7 @@ public class InviteRepository : IInviteRepository
         return await this.context.Invites
             .Include(x => x.User)
             .Include(x => x.RegisteredUser)
+            .OrderByDescending(x => x.CreatedUtcDate)
             .ToListAsync();
     }
 

@@ -9,9 +9,9 @@ export enum CompletedEndpoints {
 
 export const CompletedUrls: Record<CompletedEndpoints, string> = {
   [CompletedEndpoints.Collect]: 'levels/completed/collect',
-  [CompletedEndpoints.ByLevelId]: 'levels/completed/by-level-id',
-  [CompletedEndpoints.Create]: 'levels/completed/create',
-  [CompletedEndpoints.Update]: 'levels/completed/update',
-  [CompletedEndpoints.UpdateImage]: 'levels/update-completed-image',
-  [CompletedEndpoints.Delete]: 'levels/completed/remove',
+  [CompletedEndpoints.ByLevelId]: 'levels/completed/collect',
+  [CompletedEndpoints.Create]: 'admin/levels/completed/create',
+  [CompletedEndpoints.Update]: 'admin/levels/completed/update',
+  [CompletedEndpoints.UpdateImage]: 'admin/levels/completed/update-image',
+  [CompletedEndpoints.Delete]: 'admin/levels/completed/remove',
 };

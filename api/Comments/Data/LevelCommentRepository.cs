@@ -29,7 +29,7 @@ public class LevelCommentRepository : ILevelCommentRepository
         return await commentsQuery
             .Include(comment => comment.User)
             .Include(comment => comment.Level)
-            .OrderBy(level => level.CreatedUtcDate)
+            .OrderByDescending(level => level.CreatedUtcDate)
             .ToListAsync();
     }
 
@@ -57,7 +57,31 @@ public class LevelCommentRepository : ILevelCommentRepository
             query = query.Where(c => c.Text.ToLower().Contains(q));
         }
 
-        return await PaginationExtensions.ToPagedResult(query.OrderByDescending(c => c.CreatedUtcDate), request.Page, request.Size);
+        query = ApplySorting(query, request);
+        return await PaginationExtensions.ToPagedResult(query, request.Page, request.Size);
+    }
+
+    private static IQueryable<LevelCommentEntity> ApplySorting(IQueryable<LevelCommentEntity> query, PaginateRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
+        {
+            return query.OrderByDescending(x => x.CreatedUtcDate);
+        }
+
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "level" => isDesc ? query.OrderByDescending(x => x.Level.Name) : query.OrderBy(x => x.Level.Name),
+            "user" => isDesc ? query.OrderByDescending(x => x.User.UserName) : query.OrderBy(x => x.User.UserName),
+            "text" => isDesc ? query.OrderByDescending(x => x.Text) : query.OrderBy(x => x.Text),
+            "createdUtcDate" => isDesc ? query.OrderByDescending(x => x.CreatedUtcDate) : query.OrderBy(x => x.CreatedUtcDate),
+            "modifiedUtcDate" => isDesc ? query.OrderByDescending(x => x.ModifiedUtcDate) : query.OrderBy(x => x.ModifiedUtcDate),
+            _ => query.OrderByDescending(x => x.CreatedUtcDate)
+        };
     }
     
     public async Task<LevelCommentEntity?> GetLevelComment(int levelId)

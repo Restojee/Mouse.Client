@@ -10,5 +10,9 @@ public class Tag : Auditable
     
     public string Description { get; set; }
 
+    public int? ParentTagId { get; set; }
+
     public TagShort? ParentTag { get; set; }
+
+    public ICollection<Tag> Childs { get; set; } = new List<Tag>();
 }

@@ -17,24 +17,47 @@ public class UserRepository : IUserRepository
     
     public async Task<PagedResult<UserEntity>> GetUserCollection(UserCollectionGetRequest request)
     {
-        return await PaginationExtensions.ToPagedResult(
-            this.context.Users.Select(user => new UserEntity()
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                Avatar = user.Avatar,
-                Role = user.Role,
-                CompletedCount = user.Completed.Select(c => c.Id).ToList().Count,
-                FavoritesCount = user.Favorites.Select(f => f.Id).ToList().Count,
-                LevelsCount = user.Levels.Select(l => l.Id).ToList().Count,
-                CommentsCount = user.Comments.Select(c => c.Id).ToList().Count,
-                CreatedUtcDate = user.CreatedUtcDate,
-                ModifiedUtcDate = user.ModifiedUtcDate,
-            }).OrderByDescending(user => user.CreatedUtcDate).AsQueryable(), 
-            request.Page,
-            request.Size
-        );
+        var query = this.context.Users.Select(user => new UserEntity()
+        {
+            Id = user.Id,
+            UserName = user.UserName,
+            Email = user.Email,
+            Avatar = user.Avatar,
+            Role = user.Role,
+            CompletedCount = user.Completed.Select(c => c.Id).ToList().Count,
+            FavoritesCount = user.Favorites.Select(f => f.Id).ToList().Count,
+            LevelsCount = user.Levels.Select(l => l.Id).ToList().Count,
+            CommentsCount = user.Comments.Select(c => c.Id).ToList().Count,
+            CreatedUtcDate = user.CreatedUtcDate,
+            ModifiedUtcDate = user.ModifiedUtcDate,
+        }).AsQueryable();
+
+        query = ApplySorting(query, request);
+
+        return await PaginationExtensions.ToPagedResult(query, request.Page, request.Size);
+    }
+
+    private static IQueryable<UserEntity> ApplySorting(IQueryable<UserEntity> query, PaginateRequest request)
+    {
+        var field = request.SortField;
+        var direction = request.SortDirection;
+
+        if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(direction))
+        {
+            return query.OrderByDescending(x => x.CreatedUtcDate);
+        }
+
+        var isDesc = string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase);
+
+        return field switch
+        {
+            "user" => isDesc ? query.OrderByDescending(x => x.UserName) : query.OrderBy(x => x.UserName),
+            "email" => isDesc ? query.OrderByDescending(x => x.Email) : query.OrderBy(x => x.Email),
+            "role" => isDesc ? query.OrderByDescending(x => x.Role) : query.OrderBy(x => x.Role),
+            "createdUtcDate" => isDesc ? query.OrderByDescending(x => x.CreatedUtcDate) : query.OrderBy(x => x.CreatedUtcDate),
+            "modifiedUtcDate" => isDesc ? query.OrderByDescending(x => x.ModifiedUtcDate) : query.OrderBy(x => x.ModifiedUtcDate),
+            _ => query.OrderByDescending(x => x.CreatedUtcDate)
+        };
     }
     
     public async Task<UserEntity?> GetUser(int userId)

@@ -16,7 +16,10 @@ public class RoleRepository : IRoleRepository
 
     public async Task<ICollection<RoleEntity>> GetRoleCollection()
     {
-        return await this.context.Roles.OrderBy(r => r.Name).ToListAsync();
+        return await this.context.Roles
+            .OrderByDescending(r => r.CreatedUtcDate)
+            .ThenBy(r => r.Name)
+            .ToListAsync();
     }
 
     public async Task<RoleEntity?> GetRole(int roleId)
@@ -79,43 +82,26 @@ public class RoleRepository : IRoleRepository
             .Where(x => !string.IsNullOrWhiteSpace(x))
             .Select(x => x.Trim())
             .Distinct()
-            .ToList();
+            .ToHashSet();
 
-        var defByAnyKey = PolicyRegistry.All
-            .SelectMany(d => d.AllKeys().Select(k => new { k, d }))
-            .GroupBy(x => x.k)
-            .ToDictionary(g => g.Key, g => g.First().d);
+        var allRegistryKeys = PolicyRegistry.All
+            .SelectMany(d => d.AllKeys())
+            .ToHashSet();
 
-        var scopeKeys = new HashSet<string>();
-        foreach (var key in desiredKeys)
-        {
-            if (defByAnyKey.TryGetValue(key, out var def))
-            {
-                foreach (var k in def.AllKeys())
-                {
-                    scopeKeys.Add(k);
-                }
-            }
-        }
-
-        if (scopeKeys.Count == 0)
-        {
-            foreach (var k in desiredKeys)
-            {
-                scopeKeys.Add(k);
-            }
-        }
-
-        var existingInScope = await this.context.RolePolicyBindings
-            .Where(rp => rp.RoleId == roleId && scopeKeys.Contains(rp.PolicyKey))
+        var existing = await this.context.RolePolicyBindings
+            .Where(rp => rp.RoleId == roleId && allRegistryKeys.Contains(rp.PolicyKey))
             .ToListAsync();
 
-        if (existingInScope.Count > 0)
+        var existingKeys = existing.Select(e => e.PolicyKey).ToHashSet();
+
+        var toRemove = existing.Where(e => !desiredKeys.Contains(e.PolicyKey)).ToList();
+        if (toRemove.Count > 0)
         {
-            this.context.RolePolicyBindings.RemoveRange(existingInScope);
+            this.context.RolePolicyBindings.RemoveRange(toRemove);
         }
 
-        foreach (var p in desiredKeys)
+        var toAdd = desiredKeys.Where(k => !existingKeys.Contains(k)).ToList();
+        foreach (var p in toAdd)
         {
             RolePolicyType policyType;
             if (knownPolicies.Contains(p)) policyType = RolePolicyType.Policy;

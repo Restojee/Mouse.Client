@@ -2,51 +2,63 @@ namespace Mouse.NET.Common;
 
 public enum Policy
 {
+    // Levels - admin/any operations
     LevelsCreate,
     LevelsRead,
     LevelsEdit,
     LevelsDelete,
-    LevelsWrite,
+    // Levels - self/ownership operations
+    LevelsEditSelf,
+    LevelsDeleteSelf,
 
+    // Tags - admin only (справочник)
     TagsCreate,
     TagsRead,
     TagsEdit,
     TagsDelete,
-    TagsWrite,
 
+    // Tips - admin/any operations
     TipsCreate,
     TipsRead,
     TipsEdit,
     TipsDelete,
-    TipsWrite,
+    // Tips - self/ownership operations
+    TipsEditSelf,
+    TipsDeleteSelf,
 
+    // Comments - admin/any operations
     CommentsCreate,
     CommentsRead,
     CommentsEdit,
     CommentsDelete,
-    CommentsWrite,
+    // Comments - self/ownership operations
+    CommentsEditSelf,
+    CommentsDeleteSelf,
 
+    // Messages - admin/any operations
     MessagesCreate,
     MessagesRead,
     MessagesEdit,
     MessagesDelete,
-    MessagesWrite,
+    // Messages - self/ownership operations
+    MessagesEditSelf,
+    MessagesDeleteSelf,
 
+    // Invites - admin only
     InvitesCreate,
     InvitesRead,
     InvitesEdit,
     InvitesDelete,
-    InvitesWrite,
 
+    // Users - admin only (кроме read)
     UsersCreate,
     UsersRead,
     UsersEdit,
     UsersDelete,
-    UsersWrite,
 
+    // Roles - admin only
     RolesRead,
     RolesCreate,
     RolesUpdate,
     RolesDelete,
-    RolesAll,
 }

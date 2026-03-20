@@ -15,7 +15,7 @@ export class LevelTagsActions {
   ) {}
 
   @AsyncAction()
-  public async loadPage(page: number, size: number, filters?: QueryParams<{ levelId?: number; tagId?: number; userId?: number; }>): Promise<{ rows: LevelTagBindingData[]; totalItems: number; totalPages: number; pageSize: number; page: number; }> {
+  public async loadPage(page: number, size: number, filters?: QueryParams<{ levelId?: number; tagId?: number; userId?: number; sortField?: string; sortDirection?: 'asc' | 'desc' }>): Promise<{ rows: LevelTagBindingData[]; totalItems: number; totalPages: number; pageSize: number; page: number; }> {
     const resp = await this.api.collect({
       page,
       size,
@@ -23,6 +23,8 @@ export class LevelTagsActions {
       levelId: filters?.levelId,
       tagId: filters?.tagId,
       userId: filters?.userId,
+      sortField: filters?.sortField,
+      sortDirection: filters?.sortDirection,
     });
     
     this.dataAccess.setAll(resp.records);

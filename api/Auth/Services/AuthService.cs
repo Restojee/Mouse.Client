@@ -221,7 +221,7 @@ public class AuthService: IAuthService
                 name: "InvalidCredentials",
                 messages: new[] { "Неправильный логин или пароль" });
         }
-
+        
         var (policies, otherPolicies) = await this.GetRolePolicies(userExists.Role);
         var isAllowed = otherPolicies.Contains(nameof(OtherPolicy.Administration));
         if (!isAllowed)

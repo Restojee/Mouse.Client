@@ -80,7 +80,7 @@ class LevelTagsGridModel extends ViewModel<LevelTagsProps> {
     this.tags = result;
   }
 
-  public onPageLoad = async (page: number, pageSize: number) => {
+  public onPageLoad = async (page: number, pageSize: number, sortField?: string, sortDirection?: 'asc' | 'desc') => {
     const query = this.dataAccess.filterSearchText;
 
     const result = await this.actions.loadPage(page, pageSize, {
@@ -88,6 +88,8 @@ class LevelTagsGridModel extends ViewModel<LevelTagsProps> {
       levelId: this.dataAccess.filterLevelId,
       tagId: this.dataAccess.filterTagId,
       userId: this.dataAccess.filterUserId,
+      sortField,
+      sortDirection,
     });
 
     return {

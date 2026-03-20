@@ -16,14 +16,14 @@ export class UserActions {
   ) {}
 
   @AsyncAction()
-  public async loadUsers(page: number, size: number): Promise<{
+  public async loadUsers(page: number, size: number, sortField?: string, sortDirection?: 'asc' | 'desc'): Promise<{
     data: UserData[];
     page: number;
     pageSize: number;
     totalItems: number;
     totalPages: number;
   }> {
-    const response = await this.usersApi.collect({ page, size });
+    const response = await this.usersApi.collect({ page, size, sortField, sortDirection });
 
     const users: UserData[] = response.records.map((item: User) => ({
       id: item.id,

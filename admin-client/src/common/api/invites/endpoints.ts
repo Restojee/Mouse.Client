@@ -5,7 +5,7 @@ export enum InviteEndpoints {
 }
 
 export const InviteUrls: Record<InviteEndpoints, string> = {
-  [InviteEndpoints.Collect]: 'api/invites/collect',
-  [InviteEndpoints.Create]: 'api/invites/create',
-  [InviteEndpoints.Revoke]: 'api/invites/revoke',
+  [InviteEndpoints.Collect]: 'admin/invites/collect',
+  [InviteEndpoints.Create]: 'admin/invites/create',
+  [InviteEndpoints.Revoke]: 'admin/invites/revoke',
 };

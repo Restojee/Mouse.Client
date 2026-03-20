@@ -47,10 +47,11 @@ public class LevelCommentService : ILevelCommentService
 
     public async Task<LevelCommentRow> CreateAdmin(LevelCommentAdminCreateRequest request)
     {
+        var userId = request.UserId ?? this.authService.GetAuthorizedUserId().GetValueOrDefault();
         var comment = new LevelCommentEntity
         {
             LevelId = request.LevelId,
-            UserId = request.UserId,
+            UserId = userId,
             Text = request.Text,
             CreatedUtcDate = DateTime.UtcNow,
         };

@@ -14,6 +14,9 @@ export interface CollectNotesRequest {
   userId?: number;
   levelId?: number;
   query?: string;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 }
 
 export type CollectNotesResponse = Note[];

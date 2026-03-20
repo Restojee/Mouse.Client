@@ -11,9 +11,9 @@ export enum UserEndpoints {
 export const UserUrls: Record<UserEndpoints, string> = {
   [UserEndpoints.Me]: 'users/me',
   [UserEndpoints.Collect]: 'users/collect',
-  [UserEndpoints.ByOne]: 'users/me',
-  [UserEndpoints.Create]: 'users/create',
-  [UserEndpoints.Update]: 'users/update',
-  [UserEndpoints.Delete]: 'users',
-  [UserEndpoints.UpdateAvatar]: 'users/update/avatar',
+  [UserEndpoints.ByOne]: 'users/by-one',
+  [UserEndpoints.Create]: 'admin/users/create',
+  [UserEndpoints.Update]: 'admin/users/update',
+  [UserEndpoints.Delete]: 'admin/users',
+  [UserEndpoints.UpdateAvatar]: 'users/update-my-avatar',
 };

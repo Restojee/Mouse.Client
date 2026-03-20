@@ -10,8 +10,8 @@ export enum LevelTagEndpoints {
 export const LevelTagUrls: Record<LevelTagEndpoints, string> = {
   [LevelTagEndpoints.Collect]: 'level-tags/collect',
   [LevelTagEndpoints.GetById]: 'level-tags/by-id',
-  [LevelTagEndpoints.Create]: 'level-tags/create',
-  [LevelTagEndpoints.Update]: 'level-tags/update',
-  [LevelTagEndpoints.Delete]: 'level-tags/delete',
-  [LevelTagEndpoints.Remove]: 'level-tags/remove',
+  [LevelTagEndpoints.Create]: 'admin/level-tags/create',
+  [LevelTagEndpoints.Update]: 'admin/level-tags/update',
+  [LevelTagEndpoints.Delete]: 'admin/level-tags/delete',
+  [LevelTagEndpoints.Remove]: 'admin/level-tags/remove',
 };

@@ -28,11 +28,13 @@ class UserSessionsModel extends ViewModel<UserSessionsProps> {
   @AsyncAction()
   public async initialize(): Promise<void> {}
 
-  public onPageLoad = async (page: number, pageSize: number) => {
+  public onPageLoad = async (page: number, pageSize: number, sortField?: string, sortDirection?: 'asc' | 'desc') => {
     const result = await this.actions.loadPage(page, pageSize, {
       query: this.dataAccess.filterSearchText,
       userId: this.dataAccess.filterUserId,
       success: this.dataAccess.filterSuccess,
+      sortField,
+      sortDirection,
     });
 
     return {

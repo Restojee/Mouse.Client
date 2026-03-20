@@ -61,4 +61,10 @@ public interface ILevelService
     public Task CreateLevelTag(CreateLevelTagRequest request);
     
     public Task RemoveLevelTag(RemoveLevelTagRequest request);
+
+    public Task<Level> UpdateLevelAdmin(LevelUpdateRequest updateRequest);
+
+    public Task<string> DeleteLevelAdmin(int levelId);
+
+    public Task UpdateLevelImageAdmin(int levelId, IFormFile file);
 }

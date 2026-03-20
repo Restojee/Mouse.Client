@@ -1,9 +1,11 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Mouse.NET.Common;
 using Mouse.NET.Data.Models;
 using Mouse.NET.Roles.Data;
 using Mouse.NET.Roles.Models;
 using Mouse.NET.Users.Common;
+using Mouse.NET.Users.Data;
 
 namespace Mouse.NET.Roles.services;
 
@@ -11,72 +13,73 @@ public class RoleService : IRoleService
 {
     private readonly IMapper mapper;
     private readonly IRoleRepository roleRepository;
+    private readonly IUserRepository userRepository;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
-    public RoleService(IMapper mapper, IRoleRepository roleRepository)
+    private static readonly HashSet<string> SystemPolicyKeys = PolicyRegistry.All
+        .Where(d => d.Group == PolicyGroup.System)
+        .SelectMany(d => d.AllKeys())
+        .ToHashSet(StringComparer.Ordinal);
+
+    public RoleService(IMapper mapper, IRoleRepository roleRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
     {
         this.mapper = mapper;
         this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
+        this.httpContextAccessor = httpContextAccessor;
+    }
+
+    private bool HasOtherPolicy(string key)
+    {
+        return this.httpContextAccessor.HttpContext?.User?.HasClaim("otherPolicy", key) == true;
+    }
+
+    private bool HasPolicy(string key)
+    {
+        return this.httpContextAccessor.HttpContext?.User?.HasClaim("policy", key) == true;
+    }
+
+    private static HashSet<string> GetSystemPolicyKeys()
+    {
+        return SystemPolicyKeys;
+    }
+
+    private async Task<bool> RoleHasSystemPolicies(string roleName)
+    {
+        var role = await this.roleRepository.GetRoleByName(roleName);
+        if (role == null) return false;
+
+        var policyKeys = await this.roleRepository.GetRolePolicyKeys(role.Id);
+        var systemPolicyKeys = GetSystemPolicyKeys();
+
+        return policyKeys.Any(k => systemPolicyKeys.Contains(k));
     }
 
     private static ICollection<RolePolicyInfo> BuildPolicies(ICollection<string> grantedKeys)
     {
         var granted = new HashSet<string>(grantedKeys);
 
-        return PolicyRegistry.All.Select(def =>
+        return PolicyRegistry.All.Select(def => new RolePolicyInfo
         {
-            var create = def.CreateKey != null && granted.Contains(def.CreateKey);
-            var read = def.ReadKey != null && granted.Contains(def.ReadKey);
-            var update = def.UpdateKey != null && granted.Contains(def.UpdateKey);
-            var delete = def.DeleteKey != null && granted.Contains(def.DeleteKey);
-
-            var hasCrud = def.CreateKey != null || def.ReadKey != null
-                || def.UpdateKey != null || def.DeleteKey != null;
-
-            var otherGranted = def.OtherKeys.Length > 0
-                && def.OtherKeys.All(k => granted.Contains(k));
-
-            var all = hasCrud
-                ? (def.CreateKey == null || create)
-                    && (def.ReadKey == null || read)
-                    && (def.UpdateKey == null || update)
-                    && (def.DeleteKey == null || delete)
-                : otherGranted;
-
-            return new RolePolicyInfo
+            Key = def.Key,
+            Name = def.Name,
+            Label = def.Label,
+            Group = def.Group.ToString(),
+            Permissions = def.Permissions.Select(p => new RolePolicyPermission
             {
-                Key = def.Key,
-                Name = def.Name,
-                IsCrud = def.IsCrud,
-                Create = create,
-                Read = read,
-                Update = update,
-                Delete = delete,
-                All = all,
-            };
+                Key = p.Key,
+                Label = p.Label,
+                Granted = granted.Contains(p.Key),
+            }).ToArray(),
         }).ToList();
     }
 
     private static ICollection<string> PoliciesToKeys(ICollection<RolePolicyInfo> policies)
     {
-        var keys = new List<string>();
-        var defMap = PolicyRegistry.All.ToDictionary(d => d.Key);
-
-        foreach (var policy in policies)
-        {
-            if (!defMap.TryGetValue(policy.Key, out var def)) continue;
-
-            if (policy.Create && def.CreateKey != null) keys.Add(def.CreateKey);
-            if (policy.Read && def.ReadKey != null) keys.Add(def.ReadKey);
-            if (policy.Update && def.UpdateKey != null) keys.Add(def.UpdateKey);
-            if (policy.Delete && def.DeleteKey != null) keys.Add(def.DeleteKey);
-
-            if (policy.All && def.OtherKeys.Length > 0)
-            {
-                keys.AddRange(def.OtherKeys);
-            }
-        }
-
-        return keys.Distinct().ToList();
+        return policies
+            .SelectMany(p => p.Permissions.Where(perm => perm.Granted).Select(perm => perm.Key))
+            .Distinct()
+            .ToList();
     }
 
     public async Task<ICollection<RoleCard>> GetRoleCollection()
@@ -162,6 +165,13 @@ public class RoleService : IRoleService
                 messages: new[] { "Role not found" });
         }
 
+        if (role.IsSystem)
+        {
+            throw new ApiForbiddenException(
+                name: "RoleIsSystem",
+                messages: new[] { "Нет прав на изменение системной роли" });
+        }
+
         role.Name = request.Name;
         role.Description = request.Description;
 
@@ -182,6 +192,24 @@ public class RoleService : IRoleService
             throw new ApiNotFoundException(
                 name: "RoleNotFound",
                 messages: new[] { "Role not found" });
+        }
+
+        if (role.IsSystem)
+        {
+            throw new ApiForbiddenException(
+                name: "RoleIsSystem",
+                messages: new[] { "Нет прав на удаление системной роли" });
+        }
+
+        var grantedKeys = await this.roleRepository.GetRolePolicyKeys(role.Id);
+        var systemPolicyKeys = GetSystemPolicyKeys();
+
+        var hasSystemPolicies = grantedKeys.Any(k => systemPolicyKeys.Contains(k));
+        if (hasSystemPolicies && !HasOtherPolicy(nameof(OtherPolicy.Settings)))
+        {
+            throw new ApiForbiddenException(
+                name: "NoRights",
+                messages: new[] { "Нет прав на удаление роли с системными политиками" });
         }
 
         var anyUsers = await this.roleRepository.GetUsersCountByRole(role.Name);
@@ -206,18 +234,41 @@ public class RoleService : IRoleService
                 messages: new[] { "Role not found" });
         }
 
-        var policyKeys = PoliciesToKeys(request.Policies);
-        await this.roleRepository.UpdateRolePolicies(request.RoleId, policyKeys);
+        if (role.IsSystem)
+        {
+            throw new ApiForbiddenException(
+                name: "RoleIsSystem",
+                messages: new[] { "Нет прав на изменение прав системной роли" });
+        }
+
+        var systemPolicyKeys = GetSystemPolicyKeys();
+
+        var desiredKeys = PoliciesToKeys(request.Policies);
+
+        var currentKeys = await this.roleRepository.GetRolePolicyKeys(request.RoleId);
+        var currentSet = new HashSet<string>(currentKeys, StringComparer.Ordinal);
+        var desiredSet = new HashSet<string>(desiredKeys, StringComparer.Ordinal);
+
+        var systemKeysChanged = systemPolicyKeys.Any(k => currentSet.Contains(k) != desiredSet.Contains(k));
+        if (systemKeysChanged && !HasOtherPolicy(nameof(OtherPolicy.Settings)))
+        {
+            throw new ApiForbiddenException(
+                name: "NoRights",
+                messages: new[] { "Нет прав на изменение системных политик" });
+        }
+
+        await this.roleRepository.UpdateRolePolicies(request.RoleId, desiredKeys);
         return "Ok";
     }
 
     public async Task<string> AssignRoleToUser(AssignRoleToUserRequest request)
     {
-        if (request.RoleName == RoleNames.SystemAdmin)
+        var targetUser = await this.userRepository.GetUser(request.UserId);
+        if (targetUser == null)
         {
             throw new ApiNotFoundException(
-                name: "RoleNotFound",
-                messages: new[] { "Role not found" });
+                name: "UserNotFound",
+                messages: new[] { "User not found" });
         }
 
         var roleExists = await this.roleRepository.GetRoleByName(request.RoleName);
@@ -226,6 +277,16 @@ public class RoleService : IRoleService
             throw new ApiNotFoundException(
                 name: "RoleNotFound",
                 messages: new[] { "Role not found" });
+        }
+
+        var currentRoleHasSystem = !string.IsNullOrEmpty(targetUser.Role) && await RoleHasSystemPolicies(targetUser.Role);
+        var targetRoleHasSystem = await RoleHasSystemPolicies(request.RoleName);
+
+        if ((currentRoleHasSystem || targetRoleHasSystem) && !HasOtherPolicy(nameof(OtherPolicy.Settings)))
+        {
+            throw new ApiForbiddenException(
+                name: "NoRights",
+                messages: new[] { "Нет прав на смену роли с/на системные политики" });
         }
 
         await this.roleRepository.AssignRoleToUser(request.UserId, request.RoleName);

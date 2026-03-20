@@ -36,6 +36,9 @@ export interface LevelTagCollectArgs {
   levelId?: number;
   tagId?: number;
   userId?: number;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 }
 
 export type LevelTagCollectResponse = PagedResult<LevelTagBinding>;

@@ -6,15 +6,18 @@ public class RolePolicyInfo
 
     public string Name { get; set; }
 
-    public bool IsCrud { get; set; }
+    public string Label { get; set; }
 
-    public bool Create { get; set; }
+    public string Group { get; set; }
 
-    public bool Read { get; set; }
+    public RolePolicyPermission[] Permissions { get; set; } = Array.Empty<RolePolicyPermission>();
+}
 
-    public bool Update { get; set; }
+public class RolePolicyPermission
+{
+    public string Key { get; set; }
 
-    public bool Delete { get; set; }
+    public string Label { get; set; }
 
-    public bool All { get; set; }
+    public bool Granted { get; set; }
 }

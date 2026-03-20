@@ -1,4 +1,4 @@
-﻿using Mouse.NET.Common;
+using Mouse.NET.Common;
 using Mouse.NET.Tips.Models;
 
 namespace Mouse.NET.Tips.services;
@@ -16,4 +16,6 @@ public interface ITipService
     public Task<Tip> UpdateOwnTip(TipUpdateRequest updateRequest);
     
     public Task<Tip> UpdateTip(TipUpdateRequest updateRequest);
+
+    public Task<string> DeleteTipAdmin(int tipId);
 }

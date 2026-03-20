@@ -17,5 +17,4 @@ public static class RoleNames
     public const string User = "user";
     public const string Moder = "moder";
     public const string ReadOnly = "readonly";
-    public const string SystemAdmin = "system_admin";
 }

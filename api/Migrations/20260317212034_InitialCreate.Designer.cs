@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mouse.NET.Migrations
 {
     [DbContext(typeof(MouseDbContext))]
-    [Migration("20260315195613_AddParentTagToTags")]
-    partial class AddParentTagToTags
+    [Migration("20260317212034_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -10,35 +10,35 @@ export const getUserSessionColumns = (): ColumnDef<TreeNode<UserSessionData>>[] 
     id: 'userName',
     header: 'Пользователь',
     accessorFn: (row) => row.data.userName,
-    enableSorting: false,
+    enableSorting: true,
     size: 0.2,
   },
   {
     id: 'ip',
     header: 'IP',
     accessorFn: (row) => row.data.ip,
-    enableSorting: false,
+    enableSorting: true,
     size: 0.15,
   },
   {
     id: 'device',
     header: 'Устройство',
     accessorFn: (row) => row.data.device,
-    enableSorting: false,
+    enableSorting: true,
     size: 0.15,
   },
   {
     id: 'success',
     header: 'Успех',
     accessorFn: (row) => (row.data.success ? 'Да' : 'Нет'),
-    enableSorting: false,
+    enableSorting: true,
     size: 0.08,
   },
   {
     id: 'failureReason',
     header: 'Причина',
     accessorFn: (row) => row.data.failureReason,
-    enableSorting: false,
+    enableSorting: true,
     size: 0.2,
   },
   {
@@ -50,14 +50,14 @@ export const getUserSessionColumns = (): ColumnDef<TreeNode<UserSessionData>>[] 
         <Typography size="sm">{String(info.getValue())}</Typography>
       </Row>
     ),
-    enableSorting: false,
+    enableSorting: true,
     size: 0.12,
   },
   {
     id: 'userAgent',
     header: 'User-Agent',
     accessorFn: (row) => row.data.userAgent,
-    enableSorting: false,
+    enableSorting: true,
     size: 0.3,
   },
 ]);

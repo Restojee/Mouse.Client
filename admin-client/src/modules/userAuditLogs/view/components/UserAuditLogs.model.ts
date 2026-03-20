@@ -29,12 +29,14 @@ class UserAuditLogsModel extends ViewModel<UserAuditLogsProps> {
   @AsyncAction()
   public async initialize(): Promise<void> {}
 
-  public onPageLoad = async (page: number, pageSize: number) => {
+  public onPageLoad = async (page: number, pageSize: number, sortField?: string, sortDirection?: 'asc' | 'desc') => {
     const result = await this.actions.loadPage(page, pageSize, {
       query: this.dataAccess.filterSearchText,
       actorUserId: this.dataAccess.filterActorUserId,
       targetUserId: this.dataAccess.filterTargetUserId,
       action: this.dataAccess.filterAction,
+      sortField,
+      sortDirection,
     });
 
     return {

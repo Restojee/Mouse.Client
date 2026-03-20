@@ -77,8 +77,8 @@ class UsersModel extends ViewModel<UsersViewProps> {
   }
 
   @AsyncAction()
-  public async loadUsers(page?: number, size?: number): Promise<PaginationResponse> {
-    const result = await this.actions.loadUsers(page, size);
+  public async loadUsers(page?: number, size?: number, sortField?: string, sortDirection?: 'asc' | 'desc'): Promise<PaginationResponse> {
+    const result = await this.actions.loadUsers(page, size, sortField, sortDirection);
     return {
       totalItems: result.totalItems,
       totalPages: result.totalPages,

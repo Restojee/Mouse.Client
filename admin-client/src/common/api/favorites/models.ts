@@ -13,6 +13,9 @@ export interface Favorite {
 export interface CollectFavoriteRequest {
   levelId?: number;
   userId?: number;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 }
 
 export type CollectFavoriteResponse = Favorite[]

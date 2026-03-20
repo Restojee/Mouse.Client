@@ -7,7 +7,7 @@ export enum TagEndpoints {
 
 export const TagUrls: Record<TagEndpoints, string> = {
   [TagEndpoints.Collect]: 'tags/collect',
-  [TagEndpoints.Remove]: 'tags/delete',
-  [TagEndpoints.Create]: 'tags/create',
-  [TagEndpoints.Update]: 'tags/update',
+  [TagEndpoints.Remove]: 'admin/tags/delete',
+  [TagEndpoints.Create]: 'admin/tags/create',
+  [TagEndpoints.Update]: 'admin/tags/update',
 };

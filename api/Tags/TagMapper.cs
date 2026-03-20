@@ -11,6 +11,7 @@ public class TagMapper : Profile
         CreateMap<TagEntity, TagShort>();
 
         CreateMap<TagEntity, Tag>()
+            .ForMember(x => x.ParentTagId, opt => opt.MapFrom(src => src.ParentTagId))
             .ForMember(x => x.ParentTag, opt => opt.MapFrom(src => src.ParentTag));
         CreateMap<TagCreateRequest, TagEntity>();
         CreateMap<TagUpdateRequest, TagEntity>();

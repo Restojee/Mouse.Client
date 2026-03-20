@@ -20,6 +20,9 @@ export interface CollectUserAuditLogsRequest {
   targetUserId?: number;
   action?: string;
   query?: string;
+
+  sortField?: string;
+  sortDirection?: 'asc' | 'desc';
 }
 
 export interface CollectUserAuditLogsResponse {

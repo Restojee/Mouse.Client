@@ -17,7 +17,7 @@ export class UserAuditLogsActions {
   public async loadPage(
     page: number,
     size: number,
-    filters?: QueryParams<{ actorUserId?: number; targetUserId?: number; action?: string }>,
+    filters?: QueryParams<{ actorUserId?: number; targetUserId?: number; action?: string; sortField?: string; sortDirection?: 'asc' | 'desc' }>,
   ): Promise<{ rows: UserAuditLogData[]; totalItems: number; totalPages: number; pageSize: number; page: number }> {
     const resp = await this.api.collect({
       page,
@@ -26,6 +26,8 @@ export class UserAuditLogsActions {
       actorUserId: filters?.actorUserId,
       targetUserId: filters?.targetUserId,
       action: filters?.action,
+      sortField: filters?.sortField,
+      sortDirection: filters?.sortDirection,
     });
 
     this.dataAccess.setAll(resp.records);

@@ -1,4 +1,4 @@
-﻿namespace Mouse.NET.Levels.Models;
+namespace Mouse.NET.Levels.Models;
 
 public class CreateLevelCompletedRequest
 {
@@ -7,5 +7,5 @@ public class CreateLevelCompletedRequest
     
     public int LevelId { get; set; }
 
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 }

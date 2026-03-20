@@ -15,7 +15,7 @@ export class CommentedActions {
   public async loadPage(
     page: number,
     size: number,
-    filters?: QueryParams<{ levelId?: number; userId?: number; }>
+    filters?: QueryParams<{ levelId?: number; userId?: number; sortField?: string; sortDirection?: 'asc' | 'desc' }>
   ): Promise<{ rows: CommentRow[]; totalItems: number; totalPages: number; pageSize: number; page: number; }> {
     const resp = await this.dataAccess.collectPaged({
       page,
@@ -23,6 +23,8 @@ export class CommentedActions {
       query: filters?.query,
       levelId: filters?.levelId,
       userId: filters?.userId,
+      sortField: filters?.sortField,
+      sortDirection: filters?.sortDirection,
     });
 
     this.dataAccess.setAll(resp.records);

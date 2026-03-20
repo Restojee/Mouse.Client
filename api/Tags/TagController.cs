@@ -10,7 +10,6 @@ namespace Mouse.NET.Tags;
 [Route("tags")]
 public class TagController : ControllerBase
 {
-    
     private readonly ITagService tagService;
 
     public TagController(ITagService tagService)
@@ -29,24 +28,24 @@ public class TagController : ControllerBase
     {
         return await this.tagService.GetTag(tagId);
     }
-    
-    [HttpPut("update")]
-    [Authorize(Policy = nameof(Policy.TagsWrite))]
-    public async Task<Tag> UpdateTag([FromBody] TagUpdateRequest updateRequest)
-    {
-        return await this.tagService.UpdateTag(updateRequest);
-    }
-    
+
     [HttpPost("create")]
-    [Authorize(Policy = nameof(Policy.TagsWrite))]
+    [Authorize(Policy = nameof(Policy.TagsCreate))]
     public async Task<Tag> CreateTag([FromBody] TagCreateRequest createRequest)
     {
         return await this.tagService.CreateTag(createRequest);
     }
-    
+
+    [HttpPut("update")]
+    [Authorize(Policy = nameof(Policy.TagsEdit))]
+    public async Task<Tag> UpdateTag([FromBody] TagUpdateRequest updateRequest)
+    {
+        return await this.tagService.UpdateTag(updateRequest);
+    }
+
     [HttpDelete("delete/{tagId}")]
-    [Authorize(Policy = nameof(Policy.TagsWrite))]
-    public async Task<string> DeleteTags([FromRoute] int tagId)
+    [Authorize(Policy = nameof(Policy.TagsDelete))]
+    public async Task<string> DeleteTag([FromRoute] int tagId)
     {
         return await this.tagService.DeleteTag(tagId);
     }
