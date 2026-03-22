@@ -2,6 +2,7 @@ version: '3.3'
 
 services:
   client:
+    restart: unless-stopped
     build:
       context: ./
     ports:
