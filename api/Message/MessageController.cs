@@ -30,4 +30,25 @@ public class MessageController : ControllerBase
     {
         return await this.messageService.GetMessage(messageId);
     }
+    
+    [HttpPut("update")]
+    [Authorize(Policy = nameof(Policy.MessagesEditSelf))]
+    public async Task<Message> UpdateMessage([FromBody] MessageUpdateRequest updateRequest)
+    {
+        return await this.messageService.UpdateMessage(updateRequest);
+    }
+    
+    [HttpPost("create")]
+    [Authorize(Policy = nameof(Policy.MessagesCreateSelf))]
+    public async Task<Message> CreateMessage([FromBody] MessageCreateRequest createRequest)
+    {
+        return await this.messageService.CreateMessage(createRequest);
+    }
+    
+    [HttpDelete("remove/{messageId}")]
+    [Authorize(Policy = nameof(Policy.MessagesDeleteSelf))]
+    public async Task<string> DeleteMessages([FromRoute] int messageId)
+    {
+        return await this.messageService.DeleteMessage(messageId);
+    }
 }

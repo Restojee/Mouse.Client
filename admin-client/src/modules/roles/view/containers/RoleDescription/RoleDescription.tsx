@@ -40,7 +40,7 @@ const RoleContent: React.FC<RoleContentProps> = ({ viewModel }) => {
         </Column>
       </Row>
 
-      <Column gap="md" style={{ flex: 1, overflow: 'auto' }}>
+      <Column gap="md">
         <RolePermissions
           policies={viewModel.policies}
           onChange={viewModel.handlePoliciesChange}

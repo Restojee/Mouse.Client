@@ -10,12 +10,17 @@ public enum Policy
     // Levels - self/ownership operations
     LevelsEditSelf,
     LevelsDeleteSelf,
+    LevelsCreateSelf,
 
     // Tags - admin only (справочник)
     TagsCreate,
     TagsRead,
     TagsEdit,
     TagsDelete,
+    // Tags - self/ownership operations
+    TagsEditSelf,
+    TagsDeleteSelf,
+    TagsCreateSelf,
 
     // Tips - admin/any operations
     TipsCreate,
@@ -25,6 +30,7 @@ public enum Policy
     // Tips - self/ownership operations
     TipsEditSelf,
     TipsDeleteSelf,
+    TipsCreateSelf,
 
     // Comments - admin/any operations
     CommentsCreate,
@@ -34,6 +40,7 @@ public enum Policy
     // Comments - self/ownership operations
     CommentsEditSelf,
     CommentsDeleteSelf,
+    CommentsCreateSelf,
 
     // Messages - admin/any operations
     MessagesCreate,
@@ -43,12 +50,17 @@ public enum Policy
     // Messages - self/ownership operations
     MessagesEditSelf,
     MessagesDeleteSelf,
+    MessagesCreateSelf,
 
     // Invites - admin only
     InvitesCreate,
     InvitesRead,
     InvitesEdit,
     InvitesDelete,
+    // Invites - self/ownership operations
+    InvitesEditSelf,
+    InvitesDeleteSelf,
+    InvitesCreateSelf,
 
     // Users - admin only (кроме read)
     UsersCreate,
@@ -61,4 +73,41 @@ public enum Policy
     RolesCreate,
     RolesUpdate,
     RolesDelete,
+    
+    // Levels - admin/any operations
+    FavoriteCreate,
+    FavoriteRead,
+    FavoriteEdit,
+    FavoriteDelete,
+    // Favorite - self/ownership operations
+    FavoriteEditSelf,
+    FavoriteDeleteSelf,
+    FavoriteCreateSelf,
+    
+    CompletedCreate,
+    CompletedRead,
+    CompletedEdit,
+    CompletedDelete,
+    // Completed - self/ownership operations
+    CompletedEditSelf,
+    CompletedDeleteSelf,
+    CompletedCreateSelf,
+    
+    NoteCreate,
+    NoteRead,
+    NoteEdit,
+    NoteDelete,
+    // Note - self/ownership operations
+    NoteEditSelf,
+    NoteDeleteSelf,
+    NoteCreateSelf,
+    
+    LevelTagCreate,
+    LevelTagRead,
+    LevelTagEdit,
+    LevelTagDelete,
+    // LevelTag - self/ownership operations
+    LevelTagEditSelf,
+    LevelTagDeleteSelf,
+    LevelTagCreateSelf,
 }

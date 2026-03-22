@@ -1,6 +1,7 @@
 using AutoMapper;
 using System.Net;
 using Mouse.NET.Common;
+using Mouse.NET.Common.Services;
 using Mouse.NET.Data.Models;
 using Mouse.NET.Messages.Data;
 using Mouse.NET.Messages.Models;
@@ -14,11 +15,13 @@ public class MessageService : IMessageService
     private readonly IMapper mapper;
     private readonly IAuthService authService;
     private readonly IMessageRepository messageRepository;
+    private readonly IOwnershipService ownershipService;
 
-    public MessageService(IMapper mapper, IMessageRepository messageRepository, IAuthService authService) {
+    public MessageService(IMapper mapper, IMessageRepository messageRepository, IAuthService authService, IOwnershipService ownershipService) {
         this.messageRepository = messageRepository;
         this.mapper = mapper;
         this.authService = authService;
+        this.ownershipService = ownershipService;
     }
     
     public async Task<PagedResult<Message>> GetMessageCollection(PaginateRequest request)
@@ -33,45 +36,36 @@ public class MessageService : IMessageService
 
     public async Task<Message> CreateMessage(MessageCreateRequest request)
     {
-        var comment = mapper.Map<MessageCreateRequest, MessageEntity>(request);
-        comment.UserId = this.authService.GetAuthorizedUserId().GetValueOrDefault();
-        return mapper.Map<MessageEntity, Message>(await this.messageRepository.CreateMessage(comment));
+        var message = mapper.Map<MessageCreateRequest, MessageEntity>(request);
+        message.UserId = this.authService.GetAuthorizedUserId().GetValueOrDefault();
+        return mapper.Map<MessageEntity, Message>(await this.messageRepository.CreateMessage(message));
     }
 
     public async Task<Message> UpdateMessage(MessageUpdateRequest request)
     {
-        var commentExists = await this.messageRepository.GetMessage(request.Id);
-        if (commentExists == null)
+        var messageExists = await this.messageRepository.GetMessage(request.Id);
+        if (messageExists == null)
         {
             throw new ApiNotFoundException(
                 name: "MessageNotFound",
-                messages: new[] { "Запрашиваемый комментарий не найден" });
+                messages: new[] { "Запрашиваемый сообщение не найден" });
         }
-        if (commentExists.UserId != this.authService.GetAuthorizedUserId())
-        {
-            throw new ApiForbiddenException(
-                name: "Forbidden",
-                messages: new[] { "Запрашиваемый комментарий не найден" });
-        }
-        return mapper.Map<MessageEntity, Message>(await this.messageRepository.UpdateMessage(mapper.Map(request, commentExists)));
+        this.ownershipService.EnsureCanEdit(messageExists.UserId, "сообщение", nameof(Policy.MessagesEditSelf));
+        return mapper.Map<MessageEntity, Message>(await this.messageRepository.UpdateMessage(mapper.Map(request, messageExists)));
     }
 
     public async Task<string> DeleteMessage(int messageId)
     {
-        var commentExists = await this.messageRepository.GetMessage(messageId);
-        if (commentExists == null)
+        var messageExists = await this.messageRepository.GetMessage(messageId);
+        if (messageExists == null)
         {
             throw new ApiNotFoundException(
                 name: "MessageNotFound",
-                messages: new[] { "Запрашиваемый комментарий не найден" });
+                messages: new[] { "Запрашиваемое сообщение не найден" });
         }
-        if (commentExists.UserId != this.authService.GetAuthorizedUserId())
-        {
-            throw new ApiForbiddenException(
-                name: "Forbidden",
-                messages: new[] { "Запрашиваемый комментарий не найден" });
-        }
-        await this.messageRepository.DeleteMessage(commentExists);
+
+        this.ownershipService.EnsureCanDelete(messageExists.UserId, "сообщение", nameof(Policy.MessagesDeleteSelf));
+        await this.messageRepository.DeleteMessage(messageExists);
         return "Ok";
     }
 }

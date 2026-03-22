@@ -20,6 +20,7 @@ public class AdminLevelTagController : ControllerBase
 
     [HttpPost("create")]
     [Authorize(Policy = nameof(Policy.LevelsCreate))]
+    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     public async Task<LevelTagBinding> Create([FromBody] LevelTagCreateRequest request)
     {
         return await this.service.Create(request);
@@ -27,6 +28,7 @@ public class AdminLevelTagController : ControllerBase
 
     [HttpPut("update")]
     [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     public async Task<LevelTagBinding> Update([FromBody] LevelTagUpdateRequest request)
     {
         return await this.service.Update(request);
@@ -34,6 +36,7 @@ public class AdminLevelTagController : ControllerBase
 
     [HttpDelete("delete/{id:long}")]
     [Authorize(Policy = nameof(Policy.LevelsDelete))]
+    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     public async Task<string> Delete([FromRoute] long id)
     {
         await this.service.Delete(id);

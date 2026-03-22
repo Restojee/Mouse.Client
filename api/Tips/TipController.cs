@@ -19,7 +19,6 @@ public class TipController : ControllerBase
         this.tipService = tipService;
     }
 
-    [Authorize(Policy = nameof(Policy.TipsRead))]
     [HttpGet("collect")]
     public async Task<PagedResult<Tip>> GetTipCollection([FromQuery] PaginateRequest request)
     {
@@ -32,21 +31,24 @@ public class TipController : ControllerBase
         return await this.tipService.GetTip(tipId);
     }
     
+    [Authorize(Policy = nameof(Policy.TipsEditSelf))]
     [Authorize(Policy = nameof(Policy.TipsEdit))]
     [HttpPut("update")]
     public async Task<Tip> UpdateTip([FromBody] TipUpdateRequest updateRequest)
     {
         return await this.tipService.UpdateTip(updateRequest);
     }
-    
+
     [Authorize(Policy = nameof(Policy.TipsCreate))]
+    [Authorize(Policy = nameof(Policy.TipsCreateSelf))]
     [HttpPost("create")]
     public async Task<Tip> CreateTip([FromBody] TipCreateRequest createRequest)
     {
         return await this.tipService.CreateTip(createRequest);
     }
-    
+
     [HttpDelete("delete/{tipId}")]
+    [Authorize(Policy = nameof(Policy.TipsDeleteSelf))]
     [Authorize(Policy = nameof(Policy.TipsDelete))]
     public async Task<string> DeleteTips([FromRoute] int tipId)
     {

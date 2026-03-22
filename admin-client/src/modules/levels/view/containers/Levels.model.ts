@@ -16,6 +16,8 @@ import { LevelsProps } from '@/modules/levels/view/containers/Levels';
 import type { ContentManagerRef, PaginationResponse } from '@ui/ContentManager/ContentManager.model';
 import type { LevelData } from '@/modules/levels/common/types';
 import { SortDirection } from '@common/types/sorting';
+import HttpConfig from '@common/http/HttpConfig';
+import { HttpConfigInjectKey } from '@common/http/constants';
 
 class LevelsModel extends ViewModel<LevelsProps> {
 
@@ -54,6 +56,7 @@ class LevelsModel extends ViewModel<LevelsProps> {
     @inject(LevelDataAccessInjectKey) public dataAccess: LevelDataAccess,
     @inject(LevelActionsInjectKey) public actions: LevelActions,
     @inject(AppServiceInjectKey) private appService: AppService,
+    @inject(HttpConfigInjectKey) private readonly httpConfig: HttpConfig,
   ) {
     super();
     this.handleCellEdit = this.handleCellEdit.bind(this);
@@ -68,7 +71,9 @@ class LevelsModel extends ViewModel<LevelsProps> {
 
   @Computed()
   public get tableColumns(): any[] {
-    return getLevelColumns();
+    return getLevelColumns({
+      storageUrl: this.httpConfig.getConfig().storageUrl,
+    });
   }
 
   @Computed()

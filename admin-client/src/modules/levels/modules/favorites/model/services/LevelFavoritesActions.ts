@@ -10,6 +10,7 @@ export class LevelFavoritesActions {
   ) {}
 
   public async getFavorites(levelId: number): Promise<Favorite[]> {
-    return await this.favoriteApi.collect({ levelId: 763 });
+    const resp = await this.favoriteApi.collect({ levelId, page: 1, size: 50 });
+    return resp.records;
   }
 }

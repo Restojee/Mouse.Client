@@ -28,6 +28,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
         <PackageReference Include="Minio" Version="5.0.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
         <PackageReference Include="Npgsql" Version="7.0.7" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -41,7 +42,6 @@
         <Compile Remove="Migrations\20231103000938_InitialCreate.Designer.cs" />
         <Compile Remove="Migrations\20231103000938_InitialCreate.cs" />
         <Compile Remove="Common\PolicyNames.cs" />
-        <Compile Remove="Common\Permissions.cs" />
         <Compile Remove="Data\Models\PermissionEntity.cs" />
         <Compile Remove="Data\Models\RolePermissionEntity.cs" />
     </ItemGroup>

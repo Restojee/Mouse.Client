@@ -18,4 +18,8 @@ public interface IAuthService
     public Task ChangePassword(ChangePasswordAccountRequest changePasswordAccountRequest);
 
     public int? GetAuthorizedUserId();
+
+    public bool HasPolicy(string policyKey);
+
+    public ICollection<string> GetPolicies();
 }

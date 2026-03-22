@@ -19,7 +19,8 @@ export const getUserCompletedColumns = (options: ColumnOptions): DataTreeColumnD
     header: 'Изображение',
     size: 0.3,
     cell: ({ row, table }) => {
-      const imageUrl = row.original.data.image ? `${options.storageUrl}/${row.original.data.image}` : null;
+      const imageName = row.original.data.image?.name;
+      const imageUrl = imageName ? `${options.storageUrl}/${imageName}` : null;
 
       return (
         <EditableImagePreview

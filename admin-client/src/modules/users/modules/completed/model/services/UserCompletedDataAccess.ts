@@ -32,7 +32,8 @@ export class UserCompletedDataAccess {
   constructor(@inject(CompletedApiInjectKey) private readonly completedApi: CompletedApi) {}
   
   public async collect(request: CollectCompletedRequest) {
-    this.completedData = await this.completedApi.collect(request);
+    const resp = await this.completedApi.collect({ ...request, page: 1, size: 50 });
+    this.completedData = resp.records as any;
   }
 
   public async create(request: CreateCompletedRequest) {

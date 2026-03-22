@@ -1,5 +1,6 @@
 using Mouse.NET.Common;
 using Mouse.NET.Levels.Models;
+using Mouse.NET.Storage.Models;
 using Mouse.NET.Users.Models;
 
 namespace Mouse.NET.Levels.dto;
@@ -12,7 +13,7 @@ public class LevelCompleted: Auditable
     
     public Level Level { get; set; }
     
-    public string Image { get; set; }
+    public ImageDto Image { get; set; }
     
     public string? Description { get; set; }
     

@@ -1,3 +1,3 @@
-export { default as CompletedApi } from './api';
+export { default as FavoriteApi } from './api';
 export * from './models';
 export * from './endpoints';

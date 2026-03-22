@@ -4,6 +4,10 @@ import React from 'react';
 import { EditableImagePreview } from '@common/components/DataTreeTable/components/EditableImagePreview/EditableImagePreview';
 import type { EditableIntegrateComponentProps } from '@common/components/DataTreeTable/integrations';
 
+interface ColumnOptions {
+  storageUrl?: string;
+}
+
 function getName(row: TreeNode<LevelData>): string {
   return row.data.name;
 }
@@ -12,8 +16,13 @@ function getDescription(row: TreeNode<LevelData>): string {
   return row.data.description;
 }
 
-function getImage(row: TreeNode<LevelData>): string {
-  return row.data.image;
+function getImageUrl(options: ColumnOptions, row: TreeNode<LevelData>): string {
+  const name = row.data.image?.name;
+  if (!name) {
+    return null;
+  }
+
+  return options.storageUrl ? `${options.storageUrl}/${name}` : name;
 }
 
 function getCreatedUtcDate(row: TreeNode<LevelData>): string {
@@ -40,7 +49,7 @@ function LevelImageEditor(props: EditableIntegrateComponentProps<LevelData>) {
   );
 }
 
-export const getLevelColumns = (): DataTreeColumnDef<LevelData>[] => {
+export const getLevelColumns = (options: ColumnOptions): DataTreeColumnDef<LevelData>[] => {
   return [
     {
       id: 'name',
@@ -60,7 +69,7 @@ export const getLevelColumns = (): DataTreeColumnDef<LevelData>[] => {
     },
     {
       id: 'image',
-      accessorFn: getImage,
+      accessorFn: (row) => getImageUrl(options, row),
       header: 'Картинка',
       size: 0.2,
       enableSorting: true,

@@ -19,21 +19,18 @@ public class LevelCommentController : ControllerBase
     }
 
     [HttpGet("collect")]
-    [Authorize(Policy = nameof(Policy.CommentsRead))]
     public async Task<ICollection<LevelComment>> GetLevelCommentCollection([FromQuery] LevelCommentCollectRequest request)
     {
         return await this.levelCommentService.GetLevelCommentCollection(request.levelId, request.userId);
     }
 
     [HttpGet("collect-paged")]
-    [Authorize(Policy = nameof(Policy.CommentsRead))]
     public async Task<PagedResult<LevelCommentRow>> CollectPaged([FromQuery] Mouse.NET.LevelComments.Models.LevelCommentCollectPagedRequest request)
     {
         return await this.levelCommentService.CollectPaged(request);
     }
 
     [HttpGet("by-one/{levelCommentId}")]
-    [Authorize(Policy = nameof(Policy.CommentsRead))]
     public async Task<LevelComment> GetLevelComment([FromRoute] int levelCommentId)
     {
         return await this.levelCommentService.GetLevelComment(levelCommentId);
@@ -41,13 +38,15 @@ public class LevelCommentController : ControllerBase
     
     [HttpPut("update")]
     [Authorize(Policy = nameof(Policy.CommentsEditSelf))]
+    [Authorize(Policy = nameof(Policy.CommentsEdit))]
     public async Task<LevelComment> UpdateLevelComment([FromBody] LevelCommentUpdateRequest updateRequest)
     {
         return await this.levelCommentService.UpdateLevelComment(updateRequest);
     }
-    
+
     [HttpPost("create")]
     [Authorize(Policy = nameof(Policy.CommentsCreate))]
+    [Authorize(Policy = nameof(Policy.CommentsCreateSelf))]
     public async Task<LevelComment> CreateLevelComment([FromBody] LevelCommentCreateRequest createRequest)
     {
         return await this.levelCommentService.CreateLevelComment(createRequest);
@@ -55,6 +54,7 @@ public class LevelCommentController : ControllerBase
 
     [HttpDelete("remove/{levelCommentId}")]
     [Authorize(Policy = nameof(Policy.CommentsDeleteSelf))]
+    [Authorize(Policy = nameof(Policy.CommentsDelete))]
     public async Task<string> DeleteLevelComment([FromRoute] int levelCommentId)
     {
         return await this.levelCommentService.DeleteLevelComment(levelCommentId);

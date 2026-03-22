@@ -22,34 +22,20 @@ export class CompletedActions {
       size,
       levelId: filters?.levelId,
       userId: filters?.userId,
+      search: filters?.query,
       sortField: filters?.sortField,
       sortDirection: filters?.sortDirection,
     });
 
-    const query = String(filters?.query ).trim().toLowerCase();
-
-    const filtered = query
-      ? resp.filter(r =>
-        r.user?.username?.toLowerCase().includes(query)
-        || r.level?.name?.toLowerCase().includes(query)
-        || r.description?.toLowerCase().includes(query)
-      )
-      : resp;
-
-    const totalItems = filtered.length;
-    const totalPages = Math.max(1, Math.ceil(totalItems / size));
-
-    const start = (page - 1) * size;
-    const rows = filtered.slice(start, start + size);
-
+    const rows = resp.records;
     this.dataAccess.setAll(rows);
 
     return {
       rows,
-      totalItems,
-      totalPages,
-      pageSize: size,
-      page,
+      totalItems: resp.totalItems,
+      totalPages: resp.totalPages,
+      pageSize: resp.pageSize,
+      page: resp.page,
     };
   }
 
@@ -64,8 +50,6 @@ export class CompletedActions {
     if (args.image) {
       await this.dataAccess.updateCompletedImage({ id: created.id, image: args.image });
     }
-
-    this.dataAccess.create(created);
     return created;
   }
 

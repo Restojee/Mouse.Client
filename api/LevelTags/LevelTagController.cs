@@ -26,7 +26,6 @@ public class LevelTagController : ControllerBase
     }
 
     [HttpGet("collect")]
-    [Authorize(Policy = nameof(Policy.LevelsRead))]
     public async Task<PagedResult<LevelTagBinding>> Collect([FromQuery] LevelTagCollectRequest request)
     {
         await this.auditLogWriter.TryWrite(
@@ -48,7 +47,6 @@ public class LevelTagController : ControllerBase
     }
 
     [HttpGet("by-id/{id:long}")]
-    [Authorize(Policy = nameof(Policy.LevelsRead))]
     public async Task<LevelTagBinding> GetById([FromRoute] long id)
     {
         await this.auditLogWriter.TryWrite(
@@ -61,7 +59,8 @@ public class LevelTagController : ControllerBase
     }
 
     [HttpPost("create")]
-    [Authorize(Policy = nameof(Policy.LevelsCreate))]
+    [Authorize(Policy = nameof(Policy.LevelTagCreate))]
+    [Authorize(Policy = nameof(Policy.LevelTagCreateSelf))]
     public async Task<LevelTagBinding> Create([FromBody] LevelTagCreateRequest request)
     {
         await this.auditLogWriter.TryWrite(
@@ -80,7 +79,8 @@ public class LevelTagController : ControllerBase
     }
 
     [HttpPut("update")]
-    [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(Policy.LevelTagEdit))]
+    [Authorize(Policy = nameof(Policy.LevelTagEditSelf))]
     public async Task<LevelTagBinding> Update([FromBody] LevelTagUpdateRequest request)
     {
         await this.auditLogWriter.TryWrite(
@@ -99,7 +99,8 @@ public class LevelTagController : ControllerBase
     }
 
     [HttpDelete("delete/{id:long}")]
-    [Authorize(Policy = nameof(Policy.LevelsDelete))]
+    [Authorize(Policy = nameof(Policy.LevelTagDelete))]
+    [Authorize(Policy = nameof(Policy.LevelTagDeleteSelf))]
     public async Task<string> Delete([FromRoute] long id)
     {
         await this.auditLogWriter.TryWrite(

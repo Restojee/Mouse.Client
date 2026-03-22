@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Minio;
 using Mouse.NET.Auth.Services;
 using Mouse.NET.Common;
+using Mouse.NET.Common.Services;
 using Mouse.NET.Data;
 using Mouse.NET.Data.Models;
 using Mouse.NET.Invites.Data;
@@ -182,5 +183,7 @@ namespace Mouse.NET;
 
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleService, RoleService>();
+
+            services.AddScoped<IOwnershipService, OwnershipService>();
         }
     }

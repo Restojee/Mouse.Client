@@ -4,6 +4,7 @@ using Mouse.NET.Data.Models;
 using Mouse.NET.LevelComments.Data;
 using Mouse.NET.LevelComments.Models;
 using Mouse.NET.Common;
+using Mouse.NET.Common.Services;
 using Mouse.Stick.Controllers.Auth;
 
 namespace Mouse.NET.LevelComments.services;
@@ -14,11 +15,13 @@ public class LevelCommentService : ILevelCommentService
     private readonly IMapper mapper;
     private readonly IAuthService authService;
     private readonly ILevelCommentRepository levelCommentRepository;
+    private readonly IOwnershipService ownershipService;
 
-    public LevelCommentService(IMapper mapper, ILevelCommentRepository levelCommentRepository, IAuthService authService) {
+    public LevelCommentService(IMapper mapper, ILevelCommentRepository levelCommentRepository, IAuthService authService, IOwnershipService ownershipService) {
         this.levelCommentRepository = levelCommentRepository;
         this.mapper = mapper;
         this.authService = authService;
+        this.ownershipService = ownershipService;
     }
     
     public async Task<ICollection<LevelComment>> GetLevelCommentCollection(int? levelId, int? userId)
@@ -69,12 +72,7 @@ public class LevelCommentService : ILevelCommentService
                 name: "CommentNotFound",
                 messages: new[] { "Запрашиваемый комментарий не найден" });
         }
-        if (commentExists.UserId != this.authService.GetAuthorizedUserId())
-        {
-            throw new ApiForbiddenException(
-                name: "Forbidden",
-                messages: new[] { "Запрашиваемый комментарий не найден" });
-        }
+        this.ownershipService.EnsureCanEdit(commentExists.UserId, "комментарий", nameof(Policy.CommentsEditSelf));
         return mapper.Map<LevelCommentEntity, LevelComment>(await this.levelCommentRepository.UpdateLevelComment(mapper.Map(request, commentExists)));
     }
 
@@ -100,12 +98,7 @@ public class LevelCommentService : ILevelCommentService
                 name: "CommentNotFound",
                 messages: new[] { "Запрашиваемый комментарий не найден" });
         }
-        if (commentExists.UserId != this.authService.GetAuthorizedUserId())
-        {
-            throw new ApiForbiddenException(
-                name: "Forbidden",
-                messages: new[] { "Запрашиваемый комментарий не найден" });
-        }
+        this.ownershipService.EnsureCanDelete(commentExists.UserId, "комментарий", nameof(Policy.CommentsDeleteSelf));
         await this.levelCommentRepository.DeleteLevelComment(commentExists);
         return "Ok";
     }

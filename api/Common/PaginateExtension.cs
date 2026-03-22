@@ -14,9 +14,9 @@ public static class PaginationExtensions
             page = 1;
         }
 
-        if (pageSize > 100)
+        if (pageSize > 50)
         {
-            pageSize = 100;
+            pageSize = 50;
         }
         
         if (pageSize < 1)

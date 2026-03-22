@@ -48,7 +48,14 @@ export const getCompletedColumns = (options: ColumnOptions): DataTreeColumnDef<C
   {
     id: 'image',
     header: 'Изображение',
-    accessorFn: row => row.data.image,
+    accessorFn: row => {
+      const name = row.data.image?.name;
+      if (!name) {
+        return null;
+      }
+
+      return options.storageUrl ? `${options.storageUrl}/${name}` : name;
+    },
     integrate: editable(CompletedImageEditor),
     size: 0.25,
   },

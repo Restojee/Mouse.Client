@@ -286,7 +286,7 @@ public class RoleService : IRoleService
         {
             throw new ApiForbiddenException(
                 name: "NoRights",
-                messages: new[] { "Нет прав на смену роли с/на системные политики" });
+                messages: new[] { "Нет прав на смену роли с системными правами" });
         }
 
         await this.roleRepository.AssignRoleToUser(request.UserId, request.RoleName);

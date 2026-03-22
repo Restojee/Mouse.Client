@@ -8,6 +8,7 @@ namespace Mouse.NET.Admin.Roles;
 
 [ApiController]
 [Route("admin/roles")]
+[Authorize(Policy = nameof(OtherPolicy.Administration))]
 public class AdminRolesController : ControllerBase
 {
     private readonly IRoleService roleService;
@@ -18,7 +19,6 @@ public class AdminRolesController : ControllerBase
     }
 
     [HttpGet("collect")]
-    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     [Authorize(Policy = nameof(Policy.RolesRead))]
     public async Task<ICollection<RoleCard>> Collect()
     {
@@ -26,7 +26,6 @@ public class AdminRolesController : ControllerBase
     }
 
     [HttpGet("{roleId}")]
-    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     [Authorize(Policy = nameof(Policy.RolesRead))]
     public async Task<RoleDetails> Get([FromRoute] int roleId)
     {
@@ -34,7 +33,6 @@ public class AdminRolesController : ControllerBase
     }
 
     [HttpPost("create")]
-    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     [Authorize(Policy = nameof(Policy.RolesCreate))]
     public async Task<RoleCard> Create([FromBody] RoleCreateRequest request)
     {
@@ -42,7 +40,6 @@ public class AdminRolesController : ControllerBase
     }
 
     [HttpPut("update")]
-    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     [Authorize(Policy = nameof(Policy.RolesUpdate))]
     public async Task<RoleCard> Update([FromBody] RoleUpdateRequest request)
     {
@@ -50,7 +47,6 @@ public class AdminRolesController : ControllerBase
     }
 
     [HttpDelete("{roleId}")]
-    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     [Authorize(Policy = nameof(Policy.RolesDelete))]
     public async Task<string> Delete([FromRoute] int roleId)
     {
@@ -58,7 +54,6 @@ public class AdminRolesController : ControllerBase
     }
 
     [HttpPut("permissions/set")]
-    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     [Authorize(Policy = nameof(Policy.RolesUpdate))]
     public async Task<string> SetPermissions([FromBody] RolePermissionsSetRequest request)
     {
@@ -66,7 +61,6 @@ public class AdminRolesController : ControllerBase
     }
 
     [HttpPost("assign-to-user")]
-    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     [Authorize(Policy = nameof(Policy.UsersEdit))]
     public async Task<string> AssignToUser([FromBody] AssignRoleToUserRequest request)
     {

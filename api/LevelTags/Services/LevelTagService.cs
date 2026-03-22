@@ -1,6 +1,7 @@
 using AutoMapper;
 using System.Net;
 using Mouse.NET.Common;
+using Mouse.NET.Common.Services;
 using Mouse.NET.Data.Models;
 using Mouse.NET.LevelTags.Data;
 using Mouse.NET.LevelTags.Models;
@@ -11,11 +12,13 @@ public class LevelTagService : ILevelTagService
 {
     private readonly IMapper mapper;
     private readonly ILevelTagRepository repository;
+    private readonly IOwnershipService ownershipService;
 
-    public LevelTagService(IMapper mapper, ILevelTagRepository repository)
+    public LevelTagService(IMapper mapper, ILevelTagRepository repository, IOwnershipService ownershipService)
     {
         this.mapper = mapper;
         this.repository = repository;
+        this.ownershipService = ownershipService;
     }
 
     public async Task<PagedResult<LevelTagBinding>> Collect(LevelTagCollectRequest request)
@@ -60,6 +63,7 @@ public class LevelTagService : ILevelTagService
                 messages: new[] { "Привязка тегов не найдена" });
         }
 
+        this.ownershipService.EnsureCanDelete(updated.UserId, "тег", nameof(Policy.LevelsDeleteSelf));
         return this.mapper.Map<LevelTagBinding>(updated);
     }
 

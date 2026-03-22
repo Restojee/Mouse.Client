@@ -20,4 +20,23 @@ public class JwtService
         }
         return null;
     }
+
+    public bool HasPolicy(string policyKey)
+    {
+        var user = this.httpContextAccessor.HttpContext?.User;
+        if (user == null) return false;
+
+        return user.HasClaim("policy", policyKey) || user.HasClaim("otherPolicy", policyKey);
+    }
+
+    public ICollection<string> GetPolicies()
+    {
+        var user = this.httpContextAccessor.HttpContext?.User;
+        if (user == null) return new List<string>();
+
+        var policies = user.FindAll("policy").Select(c => c.Value).ToList();
+        var otherPolicies = user.FindAll("otherPolicy").Select(c => c.Value).ToList();
+        policies.AddRange(otherPolicies);
+        return policies;
+    }
 }

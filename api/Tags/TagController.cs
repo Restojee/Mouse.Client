@@ -31,6 +31,7 @@ public class TagController : ControllerBase
 
     [HttpPost("create")]
     [Authorize(Policy = nameof(Policy.TagsCreate))]
+    [Authorize(Policy = nameof(Policy.TagsCreateSelf))]
     public async Task<Tag> CreateTag([FromBody] TagCreateRequest createRequest)
     {
         return await this.tagService.CreateTag(createRequest);
@@ -38,6 +39,7 @@ public class TagController : ControllerBase
 
     [HttpPut("update")]
     [Authorize(Policy = nameof(Policy.TagsEdit))]
+    [Authorize(Policy = nameof(Policy.TagsEditSelf))]
     public async Task<Tag> UpdateTag([FromBody] TagUpdateRequest updateRequest)
     {
         return await this.tagService.UpdateTag(updateRequest);
@@ -45,6 +47,7 @@ public class TagController : ControllerBase
 
     [HttpDelete("delete/{tagId}")]
     [Authorize(Policy = nameof(Policy.TagsDelete))]
+    [Authorize(Policy = nameof(Policy.TagsDeleteSelf))]
     public async Task<string> DeleteTag([FromRoute] int tagId)
     {
         return await this.tagService.DeleteTag(tagId);

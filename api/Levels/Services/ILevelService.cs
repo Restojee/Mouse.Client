@@ -9,9 +9,9 @@ public interface ILevelService
 {
     public Task<PagedResult<Level>> GetLevelCollection(LevelCollectionGetRequest getRequest);
     
-    public Task<List<LevelFavorite>> GetLevelFavoriteCollection(FavoriteCollectRequest getRequest);
+    public Task<PagedResult<LevelFavorite>> GetLevelFavoriteCollection(FavoriteCollectRequest getRequest);
     
-    public Task<List<LevelCompleted>> GetLevelCompletedCollection(CompletedCollectRequest getRequest);
+    public Task<PagedResult<LevelCompleted>> GetLevelCompletedCollection(CompletedCollectRequest getRequest);
 
     public Task<Level> GetLevel(int levelId);
 

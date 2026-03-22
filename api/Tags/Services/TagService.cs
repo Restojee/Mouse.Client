@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using Mouse.NET.Common;
+using Mouse.NET.Common.Services;
 using Mouse.NET.Data.Models;
 using Mouse.NET.Tags.Data;
 using Mouse.NET.Tags.Models;
@@ -14,12 +15,14 @@ public class TagService : ITagService
     private readonly IMapper mapper;
     private readonly IAuthService authService;
     private readonly ITagRepository tagRepository;
+    private readonly IOwnershipService ownershipService;
 
-    public TagService(IMapper mapper, ITagRepository tagRepository, IAuthService authService)
+    public TagService(IMapper mapper, ITagRepository tagRepository, IAuthService authService, IOwnershipService ownershipService)
     {
         this.tagRepository = tagRepository;
         this.authService = authService;
         this.mapper = mapper;
+        this.ownershipService = ownershipService;
     }
     
     public async Task<ICollection<Tag>> GetTagCollection()
@@ -89,6 +92,7 @@ public class TagService : ITagService
                 name: "TagNotFound",
                 messages: new[] { "Запрашиваемый тег не найден" });
         }
+        this.ownershipService.EnsureCanDelete(tagExists.UserId, "тег", nameof(Policy.TagsEditSelf));
         return this.mapper.Map<TagEntity, Tag>(await this.tagRepository.UpdateTag(this.mapper.Map(request, tagExists)));
     }
 
@@ -101,6 +105,7 @@ public class TagService : ITagService
                 name: "TagNotFound",
                 messages: new[] { "Запрашиваемый тег не найден" });
         }
+        this.ownershipService.EnsureCanDelete(tagExists.UserId, "тег", nameof(Policy.TagsDeleteSelf));
         await this.tagRepository.DeleteTag(tagExists);
         return "Ok";
     }

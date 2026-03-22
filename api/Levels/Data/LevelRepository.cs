@@ -17,7 +17,7 @@ public class LevelRepository : ILevelRepository
         this.context = context;
     }
 
-    public async Task<List<LevelFavoriteEntity>> GetLevelFavoriteCollection(FavoriteCollectRequest request)
+    public async Task<PagedResult<LevelFavoriteEntity>> GetLevelFavoriteCollection(FavoriteCollectRequest request)
     {
         var favoritesQuery = this.context.LevelFavorites.AsQueryable();
         if (request.levelId != null)
@@ -28,12 +28,51 @@ public class LevelRepository : ILevelRepository
         {
             favoritesQuery = favoritesQuery.Where(favorite => favorite.User.Id == request.userId);
         }
+
+        if (!string.IsNullOrWhiteSpace(request.Search))
+        {
+            var search = request.Search.Trim();
+            favoritesQuery = favoritesQuery.Where(x =>
+                (x.Level != null && EF.Functions.Like(x.Level.Name, "%" + search + "%")) ||
+                (x.User != null && EF.Functions.Like(x.User.UserName, "%" + search + "%")) ||
+                (x.Description != null && EF.Functions.Like(x.Description, "%" + search + "%"))
+            );
+        }
+
         favoritesQuery = ApplyFavoriteSorting(favoritesQuery, request);
 
-        return await favoritesQuery
-            .Include(favorite => favorite.User)
-            .Include(favorite => favorite.Level)
-            .ToListAsync();
+        var query = favoritesQuery
+            .AsNoTracking()
+            .Select(f => new LevelFavoriteEntity
+            {
+                Id = f.Id,
+                LevelId = f.LevelId,
+                UserId = f.UserId,
+                Description = f.Description,
+                CreatedUtcDate = f.CreatedUtcDate,
+                ModifiedUtcDate = f.ModifiedUtcDate,
+                User = new UserEntity
+                {
+                    Id = f.User.Id,
+                    UserName = f.User.UserName,
+                    Email = f.User.Email,
+                    Avatar = f.User.Avatar,
+                    CreatedUtcDate = f.User.CreatedUtcDate,
+                    ModifiedUtcDate = f.User.ModifiedUtcDate,
+                    Role = f.User.Role,
+                },
+                Level = new LevelEntity
+                {
+                    Id = f.Level.Id,
+                    Name = f.Level.Name,
+                    Description = f.Level.Description,
+                    Image = f.Level.Image,
+                    UserId = f.Level.UserId,
+                },
+            })
+            .AsQueryable();
+
+        return await PaginationExtensions.ToPagedResult(query, request.Page, request.Size);
     }
 
     private static IQueryable<LevelFavoriteEntity> ApplyFavoriteSorting(IQueryable<LevelFavoriteEntity> query, FavoriteCollectRequest request)
@@ -58,7 +97,7 @@ public class LevelRepository : ILevelRepository
         };
     }
 
-    public async Task<List<LevelCompletedEntity>> GetLevelCompletedCollection(CompletedCollectRequest request)
+    public async Task<PagedResult<LevelCompletedEntity>> GetLevelCompletedCollection(CompletedCollectRequest request)
     {
         var completedQuery = this.context.LevelCompleted.AsQueryable();
         if (request.levelId != null)
@@ -69,12 +108,52 @@ public class LevelRepository : ILevelRepository
         {
             completedQuery = completedQuery.Where(completed => completed.User.Id == request.userId);
         }
+
+        if (!string.IsNullOrWhiteSpace(request.Search))
+        {
+            var search = request.Search.Trim();
+            completedQuery = completedQuery.Where(x =>
+                (x.Level != null && EF.Functions.Like(x.Level.Name, "%" + search + "%")) ||
+                (x.User != null && EF.Functions.Like(x.User.UserName, "%" + search + "%")) ||
+                (x.Description != null && EF.Functions.Like(x.Description, "%" + search + "%"))
+            );
+        }
+
         completedQuery = ApplyCompletedSorting(completedQuery, request);
 
-        return await completedQuery
-            .Include(completed => completed.User)
-            .Include(completed => completed.Level)
-            .ToListAsync();
+        var query = completedQuery
+            .AsNoTracking()
+            .Select(c => new LevelCompletedEntity
+            {
+                Id = c.Id,
+                LevelId = c.LevelId,
+                UserId = c.UserId,
+                Description = c.Description,
+                Image = c.Image,
+                CreatedUtcDate = c.CreatedUtcDate,
+                ModifiedUtcDate = c.ModifiedUtcDate,
+                User = new UserEntity
+                {
+                    Id = c.User.Id,
+                    UserName = c.User.UserName,
+                    Email = c.User.Email,
+                    Avatar = c.User.Avatar,
+                    CreatedUtcDate = c.User.CreatedUtcDate,
+                    ModifiedUtcDate = c.User.ModifiedUtcDate,
+                    Role = c.User.Role,
+                },
+                Level = new LevelEntity
+                {
+                    Id = c.Level.Id,
+                    Name = c.Level.Name,
+                    Description = c.Level.Description,
+                    Image = c.Level.Image,
+                    UserId = c.Level.UserId,
+                },
+            })
+            .AsQueryable();
+
+        return await PaginationExtensions.ToPagedResult(query, request.Page, request.Size);
     }
 
     private static IQueryable<LevelCompletedEntity> ApplyCompletedSorting(IQueryable<LevelCompletedEntity> query, CompletedCollectRequest request)

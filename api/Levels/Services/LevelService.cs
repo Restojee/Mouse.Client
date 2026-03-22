@@ -1,6 +1,7 @@
 using AutoMapper;
 using System.Net;
 using Mouse.NET.Common;
+using Mouse.NET.Common.Services;
 using Mouse.NET.Data.Models;
 using Mouse.NET.LevelComments.Models;
 using Mouse.NET.Levels.Data;
@@ -20,13 +21,15 @@ public class LevelService : ILevelService
     private readonly IUserRepository userRepository;
     private readonly IStorageService storageService;
     private readonly IAuthService authService;
+    private readonly IOwnershipService ownershipService;
 
-    public LevelService(IMapper mapper, ILevelRepository levelRepository, IUserRepository userRepository, IStorageService storageService, IAuthService authService) {
+    public LevelService(IMapper mapper, ILevelRepository levelRepository, IUserRepository userRepository, IStorageService storageService, IAuthService authService, IOwnershipService ownershipService) {
         this.levelRepository = levelRepository;
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.storageService = storageService;
         this.authService = authService;
+        this.ownershipService = ownershipService;
     }
     
     public async Task<PagedResult<Level>> GetLevelCollection(LevelCollectionGetRequest request)
@@ -34,14 +37,18 @@ public class LevelService : ILevelService
         return mapper.Map<PagedResult<LevelEntity>, PagedResult<Level>>(await this.levelRepository.GetLevelCollection(request));
     }
     
-    public async Task<List<LevelFavorite>> GetLevelFavoriteCollection(FavoriteCollectRequest request)
+    public async Task<PagedResult<LevelFavorite>> GetLevelFavoriteCollection(FavoriteCollectRequest request)
     {
-        return mapper.Map<List<LevelFavoriteEntity>, List<LevelFavorite>>(await this.levelRepository.GetLevelFavoriteCollection(request));
+        var paged = await this.levelRepository.GetLevelFavoriteCollection(request);
+        var records = this.mapper.Map<ICollection<LevelFavorite>>(paged.Records);
+        return new PagedResult<LevelFavorite>(records, paged.Page, paged.PageSize, paged.TotalItems, paged.TotalPages);
     }
     
-    public async Task<List<LevelCompleted>> GetLevelCompletedCollection(CompletedCollectRequest request)
+    public async Task<PagedResult<LevelCompleted>> GetLevelCompletedCollection(CompletedCollectRequest request)
     {
-        return mapper.Map<List<LevelCompletedEntity>, List<LevelCompleted>>(await this.levelRepository.GetLevelCompletedCollection(request));
+        var paged = await this.levelRepository.GetLevelCompletedCollection(request);
+        var records = this.mapper.Map<ICollection<LevelCompleted>>(paged.Records);
+        return new PagedResult<LevelCompleted>(records, paged.Page, paged.PageSize, paged.TotalItems, paged.TotalPages);
     }
 
     public async Task<Level> GetLevel(int levelId)
@@ -74,12 +81,7 @@ public class LevelService : ILevelService
                 name: "LevelNotFound",
                 messages: new[] { "Запрашиваемая карта не найдена" });
         }
-        if (levelExists.UserId != this.authService.GetAuthorizedUserId())
-        {
-            throw new ApiForbiddenException(
-                name: "Forbidden",
-                messages: new[] { "Нет доступа к редактированию этой карты" });
-        }
+        this.ownershipService.EnsureCanEdit(levelExists.UserId, "карта", nameof(Policy.LevelsEditSelf));
         return this.mapper.Map<LevelEntity, Level>(await this.levelRepository.UpdateLevel(this.mapper.Map(request, levelExists)));
     }
 
@@ -92,16 +94,11 @@ public class LevelService : ILevelService
                 name: "LevelNotFound",
                 messages: new[] { "Запрашиваемая карта не найдена" });
         }
-        if (levelExists.UserId != this.authService.GetAuthorizedUserId())
-        {
-            throw new ApiForbiddenException(
-                name: "Forbidden",
-                messages: new[] { "Нет доступа к удалению этой карты" });
-        }
+        this.ownershipService.EnsureCanDelete(levelExists.UserId, "карта", nameof(Policy.LevelsDeleteSelf));
         await this.levelRepository.DeleteLevel(levelExists);
         return "Ok";
     }
-    
+
     public async Task<Level> SetLevelTags(LevelTagsSetRequest request)
     {
         var levelExists = await this.levelRepository.GetLevel(request.LevelId);
@@ -111,6 +108,7 @@ public class LevelService : ILevelService
                 name: "LevelNotFound",
                 messages: new[] { "Запрашиваемая карта не найдена" });
         }
+        this.ownershipService.EnsureCanDelete(levelExists.UserId, "карта", nameof(Policy.LevelsEditSelf));
         return mapper.Map<LevelEntity, Level>(await this.levelRepository.SetLevelTags(levelExists, request.TagIds));
     }
 
@@ -252,6 +250,7 @@ public class LevelService : ILevelService
         {
             note.Text = request.Text;
         }
+        this.ownershipService.EnsureCanDelete(note.UserId, "карта", nameof(Policy.LevelsEditSelf));
 
         await this.levelRepository.UpdateLevelNote(note);
 
@@ -295,6 +294,7 @@ public class LevelService : ILevelService
                 name: "CompletedNotFound",
                 messages: new[] { "Запрашиваемое прохождение не найдено" });
         }
+        this.ownershipService.EnsureCanDelete(levelCompletedExists.UserId, "карта", nameof(Policy.LevelsDeleteSelf));
         if (levelCompletedExists != null)
         {
             await this.levelRepository.UnCompleteLevel(levelCompletedExists);
@@ -335,6 +335,7 @@ public class LevelService : ILevelService
         {
             await this.levelRepository.UnFavoriteLevel(levelFavoriteExists);
         }
+        this.ownershipService.EnsureCanDelete(levelFavoriteExists.UserId, "избранное", nameof(Policy.LevelsDeleteSelf));
     }
     
     public async Task UpdateLevelImage(int levelId, IFormFile file)
@@ -346,18 +347,14 @@ public class LevelService : ILevelService
                 name: "LevelNotFound",
                 messages: new[] { "Запрашиваемая карта не найдена" });
         }
-        if (levelExists.UserId != this.authService.GetAuthorizedUserId())
-        {
-            throw new ApiForbiddenException(
-                name: "Forbidden",
-                messages: new[] { "Нет доступа к редактированию этой карты" });
-        }
+        this.ownershipService.EnsureCanEdit(levelExists.UserId, "карта", nameof(Policy.LevelsEditSelf));
         levelExists.Image = await this.storageService.Upload(file);
         await this.levelRepository.UpdateLevel(levelExists);
     }
 
     public async Task RemoveLevelCompleted(RemoveLevelCompletedRequest request)
     {
+        //TODO Загвадрить
         await this.levelRepository.RemoveLevelCompleted(request.LevelCompletedIds);
     }
 
@@ -383,6 +380,7 @@ public class LevelService : ILevelService
 
     public async Task RemoveLevelFavorite(RemoveLevelFavoriteRequest request)
     {
+        //TODO загвардить
         await this.levelRepository.RemoveLevelFavorite(request.LevelFavoriteIds);
     }
 
@@ -399,7 +397,7 @@ public class LevelService : ILevelService
             await this.levelRepository.RemoveLevelTagsByLevelAndTagIds(request.LevelId.Value, request.LevelTagIds);
             return;
         }
-
+        //TODO Загвардить
         await this.levelRepository.RemoveLevelTags(request.LevelTagIds);
     }
 
@@ -412,6 +410,7 @@ public class LevelService : ILevelService
                 name: "CompletedNotFound",
                 messages: new[] { "Запрашиваемое выполнение не найдено" });
         }
+        this.ownershipService.EnsureCanEdit(completedExists.UserId, "выполнение", nameof(Policy.LevelsEditSelf));
 
         var image = await this.storageService.Upload(formFile);
         completedExists.Image = image;
@@ -428,6 +427,7 @@ public class LevelService : ILevelService
                 name: "CompletedNotFound",
                 messages: new[] { "Запрашиваемое выполнение не найдено" });
         }
+        this.ownershipService.EnsureCanEdit(completedExists.UserId, "выполнение", nameof(Policy.LevelsEditSelf));
 
         completedExists.Description = request.Description;
 
@@ -460,6 +460,7 @@ public class LevelService : ILevelService
                 name: "FavoriteNotFound",
                 messages: new[] { "Запрашиваемое избранное не найдено" });
         }
+        this.ownershipService.EnsureCanEdit(favoriteExists.UserId, "избранное", nameof(Policy.LevelsEditSelf));
 
         if (request.UserId != null)
         {

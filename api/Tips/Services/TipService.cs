@@ -1,5 +1,6 @@
 using AutoMapper;
 using Mouse.NET.Common;
+using Mouse.NET.Common.Services;
 using Mouse.NET.Data.Models;
 using Mouse.NET.Tags.Data;
 using Mouse.NET.Tips.Data;
@@ -15,12 +16,14 @@ public class TipService : ITipService
     private readonly IMapper mapper;
     private readonly IAuthService authService;
     private readonly ITipRepository tipRepository;
+    private readonly IOwnershipService ownershipService;
 
-    public TipService(IMapper mapper, ITipRepository tipRepository, IAuthService authService)
+    public TipService(IMapper mapper, ITipRepository tipRepository, IAuthService authService, IOwnershipService ownershipService)
     {
         this.tipRepository = tipRepository;
         this.authService = authService;
         this.mapper = mapper;
+        this.ownershipService = ownershipService;
     }
     
     public async Task<PagedResult<Tip>> GetTipCollection(PaginateRequest request)
@@ -64,13 +67,7 @@ public class TipService : ITipService
                 name: "TipNotFound",
                 messages: new[] { "Запрашиваемая информация не найдена" });
         }
-
-        if (tipExists.User.Id != this.authService.GetAuthorizedUserId())
-        {
-            throw new ApiForbiddenException(
-                name: "Forbidden",
-                messages: new[] { "Запрашиваемая информация не найдена" });
-        }
+        this.ownershipService.EnsureCanEdit(tipExists.User?.Id, "подсказка", nameof(Policy.TipsEditSelf));
         return mapper.Map<TipEntity, Tip>(await this.tipRepository.UpdateTip(mapper.Map(request, tipExists)));
     }
 
@@ -83,13 +80,7 @@ public class TipService : ITipService
                 name: "TipNotFound",
                 messages: new[] { "Запрашиваемая информация не найдена" });
         }
-
-        if (tipExists.User.Id != this.authService.GetAuthorizedUserId())
-        {
-            throw new ApiForbiddenException(
-                name: "Forbidden",
-                messages: new[] { "Запрашиваемая информация не найдена" });
-        }
+        this.ownershipService.EnsureCanDelete(tipExists.User?.Id, "подсказка", nameof(Policy.TipsDeleteSelf));
         await this.tipRepository.DeleteTip(tipExists);
         return "Ok";
     }

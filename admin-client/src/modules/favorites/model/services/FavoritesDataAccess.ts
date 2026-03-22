@@ -3,7 +3,7 @@ import EntityManager from '@common/store/entity/EntityManager';
 import { Action, Computed, State } from '@common/hocs/withView/decorators';
 import FavoriteApi from '@common/api/favorites/api';
 import { FavoriteApiInjectKey } from '@/constants';
-import type { Favorite, CollectFavoriteRequest, UpdateFavoriteRequest, CreateFavoriteRequest, CreateFavoriteResponse } from '@common/api/favorites/models';
+import type { CollectFavoriteRequest, CollectFavoriteResponse, UpdateFavoriteRequest, CreateFavoriteRequest, CreateFavoriteResponse, Favorite } from '@common/api/favorites/models';
 
 @injectable()
 export class FavoritesDataAccess {
@@ -48,7 +48,7 @@ export class FavoritesDataAccess {
     this.filterUserId = userId;
   }
 
-  public async collect(request: CollectFavoriteRequest): Promise<Favorite[]> {
+  public async collect(request: CollectFavoriteRequest): Promise<CollectFavoriteResponse> {
     return this.api.collect(request);
   }
 

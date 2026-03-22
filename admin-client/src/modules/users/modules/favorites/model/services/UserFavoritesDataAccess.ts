@@ -20,8 +20,8 @@ export class UserFavoritesDataAccess {
   constructor(@inject(FavoriteApiInjectKey) private readonly favoriteApi: FavoriteApi) {}
   
   public async collect(request: CollectFavoriteRequest): Promise<CollectFavoriteResponse> {
-    const response = await this.favoriteApi.collect(request);
-    this.favoritesData = response;
+    const response = await this.favoriteApi.collect({ ...request, page: 1, size: 50 });
+    this.favoritesData = response.records;
     return response;
   }
 

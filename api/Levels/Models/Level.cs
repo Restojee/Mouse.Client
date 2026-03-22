@@ -1,5 +1,6 @@
 ﻿using Mouse.NET.Common;
 using Mouse.NET.Levels.dto;
+using Mouse.NET.Storage.Models;
 using Mouse.NET.Tags.Models;
 using Mouse.NET.Users.Models;
 
@@ -13,8 +14,8 @@ public class Level: Auditable
     
     public string Description { get; set; }
     
-    public string Image { get; set; }
-    
+    public ImageDto Image { get; set; }
+
     public User User { get; set; }
     
     public ICollection<Tag> Tags { get; set; }

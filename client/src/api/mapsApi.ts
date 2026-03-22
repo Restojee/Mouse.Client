@@ -56,7 +56,7 @@ export const mapsApi = {
     const res = await api.get<
       apiTypes.GetCompletedMapsByMapApiArg,
       AxiosResponse<apiTypes.GetCompletedMapsByMapApiResponse>
-    >(`/levels/completed/collect`, { params });
+    >(`/levels/completed/collect/by-map`, { params });
     return res.data;
   },
   addCompletedMap: async (arg: apiTypes.AddCompletedMapApiArg) => {
@@ -64,7 +64,7 @@ export const mapsApi = {
     formData.append("formFile", arg.body.file, "filename.png");
 
     const res = await api.post<apiTypes.AddCompletedMapApiArg, AxiosResponse<apiTypes.AddCompletedMapApiResponse>>(
-      `/levels/${arg.levelId}/completed/complete`,
+      `/levels/${arg.levelId}/completed/create`,
       formData,
       { headers: { "Content-Type": "multipart/form-data" } },
     );
@@ -80,7 +80,7 @@ export const mapsApi = {
   },
   addFavorite: async (params: apiTypes.AddFavoriteMapApiArg) => {
     const res = await api.post<apiTypes.AddFavoriteMapApiArg, AxiosResponse<apiTypes.AddFavoriteMapApiResponse>>(
-      `/levels/${params.levelId}/favorites/favorite`,
+      `/levels/${params.levelId}/favorites/create`,
     );
     return res.data;
   },

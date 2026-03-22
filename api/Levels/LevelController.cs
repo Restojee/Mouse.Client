@@ -34,6 +34,7 @@ public class LevelController : ControllerBase
     }
     
     [HttpPut("update")]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     public async Task<Level> UpdateLevel([FromBody] LevelUpdateRequest updateRequest)
     {
@@ -42,21 +43,24 @@ public class LevelController : ControllerBase
     
     [HttpPost("create")]
     [Authorize(Policy = nameof(Policy.LevelsCreate))]
+    [Authorize(Policy = nameof(Policy.LevelsCreateSelf))]
     public async Task<Level> CreateLevel([FromBody] LevelCreateRequest createRequest)
     {
         return await this.levelService.CreateLevel(createRequest);
     }
     
     [HttpPost("{levelId}/update-image")]
+    [Authorize(Policy = nameof(Policy.LevelsEdit))]
     [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     public async Task<string> UpdateLevelImage([FromRoute] int levelId, IFormFile formFile)
     {
         await this.levelService.UpdateLevelImage(levelId, formFile);
         return "Ok";
     }
-    
+
     [HttpPost("update-completed-image/{completedId}")]
     [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     public async Task<string> UpdateLevelCompletedImage([FromRoute] int completedId, IFormFile formFile)
     {
         await this.levelService.UpdateLevelCompletedImage(completedId, formFile);
@@ -64,6 +68,7 @@ public class LevelController : ControllerBase
     }
     
     [HttpDelete("remove/{levelId}")]
+    [Authorize(Policy = nameof(Policy.LevelsDelete))]
     [Authorize(Policy = nameof(Policy.LevelsDeleteSelf))]
     public async Task<string> DeleteLevel([FromRoute] int levelId)
     {
@@ -72,36 +77,41 @@ public class LevelController : ControllerBase
     
     [HttpPost("{levelId}/completed/complete")]
     [Authorize(Policy = nameof(Policy.LevelsCreate))]
+    [Authorize(Policy = nameof(Policy.LevelsCreateSelf))]
     public async Task<LevelCompleted> CompleteLevel([FromRoute] int levelId, IFormFile formFile)
     {
         return await this.levelService.CompleteLevel(levelId, formFile, "");
     }
-    
+
     [HttpDelete("{levelId}/completed/{completedId}/remove")]
     [Authorize(Policy = nameof(Policy.LevelsDelete))]
+    [Authorize(Policy = nameof(Policy.LevelsDeleteSelf))]
     public async Task<string> UnCompleteLevel([FromRoute] int completedId)
     {
         await this.levelService.UnCompleteLevel(completedId);
         return "Ok";
     }
-    
+
     [HttpPost("completed/create")]
     [Authorize(Policy = nameof(Policy.LevelsCreate))]
+    [Authorize(Policy = nameof(Policy.LevelsCreateSelf))]
     public async Task<LevelCompleted> CreateCompletedLevel([FromBody] CreateLevelCompletedRequest request)
     {
         return await this.levelService.CreateLevelCompleted(request);
     }
-    
+
     [HttpDelete("completed/remove")]
     [Authorize(Policy = nameof(Policy.LevelsDelete))]
+    [Authorize(Policy = nameof(Policy.LevelsDeleteSelf))]
     public async Task<string> RemoveCompletedLevel([FromQuery] RemoveLevelCompletedRequest request)
     {
         await this.levelService.RemoveLevelCompleted(request);
         return "Ok";
     }
-    
+
     [HttpDelete("favorite/remove")]
     [Authorize(Policy = nameof(Policy.LevelsDelete))]
+    [Authorize(Policy = nameof(Policy.LevelsDeleteSelf))]
     public async Task<string> RemoveLevelFavorite([FromQuery] RemoveLevelFavoriteRequest request)
     {
         await this.levelService.RemoveLevelFavorite(request);
@@ -110,94 +120,103 @@ public class LevelController : ControllerBase
     
     [HttpGet("favorite/collect")]
     [Authorize(Policy = "AnyAuthenticated")]
-    public async Task<List<LevelFavorite>> GetLevelFavoriteCollection([FromQuery] FavoriteCollectRequest request)
+    public async Task<PagedResult<LevelFavorite>> GetLevelFavoriteCollection([FromQuery] FavoriteCollectRequest request)
     {
         return await this.levelService.GetLevelFavoriteCollection(request);
     }
     
     [HttpGet("completed/collect")]
     [Authorize(Policy = "AnyAuthenticated")]
-    public async Task<List<LevelCompleted>> GetLevelCompletedCollection([FromQuery] CompletedCollectRequest request)
+    public async Task<PagedResult<LevelCompleted>> GetLevelCompletedCollection([FromQuery] CompletedCollectRequest request)
     {
         return await this.levelService.GetLevelCompletedCollection(request);
     }
     
     [HttpPut("completed/update")]
     [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     public async Task<LevelCompleted> UpdateLevelCompleted([FromBody] UpdateLevelCompletedRequest request)
     {
         return await this.levelService.UpdateLevelCompleted(request);
     }
-    
+
     [HttpPost("completed/update-image")]
     [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     public async Task<string> UpdateCompletedImage([FromQuery] int completedId, IFormFile formFile)
     {
         await this.levelService.UpdateLevelCompletedImage(completedId, formFile);
         return "Ok";
     }
-    
+
     [HttpPost("tags/create")]
     [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     public async Task<string> CreateLevelTag([FromBody] CreateLevelTagRequest request)
     {
         await this.levelService.CreateLevelTag(request);
         return "Ok";
     }
-    
+
     [HttpDelete("tags/remove")]
-    [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(Policy.LevelsDelete))]
+    [Authorize(Policy = nameof(Policy.LevelsDeleteSelf))]
     public async Task<string> RemoveLevelTag([FromQuery] RemoveLevelTagRequest request)
     {
         await this.levelService.RemoveLevelTag(request);
         return "Ok";
     }
-    
+
     [HttpPost("{levelId}/favorites/favorite")]
     [Authorize(Policy = nameof(Policy.LevelsCreate))]
+    [Authorize(Policy = nameof(Policy.LevelsCreateSelf))]
     public async Task<string> FavoriteLevel([FromRoute] int levelId)
     {
         await this.levelService.FavoriteLevel(levelId);
         return "Ok";
     }
-    
+
     [HttpDelete("{levelId}/favorites/delete")]
     [Authorize(Policy = nameof(Policy.LevelsDelete))]
+    [Authorize(Policy = nameof(Policy.LevelsDeleteSelf))]
     public async Task<string> UnFavoriteLevel([FromRoute] int levelId)
     {
         await this.levelService.UnFavoriteLevel(levelId);
         return "Ok";
     }
-    
+
     [HttpPut("set-tags")]
     [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     public async Task<Level> SetLevelTags([FromBody] LevelTagsSetRequest request)
     {
         return await this.levelService.SetLevelTags(request);
     }
     
     [HttpPut("set-note")]
-    [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(Policy.NoteEditSelf))]
+    [Authorize(Policy = nameof(Policy.NoteEdit))]
     public async Task<Level> SetLevelNote([FromBody] LevelNoteSetRequest request)
     {
         return await this.levelService.SetLevelNote(request);
     }
 
     [HttpGet("notes/collect")]
-    [Authorize(Policy = nameof(Policy.LevelsRead))]
     public async Task<List<LevelNote>> CollectNotes([FromQuery] LevelNoteCollectRequest request)
     {
         return await this.levelService.CollectLevelNotes(request);
     }
 
     [HttpPost("notes/create")]
-    [Authorize(Policy = nameof(Policy.LevelsCreate))]
+    [Authorize(Policy = nameof(Policy.NoteCreateSelf))]
+    [Authorize(Policy = nameof(Policy.NoteCreate))]
     public async Task<LevelNote> CreateNote([FromBody] CreateLevelNoteRequest request)
     {
         return await this.levelService.CreateLevelNote(request);
     }
 
     [HttpPut("notes/update")]
+    [Authorize(Policy = nameof(Policy.LevelsEditSelf))]
     [Authorize(Policy = nameof(Policy.LevelsEdit))]
     public async Task<LevelNote> UpdateNote([FromBody] UpdateLevelNoteRequest request)
     {
@@ -205,7 +224,8 @@ public class LevelController : ControllerBase
     }
 
     [HttpDelete("notes/remove")]
-    [Authorize(Policy = nameof(Policy.LevelsDelete))]
+    [Authorize(Policy = nameof(Policy.NoteDeleteSelf))]
+    [Authorize(Policy = nameof(Policy.NoteDelete))]
     public async Task<string> RemoveNotes([FromQuery] RemoveLevelNotesRequest request)
     {
         await this.levelService.RemoveLevelNotes(request);
@@ -213,7 +233,8 @@ public class LevelController : ControllerBase
     }
     
     [HttpPost("favorite/create")]
-    [Authorize(Policy = nameof(Policy.LevelsCreate))]
+    [Authorize(Policy = nameof(Policy.FavoriteCreateSelf))]
+    [Authorize(Policy = nameof(Policy.FavoriteCreate))]
     public async Task<string> CreateLevelFavorite([FromBody] CreateLevelFavoriteRequest request)
     {
         await this.levelService.CreateLevelFavorite(request);
@@ -221,7 +242,8 @@ public class LevelController : ControllerBase
     }
 
     [HttpPut("favorite/update")]
-    [Authorize(Policy = nameof(Policy.LevelsEdit))]
+    [Authorize(Policy = nameof(Policy.FavoriteEditSelf))]
+    [Authorize(Policy = nameof(Policy.FavoriteEdit))]
     public async Task<LevelFavorite> UpdateLevelFavorite([FromBody] UpdateLevelFavoriteRequest request)
     {
         return await this.levelService.UpdateLevelFavorite(request);

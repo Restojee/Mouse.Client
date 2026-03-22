@@ -20,6 +20,7 @@ public class AdminMessagesController : ControllerBase
 
     [HttpPost("create")]
     [Authorize(Policy = nameof(Policy.MessagesCreate))]
+    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     public async Task<Message> Create([FromBody] MessageCreateRequest createRequest)
     {
         return await this.messageService.CreateMessage(createRequest);
@@ -27,6 +28,7 @@ public class AdminMessagesController : ControllerBase
 
     [HttpPut("update")]
     [Authorize(Policy = nameof(Policy.MessagesEdit))]
+    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     public async Task<Message> Update([FromBody] MessageUpdateRequest updateRequest)
     {
         return await this.messageService.UpdateMessage(updateRequest);
@@ -34,6 +36,7 @@ public class AdminMessagesController : ControllerBase
 
     [HttpDelete("remove/{messageId}")]
     [Authorize(Policy = nameof(Policy.MessagesDelete))]
+    [Authorize(Policy = nameof(OtherPolicy.Administration))]
     public async Task<string> Delete([FromRoute] int messageId)
     {
         return await this.messageService.DeleteMessage(messageId);

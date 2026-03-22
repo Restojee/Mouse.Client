@@ -27,7 +27,7 @@ class CompletedApi {
   public getByLevelId(levelId: number): Promise<CollectCompletedResponse> {
     return this.http.get({
       url: CompletedUrls[CompletedEndpoints.ByLevelId],
-      params: { levelId },
+      params: { levelId, page: 1, size: 50 },
     });
   }
 

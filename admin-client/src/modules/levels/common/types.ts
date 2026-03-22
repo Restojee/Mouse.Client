@@ -1,4 +1,5 @@
 import { CompletedData } from '@/modules/levels/completed/services/types';
+import type { Image } from '@common/api/storage/models';
 
 export interface UserData {
   id: number,
@@ -19,7 +20,7 @@ export interface LevelData {
   id: number;
   name: string;
   description?: string;
-  image?: string;
+  image?: Image;
   createdUtcDate: string,
   modifiedUtcDate: string,
   user?: UserData;

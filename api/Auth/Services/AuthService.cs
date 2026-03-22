@@ -84,6 +84,16 @@ public class AuthService: IAuthService
     {
         return this.jwtService.GetUserId();
     }
+
+    public bool HasPolicy(string policyKey)
+    {
+        return this.jwtService.HasPolicy(policyKey);
+    }
+
+    public ICollection<string> GetPolicies()
+    {
+        return this.jwtService.GetPolicies();
+    }
     
     public async Task<Account> RegisterAccount (RegisterAccountRequest registerAccountRequest, bool needInvite = true)
     {

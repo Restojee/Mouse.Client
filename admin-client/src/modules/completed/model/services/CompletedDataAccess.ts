@@ -5,6 +5,7 @@ import CompletedApi from '@common/api/completed/api';
 import { CompletedApiInjectKey } from '@/constants';
 import type {
   CollectCompletedRequest,
+  CollectCompletedResponse,
   Completed,
   CreateCompletedRequest,
   DeleteCompletedRequest,
@@ -72,7 +73,7 @@ export class CompletedDataAccess {
     this.filterUserId = userId;
   }
 
-  public async collect(request: CollectCompletedRequest): Promise<Completed[]> {
+  public async collect(request: CollectCompletedRequest): Promise<CollectCompletedResponse> {
     return this.completedApi.collect(request);
   }
 

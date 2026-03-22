@@ -9,9 +9,9 @@ namespace Mouse.NET.Levels.Data
     {
         public Task<PagedResult<LevelEntity>> GetLevelCollection(LevelCollectionGetRequest request);
 
-        public Task<List<LevelFavoriteEntity>> GetLevelFavoriteCollection(FavoriteCollectRequest request);
+        public Task<PagedResult<LevelFavoriteEntity>> GetLevelFavoriteCollection(FavoriteCollectRequest request);
         
-        public Task<List<LevelCompletedEntity>> GetLevelCompletedCollection(CompletedCollectRequest request);
+        public Task<PagedResult<LevelCompletedEntity>> GetLevelCompletedCollection(CompletedCollectRequest request);
         
         public Task<LevelEntity?> GetLevel(int levelId, int? userId = null);
         

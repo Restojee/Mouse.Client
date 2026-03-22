@@ -18,6 +18,10 @@ public static class PolicyNames
     public const string TagsEdit = nameof(TagsEdit);
     public const string TagsDelete = nameof(TagsDelete);
 
+    public const string TagsCreateSelf = nameof(TagsCreateSelf);
+    public const string TagsEditSelf = nameof(TagsEditSelf);
+    public const string TagsDeleteSelf = nameof(TagsDeleteSelf);
+
     public const string TipsCreate = nameof(TipsCreate);
     public const string TipsRead = nameof(TipsRead);
     public const string TipsEdit = nameof(TipsEdit);
@@ -33,10 +37,18 @@ public static class PolicyNames
     public const string MessagesEdit = nameof(MessagesEdit);
     public const string MessagesDelete = nameof(MessagesDelete);
 
+    public const string MessagesCreateSelf = nameof(MessagesCreateSelf);
+    public const string MessagesEditSelf = nameof(MessagesEditSelf);
+    public const string MessagesDeleteSelf = nameof(MessagesDeleteSelf);
+
     public const string InvitesCreate = nameof(InvitesCreate);
     public const string InvitesRead = nameof(InvitesRead);
     public const string InvitesEdit = nameof(InvitesEdit);
     public const string InvitesDelete = nameof(InvitesDelete);
+
+    public const string InvitesCreateSelf = nameof(InvitesCreateSelf);
+    public const string InvitesEditSelf = nameof(InvitesEditSelf);
+    public const string InvitesDeleteSelf = nameof(InvitesDeleteSelf);
 
     public const string UsersCreate = nameof(UsersCreate);
     public const string UsersRead = nameof(UsersRead);
@@ -67,6 +79,9 @@ public static class PolicyToPermission
             nameof(PolicyNames.TagsRead) => Permissions.TagsRead,
             nameof(PolicyNames.TagsEdit) => Permissions.TagsEdit,
             nameof(PolicyNames.TagsDelete) => Permissions.TagsDelete,
+            nameof(PolicyNames.TagsCreateSelf) => Permissions.TagsCreateSelf,
+            nameof(PolicyNames.TagsEditSelf) => Permissions.TagsEditSelf,
+            nameof(PolicyNames.TagsDeleteSelf) => Permissions.TagsDeleteSelf,
             nameof(PolicyNames.TipsCreate) => Permissions.TipsCreate,
             nameof(PolicyNames.TipsRead) => Permissions.TipsRead,
             nameof(PolicyNames.TipsEdit) => Permissions.TipsEdit,
@@ -79,10 +94,16 @@ public static class PolicyToPermission
             nameof(PolicyNames.MessagesRead) => Permissions.MessagesRead,
             nameof(PolicyNames.MessagesEdit) => Permissions.MessagesEdit,
             nameof(PolicyNames.MessagesDelete) => Permissions.MessagesDelete,
+            nameof(PolicyNames.MessagesCreateSelf) => Permissions.MessagesCreateSelf,
+            nameof(PolicyNames.MessagesEditSelf) => Permissions.MessagesEditSelf,
+            nameof(PolicyNames.MessagesDeleteSelf) => Permissions.MessagesDeleteSelf,
             nameof(PolicyNames.InvitesCreate) => Permissions.InvitesCreate,
             nameof(PolicyNames.InvitesRead) => Permissions.InvitesRead,
             nameof(PolicyNames.InvitesEdit) => Permissions.InvitesEdit,
             nameof(PolicyNames.InvitesDelete) => Permissions.InvitesDelete,
+            nameof(PolicyNames.InvitesCreateSelf) => Permissions.InvitesCreateSelf,
+            nameof(PolicyNames.InvitesEditSelf) => Permissions.InvitesEditSelf,
+            nameof(PolicyNames.InvitesDeleteSelf) => Permissions.InvitesDeleteSelf,
             nameof(PolicyNames.UsersCreate) => Permissions.UsersCreate,
             nameof(PolicyNames.UsersRead) => Permissions.UsersRead,
             nameof(PolicyNames.UsersEdit) => Permissions.UsersEdit,

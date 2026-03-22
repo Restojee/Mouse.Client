@@ -1,11 +1,12 @@
 import { Tag, User } from '@common/api/tags/types';
 import { Completed } from '@common/api/completed';
+import type { Image } from '@common/api/storage/models';
 
 export class Level {
   id: number;
   name: string;
   description?: string;
-  image?: string;
+  image?: Image;
   createdUtcDate: string;
   modifiedUtcDate: string;
   user: User;

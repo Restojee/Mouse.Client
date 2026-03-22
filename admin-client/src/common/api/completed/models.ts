@@ -1,10 +1,19 @@
 import { User } from '@common/api/tags/types';
 import { Level } from '@common/api/levels/models';
+import type { Image } from '@common/api/storage/models';
+
+export interface PagedResult<T> {
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+  records: T[];
+}
 
 export interface Completed {
   id: number;
   description: string;
-  image?: string;
+  image?: Image;
   createdUtcDate: string;
   user: User;
   level: Level;
@@ -16,11 +25,13 @@ export interface CollectCompletedRequest {
   page?: number;
   size?: number;
 
+  search?: string;
+
   sortField?: string;
   sortDirection?: 'asc' | 'desc';
 }
 
-export type CollectCompletedResponse = Completed[]
+export type CollectCompletedResponse = PagedResult<Completed>
 
 export interface CreateCompletedRequest {
   levelId: number;

@@ -6,22 +6,12 @@ import { RoleDataAccessInjectKey } from '@/modules/roles/model/common/constants'
 import type { PolicyInfo } from '@/modules/roles/model/entities/types';
 import type { RolePermissionsProps } from './RolePermissions';
 
-const PERMISSION_LABELS: Record<string, string> = {
-  create: 'Создание',
-  read: 'Чтение',
-  update: 'Ред.',
-  delete: 'Удаление',
-  access: 'Доступ',
-};
-
 const GROUP_TITLES: Record<string, string> = {
-  Moder: 'Права админ. панели',
-  Owner: 'Права пользователей',
+  Moder: 'Права с полным доступом (для глобальных прав)',
+  Owner: 'Права с личным доступом (к своему контенту)',
   System: 'Прочие права',
 };
 
-const CRUD_ORDER = ['create', 'read', 'update', 'delete'] as const;
-const OTHER_ORDER = ['access'] as const;
 const GROUP_ORDER = ['Moder', 'Owner', 'System'] as const;
 
 export interface PolicyGroup {
@@ -41,7 +31,7 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
 
   @Computed()
   public get policies(): PolicyInfo[] {
-    return this.dataAccess.editedPolicies || [];
+    return this.dataAccess.editedPolicies;
   }
 
   @Computed()
@@ -53,7 +43,7 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
       if (!groupedByGroup.has(group)) {
         groupedByGroup.set(group, []);
       }
-      groupedByGroup.get(group)!.push(p);
+      groupedByGroup.get(group).push(p);
     });
 
     const groups: PolicyGroup[] = [];
@@ -83,15 +73,6 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
     policies.forEach(p => {
       p.permissions.forEach(perm => labels.add(perm.label));
     });
-
-    if (groupLabel === 'Moder' || groupLabel === 'Owner') {
-      return CRUD_ORDER.filter(l => labels.has(l));
-    }
-
-    if (groupLabel === 'System') {
-      return OTHER_ORDER.filter(l => labels.has(l));
-    }
-
     return Array.from(labels);
   }
 
@@ -101,7 +82,7 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
   }
 
   public getLabelDisplay(label: string): string {
-    return PERMISSION_LABELS[label] || label;
+    return label;
   }
 
   public getPermissionByLabel(policy: PolicyInfo, label: string) {
@@ -123,7 +104,6 @@ class RolePermissionsModel extends ViewModel<RolePermissionsProps> {
         ),
       };
     });
-
     this.props.onChange?.(updated);
   };
 
