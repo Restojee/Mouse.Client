@@ -188,7 +188,7 @@ export type MapById = {
   name?: string;
   description?: string;
   user?: User;
-  image?: string;
+  image?: MapImage;
   tags?: Tag[];
   createdUtcDate: string | null;
   modifiedUtcDate: string | null;
@@ -201,12 +201,21 @@ export type MapById = {
   isCompletedByUser: boolean;
   isFavoriteByUser: boolean;
 };
+
+export type MapImage = {
+  name: string;
+  variants: {
+    thumb: string;
+    display: string;
+  };
+};
+
 export type Map = {
   id?: number;
   name?: string;
   description?: string;
   user?: User;
-  image?: string;
+  image?: MapImage;
   tags?: Tag[];
   createdUtcDate: string | null;
   modifiedUtcDate: string | null;

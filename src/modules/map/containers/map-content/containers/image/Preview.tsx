@@ -1,4 +1,4 @@
-import { MapCompleted } from "@/api/codegen/genMouseMapsApi";
+import { MapCompleted, MapImage } from "@/api/codegen/genMouseMapsApi";
 import { Display } from "@/ui/Display";
 import { StyledMapContentCount } from "@/ui/Message/styled";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -12,7 +12,7 @@ import Swiper from "swiper";
 
 type MapContentPreviewPropsType = {
   images: MapCompleted[] | null;
-  image?: string | null;
+  image?: MapImage | null;
   mapCompleted?: MapCompleted | null;
   setActiveMapCompleted?: (map: MapCompleted) => void;
 };
@@ -99,7 +99,7 @@ export const Preview = React.memo(
           />
           <PreviewImageWrapper
             onClick={onOpenImage}
-            image={image}
+            image={image?.name}
           />
         </>
       );
@@ -131,7 +131,7 @@ export const Preview = React.memo(
                 onDeleteOpen={onOpenDeleteModal}
                 onClick={onOpenImage}
                 imagesCount={imagesCount}
-                image={el.image}
+                image={el.image?.name}
                 mapCompleted={mapCompleted}
               />
             </SwiperSlide>

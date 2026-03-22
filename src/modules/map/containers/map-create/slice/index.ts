@@ -79,7 +79,7 @@ const slice = createSlice({
     setMapImage: (state, action: PayloadAction<string>) => {
       state.image = action.payload;
     },
-    setCompletedMapImage: (state, action: PayloadAction<Map["image"]>) => {
+    setCompletedMapImage: (state, action: PayloadAction<string>) => {
       state.completedMapImage = action.payload;
     },
     setMapTagIds: (state, action: PayloadAction<Tag["id"][]>) => {

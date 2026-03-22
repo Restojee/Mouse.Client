@@ -50,7 +50,7 @@ export const MiniMapImages = () => {
               </Display>
               <Image
                 alt={item.user?.username}
-                src={getMapImageLink(item?.image)}
+                src={getMapImageLink(item?.image?.name)}
                 height={MINI_IMAGES_HEIGHT}
                 width={MINI_IMAGES_WIDTH}
                 objectPosition={"center"}

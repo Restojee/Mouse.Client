@@ -22,7 +22,7 @@ type MapCardProps = {
   map: Map;
 };
 export const MapCard = React.memo((props: MapCardProps) => {
-  const { id, name, tags, image = "", commentsCount, completedCount, isFavoriteByUser } = props.map;
+  const { id, name, tags, image, commentsCount, completedCount, isFavoriteByUser } = props.map;
 
   const { theme } = useAppTheme();
 
@@ -56,7 +56,7 @@ export const MapCard = React.memo((props: MapCardProps) => {
     onToggleMapFavorite(Boolean(isFavoriteByUser));
   }, [onToggleMapFavorite, isFavoriteByUser]);
 
-  const mapImage = useMemo(() => getMapImageLink(image), [image]);
+  const mapImage = useMemo(() => getMapImageLink(image?.name), [image]);
 
   return (
     <StyledMapCard
