@@ -7,52 +7,62 @@ import { RootState } from "@/store";
 import { MapCreateFormType } from "../containers/create-form/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export const createMapThunk = createAsyncThunk("map/create", async (arg: { id?: Map["id"] }, thunkAPI) => {
-  try {
-    const state = thunkAPI.getState() as RootState;
-    const name = selectMapName(state);
-    const image = selectMapImage(state);
-    const completedMapImage = selectCompletedMapImage(state);
-    const tags = selectMapTags(state);
+export const createMapThunk = createAsyncThunk(
+  "map/create",
+  async (
+    arg: {
+      id?: Map["id"];
+      onSuccess?: () => void;
+    },
+    thunkAPI,
+  ) => {
+    try {
+      const state = thunkAPI.getState() as RootState;
+      const name = selectMapName(state);
+      const image = selectMapImage(state);
+      const completedMapImage = selectCompletedMapImage(state);
+      const tags = selectMapTags(state);
 
-    let levelId: Map["id"] = arg?.id;
-    let createdMap: Map;
+      let levelId: Map["id"] = arg?.id;
+      let createdMap: Map;
 
-    if (!levelId) {
-      const trimmedName = (name || "").trim();
-      const normalizedName = trimmedName.length > 3 && !trimmedName.startsWith("@") ? `@${trimmedName}` : trimmedName;
-      createdMap = await mapsApi.createMap({ name: normalizedName });
-      levelId = createdMap.id;
+      if (!levelId) {
+        const trimmedName = (name || "").trim();
+        const normalizedName = trimmedName.length > 3 && !trimmedName.startsWith("@") ? `@${trimmedName}` : trimmedName;
+        createdMap = await mapsApi.createMap({ name: normalizedName });
+        levelId = createdMap.id;
+      }
+
+      if (levelId && tags) {
+        await mapsApi.setMapsTag({ levelId, tagIds: tags as number[] });
+        thunkAPI.dispatch(setMapTagIds([]));
+      }
+
+      if (levelId && image) {
+        const file = convertDataUrlToBlob(image);
+        createdMap = await mapsApi.updateMapImage({ levelId, body: { file } });
+      }
+
+      if (levelId && completedMapImage) {
+        const file = convertDataUrlToBlob(completedMapImage);
+        await mapsApi.addCompletedMap({ levelId, body: { file } });
+      }
+
+      thunkAPI.dispatch(getMapsThunk());
+
+      if (arg?.id) {
+        thunkAPI.dispatch(setAppMessage({ severity: "success", text: `Существующая карта обновлена` }));
+      } else {
+        thunkAPI.dispatch(setAppMessage({ severity: "success", text: `Карта добавлена` }));
+      }
+      arg.onSuccess?.();
+      return thunkAPI.fulfillWithValue(true);
+    } catch (error) {
+      thunkAPI.dispatch(setAppMessage({ severity: "error", text: `Ошибка добавления` }));
+      return thunkAPI.rejectWithValue(false);
     }
-
-    if (levelId && tags) {
-      await mapsApi.setMapsTag({ levelId, tagIds: tags as number[] });
-      thunkAPI.dispatch(setMapTagIds([]));
-    }
-
-    if (levelId && image) {
-      const file = convertDataUrlToBlob(image);
-      createdMap = await mapsApi.updateMapImage({ levelId, body: { file } });
-    }
-
-    if (levelId && completedMapImage) {
-      const file = convertDataUrlToBlob(completedMapImage);
-      await mapsApi.addCompletedMap({ levelId, body: { file } });
-    }
-
-    thunkAPI.dispatch(getMapsThunk());
-
-    if (arg?.id) {
-      thunkAPI.dispatch(setAppMessage({ severity: "success", text: `Существующая карта обновлена` }));
-    } else {
-      thunkAPI.dispatch(setAppMessage({ severity: "success", text: `Карта добавлена` }));
-    }
-    return thunkAPI.fulfillWithValue(true);
-  } catch (error) {
-    thunkAPI.dispatch(setAppMessage({ severity: "error", text: `Ошибка добавления` }));
-    console.log(error);
-  }
-});
+  },
+);
 
 const initialState: MapCreateFormType = {
   name: "",

@@ -1,5 +1,5 @@
 import { selectAppTheme, setCurrentTheme } from "@/bll/appReducer";
-import { localStorageKeys } from "@/common/constants";
+import { LOCAL_STORAGE_KEYS } from "@/common/constants";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import useLocalStorage from "@/hooks/useLocalStorage";
@@ -10,7 +10,7 @@ import { useTheme } from "styled-components";
 export const useAppTheme = () => {
   const dispatch = useAppDispatch();
 
-  const { getValue, setValue } = useLocalStorage<ThemeKey>(localStorageKeys.APP_THEME);
+  const { getValue, setValue } = useLocalStorage<ThemeKey>(LOCAL_STORAGE_KEYS.APP_THEME);
 
   const theme = useTheme();
 

@@ -22,6 +22,7 @@ import { Avatar } from "@/ui/Avatar";
 import { Display } from "@/ui/Display";
 import { Property } from "csstype";
 import { ReactNode, useEffect, useMemo } from "react";
+import { useNotifications } from "@/modules/notifications";
 
 export type PanelProps = {
   activeTab: string;
@@ -36,6 +37,7 @@ export const Panel = (props: PanelProps) => {
   const { toggleTheme, themeKey } = useAppTheme();
 
   const { isHasNewMessage, fetchChatMessages, messages } = useChat();
+  const { isHasNewNotifications } = useNotifications();
 
   const isAuth = useAppSelector(selectIsAuth);
   const userData = useAppSelector(selectCurrentUser);
@@ -44,9 +46,12 @@ export const Panel = (props: PanelProps) => {
     return themeKey === ThemeKey.LIGHT ? <MoonIcon /> : <SunIcon />;
   }, [themeKey]);
 
-  const isChatPinVisible = useMemo(() => {
-    return isHasNewMessage && isAuth;
-  }, [isHasNewMessage, isAuth]);
+  const pins: Partial<Record<TabsType, boolean>> = useMemo(() => {
+    return {
+      chat: Boolean(isHasNewMessage && isAuth),
+      notifications: Boolean(isHasNewNotifications && isAuth),
+    };
+  }, [isHasNewMessage, isHasNewNotifications, isAuth]);
 
   const onTabClickHandler = (tab: TabsType | null) => {
     if (!tab) {
@@ -98,7 +103,7 @@ export const Panel = (props: PanelProps) => {
       {tabsData.map((el, index) => (
         <NavLink
           key={index}
-          hasPin={Boolean(el.tab === "chat" && isChatPinVisible)}
+          hasPin={Boolean(el.tab && pins[el.tab])}
           isDisabled={(el.isNeedAuth && !isAuth) || !el.tab}
           label={el.label}
           description={el.label}

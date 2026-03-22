@@ -1,5 +1,3 @@
-import { localStorageKeys } from "@/common/constants";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import { useUser } from "@/modules/user/hooks/useUser";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useAppSelector } from "@/hooks/useAppSelector";
@@ -17,9 +15,16 @@ export const Chat = () => {
   const isAuth = useAppSelector(selectIsAuth);
   const currentUser = useAppSelector(selectCurrentUser);
 
-  const { setValue } = useLocalStorage(localStorageKeys.CHAT_MESSAGES_COUNT);
-  const { messages, messageText, onMessageAdd, isSendLoading, onInputKeyUp, onInputChange, onMessageDelete } =
-    useChat();
+  const {
+    updateMessagesCount,
+    messages,
+    messageText,
+    onMessageAdd,
+    isSendLoading,
+    onInputKeyUp,
+    onInputChange,
+    onMessageDelete,
+  } = useChat();
   const { theme } = useAppTheme();
   const { onOpenUserModal, users } = useUser();
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
@@ -57,10 +62,7 @@ export const Chat = () => {
   );
 
   useEffect(() => {
-    if (messages?.length) {
-      setValue(messages?.length);
-    }
-
+    updateMessagesCount();
     scrollToBottomHandler(true);
   }, [messages?.length]);
 

@@ -57,11 +57,8 @@ export const useMapCreate = () => {
 
   const onNameChange = useCallback(
     (name: Map["name"]): void => {
-      if (!name) {
-        return;
-      }
       dispatch(setMapName(name));
-      debounceSearchByName(name);
+      debounceSearchByName(name || "");
     },
     [debounceSearchByName, dispatch],
   );
@@ -83,12 +80,11 @@ export const useMapCreate = () => {
       const map = getMapByName.payload as Map;
 
       if (map?.name === normalizedName) {
-        dispatch(createMapThunk({ id: map?.id }));
+        dispatch(createMapThunk({ id: map?.id, onSuccess: clearForm }));
         return;
       }
 
-      dispatch(createMapThunk({}));
-      clearForm();
+      dispatch(createMapThunk({ onSuccess: clearForm }));
     } else {
       dispatch(setAppMessage({ severity: "error", text: "Некорректный номер карты" }));
     }

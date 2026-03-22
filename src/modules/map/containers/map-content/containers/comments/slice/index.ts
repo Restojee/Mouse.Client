@@ -4,6 +4,7 @@ import { setAppMessage } from "@/bll/appReducer";
 import { RootState } from "@/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { MapCommentsStateType } from "../types";
+import { AxiosError } from "axios";
 
 export const fetchMapCommentsThunk = createAsyncThunk(
   "map-comments",
@@ -13,6 +14,9 @@ export const fetchMapCommentsThunk = createAsyncThunk(
       thunkAPI.dispatch(setComments(comments));
       thunkAPI.dispatch(setIsCommentsInitialized(true));
     } catch (error) {
+      if ((error as AxiosError)?.response?.status === 401) {
+        return;
+      }
       thunkAPI.dispatch(setAppMessage({ severity: "error", text: `Ошибка загрузки комментов` }));
     }
   },

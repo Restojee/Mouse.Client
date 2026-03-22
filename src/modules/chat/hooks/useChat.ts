@@ -1,6 +1,5 @@
-import { localStorageKeys } from "@/common/constants";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import React, { useCallback, useMemo, useState } from "react";
+import { LOCAL_STORAGE_KEYS } from "@/common/constants";
+import React, { useCallback, useState } from "react";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import {
@@ -11,12 +10,14 @@ import {
   selectIsChatMessageInitialized,
 } from "@/modules/chat/slice";
 import { Comment } from "@/api/codegen/genMouseMapsApi";
+import { useHasNewItems } from "@/hooks/useHasNewItems";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 export const useChat = () => {
   const dispatch = useAppDispatch();
   const messages = useAppSelector(selectChatMessages);
   const isChatMessageInitialized = useAppSelector(selectIsChatMessageInitialized);
-  const { getValue } = useLocalStorage<number>(localStorageKeys.CHAT_MESSAGES_COUNT);
+  const { setValue } = useLocalStorage(LOCAL_STORAGE_KEYS.CHAT_MESSAGES_COUNT);
 
   const [messageText, setMessageText] = useState("");
   const [isSendLoading, setIsSendLoading] = useState(false);
@@ -60,14 +61,17 @@ export const useChat = () => {
     [onMessageAdd, isSendLoading],
   );
 
-  const isHasNewMessage = useMemo(() => {
-    const messagesLength = Number(getValue());
-    return messagesLength && messages?.length !== messagesLength;
-  }, [getValue, messages?.length]);
+  const isHasNewMessage = useHasNewItems(LOCAL_STORAGE_KEYS.CHAT_MESSAGES_COUNT, messages?.length);
 
   const fetchChatMessages = useCallback(() => {
     dispatch(fetchChatMessagesThunk());
   }, [dispatch]);
+
+  const updateMessagesCount = useCallback(() => {
+    if (messages?.length) {
+      setValue(messages?.length);
+    }
+  }, [messages?.length, setValue]);
 
   return {
     messageText,
@@ -80,5 +84,6 @@ export const useChat = () => {
     isHasNewMessage,
     onMessageDelete,
     fetchChatMessages,
+    updateMessagesCount,
   };
 };

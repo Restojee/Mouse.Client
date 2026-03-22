@@ -7,12 +7,35 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const fetchChatMessagesThunk = createAsyncThunk("chat/get", async (arg, thunkAPI) => {
   try {
-    const messages = await chatApi.getChatMessages({ size: 200, page: 1 });
-    const fixedMessages = messages.records;
+    let allMessages: Comment[] = [];
+    let page = 1;
+    let totalPages = 1;
+
+    while (page <= totalPages) {
+      const response = await chatApi.getChatMessages({
+        size: 200,
+        page,
+      });
+
+      const { records, totalPages: tp } = response;
+
+      totalPages = tp || 1;
+
+      allMessages = [...allMessages, ...records];
+
+      page++;
+    }
+
+    const fixedMessages = allMessages.reverse();
 
     thunkAPI.dispatch(setChatMessages(fixedMessages));
   } catch (error) {
-    thunkAPI.dispatch(setAppMessage({ severity: "error", text: "Ошибка загрузки чата" }));
+    thunkAPI.dispatch(
+      setAppMessage({
+        severity: "error",
+        text: "Ошибка загрузки чата",
+      }),
+    );
   }
 });
 

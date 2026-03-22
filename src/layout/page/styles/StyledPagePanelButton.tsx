@@ -7,7 +7,8 @@ export const StyledPagePanelButton = styled.button((props) => ({
   borderRadius: 10,
   color: "inherit",
   padding: "5px 8px",
-  backgroundColor: "transparent",
+  backgroundColor: props.theme.colors.neutral,
+  transition: "0.2s",
   cursor: "pointer",
   "&:hover": {
     backgroundColor: "rgba(0, 0, 0, 0.05)",
@@ -18,6 +19,6 @@ export const StyledPagePanelButton = styled.button((props) => ({
   },
   ...(props.disabled && {
     pointerEvents: "none",
-    opacity: 0.5,
+    opacity: 0.3,
   }),
 }));

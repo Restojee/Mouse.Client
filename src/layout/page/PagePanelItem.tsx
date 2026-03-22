@@ -17,13 +17,15 @@ export const PagePanelItem = (props: PropsType) => {
   return (
     <StyledBox gap={10}>
       {isContentVisible && content}
-      <StyledPagePanelButton
-        type={type || "button"}
-        disabled={disabled}
-        onClick={onClick}
-      >
-        {children}
-      </StyledPagePanelButton>
+      {!!children && (
+        <StyledPagePanelButton
+          type={type || "button"}
+          disabled={disabled}
+          onClick={onClick}
+        >
+          {children}
+        </StyledPagePanelButton>
+      )}
     </StyledBox>
   );
 };
