@@ -7,6 +7,12 @@ export const usersApi = {
     const res = await api.get<GetUsersApiArg, AxiosResponse<GetUsersApiResponse>>("/users/collect", { params });
     return res.data;
   },
+  searchByUsername: async (username: string, size = 8) => {
+    const res = await api.get<void, AxiosResponse<GetUsersApiResponse>>("/users/collect", {
+      params: { sortByUsername: username, page: 1, size },
+    });
+    return res.data.records;
+  },
   updateAvatar: async (arg: UpdateUserImageRequest) => {
     const formData = new FormData();
     formData.append("file", arg.file, "filename.png");

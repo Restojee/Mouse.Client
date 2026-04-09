@@ -1,14 +1,12 @@
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import useFilterQueryParams from "@/hooks/useFilterQueryParams";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { StyledMapsGrid } from "@/modules/map/styles/StyledMapsGrid";
 import { StyledBox } from "@/ui/Box";
 import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
-import { Display } from "@/ui/Display";
-import { Pagination } from "@/ui/Pagination/Pagination";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { getMapsThunk, selectIsMapsFetching, selectMaps, selectMapsInfo } from "../slice";
+import React, { useCallback, useEffect } from "react";
+import { getMapsThunk, getMoreMapsThunk, selectIsMapsFetching, selectMaps, selectMapsInfo } from "../slice";
 import { MapCard } from "./map-card/MapCard";
 
 export const MapsList = React.memo(() => {
@@ -19,7 +17,6 @@ export const MapsList = React.memo(() => {
   const mapsInfo = useAppSelector(selectMapsInfo);
 
   const router = useRouter();
-  const { updateFilter, filter } = useFilterQueryParams();
 
   useEffect(() => {
     if (!router.isReady) {
@@ -28,11 +25,17 @@ export const MapsList = React.memo(() => {
     dispatch(getMapsThunk());
   }, [router.query.filter, router.isReady]);
 
-  const onPageChange = async (selectedItem: { selected: number }) => {
-    await updateFilter({ page: selectedItem.selected + 1 });
-    const pageContentElement = document.querySelector("#maps-page-container");
-    pageContentElement?.scrollTo({ behavior: "smooth", top: 0 });
-  };
+  const hasMore = mapsInfo ? mapsInfo.page < mapsInfo.totalPages : false;
+
+  const onLoadMore = useCallback(() => {
+    dispatch(getMoreMapsThunk());
+  }, [dispatch]);
+
+  const sentinelRef = useInfiniteScroll({
+    onLoadMore,
+    hasMore,
+    isLoading: isFetching,
+  });
 
   if (!maps?.length && !isFetching) {
     return (
@@ -60,13 +63,12 @@ export const MapsList = React.memo(() => {
         ))}
       </StyledMapsGrid>
       <BoxLoader isLoading={isFetching} />
-      <Display condition={mapsInfo && mapsInfo.totalPages > 1}>
-        <Pagination
-          forcePage={filter.page - 1}
-          pageCount={mapsInfo?.totalPages || 1}
-          onPageChange={onPageChange}
+      {hasMore && (
+        <div
+          ref={sentinelRef}
+          style={{ height: 1 }}
         />
-      </Display>
+      )}
     </>
   );
 });

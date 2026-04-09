@@ -1,5 +1,6 @@
 import { Property } from "csstype";
 import { ReactNode } from "react";
+import React from "react";
 import styled from "styled-components";
 
 export type StyledBoxProps = {
@@ -41,8 +42,7 @@ export type StyledBoxProps = {
   isActive: boolean;
   bgColorByActive: string;
   stylized: boolean;
-
-  children: ReactNode | JSX.Element;
+  children: React.ReactNode;
 };
 export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props }) => ({
   display: props.display || "flex",

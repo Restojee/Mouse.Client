@@ -8,6 +8,7 @@ import { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import React from "react";
 import { Provider } from "react-redux";
+import { PopupProvider } from "@/ui/Popup/PopupContext";
 
 const ThemeProvider = dynamic(() => import("@/layout/theme/ThemeProvider"), { ssr: false });
 
@@ -20,14 +21,16 @@ function App({ Component, ...rest }: AppProps<{ session: Session; initialState: 
       serverState={pageProps.initialState}
       store={store}
     >
-      <AuthProvider>
-        <ThemeProvider>
-          <LayoutProvider>
-            <Component {...props.pageProps} />
-          </LayoutProvider>
-          <Notification />
-        </ThemeProvider>
-      </AuthProvider>
+      <PopupProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <LayoutProvider>
+              <Component {...props.pageProps} />
+            </LayoutProvider>
+            <Notification />
+          </ThemeProvider>
+        </AuthProvider>
+      </PopupProvider>
     </Provider>
   );
 }

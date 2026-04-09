@@ -48,6 +48,7 @@ export const MapSearch = () => {
         value={filter.name}
         onChange={onChange}
         placeholder={"Поиск по номеру карты "}
+        noBorder
       />
     </StyledBox>
   );

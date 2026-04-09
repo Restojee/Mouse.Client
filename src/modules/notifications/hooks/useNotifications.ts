@@ -1,22 +1,75 @@
-import { LOCAL_STORAGE_KEYS } from "@/common/constants";
-import { useHasNewItems } from "@/hooks/useHasNewItems";
-import { notificationList } from "@/modules/notifications";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import { useCallback } from "react";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import {
+  collectNotificationsThunk,
+  fetchUnreadCountThunk,
+  markNotificationsReadThunk,
+  selectActivePriority,
+  selectNotificationItems,
+  selectNotificationsLoading,
+  selectUnreadCount,
+  setActivePriority,
+} from "@/modules/notifications/slice";
+import { NotificationPriority } from "@/modules/notifications/types";
+import { notificationList } from "@/modules/notifications/constants";
 
 export const useNotifications = () => {
-  const isHasNewNotifications = useHasNewItems(LOCAL_STORAGE_KEYS.NOTIFICATIONS_COUNT, notificationList?.length);
-  const { setValue } = useLocalStorage(LOCAL_STORAGE_KEYS.NOTIFICATIONS_COUNT);
+  const dispatch = useAppDispatch();
 
+  const items = useAppSelector(selectNotificationItems);
+  const isLoading = useAppSelector(selectNotificationsLoading);
+  const unreadCount = useAppSelector(selectUnreadCount);
+  const activePriority = useAppSelector(selectActivePriority);
+
+  const isHasNewNotifications = unreadCount > 0;
+
+  const loadNotifications = useCallback(
+    (priority: NotificationPriority) => {
+      dispatch(collectNotificationsThunk(priority));
+    },
+    [dispatch],
+  );
+
+  const refreshUnreadCount = useCallback(() => {
+    dispatch(fetchUnreadCountThunk());
+  }, [dispatch]);
+
+  const markRead = useCallback(
+    (ids: number[]) => {
+      if (ids.length > 0) {
+        dispatch(markNotificationsReadThunk(ids));
+      }
+    },
+    [dispatch],
+  );
+
+  const changeTab = useCallback(
+    (priority: NotificationPriority) => {
+      dispatch(setActivePriority(priority));
+      dispatch(collectNotificationsThunk(priority));
+    },
+    [dispatch],
+  );
+
+  // Сохраняем обратную совместимость: статический список объявлений
   const updateNotificationsCount = useCallback(() => {
-    if (notificationList?.length) {
-      setValue(notificationList?.length);
-    }
-  }, [setValue]);
+    dispatch(fetchUnreadCountThunk());
+  }, [dispatch]);
 
   return {
-    notificationList,
+    // API-уведомления
+    items,
+    isLoading,
+    unreadCount,
+    activePriority,
     isHasNewNotifications,
+    loadNotifications,
+    refreshUnreadCount,
+    markRead,
+    changeTab,
+    // Статические объявления (вкладка «Прочее» / старое поведение)
+    notificationList,
     updateNotificationsCount,
   };
 };

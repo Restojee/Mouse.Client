@@ -14,7 +14,7 @@ export const StyledModalWrapper = styled(StyledBox)(({ theme }) => ({
   bottom: 0,
   zIndex: theme.order.modal,
   padding: 40,
-  "@media all and (max-width: 790)": {
+  "@media all and (max-width: 790px)": {
     padding: 10,
   },
 }));

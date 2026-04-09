@@ -1,15 +1,22 @@
 import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useMap } from "@/modules/map/common";
+import { GlobalThemes } from "@/layout/theme/constants";
 import { ImageUploadModal } from "@/ui/ImageUploadModal/ImageUploadModal";
+import { MobileSheet } from "@/ui/MobileSheet/MobileSheet";
 import { StyledModalWrapper } from "@/ui/Modal/styled";
 import React, { useCallback, useEffect } from "react";
+import { ThemeProvider } from "styled-components";
 import { MapContent } from "../map-content";
 import { useCompletedMap } from "../map-content/containers/completed-images/hooks/useCompletedMap";
 import { onOpenMapContentThunk } from "../map-content/slice";
 import { useMapView } from "./hooks/useMapView";
 
+const darkTheme = GlobalThemes["DARK"];
+
 const MapViewModal = () => {
   const dispatch = useAppDispatch();
+  const isMobile = useIsMobile();
 
   const { levelId, closeMap } = useMapView();
 
@@ -41,9 +48,24 @@ const MapViewModal = () => {
 
   return (
     <>
-      <StyledModalWrapper onClick={closeMap}>
-        <MapContent />
-      </StyledModalWrapper>
+      {isMobile ? (
+        <ThemeProvider theme={darkTheme}>
+          <MobileSheet
+            isOpen={Boolean(levelId)}
+            onClose={closeMap}
+            zIndex={201}
+            noHeader
+            bgColor={darkTheme.colors.primary}
+            height="95dvh"
+          >
+            {Boolean(levelId) && <MapContent />}
+          </MobileSheet>
+        </ThemeProvider>
+      ) : levelId ? (
+        <StyledModalWrapper onClick={closeMap}>
+          <MapContent />
+        </StyledModalWrapper>
+      ) : null}
       <ImageUploadModal
         title={"Обновить обложку карты"}
         isOpen={isMapImageModalOpen}

@@ -11,9 +11,10 @@ type InputPropsType = DefaultInputType & {
   inputAppend?: React.ReactNode;
   error?: string;
   bgColor?: React.CSSProperties["backgroundColor"];
+  noBorder?: boolean;
 };
 export const Input = (props: InputPropsType) => {
-  const { inputAppend, inputPrepend, bgColor, error, ...inputProps } = props;
+  const { inputAppend, inputPrepend, bgColor, error, noBorder, ...inputProps } = props;
 
   const isError = Boolean(error);
 
@@ -38,6 +39,7 @@ export const Input = (props: InputPropsType) => {
         isDisabled={props.disabled}
         bgColor={bgColor}
         isError={isError}
+        noBorder={noBorder}
       >
         {inputPrepend && <StyledInputIcon left>{inputPrepend}</StyledInputIcon>}
         <StyledInput

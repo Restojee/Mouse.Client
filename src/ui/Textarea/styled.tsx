@@ -6,6 +6,8 @@ type StyledTextareaType = {
   height?: Property.Height;
 };
 export const StyledTextarea = styled.textarea<StyledTextareaType>(({ theme, ...props }) => ({
+  width: "100%",
+  boxSizing: "border-box",
   borderRadius: "15px",
   backgroundColor: props.bgColor || `${theme.colors.input.default}`,
   border: `1px solid ${theme.colors.input.border}`,

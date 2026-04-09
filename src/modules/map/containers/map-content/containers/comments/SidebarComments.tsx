@@ -69,11 +69,14 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
     [onInputKeyUp, levelId],
   );
 
-  const onUsernameClickHandler = useCallback(
-    (id: number) => {
-      onOpenUserModal(id);
+  const onUsernameClickHandler = useCallback((id: number) => onOpenUserModal(id), [onOpenUserModal]);
+
+  const onMentionClickHandler = useCallback(
+    (username: string) => {
+      const user = users?.find((u) => u.username === username);
+      if (user?.id) onOpenUserModal(user.id);
     },
-    [onOpenUserModal],
+    [users, onOpenUserModal],
   );
 
   useEffect(() => {
@@ -91,6 +94,7 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
       direction={"column"}
       overflow={"hidden"}
       position={"relative"}
+      textAlign={"start"}
     >
       <Display condition={comments?.length}>
         <StyledBox
@@ -107,7 +111,9 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
               getStarsCount={getUserStarsCount}
               onDelete={onCommentDelete}
               onUsernameClick={onUsernameClickHandler}
+              onMentionClick={onMentionClickHandler}
               isDeleteView={currentUser?.id === mapComment.user?.id}
+              validUsernames={users?.map((u) => u.username ?? "")}
             />
           ))}
         </StyledBox>

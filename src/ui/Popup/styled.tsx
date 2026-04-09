@@ -1,0 +1,19 @@
+import styled from "styled-components";
+
+export const StyledPopupOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+`;
+
+export const StyledPopupContent = styled.div<{ minWidth?: number; noPadding?: boolean }>`
+  position: fixed;
+  z-index: 1001;
+  min-width: ${({ minWidth }) => minWidth ?? 150}px;
+  background: ${({ theme }) => theme.colors.secondary};
+  border: 1px solid ${({ theme }) => theme.colors.input.border};
+  border-radius: ${({ theme }) => theme.blockSettings.siteBorder ?? "15px"};
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: ${({ noPadding }) => (noPadding ? 0 : "8px")};
+  transition: opacity 0.1s ease;
+`;

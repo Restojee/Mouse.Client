@@ -1,127 +1,72 @@
 import { Comment } from "@/api/codegen/genMouseMapsApi";
 import { getAvatarImageLink } from "@/common/utils";
 import { formatDateTime } from "@/common/utils/formatDateTime";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { CloseIcon } from "@/svg/CloseIcon";
-import { Avatar } from "@/ui/Avatar";
-import { StyledBox } from "@/ui/Box";
 import { IconButton } from "@/ui/Button/IconButton";
-import { Display } from "@/ui/Display";
-import { Typography } from "@/ui/Typography/styles/Typography";
+import { MessageCard } from "@/ui/MessageCard/MessageCard";
+import StarRating from "@/ui/StarRating/StarRating";
 import { Property } from "csstype";
 import React, { useMemo, useState } from "react";
-import { StyledMessageText } from "./styled";
-import { Spoiler } from "./Spoiler";
-import StarRating from "@/ui/StarRating/StarRating";
+import { renderRichContent } from "@/ui/TextEditor/renderRichContent";
 
 type PropsType = {
   comment: Comment;
   onDelete?: (comment: Comment) => void;
   onUsernameClick?: (id: number) => void;
+  onMentionClick?: (username: string) => void;
   padding?: Property.Padding;
   isDeleteView?: boolean;
   getStarsCount?: (id: number) => number;
+  validUsernames?: string[];
 };
+
 export const Message = (props: PropsType) => {
-  const { comment, onDelete, padding, onUsernameClick, isDeleteView, getStarsCount } = props;
+  const { comment, onDelete, padding, onUsernameClick, onMentionClick, isDeleteView, getStarsCount, validUsernames } =
+    props;
   const [isHovered, setIsHovered] = useState(false);
-  const { theme } = useAppTheme();
 
   const onDeleteHandler = () => {
-    if (comment.id && onDelete) {
-      onDelete(comment);
-    }
+    if (comment.id && onDelete) onDelete(comment);
   };
 
   const starsCount = useMemo(() => {
-    if (!props.comment.user?.id) {
-      return 0;
-    }
-
-    return getStarsCount?.(props.comment.user?.id);
+    if (!props.comment.user?.id) return 0;
+    return getStarsCount?.(props.comment.user.id) ?? 0;
   }, [props.comment, getStarsCount]);
 
-  const renderMessage = () => {
-    const spoilerRegex = /\|\|(.+?)\|\|/g;
+  const dateTime = useMemo(() => formatDateTime(comment.createdUtcDate), [comment]);
+  const time = useMemo(() => formatDateTime(comment.createdUtcDate, false, true), [comment]);
 
-    const parts = comment.text?.split(spoilerRegex); // Разбиваем текст по спойлеру
-    return parts?.map((part, index) =>
-      index % 2 === 1 ? ( // Если индекс нечётный, это спойлер
-        <Spoiler key={index}>{part}</Spoiler>
-      ) : (
-        part // Обычный текст
-      ),
-    );
-  };
-
-  const onAuthorClickHandler = () => {
-    if (comment.user?.id && onUsernameClick) {
-      onUsernameClick(comment.user?.id);
-    }
-  };
-
-  const dateTime = useMemo(() => {
-    return formatDateTime(comment.createdUtcDate);
-  }, [comment]);
-
-  const time = useMemo(() => {
-    return formatDateTime(comment.createdUtcDate, false, true);
-  }, [comment]);
+  const content = useMemo(
+    () => renderRichContent(comment.text ?? "", { onMentionClick }, validUsernames),
+    [comment.text, onMentionClick, validUsernames],
+  );
 
   return (
-    <StyledBox
-      maxWidth={"100%"}
-      bgColor={theme.colors.secondary}
-      borderRadius={"15px"}
-      padding={padding || "0 10px"}
+    <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      gap={15}
     >
-      <Avatar
-        image={getAvatarImageLink(comment.user?.avatar)}
+      <MessageCard
+        avatar={getAvatarImageLink(comment.user?.avatar)}
         username={comment.user?.username}
-      />
-      <StyledBox
-        direction={"column"}
-        grow={1}
-        gap={5}
-        overflow={"hidden"}
+        date={dateTime}
+        dateTitle={time}
+        onAuthorClick={onUsernameClick && comment.user?.id ? () => onUsernameClick(comment.user!.id!) : undefined}
+        padding={padding}
+        headerMiddle={<StarRating count={starsCount} />}
+        headerEnd={
+          isDeleteView && isHovered
+            ? React.createElement(
+                IconButton,
+                { onClick: onDeleteHandler, isAdmin: true },
+                React.createElement(CloseIcon),
+              )
+            : null
+        }
       >
-        <StyledBox
-          align="center"
-          gap={5}
-          minHeight={25}
-        >
-          <Typography
-            isEllipsis
-            onClick={onAuthorClickHandler}
-            isLink
-          >
-            {comment.user?.username}
-          </Typography>
-          <StarRating count={starsCount} />
-          <Typography
-            title={time}
-            margin={"0 0 0 auto"}
-            fontSize={"0.7rem"}
-          >
-            {dateTime}
-          </Typography>
-          <Display condition={isDeleteView && isHovered}>
-            <StyledBox>
-              <IconButton
-                onClick={onDeleteHandler}
-                isAdmin
-              >
-                <CloseIcon />
-              </IconButton>
-            </StyledBox>
-          </Display>
-        </StyledBox>
-
-        <StyledMessageText>{renderMessage()}</StyledMessageText>
-      </StyledBox>
-    </StyledBox>
+        {content}
+      </MessageCard>
+    </div>
   );
 };

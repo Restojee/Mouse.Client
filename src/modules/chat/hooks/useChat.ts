@@ -75,6 +75,7 @@ export const useChat = () => {
 
   return {
     messageText,
+    setMessageText,
     messages,
     onMessageAdd,
     onInputChange,

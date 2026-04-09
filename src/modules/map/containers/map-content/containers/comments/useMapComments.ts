@@ -83,6 +83,7 @@ export const useMapComments = () => {
   return {
     comments,
     commentText,
+    setCommentText,
     onCommentDelete,
     onCommentAdd,
     onInputChange,

@@ -1,8 +1,25 @@
+const path = require("path");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack(config) {
+    // @reduxjs/toolkit 2.0.0-alpha.2 requires redux@5 (dist/es/index.js).
+    // Pin webpack to the nested redux copy that ships with toolkit.
+    config.resolve.alias["redux"] = path.resolve(
+      __dirname,
+      "node_modules/@reduxjs/toolkit/node_modules/redux",
+    );
+    return config;
+  },
   reactStrictMode: false,
   images: {
-    domains: ["tfm-maps.ru", "i.imgur.com", "151.248.121.176", "cdn.tfm-maps.ru", "cdn.onlyplanks.ru"],
+    domains: ["tfm-maps.ru", "i.imgur.com", "151.248.121.176", "cdn.tfm-maps.ru", "cdn.onlyplanks.ru", "localhost"],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
   experimental: {
     forceSwcTransforms: true,

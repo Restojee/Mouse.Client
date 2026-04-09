@@ -27,7 +27,7 @@ export const addMapCommentsThunk = createAsyncThunk(
   async (arg: CreateCommentRequest, thunkAPI) => {
     try {
       const { levelId, text } = arg;
-      const comment = await commentsApi.addComment({ levelId, text });
+      const comment = await commentsApi.addComment({ levelId, text: text ?? "" });
       const state = thunkAPI.getState() as RootState;
       const user = state.auth.user;
 

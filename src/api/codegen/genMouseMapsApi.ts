@@ -260,8 +260,8 @@ export type Comment = {
   id?: number;
   text?: string;
   user?: User;
-  createdUtcDate: string | null;
-  modifiedUtcDate: string | null;
+  createdUtcDate?: string | null;
+  modifiedUtcDate?: string | null;
 };
 export type CreateCommentRequest = {
   text?: string;

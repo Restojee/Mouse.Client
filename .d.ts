@@ -1,8 +1,5 @@
-import { Constants } from "@/layout/theme/DefaultTheme";
-
-type Theme = typeof Constants;
+import { GlobalTheme } from "./src/layout/theme/types";
 
 declare module "styled-components" {
-
-    export interface DefaultTheme extends Theme {}
+  export interface DefaultTheme extends GlobalTheme {}
 }

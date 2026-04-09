@@ -29,7 +29,7 @@ const AsyncModalContent = (props: ModalPropsType) => {
               fontSize="18px"
               color={theme.colors.textOnSecondary}
             >
-              {title || "Подтверждение действия"}
+              {title}
             </Typography>
           </Display>
           <Display condition={!children}>

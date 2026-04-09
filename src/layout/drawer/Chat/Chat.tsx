@@ -6,6 +6,7 @@ import { selectCurrentUser, selectIsAuth } from "@/modules/auth/slice";
 import { useChat } from "@/modules/chat/hooks/useChat";
 import { Message } from "@/ui/Message";
 import { MessageSendFormContainer } from "@/ui/Message/MessagesSendForm";
+import { MessageList } from "@/ui/MessageList/MessageList";
 import { StyledDrawerHeader } from "@/layout/drawer/styled";
 import { StyledBox } from "@/ui/Box";
 import { User } from "@/api/codegen/genMouseMapsApi";
@@ -29,36 +30,28 @@ export const Chat = () => {
   const { onOpenUserModal, users } = useUser();
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
 
-  const getUserStarsCount = useCallback(
-    (id: User["id"]) => {
-      return getStarsByUserId(id, users);
-    },
-    [users],
-  );
+  const getUserStarsCount = useCallback((id: User["id"]) => getStarsByUserId(id, users), [users]);
 
   const scrollToBottomHandler = useCallback((isNotSmooth?: boolean) => {
     const ref = scrollToBottomRef.current;
-    const timeout = isNotSmooth ? 0 : 200;
-
     if (ref) {
-      setTimeout(() => {
-        ref.scrollTo({
-          top: ref.scrollHeight,
-          behavior: isNotSmooth ? undefined : "smooth",
-        });
-      }, timeout);
+      setTimeout(
+        () => ref.scrollTo({ top: ref.scrollHeight, behavior: isNotSmooth ? undefined : "smooth" }),
+        isNotSmooth ? 0 : 200,
+      );
     }
   }, []);
 
-  const onFocusHandler = useCallback(async () => {
-    scrollToBottomHandler();
-  }, [scrollToBottomHandler]);
+  const onFocusHandler = useCallback(() => scrollToBottomHandler(), [scrollToBottomHandler]);
 
-  const onUsernameClickHandler = useCallback(
-    (id: number) => {
-      onOpenUserModal(id);
+  const onUsernameClickHandler = useCallback((id: number) => onOpenUserModal(id), [onOpenUserModal]);
+
+  const onMentionClickHandler = useCallback(
+    (username: string) => {
+      const user = users?.find((u) => u.username === username);
+      if (user?.id) onOpenUserModal(user.id);
     },
-    [onOpenUserModal],
+    [users, onOpenUserModal],
   );
 
   useEffect(() => {
@@ -70,20 +63,11 @@ export const Chat = () => {
     <>
       <StyledBox
         direction="column"
-        padding="0 0 0 20px"
         overflow={"hidden"}
         grow={1}
       >
         <StyledDrawerHeader>Чат</StyledDrawerHeader>
-        <StyledBox
-          ref={scrollToBottomRef}
-          grow={1}
-          direction={"column"}
-          gap={10}
-          padding={"0 20px 20px 0"}
-          overflow={"auto"}
-          margin={"auto 0 0 0"}
-        >
+        <MessageList scrollRef={scrollToBottomRef}>
           {messages?.map((el) => (
             <Message
               key={el.id}
@@ -93,14 +77,14 @@ export const Chat = () => {
               onDelete={onMessageDelete}
               isDeleteView={currentUser?.id === el.user?.id}
               onUsernameClick={onUsernameClickHandler}
+              onMentionClick={onMentionClickHandler}
+              validUsernames={users?.map((u) => u.username ?? "")}
             />
           ))}
-        </StyledBox>
+        </MessageList>
       </StyledBox>
-      <StyledBox
-        bgColor={theme.colors.secondary}
-        padding={"0 10px 0 10px"}
-      >
+
+      <StyledBox bgColor={theme.colors.secondary}>
         <MessageSendFormContainer
           onChange={onInputChange}
           value={messageText}

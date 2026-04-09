@@ -1,0 +1,81 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 2px 4px;
+  background-color: var(--editor-toolbar-bg, transparent);
+  flex-shrink: 0;
+}
+
+.toggleBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--editor-toolbar-icon, #999);
+  transition: color 0.15s ease, background-color 0.15s ease;
+  padding: 0;
+}
+
+.toggleBtn:hover {
+  color: var(--editor-toolbar-icon, #333);
+  background-color: var(--editor-bg-hover, rgba(0, 0, 0, 0.04));
+}
+
+
+.sendBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--editor-toolbar-icon, #333);
+  transition: background-color 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+  padding: 0;
+}
+
+.sendBtn:hover {
+  background-color: var(--editor-bg-hover, rgba(0, 0, 0, 0.04));
+  transform: translateX(2px);
+}
+
+.sendBtn:active {
+  transform: translateX(2px) scale(1.1);
+}
+
+.sendBtnDisabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .toggleBtn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .toggleBtn svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .sendBtn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .sendBtn svg {
+    width: 47px !important;
+    height: 47px !important;
+  }
+}

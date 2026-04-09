@@ -15,13 +15,31 @@ export const getMapsThunk = createAsyncThunk("map/get", async (arg, { getState, 
 
     const [staticMapsData, mapsData] = await Promise.all([
       mapsApi.getMaps({ page: 1, size: filters.size }),
-      mapsApi.getMaps(filters),
+      mapsApi.getMaps({ ...filters, page: 1 }),
     ]);
 
     dispatch(setStaticMapsInfo(staticMapsData));
     dispatch(setMaps(mapsData));
 
     return mapsData;
+  } catch (error) {
+    dispatch(setAppMessage({ severity: "error", text: `Ошибка загрузки карт` }));
+  }
+});
+
+export const getMoreMapsThunk = createAsyncThunk("map/get-more", async (arg, { getState, dispatch }) => {
+  try {
+    const state = getState() as RootState;
+    const filters = selectFilters(state);
+    const mapsData = state.maps.mapsData;
+
+    if (!mapsData || mapsData.page >= mapsData.totalPages) return;
+
+    const nextPage = mapsData.page + 1;
+    const data = await mapsApi.getMaps({ ...filters, page: nextPage });
+
+    dispatch(appendMaps(data));
+    return data;
   } catch (error) {
     dispatch(setAppMessage({ severity: "error", text: `Ошибка загрузки карт` }));
   }
@@ -120,6 +138,14 @@ const slice = createSlice({
         });
       }
     },
+    appendMaps: (state, action: PayloadAction<GetMapsApiResponse>) => {
+      if (state.mapsData) {
+        state.mapsData.records = [...state.mapsData.records, ...action.payload.records];
+        state.mapsData.page = action.payload.page;
+        state.mapsData.totalPages = action.payload.totalPages;
+        state.mapsData.totalItems = action.payload.totalItems;
+      }
+    },
     setStaticMapsInfo: (state, action: PayloadAction<GetMapsApiResponse>) => {
       state.staticMapsInfo = action.payload;
     },
@@ -134,6 +160,15 @@ const slice = createSlice({
       })
       .addCase(getMapsThunk.rejected, (state) => {
         state.isMapsFetching = false;
+      })
+      .addCase(getMoreMapsThunk.pending, (state) => {
+        state.isMapsFetching = true;
+      })
+      .addCase(getMoreMapsThunk.fulfilled, (state) => {
+        state.isMapsFetching = false;
+      })
+      .addCase(getMoreMapsThunk.rejected, (state) => {
+        state.isMapsFetching = false;
       });
   },
 });
@@ -147,6 +182,7 @@ export const selectMapsInfo = (state: RootState) => state.maps.mapsData;
 export const {
   addMap,
   setMaps,
+  appendMaps,
   deleteMap,
   setFilter,
   updateFilter,

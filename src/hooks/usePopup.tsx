@@ -1,22 +1,50 @@
-import { AppModalTypes, selectAppModalType, setAppModalType } from "@/bll/appReducer";
-import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRef, useCallback, useEffect, useState } from "react";
+import { usePopupPosition, UsePopupPositionOptions } from "@/ui/Popup/usePopupPosition";
+import { usePopupRegistration } from "@/ui/Popup/usePopupRegistration";
+import { usePopupVisibility } from "@/ui/Popup/usePopupVisibility";
+import { useOutsideClick } from "@/ui/Popup";
 
-export const usePopup = (key: AppModalTypes) => {
-  const dispatch = useDispatch();
-  const modalType = useSelector(selectAppModalType);
+interface UsePopupOptions extends Omit<UsePopupPositionOptions, "anchorRef" | "popupRef"> {
+  isVisible: boolean;
+  onClose?: () => void;
+  closeOnScroll?: boolean;
+}
 
-  const onOpen = useCallback(() => {
-    dispatch(setAppModalType(key));
-  }, [dispatch, key]);
+export const usePopup = (options: UsePopupOptions) => {
+  const { isVisible, onClose, closeOnScroll, position, offset, boundary, anchorAlign } = options;
 
-  const onClose = useCallback(() => {
-    dispatch(setAppModalType(null));
-  }, [dispatch]);
+  const anchorRef = useRef<HTMLDivElement>(null);
+  const popupRef = useRef<HTMLElement>(null);
+  const popupContext = usePopupRegistration(popupRef, isVisible);
+
+  const getPopupPosition = usePopupPosition({
+    position,
+    anchorRef,
+    popupRef,
+    offset,
+    boundary,
+    anchorAlign,
+  });
+
+  const { popupPositionStyles, isRendered } = usePopupVisibility(isVisible, getPopupPosition, anchorRef, popupRef);
+
+  const checkNestedPopups = useCallback(
+    (target: Node) => {
+      if (popupContext) {
+        return popupContext.isClickInsideAnyPopup(target);
+      }
+      return false;
+    },
+    [popupContext],
+  );
+
+  useOutsideClick([anchorRef, popupRef], onClose, isVisible, checkNestedPopups);
 
   return {
-    isOpen: modalType === key,
-    onOpen,
-    onClose,
+    anchorRef,
+    popupRef,
+    popupPositionStyles,
+    isRendered,
+    popupContext,
   };
 };

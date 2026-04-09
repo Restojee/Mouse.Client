@@ -46,6 +46,7 @@ type InputWrapperPropsType = {
   bgColor?: Property.BackgroundColor;
   isError?: boolean;
   isDisabled?: boolean;
+  noBorder?: boolean;
 };
 export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ...props }) => ({
   display: "flex",
@@ -54,7 +55,7 @@ export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ..
   maxWidth: "100%",
   zIndex: 1,
   position: "relative",
-  border: `1px solid ${theme.colors.input.border}`,
+  border: props.noBorder ? "none" : `1px solid ${theme.colors.input.border}`,
   transition: "0.2s",
   transitionProperty: "opacity, background-color, border, box-shadow, margin",
   "&:hover": {
@@ -69,6 +70,10 @@ export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ..
     marginBottom: 5,
     border: `1px solid ${theme.colors.status.error}`,
   }),
+  ...(props.noBorder &&
+    !props.isError && {
+      border: "none",
+    }),
   ...(props.isDisabled && {
     pointerEvents: "none",
     opacity: 0.5,

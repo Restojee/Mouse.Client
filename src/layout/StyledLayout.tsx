@@ -11,9 +11,12 @@ export const StyledLayout = styled.div(({ theme }) => ({
   padding: "10px 0",
   fontSize: theme.font.fontSize,
   backgroundColor: theme.colors.primary,
-  "@media all and (max-width: ${ baseTheme.sizes.media.medium }px)": {
+  "@media all and (max-width: 768px)": {
     flexDirection: "column",
-    padding: "0 10px",
+    padding: 0,
+    height: "100dvh",
+    maxHeight: "100dvh",
+    overflow: "hidden",
   },
 }));
 
@@ -22,6 +25,12 @@ export const StyledWrapper = styled.div(({ theme }) => ({
   flexGrow: 1,
   backgroundColor: theme.colors.secondary,
   borderRadius: 20,
-  minWidth: 768,
+  minWidth: 0,
   overflow: "hidden",
+  "@media all and (max-width: 768px)": {
+    borderRadius: 15,
+    margin: "8px 8px 8px 8px",
+    flexDirection: "column",
+    overflow: "auto",
+  },
 }));

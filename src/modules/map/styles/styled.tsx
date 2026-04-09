@@ -1,4 +1,3 @@
-import { IS_TABLET } from "@/common/constants/breakpoints";
 import styled from "styled-components";
 import { StyledBox } from "@/ui/Box";
 import { StyledTextarea } from "@/ui/Textarea/styled";
@@ -7,7 +6,8 @@ export const StyledMapContentMain = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: 26,
-  minHeight: "100%",
+  flex: "1 1 0",
+  minHeight: 0,
   overflow: "auto",
   color: theme.colors.textOnPrimary,
   padding: "20px 20px 40px 20px",
@@ -16,12 +16,9 @@ export const StyledMapContentMain = styled.div(({ theme }) => ({
   "::placeholder": {
     color: "rgba(255, 255, 255, 0.5)",
   },
-  ...(IS_TABLET && {
-    minHeight: "auto",
-    overflow: "initial",
+  "@media all and (max-width: 790px)": {
     maxWidth: "100%",
-    padding: "20px 10px",
-  }),
+  },
 }));
 
 export const StyledMapContentNoteForm = styled(StyledTextarea)(({ theme }) => ({
@@ -56,11 +53,12 @@ export const StyledMapContentSidebar = styled.div(({ theme }) => ({
     maxWidth: "300px",
     minWidth: "300px",
   },
-  ...(IS_TABLET && {
-    maxWidth: "none!important",
-    minWidth: "none!important",
-    minHeight: "96vh",
-  }),
+  "@media all and (max-width: 790px)": {
+    maxWidth: "none",
+    minWidth: "auto",
+    minHeight: "auto",
+    display: "none",
+  },
 }));
 
 export const StyledContentSidebarBodyIcon = styled.div<{ disabled?: boolean; count?: number }>((props) => ({
@@ -117,9 +115,9 @@ export const StyledContentSidebarBodyIcon = styled.div<{ disabled?: boolean; cou
     opacity: 0.2,
     pointerEvents: "none",
   }),
-  ...(IS_TABLET && {
+  "@media all and (max-width: 790px)": {
     padding: "20px 0",
-  }),
+  },
 }));
 
 export const StyledContentSidebarBodyCount = styled.div({
@@ -127,6 +125,23 @@ export const StyledContentSidebarBodyCount = styled.div({
   bottom: "-5px",
   fontSize: "0.7rem",
 });
+
+export const StyledMapContentPaper = styled.div(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "stretch",
+  width: "100%",
+  height: "100%",
+  maxWidth: 1200,
+  overflow: "hidden",
+  backgroundColor: theme.colors.primary,
+  borderRadius: theme.blockSettings.siteBorder,
+  "@media all and (max-width: 790px)": {
+    flexDirection: "column",
+    height: "100%",
+    borderRadius: 0,
+  },
+}));
 
 export const StyledMobileMapViewContainer = styled.div(({ theme }) => ({
   display: "flex",

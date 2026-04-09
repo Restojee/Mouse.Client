@@ -15,7 +15,6 @@ export const Paper = ({ children, onClick, ...props }: PaperPropsType) => {
       direction={"column"}
       textAlign={"center"}
       align={"center"}
-      boxShadow={"0 0 100px 1px rgba(0, 0, 0, 1)"}
       width={"100%"}
       borderRadius={theme.blockSettings.siteBorder}
       height={"100%"}

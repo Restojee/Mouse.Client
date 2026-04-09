@@ -30,6 +30,7 @@ export const MapCreatePopup = (props: Partial<Props>) => {
         onKeyDown={onKeyDownHandler}
         onChange={onNameChangeHandler}
         placeholder="Номер карты @123456"
+        noBorder
         inputAppend={
           <AddImageIcon
             onClick={onImagePopupToggle}
