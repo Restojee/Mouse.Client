@@ -31,36 +31,34 @@ const Backdrop = styled.div<{ isOpen: boolean }>(({ isOpen }) => ({
   transition: "opacity 0.3s",
 }));
 
-const Sheet = styled.div<{
-  isOpen: boolean;
-  height: string;
-  isDragging: boolean;
-  dragOffset: number;
-  bgColor?: string;
-}>(({ theme, isOpen, height, isDragging, dragOffset, bgColor }) => ({
-  position: "relative",
-  width: "100%",
-  height,
-  backgroundColor: bgColor ?? theme.colors.secondary,
-  borderRadius: "20px 20px 0 0",
-  display: "flex",
-  flexDirection: "column",
-  overflow: "hidden",
-  transform: isOpen ? `translateY(${dragOffset}px)` : "translateY(100%)",
-  transition: isDragging ? "none" : "transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)",
-  boxShadow: "0 -4px 24px rgba(0,0,0,0.2)",
-}));
+const Sheet = styled.div<{ isOpen: boolean; height: string; bgColor?: string }>(
+  ({ theme, isOpen, height, bgColor }) => ({
+    position: "relative",
+    width: "100%",
+    height,
+    maxHeight: "90dvh",
+    backgroundColor: bgColor ?? theme.colors.secondary,
+    color: theme.colors.textOnSecondary,
+    borderRadius: "25px 25px 0 0",
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden",
+    transform: isOpen ? "translateY(0)" : "translateY(100%)",
+    transition: "transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)",
+    boxShadow: "0 -4px 24px rgba(0,0,0,0.2)",
+    willChange: "transform",
+  }),
+);
 
-// eslint-disable-next-line no-empty-pattern
 const HandleBar = styled.div({
   flexShrink: 0,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: 28,
+  height: 32,
   cursor: "ns-resize",
-  touchAction: "none",
   userSelect: "none",
+  touchAction: "none",
 });
 
 const HandleBarPill = styled.div(({ theme }) => ({
@@ -90,12 +88,14 @@ const SheetBody = styled.div({
   display: "flex",
   flexDirection: "column",
   minHeight: 0,
-  overflow: "auto",
+  overflowY: "auto",
+  overflowX: "hidden",
+  WebkitOverflowScrolling: "touch",
 });
 
-const MIN_HEIGHT_PX = 120;
-const MAX_HEIGHT_VH = 92;
-const CLOSE_THRESHOLD_RATIO = 0.3;
+const CLOSE_THRESHOLD_RATIO = 0.25;
+const VELOCITY_THRESHOLD = 0.5;
+const LOCK_THRESHOLD_PX = 6;
 
 export const MobileSheet: React.FC<Props> = ({
   isOpen,
@@ -109,64 +109,150 @@ export const MobileSheet: React.FC<Props> = ({
 }) => {
   const { theme } = useAppTheme();
   const sheetRef = React.useRef<HTMLDivElement>(null);
-  const [sheetHeight, setSheetHeight] = React.useState<number | null>(null);
-  const [dragOffset, setDragOffset] = React.useState(0);
-  const [isDragging, setIsDragging] = React.useState(false);
-  const dragStartY = React.useRef(0);
-  const dragStartHeight = React.useRef(0);
+  const bodyRef = React.useRef<HTMLDivElement>(null);
+  const onCloseRef = React.useRef(onClose);
+  onCloseRef.current = onClose;
 
-  const getMaxHeight = () => Math.floor((window.innerHeight * MAX_HEIGHT_VH) / 100);
+  const drag = React.useRef({
+    active: false,
+    intent: null as "drag" | "scroll" | null,
+    startX: 0,
+    startY: 0,
+    lastY: 0,
+    lastTime: 0,
+    velocity: 0,
+    offset: 0,
+  });
 
-  const onPointerDown = React.useCallback((e: React.PointerEvent) => {
-    e.currentTarget.setPointerCapture(e.pointerId);
-    dragStartY.current = e.clientY;
-    dragStartHeight.current = sheetRef.current?.offsetHeight ?? 0;
-    setIsDragging(true);
-    setDragOffset(0);
+  const applyTransform = (offset: number, animated: boolean) => {
+    const el = sheetRef.current;
+    if (!el) return;
+    el.style.transition = animated ? "transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)" : "none";
+    el.style.transform = `translateY(${Math.max(0, offset)}px)`;
+    drag.current.offset = offset;
+  };
+
+  const settle = React.useCallback((close: boolean) => {
+    applyTransform(0, true);
+    if (close) {
+      onCloseRef.current();
+    }
   }, []);
 
-  const onPointerMove = React.useCallback(
-    (e: React.PointerEvent) => {
-      if (!isDragging) return;
-      const delta = dragStartY.current - e.clientY;
-
-      if (delta < 0) {
-        // dragging down — shift sheet visually, no resize
-        setDragOffset(Math.abs(delta));
-        setSheetHeight(dragStartHeight.current);
-      } else {
-        // dragging up — resize taller
-        setDragOffset(0);
-        const next = Math.min(getMaxHeight(), Math.max(MIN_HEIGHT_PX, dragStartHeight.current + delta));
-        setSheetHeight(next);
-      }
-    },
-    [isDragging],
-  );
-
-  const onPointerUp = React.useCallback(() => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    const closeThreshold = (sheetRef.current?.offsetHeight ?? 300) * CLOSE_THRESHOLD_RATIO;
-    if (dragOffset >= closeThreshold) {
-      setDragOffset(0);
-      setSheetHeight(null);
-      onClose();
-    } else {
-      setDragOffset(0);
-    }
-  }, [isDragging, dragOffset, onClose]);
-
-  // reset height when closed
+  // Attach non-passive touch listeners so we can call preventDefault
   React.useEffect(() => {
-    if (!isOpen) {
-      setSheetHeight(null);
-      setDragOffset(0);
+    const sheet = sheetRef.current;
+    if (!sheet) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      const d = drag.current;
+      d.active = true;
+      d.intent = null;
+      d.startX = t.clientX;
+      d.startY = t.clientY;
+      d.lastY = t.clientY;
+      d.lastTime = e.timeStamp;
+      d.velocity = 0;
+      d.offset = 0;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const d = drag.current;
+      if (!d.active) return;
+      if (e.touches.length !== 1) return;
+
+      const t = e.touches[0];
+      const dy = t.clientY - d.startY;
+      const dx = t.clientX - d.startX;
+      const absDy = Math.abs(dy);
+      const absDx = Math.abs(dx);
+
+      // Determine intent once threshold exceeded
+      if (d.intent === null) {
+        if (absDy < LOCK_THRESHOLD_PX && absDx < LOCK_THRESHOLD_PX) return;
+        // Horizontal swipe → let browser handle
+        if (absDx > absDy) {
+          d.intent = "scroll";
+          d.active = false;
+          return;
+        }
+        const scrollTop = bodyRef.current?.scrollTop ?? 0;
+        if (dy > 0 && scrollTop <= 0) {
+          // Downward at top → take over as sheet drag
+          d.intent = "drag";
+        } else if (dy < 0 || scrollTop > 0) {
+          // Upward or content is scrolled → let scroll happen
+          d.intent = "scroll";
+          d.active = false;
+          return;
+        } else {
+          d.intent = "scroll";
+          d.active = false;
+          return;
+        }
+      }
+
+      if (d.intent !== "drag") return;
+
+      // Block native scroll and browser gestures
+      e.preventDefault();
+
+      // Velocity
+      const dt = e.timeStamp - d.lastTime;
+      if (dt > 0) d.velocity = (t.clientY - d.lastY) / dt;
+      d.lastY = t.clientY;
+      d.lastTime = e.timeStamp;
+
+      applyTransform(Math.max(0, dy), false);
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      const d = drag.current;
+      if (!d.active || d.intent !== "drag") {
+        d.active = false;
+        d.intent = null;
+        return;
+      }
+      d.active = false;
+      d.intent = null;
+
+      const sheetH = sheet.offsetHeight || 300;
+      const isFlick = d.velocity > VELOCITY_THRESHOLD;
+      const isPastThreshold = d.offset >= sheetH * CLOSE_THRESHOLD_RATIO;
+      settle(isFlick || isPastThreshold);
+    };
+
+    const onTouchCancel = () => {
+      const d = drag.current;
+      d.active = false;
+      d.intent = null;
+      applyTransform(0, true);
+    };
+
+    sheet.addEventListener("touchstart", onTouchStart, { passive: true });
+    sheet.addEventListener("touchmove", onTouchMove, { passive: false });
+    sheet.addEventListener("touchend", onTouchEnd, { passive: true });
+    sheet.addEventListener("touchcancel", onTouchCancel, { passive: true });
+
+    return () => {
+      sheet.removeEventListener("touchstart", onTouchStart);
+      sheet.removeEventListener("touchmove", onTouchMove);
+      sheet.removeEventListener("touchend", onTouchEnd);
+      sheet.removeEventListener("touchcancel", onTouchCancel);
+    };
+  }, [settle]);
+
+  // Reset when closed
+  React.useEffect(() => {
+    if (!isOpen && sheetRef.current) {
+      drag.current.active = false;
+      drag.current.intent = null;
+      sheetRef.current.style.transition = "";
+      sheetRef.current.style.transform = "";
     }
   }, [isOpen]);
-
-  const resolvedHeight = sheetHeight !== null ? `${sheetHeight}px` : height;
 
   return (
     <Overlay
@@ -180,15 +266,10 @@ export const MobileSheet: React.FC<Props> = ({
       <Sheet
         ref={sheetRef}
         isOpen={isOpen}
-        height={resolvedHeight}
-        isDragging={isDragging}
-        dragOffset={dragOffset}
+        height={height}
         bgColor={bgColor}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
       >
-        <HandleBar onPointerDown={onPointerDown}>
+        <HandleBar>
           <HandleBarPill />
         </HandleBar>
         {!noHeader && (
@@ -200,7 +281,7 @@ export const MobileSheet: React.FC<Props> = ({
             />
           </SheetHeader>
         )}
-        <SheetBody>{children}</SheetBody>
+        <SheetBody ref={bodyRef}>{children}</SheetBody>
       </Sheet>
     </Overlay>
   );

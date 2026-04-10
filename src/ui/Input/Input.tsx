@@ -12,9 +12,10 @@ type InputPropsType = DefaultInputType & {
   error?: string;
   bgColor?: React.CSSProperties["backgroundColor"];
   noBorder?: boolean;
+  compact?: boolean;
 };
 export const Input = (props: InputPropsType) => {
-  const { inputAppend, inputPrepend, bgColor, error, noBorder, ...inputProps } = props;
+  const { inputAppend, inputPrepend, bgColor, error, noBorder, compact, ...inputProps } = props;
 
   const isError = Boolean(error);
 
@@ -44,6 +45,7 @@ export const Input = (props: InputPropsType) => {
         {inputPrepend && <StyledInputIcon left>{inputPrepend}</StyledInputIcon>}
         <StyledInput
           {...inputProps}
+          compact={compact}
           ref={null}
           style={(inputPrepend && { paddingLeft: 40 }) || (inputAppend && { paddingRight: 40 }) || {}}
         />

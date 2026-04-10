@@ -23,6 +23,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
   className,
 }) => {
   const divRef = useRef<HTMLDivElement>(null);
+  const [isFocused, setIsFocused] = React.useState(false);
 
   const onChangeForEditor = useCallback(
     (newValue: string) => {
@@ -33,6 +34,18 @@ export const EditorContent: React.FC<EditorContentProps> = ({
     [onChange],
   );
 
+  const handleFocus = useCallback(
+    (e: React.FocusEvent<HTMLElement>) => {
+      setIsFocused(true);
+      onFocus?.(e);
+    },
+    [onFocus],
+  );
+
+  const handleBlur = useCallback(() => {
+    setIsFocused(false);
+  }, []);
+
   return (
     <EditorProvider
       value={value}
@@ -42,17 +55,19 @@ export const EditorContent: React.FC<EditorContentProps> = ({
       <div
         className={`${styles.container}${className ? ` ${className}` : ""}`}
         style={style}
+        onBlur={handleBlur}
       >
         <EditorCanvas
           placeholder={placeholder}
           disabled={disabled}
           onChange={onChangeForEditor}
           onKeyDown={onKeyDown as ((e: React.KeyboardEvent<HTMLElement>) => void) | undefined}
-          onFocus={onFocus}
+          onFocus={handleFocus}
         />
         <ToolbarPlugin
           onSend={disabled ? undefined : onSend}
           sendDisabled={sendDisabled}
+          isFocused={isFocused}
         />
         <MentionPlugin onInsert={onMentionInsert} />
         <LinkPlugin />

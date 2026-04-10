@@ -1,17 +1,18 @@
 import styled from "styled-components";
 
-export const StyledDrawer = styled.div<{ isOpen: boolean }>(({ theme }) => ({
+export const StyledDrawer = styled.div<{ isOpen: boolean }>(({ theme, isOpen }) => ({
   display: "flex",
   flexDirection: "column",
   backgroundColor: theme.colors.secondaryDark,
   height: "100%",
   position: "relative",
   padding: 0,
-  width: theme.sizes.rightSidebar.width,
-  minWidth: theme.sizes.rightSidebar.width,
+  minWidth: isOpen ? theme.sizes.rightSidebar.width : 0,
+  maxWidth: isOpen ? theme.sizes.rightSidebar.width : 0,
+  overflow: "hidden",
   borderLeft: "1px solid rgba(0, 0, 0, 0.1)",
   zIndex: theme.order.rightSidebar,
-  transition: "background-color 0.3s",
+  transition: "min-width 0.3s, max-width 0.3s, background-color 0.3s",
 
   "@media all and (max-width: 1140px)": {
     backgroundColor: theme.colors.secondary,
@@ -19,6 +20,7 @@ export const StyledDrawer = styled.div<{ isOpen: boolean }>(({ theme }) => ({
   "@media all and (max-width: 768px)": {
     width: "100%",
     minWidth: "auto",
+    maxWidth: "none",
     height: "100%",
     borderLeft: "none",
     backgroundColor: theme.colors.secondary,

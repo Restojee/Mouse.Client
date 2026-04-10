@@ -27,10 +27,10 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
     ["--editor-border"]: theme.colors.input.border,
     ["--editor-border-focus"]: theme.colors.secondaryAccent,
     ["--editor-color"]: theme.colors.textOnSecondary,
-    ["--editor-placeholder"]: theme.colors.secondaryAccent,
+    ["--editor-placeholder"]: theme.colors.disabled,
     ["--editor-brand"]: theme.colors.brandColor,
     ["--editor-toolbar-bg"]: theme.colors.secondaryDark,
-    ["--editor-toolbar-icon"]: theme.colors.iconOnSecondary,
+    ["--editor-toolbar-icon"]: theme.colors.textOnSecondary,
     ["--editor-font-size"]: theme.font.fontSize,
     width: "100%",
   };

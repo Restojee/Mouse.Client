@@ -3,7 +3,7 @@ import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { NavLink } from "@/layout/navigation/NavLink";
 import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
-import { StyledPanel } from "@/layout/panel/styled";
+import { StyledPanel, StyledTabsGroup, StyledTabSlideIndicator } from "@/layout/panel/styled";
 import { ThemeKey } from "@/layout/theme/types";
 import { useLogin } from "@/modules/auth/hooks/useLogin";
 import { selectCurrentUser, selectIsAuth } from "@/modules/auth/slice";
@@ -21,7 +21,7 @@ import { SunIcon } from "@/svg/SunIcon";
 import { Avatar } from "@/ui/Avatar";
 import { Display } from "@/ui/Display";
 import { Property } from "csstype";
-import { ReactNode, useEffect, useMemo } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useNotifications } from "@/modules/notifications";
 
 export type PanelProps = {
@@ -36,7 +36,7 @@ export const Panel = (props: PanelProps) => {
 
   const { toggleTheme, themeKey } = useAppTheme();
 
-  const { isHasNewMessage, fetchChatMessages, messages } = useChat();
+  const { isHasNewMessage, messages } = useChat();
   const { isHasNewNotifications } = useNotifications();
 
   const isAuth = useAppSelector(selectIsAuth);
@@ -68,18 +68,25 @@ export const Panel = (props: PanelProps) => {
 
   const avatar = userData?.avatar;
 
-  useEffect(() => {
-    if (!messages?.length) {
-      fetchChatMessages();
-    }
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState<{ top: number; height: number; opacity: number }>({
+    top: 0,
+    height: 0,
+    opacity: 0,
+  });
 
-    const id = setInterval(() => {
-      fetchChatMessages();
-    }, 5000);
-    return () => {
-      clearInterval(id);
-    };
-  }, []);
+  useEffect(() => {
+    const container = tabsContainerRef.current;
+    if (!container) return;
+    const activeIndex = tabsData.findIndex((el) => el.tab === props.activeTab);
+    if (activeIndex === -1 || !props.isOpen) {
+      setIndicatorStyle((s) => ({ ...s, opacity: 0 }));
+      return;
+    }
+    const el = container.children[activeIndex + 1] as HTMLElement | undefined;
+    if (!el) return;
+    setIndicatorStyle({ top: el.offsetTop, height: el.offsetHeight, opacity: 1 });
+  }, [props.activeTab, props.isOpen]);
 
   return (
     <StyledPanel>
@@ -100,20 +107,23 @@ export const Panel = (props: PanelProps) => {
         />
       </Display>
 
-      {tabsData.map((el, index) => (
-        <NavLink
-          key={index}
-          hasPin={Boolean(el.tab && pins[el.tab])}
-          isDisabled={(el.isNeedAuth && !isAuth) || !el.tab}
-          label={el.label}
-          description={el.label}
-          isChecked={el.tab === props.activeTab}
-          onClick={() => onTabClickHandler(el.tab)}
-          margin={el.margin}
-          border={el.border}
-          prepend={<StyledNavLinkSection>{el.icon}</StyledNavLinkSection>}
-        />
-      ))}
+      <StyledTabsGroup ref={tabsContainerRef}>
+        <StyledTabSlideIndicator style={indicatorStyle} />
+        {tabsData.map((el, index) => (
+          <NavLink
+            key={index}
+            hasPin={Boolean(el.tab && pins[el.tab])}
+            isDisabled={(el.isNeedAuth && !isAuth) || !el.tab}
+            label={el.label}
+            description={el.label}
+            isChecked={el.tab === props.activeTab && props.isOpen}
+            onClick={() => onTabClickHandler(el.tab)}
+            margin={el.margin}
+            border={el.border}
+            prepend={<StyledNavLinkSection>{el.icon}</StyledNavLinkSection>}
+          />
+        ))}
+      </StyledTabsGroup>
       <NavLink
         onClick={toggleTheme}
         border

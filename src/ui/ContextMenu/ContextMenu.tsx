@@ -18,11 +18,14 @@ type ContextMenuProps = {
   position?: PopupPosition;
   anchorAlign?: AnchorAlign;
   title?: string;
+  header?: React.ReactNode;
   showCheckbox?: boolean;
   showSearch?: boolean;
   minWidth?: number;
   fixedAnchorRect?: { top: number; left: number; width?: number; height?: number };
   activeItemId?: string | number | null;
+  transformOrigin?: string;
+  offset?: number;
 };
 
 export const ContextMenu: React.FC<ContextMenuProps> = ({
@@ -39,6 +42,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   showSearch = false,
   minWidth = 150,
   activeItemId,
+  transformOrigin,
+  offset,
+  header,
 }) => {
   const handleOptionChange = useCallback(
     (option: ListItemOptions) => {
@@ -67,6 +73,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     </StyledContextMenuList>
   ) : (
     <>
+      {header}
       {title && <StyledContextMenuTitle size={size}>{title}</StyledContextMenuTitle>}
       <List
         options={items}
@@ -87,6 +94,8 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
       position={position}
       anchorAlign={anchorAlign}
       minWidth={minWidth}
+      transformOrigin={transformOrigin}
+      offset={offset}
       noPadding
     >
       {content}

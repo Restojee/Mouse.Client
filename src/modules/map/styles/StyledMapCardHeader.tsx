@@ -7,4 +7,10 @@ export const StyledMapCardHeader = styled(StyledMapCardFooter)({
   top: 0,
   opacity: 1,
   zIndex: 2,
+  "@media (max-width: 768px)": {
+    fontSize: "0.65rem",
+    "& button": {
+      display: "none",
+    },
+  },
 });

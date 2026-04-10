@@ -80,7 +80,10 @@ export const StyledInputWrapper = styled.div<InputWrapperPropsType>(({ theme, ..
   }),
 }));
 
-export const StyledInput = styled.input((props) => ({
+type StyledInputPropsType = {
+  compact?: boolean;
+};
+export const StyledInput = styled.input<StyledInputPropsType>((props) => ({
   backgroundColor: "transparent",
   background: "none",
   border: "none",
@@ -92,7 +95,7 @@ export const StyledInput = styled.input((props) => ({
   maxWidth: "100%",
   color: "inherit",
   borderRadius: "50px",
-  padding: "12px 20px",
+  padding: props.compact ? "7px 15px" : "12px 20px",
   fontSize: "inherit",
   boxShadow: "inherit",
   textOverflow: "ellipsis",

@@ -8,6 +8,13 @@ import StarRating from "@/ui/StarRating/StarRating";
 import { Property } from "csstype";
 import React, { useMemo, useState } from "react";
 import { renderRichContent } from "@/ui/TextEditor/renderRichContent";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { MobileSheet } from "@/ui/MobileSheet/MobileSheet";
+import { Avatar } from "@/ui/Avatar";
+import { StyledBox } from "@/ui/Box";
+import { TextLink } from "@/ui/TextLink/TextLink";
+import { Typography } from "@/ui/Typography/styles/Typography";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 type PropsType = {
   comment: Comment;
@@ -24,6 +31,9 @@ export const Message = (props: PropsType) => {
   const { comment, onDelete, padding, onUsernameClick, onMentionClick, isDeleteView, getStarsCount, validUsernames } =
     props;
   const [isHovered, setIsHovered] = useState(false);
+  const [isAuthorSheetOpen, setIsAuthorSheetOpen] = useState(false);
+  const isMobile = useIsMobile();
+  const { theme } = useAppTheme();
 
   const onDeleteHandler = () => {
     if (comment.id && onDelete) onDelete(comment);
@@ -42,31 +52,89 @@ export const Message = (props: PropsType) => {
     [comment.text, onMentionClick, validUsernames],
   );
 
+  const onAuthorClick = onUsernameClick && comment.user?.id ? () => onUsernameClick(comment.user!.id!) : undefined;
+
   return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <MessageCard
-        avatar={getAvatarImageLink(comment.user?.avatar)}
-        username={comment.user?.username}
-        date={dateTime}
-        dateTitle={time}
-        onAuthorClick={onUsernameClick && comment.user?.id ? () => onUsernameClick(comment.user!.id!) : undefined}
-        padding={padding}
-        headerMiddle={<StarRating count={starsCount} />}
-        headerEnd={
-          isDeleteView && isHovered
-            ? React.createElement(
+    <>
+      <div
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <MessageCard
+          avatar={getAvatarImageLink(comment.user?.avatar)}
+          username={comment.user?.username}
+          date={dateTime}
+          dateTitle={time}
+          onAuthorClick={onAuthorClick}
+          onAvatarClick={isMobile ? () => setIsAuthorSheetOpen(true) : undefined}
+          padding={padding}
+          headerMiddle={<StarRating count={starsCount} />}
+          headerEnd={
+            isDeleteView && isHovered
+              ? React.createElement(
                 IconButton,
                 { onClick: onDeleteHandler, isAdmin: true },
                 React.createElement(CloseIcon),
               )
-            : null
-        }
-      >
-        {content}
-      </MessageCard>
-    </div>
+              : null
+          }
+        >
+          {content}
+        </MessageCard>
+      </div>
+
+      {isMobile && (
+        <MobileSheet
+          isOpen={isAuthorSheetOpen}
+          onClose={() => setIsAuthorSheetOpen(false)}
+          height="auto"
+          noHeader
+        >
+          <StyledBox
+            direction="column"
+            align="center"
+            gap={12}
+            padding="16px 24px 32px"
+            width="100%"
+          >
+            <Avatar
+              size={60}
+              image={getAvatarImageLink(comment.user?.avatar)}
+              username={comment.user?.username}
+            />
+            <StyledBox
+              direction="column"
+              align="center"
+              gap={4}
+            >
+              <TextLink
+                onClick={
+                  onAuthorClick
+                    ? () => {
+                      onAuthorClick();
+                      setIsAuthorSheetOpen(false);
+                    }
+                    : undefined
+                }
+                fontSize="1rem"
+              >
+                {comment.user?.username}
+              </TextLink>
+              <Typography
+                fontSize="0.75rem"
+                opacity={0.5}
+                title={time}
+              >
+                {dateTime}
+              </Typography>
+            </StyledBox>
+            <StarRating
+              count={starsCount}
+              size="lg"
+            />
+          </StyledBox>
+        </MobileSheet>
+      )}
+    </>
   );
 };

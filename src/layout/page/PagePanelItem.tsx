@@ -1,6 +1,6 @@
 import React from "react";
 import { StyledBox } from "@/ui/Box";
-import { StyledPagePanelButton } from "@/layout/page/styles/StyledPagePanelButton";
+import { IconButton } from "@/ui/Button/IconButton";
 
 type PropsType = {
   isContentVisible?: boolean;
@@ -18,13 +18,14 @@ export const PagePanelItem = (props: PropsType) => {
     <StyledBox gap={10}>
       {isContentVisible && content}
       {!!children && (
-        <StyledPagePanelButton
+        <IconButton
+          isPanel
           type={type || "button"}
           disabled={disabled}
           onClick={onClick}
         >
           {children}
-        </StyledPagePanelButton>
+        </IconButton>
       )}
     </StyledBox>
   );

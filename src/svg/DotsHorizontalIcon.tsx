@@ -1,6 +1,6 @@
 import { SvgIconPropsType } from "@/svg/common/types";
 
-export const DoneRoundIcon = (props: SvgIconPropsType) => {
+export const DotsHorizontalIcon = (props: SvgIconPropsType) => {
   return (
     <svg
       width={props.size || "24px"}
@@ -8,19 +8,25 @@ export const DoneRoundIcon = (props: SvgIconPropsType) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      onClick={props.onClick}
     >
+      <circle
+        cx="5"
+        cy="12"
+        r="2"
+        fill={props.color || "currentColor"}
+      />
       <circle
         cx="12"
         cy="12"
-        r="10"
+        r="2"
         fill={props.color || "currentColor"}
       />
-      <path
-        d="M7.5 12.5L10.5 15.5L16.5 9"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+      <circle
+        cx="19"
+        cy="12"
+        r="2"
+        fill={props.color || "currentColor"}
       />
     </svg>
   );

@@ -14,6 +14,7 @@ const TagsModal = () => {
       onClose={onCloseModal}
       onAccess={updateMapTags}
       width={600}
+      autoHeight
     >
       <StyledBox
         gap="20px"

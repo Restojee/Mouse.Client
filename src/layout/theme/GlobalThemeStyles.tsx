@@ -69,4 +69,11 @@ export const GlobalThemeStyles = createGlobalStyle((theme: typeof DefaultTheme) 
   "input:-internal-autofill-selected": {
     backgroundColor: "transparent !important",
   },
+
+  // iOS Safari zooms the page on input focus when font-size < 16px
+  "@media screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 768px)": {
+    "input, textarea, select": {
+      fontSize: "16px !important",
+    },
+  },
 }));

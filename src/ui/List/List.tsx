@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useMemo } from "react";
 import { Avatar } from "@/ui/Avatar";
 import { StyledList, StyledListSearch, StyledListEmpty, StyledListLoader } from "./styled";
+import { StyledContextMenuDivider, StyledContextMenuOption } from "@/ui/ContextMenu/styled";
 import { ThemeSizes, ListItemOptions } from "@/ui/ContextMenu/ContextMenuItem";
 
 type ListProps = {
@@ -86,35 +87,12 @@ export const List: React.FC<ListProps> = ({
         ) : (
           filteredOptions.map((option) => (
             <React.Fragment key={option.id}>
-              {option.divider && (
-                <div style={{ height: 1, background: "var(--border-color, rgba(0,0,0,0.1))", margin: "4px 0" }} />
-              )}
-              <div
+              {option.divider && <StyledContextMenuDivider />}
+              <StyledContextMenuOption
                 onClick={() => !option.disabled && handleClick(option)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  padding: size === "sm" ? "6px 14px" : "8px 14px",
-                  fontSize: size === "sm" ? "0.85rem" : "0.95rem",
-                  cursor: option.disabled ? "default" : "pointer",
-                  opacity: option.disabled ? 0.5 : 1,
-                  transition: "background-color 0.1s",
-                  backgroundColor:
-                    activeItemId != null && option.id === activeItemId
-                      ? "var(--paper-accent, rgba(0,0,0,0.08))"
-                      : "transparent",
-                }}
-                onMouseEnter={(e) => {
-                  if (!option.disabled && option.id !== activeItemId) {
-                    (e.currentTarget as HTMLDivElement).style.backgroundColor = "var(--paper-accent, rgba(0,0,0,0.05))";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (option.id !== activeItemId) {
-                    (e.currentTarget as HTMLDivElement).style.backgroundColor = "transparent";
-                  }
-                }}
+                isDisabled={option.disabled}
+                isDanger={option.isDanger}
+                data-active={activeItemId != null && option.id === activeItemId}
               >
                 {option.avatar !== undefined ? (
                   <Avatar
@@ -126,7 +104,7 @@ export const List: React.FC<ListProps> = ({
                   <span>{option.icon}</span>
                 ) : null}
                 {option.label}
-              </div>
+              </StyledContextMenuOption>
             </React.Fragment>
           ))
         )}

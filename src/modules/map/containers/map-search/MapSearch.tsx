@@ -1,19 +1,23 @@
 import { useAppSelector } from "@/hooks/useAppSelector";
 import useFilterQueryParams from "@/hooks/useFilterQueryParams";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { selectMaps } from "@/modules/map/containers/map-list";
 import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
-import { SearchIcon } from "@/svg/SearchIcon";
-import { StyledBox } from "@/ui/Box";
-import { Input } from "@/ui/Input";
+import { CollapsibleSearch } from "@/ui/CollapsibleSearch/CollapsibleSearch";
 import React from "react";
 
-export const MapSearch = () => {
+type Props = {
+  onOpenChange?: (isOpen: boolean) => void;
+};
+
+export const MapSearch = ({ onOpenChange }: Props) => {
   const { updateFilter, filter } = useFilterQueryParams();
   const { openMap } = useMapView();
   const maps = useAppSelector(selectMaps);
+  const isMobile = useIsMobile();
 
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    await updateFilter({ name: e.currentTarget.value.trim(), page: 1 });
+  const onChange = async (value: string) => {
+    await updateFilter({ name: value.trim(), page: 1 });
   };
 
   const onKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -34,22 +38,13 @@ export const MapSearch = () => {
   };
 
   return (
-    <StyledBox
-      align={"center"}
-      gap={15}
-    >
-      <Input
-        autoComplete={"off"}
-        type={"text"}
-        name={"search"}
-        onKeyDown={onKeyDown}
-        inputPrepend={<SearchIcon />}
-        width={240}
-        value={filter.name}
-        onChange={onChange}
-        placeholder={"Поиск по номеру карты "}
-        noBorder
-      />
-    </StyledBox>
+    <CollapsibleSearch
+      value={filter.name ?? ""}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
+      onOpenChange={onOpenChange}
+      placeholder="Поиск по номеру карты"
+      alwaysOpen={!isMobile}
+    />
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useEditor, useRegisterPlugin } from "../../core/EditorContext";
 import { Modal } from "@/ui/Modal/Modal";
 import { Input } from "@/ui/Input/Input";
@@ -9,7 +9,7 @@ import { LinkIcon } from "@/svg/LinkIcon";
 import { ChevronRightIcon } from "@/svg/ChevronRightIcon";
 import { SendIcon } from "@/svg/SendIcon";
 import { ContextMenu } from "@/ui/ContextMenu/ContextMenu";
-import { PopupPosition, AnchorAlign } from "@/ui/Popup";
+import { AnchorAlign, PopupPosition } from "@/ui/Popup";
 import type { ListItemOptions } from "@/ui/ContextMenu/ContextMenuItem";
 import type { Decoration, EditorPlugin, EditorState, ToolbarPluginProps } from "../../types";
 import styles from "./ToolbarPlugin.module.css";
@@ -53,14 +53,13 @@ const buildFormatDecorations = (value: string): Decoration[] => {
   return decorations;
 };
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 type Props = ToolbarPluginProps & {
   onSend?: () => void;
   sendDisabled?: boolean;
+  isFocused?: boolean;
 };
 
-export const ToolbarPlugin: React.FC<Props> = ({ onSend, sendDisabled }) => {
+export const ToolbarPlugin: React.FC<Props> = ({ onSend, sendDisabled, isFocused }) => {
   const { editor, divRef } = useEditor();
   const [menuOpen, setMenuOpen] = useState(false);
   const [linkModalOpen, setLinkModalOpen] = useState(false);
@@ -219,7 +218,13 @@ export const ToolbarPlugin: React.FC<Props> = ({ onSend, sendDisabled }) => {
         />
         {onSend && (
           <button
-            className={`${styles.sendBtn}${sendDisabled ? ` ${styles.sendBtnDisabled}` : ""}`}
+            className={[
+              styles.sendBtn,
+              sendDisabled && !isFocused ? styles.sendBtnHidden : "",
+              sendDisabled ? styles.sendBtnDisabled : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
             type="button"
             onClick={onSend}
             disabled={sendDisabled}

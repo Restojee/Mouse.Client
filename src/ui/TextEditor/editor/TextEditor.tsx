@@ -20,7 +20,14 @@ export const TextEditor: React.FC<TextEditorProps> = ({
   children,
 }) => {
   const theme = useTheme() as {
-    colors: { input: { default: string; border: string; hover: string }; brandColor: string; textOnSecondary: string };
+    colors: {
+      input: { default: string; border: string; hover: string };
+      brandColor: string;
+      textOnSecondary: string;
+      secondaryAccent: string;
+      secondaryDark: string;
+      disabled: string;
+    };
     font: { fontSize: string };
   };
 
@@ -39,10 +46,11 @@ export const TextEditor: React.FC<TextEditorProps> = ({
     "--editor-bg": bgColor ?? theme.colors.input.default,
     "--editor-bg-hover": theme.colors.input.hover,
     "--editor-border": theme.colors.input.border,
-    "--editor-border-focus": theme.colors.input.border,
+    "--editor-border-focus": theme.colors.secondaryAccent,
     "--editor-color": theme.colors.textOnSecondary,
+    "--editor-placeholder": theme.colors.disabled,
     "--editor-brand": theme.colors.brandColor,
-    "--editor-toolbar-bg": theme.colors.input.default,
+    "--editor-toolbar-bg": theme.colors.secondaryDark,
     "--editor-toolbar-icon": theme.colors.textOnSecondary,
     "--editor-font-size": theme.font.fontSize,
   } as React.CSSProperties;

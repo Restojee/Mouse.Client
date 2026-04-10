@@ -40,22 +40,31 @@
   cursor: pointer;
   background-color: transparent;
   color: var(--editor-toolbar-icon, #333);
-  transition: background-color 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+  /* scale(0.8) = -20% от размера, при hover возвращаем к оригиналу */
+  transform: scale(0.8);
+  transition: background-color 0.15s ease, transform 0.2s ease, opacity 0.2s ease;
   padding: 0;
 }
 
 .sendBtn:hover {
   background-color: var(--editor-bg-hover, rgba(0, 0, 0, 0.04));
-  transform: translateX(2px);
+  transform: scale(1);
 }
 
 .sendBtn:active {
-  transform: translateX(2px) scale(1.1);
+  transform: scale(1.1);
 }
 
 .sendBtnDisabled {
-  opacity: 0.3;
+  opacity: 0.4;
   pointer-events: none;
+}
+
+/* Скрыт — нет контента и редактор не в фокусе */
+.sendBtnHidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.6);
 }
 
 @media (max-width: 600px) {

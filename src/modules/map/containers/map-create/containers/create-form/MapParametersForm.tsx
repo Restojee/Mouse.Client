@@ -1,11 +1,11 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Tab } from "@/ui/Tabs/Tab";
 import { Tabs } from "@/ui/Tabs/Tabs";
+import { TabsPanel } from "@/ui/Tabs/TabsPanel";
 import React, { useMemo, useState } from "react";
 import { useMapCreate } from "@/modules/map/containers/map-create/hooks/useMapCreate";
 import { useTag } from "@/modules/tag/hooks/useTag";
 import { Button } from "@/ui/Button";
-import { Display } from "@/ui/Display";
 import { PointBlock } from "@/ui/PointBlock/PointBlock";
 import { StyledBox } from "@/ui/Box";
 import { Typography } from "@/ui/Typography/styles/Typography";
@@ -55,7 +55,7 @@ export const MapParametersForm = () => {
             label={"Постройка"}
           />
         </Tabs>
-        <Display condition={currentTab === "map"}>
+        <TabsPanel activeIndex={currentTab === "map" ? 0 : 1}>
           <ImageForm
             subTextSize={"sm"}
             fileType="image"
@@ -63,8 +63,6 @@ export const MapParametersForm = () => {
             value={image || null}
             messageWords={"обложку карты"}
           />
-        </Display>
-        <Display condition={currentTab === "completed"}>
           <ImageForm
             subTextSize={"sm"}
             fileType="image"
@@ -72,7 +70,7 @@ export const MapParametersForm = () => {
             value={completedMapImage || null}
             messageWords={"свою постройку"}
           />
-        </Display>
+        </TabsPanel>
         <StyledBox
           maxHeight={"150px"}
           wrap={"wrap"}

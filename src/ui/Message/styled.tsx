@@ -87,6 +87,7 @@ type StyledImageContainerPropsType = {
   width?: Property.Width;
   height?: Property.Height;
   maxHeight?: Property.MaxHeight;
+  minHeight?: Property.MinHeight;
   bgColor?: Property.BackgroundColor;
 };
 export const StyledMapContentPreview = styled.div<StyledImageContainerPropsType>((props) => ({
@@ -100,6 +101,7 @@ export const StyledMapContentPreview = styled.div<StyledImageContainerPropsType>
   height: props.height,
   overflow: "hidden",
   maxHeight: props.maxHeight,
+  minHeight: props.minHeight,
   transition: "0.2s",
   backgroundColor: props.bgColor,
   flexGrow: 1,

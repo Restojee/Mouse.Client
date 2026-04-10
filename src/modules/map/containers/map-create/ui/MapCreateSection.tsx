@@ -1,9 +1,10 @@
 import { useAppSelector } from "@/hooks/useAppSelector";
-import PagePanelItem from "@/layout/page/PagePanelItem";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { selectIsAuth } from "@/modules/auth/slice";
 import { AddRoundIcon } from "@/svg/AddRoundIcon";
-import { DoneRoundIcon } from "@/svg/DoneRoundIcon";
+import { Button } from "@/ui/Button";
 import { Display } from "@/ui/Display";
+import { StyledBox } from "@/ui/Box";
 import { useState } from "react";
 import { useMapCreate } from "../hooks/useMapCreate";
 import { MapCreatePopup } from "./MapCreatePopup";
@@ -14,9 +15,9 @@ export const MapCreateSection = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const isAuth = useAppSelector(selectIsAuth);
+  const { theme } = useAppTheme();
 
   const { name, setName, onMapCreate } = useMapCreate();
-
   const { isValid } = useMapCreate();
 
   const onSubmitHandler = async () => {
@@ -29,21 +30,20 @@ export const MapCreateSection = () => {
   };
 
   const onIconClickHandler = async () => {
-    if (isContentVisible) {
-      await onSubmitHandler();
-    } else {
+    if (!isContentVisible) {
       setIsContentVisible(true);
       setIsPopupOpen(false);
     }
   };
 
+  const isSubmitDisabled = isLoading || !isValid || !isAuth;
+
   return (
-    <PagePanelItem
-      disabled={isLoading || (!isValid && isContentVisible) || !isAuth}
-      type={isContentVisible ? "submit" : undefined}
-      isContentVisible={isContentVisible}
-      onClick={onIconClickHandler}
-      content={
+    <StyledBox
+      align="center"
+      gap={10}
+    >
+      <Display condition={isContentVisible}>
         <MapCreatePopup
           name={name}
           setName={setName}
@@ -51,14 +51,32 @@ export const MapCreateSection = () => {
           onImagePopupToggle={() => setIsPopupOpen(!isPopupOpen)}
           onMapCreate={onSubmitHandler}
         />
-      }
-    >
+      </Display>
+
       <Display condition={isContentVisible}>
-        <DoneRoundIcon />
+        <Button
+          bgColor={theme.colors.status.success}
+          color={theme.colors.brandColorContrastText}
+          onClick={onSubmitHandler}
+          disabled={isSubmitDisabled}
+          size="sm"
+          padding="8px 8px"
+        >
+          <AddRoundIcon />
+        </Button>
       </Display>
+
       <Display condition={!isContentVisible}>
-        <AddRoundIcon />
+        <Button
+          disabled={!isAuth}
+          onClick={onIconClickHandler}
+          size="sm"
+          bgColor={theme.colors.neutral}
+          color={theme.colors.textOnSecondary}
+        >
+          <AddRoundIcon />
+        </Button>
       </Display>
-    </PagePanelItem>
+    </StyledBox>
   );
 };

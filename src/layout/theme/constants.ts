@@ -17,8 +17,8 @@ export const DefaultTheme = {
     secondaryDarker: "#eaeaea",
     secondaryDark: "#f8f8f8",
     secondaryAccent: "rgba(0,0,0,0.28)",
-    textOnSecondary: "#000",
-    iconOnSecondary: "#7a7a7a",
+    textOnSecondary: "#333333",
+    iconOnSecondary: "#555555",
     disabled: "#b9b9b9",
 
     neutral: "#F3F2F5",

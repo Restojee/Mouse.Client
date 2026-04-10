@@ -54,7 +54,8 @@ export const PreviewImageWrapper = ({ mapCompleted, onDeleteOpen, image, onClick
   return (
     <StyledMapContentPreview
       bgColor={theme.colors.mapBackground}
-      maxHeight="400px"
+      maxHeight="250px"
+      minHeight="250px"
       borderRadius={"20px"}
       height="100%"
     >

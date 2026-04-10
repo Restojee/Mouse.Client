@@ -11,4 +11,5 @@ export interface ListItemOptions {
   submenu?: ListItemOptions[];
   checked?: boolean;
   showCheckbox?: boolean;
+  isDanger?: boolean;
 }

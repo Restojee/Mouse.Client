@@ -75,6 +75,7 @@ export const TextLink = ({ children, onClick, href, fontSize, isEllipsis }: Text
     <StyledTextLink
       onClick={onClick}
       fontSize={fontSize}
+      isEllipsis={isEllipsis}
     >
       {children}
     </StyledTextLink>

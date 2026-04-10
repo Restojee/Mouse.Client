@@ -7,8 +7,7 @@
 import { buildSegments } from "../../core/buildSegments";
 import { parseText } from "../parseText";
 import type { Decoration } from "../../types";
-
-// ─── Mirrors of internal helpers (pure, no DOM) ───────────────────────────────
+import type React from "react";
 
 const HIDDEN: React.CSSProperties = { fontSize: 0 };
 
@@ -57,10 +56,6 @@ const simulateWrap = (value: string, start: number, end: number, open: string, c
   const cursor = start + replacement.length;
   return { newValue, cursor };
 };
-
-import type React from "react";
-
-// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe("buildSegments", () => {
   it("plain text with no decorations returns single segment", () => {

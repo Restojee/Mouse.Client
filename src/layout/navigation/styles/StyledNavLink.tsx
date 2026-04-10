@@ -12,13 +12,14 @@ type Props = {
   hasPin?: boolean;
 };
 export const StyledNavLink = styled.div<Props>(
-  ({ theme, margin, isOpen, withBorder, hasPin, isDisabled, gap, isChecked, justifyContent }) => ({
+  ({ theme, margin, isOpen, withBorder, hasPin, isDisabled, gap, justifyContent }) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     padding: "8px",
     borderRadius: "10px",
     position: "relative",
+    zIndex: 1,
     whiteSpace: "nowrap",
     gap: gap,
     border: "1px solid transparent",
@@ -62,10 +63,6 @@ export const StyledNavLink = styled.div<Props>(
     }),
     ...(!isDisabled && {
       cursor: "pointer",
-      ...(isChecked && {
-        backgroundColor: "rgba(255, 255, 255, 0.05)",
-        border: "1px solid rgba(255, 255, 255, 0.1)",
-      }),
       "&:hover": {
         backgroundColor: isOpen ? `rgba(255, 255, 255, 0.05)` : `rgba(255, 255, 255, 0.1)`,
         svg: {

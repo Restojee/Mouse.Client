@@ -29,7 +29,7 @@ export const StyledWrapper = styled.div(({ theme }) => ({
   overflow: "hidden",
   "@media all and (max-width: 768px)": {
     borderRadius: 15,
-    margin: "8px 8px 8px 8px",
+    margin: "8px 8px 0 8px",
     flexDirection: "column",
     overflow: "auto",
   },

@@ -13,6 +13,7 @@ type MessageCardProps = {
   date?: string;
   dateTitle?: string;
   onAuthorClick?: () => void;
+  onAvatarClick?: () => void;
   /** Контент между именем и датой (напр. звёздочки) */
   headerMiddle?: ReactNode;
   /** Контент после даты — прижат к правому краю (напр. кнопка удаления) */
@@ -27,6 +28,7 @@ export const MessageCard = ({
   date,
   dateTitle,
   onAuthorClick,
+  onAvatarClick,
   headerMiddle,
   headerEnd,
   padding,
@@ -42,10 +44,15 @@ export const MessageCard = ({
       padding={padding || "0 10px"}
       gap={15}
     >
-      <Avatar
-        image={avatar}
-        username={username}
-      />
+      <div
+        onClick={onAvatarClick}
+        style={onAvatarClick ? { cursor: "pointer", flexShrink: 0 } : { flexShrink: 0 }}
+      >
+        <Avatar
+          image={avatar}
+          username={username}
+        />
+      </div>
       <StyledBox
         direction="column"
         grow={1}

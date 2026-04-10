@@ -14,8 +14,8 @@ export const StyledPagePanelButton = styled.button((props) => ({
     backgroundColor: "rgba(0, 0, 0, 0.05)",
   },
   svg: {
-    width: 28,
-    height: 28,
+    width: 14,
+    height: 14,
   },
   ...(props.disabled && {
     pointerEvents: "none",

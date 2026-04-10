@@ -24,6 +24,7 @@ interface PopupProps {
   noPadding?: boolean;
   nonIntegration?: boolean;
   minWidth?: number;
+  transformOrigin?: string;
 }
 
 export const Popup: React.FC<PopupProps> = (props) => {
@@ -39,6 +40,7 @@ export const Popup: React.FC<PopupProps> = (props) => {
     boundary,
     noPadding,
     minWidth,
+    transformOrigin,
   } = props;
 
   const { anchorRef, popupRef, popupPositionStyles, isRendered } = usePopup({
@@ -70,10 +72,12 @@ export const Popup: React.FC<PopupProps> = (props) => {
                 left: popupPositionStyles?.left ?? 0,
                 top: popupPositionStyles?.top ?? 0,
                 opacity: isRendered ? 1 : 0,
+                transform: isRendered ? "scale(1)" : "scale(0.9)",
                 pointerEvents: isRendered ? "auto" : "none",
               }}
               minWidth={minWidth ?? 200}
               noPadding={noPadding}
+              transformOrigin={transformOrigin}
               className={className}
             >
               {children}

@@ -6,34 +6,12 @@ export const StyledContextMenuOverlay = styled.div`
   z-index: 1000;
 `;
 
-export const StyledContextMenuPopup = styled.div<{ top: number; left: number; minWidth?: number }>`
-  position: fixed;
-  z-index: 1001;
-  top: ${({ top }) => top}px;
-  left: ${({ left }) => left}px;
-  min-width: ${({ minWidth }) => minWidth ?? 180}px;
-  background: ${({ theme }) => theme.colors.secondary};
-  border: 1px solid ${({ theme }) => theme.colors.input.border};
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  padding: 4px 0;
-  overflow: hidden;
-  opacity: 0;
-  animation: fadeIn 0.15s ease forwards;
-
-  @keyframes fadeIn {
-    to {
-      opacity: 1;
-    }
-  }
-`;
-
 export const StyledContextMenuList = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-export const StyledContextMenuOption = styled.div<{ isDisabled?: boolean }>`
+export const StyledContextMenuOption = styled.div<{ isDisabled?: boolean; isDanger?: boolean }>`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -41,6 +19,7 @@ export const StyledContextMenuOption = styled.div<{ isDisabled?: boolean }>`
   font-size: 0.9rem;
   cursor: ${({ isDisabled }) => (isDisabled ? "default" : "pointer")};
   opacity: ${({ isDisabled }) => (isDisabled ? 0.5 : 1)};
+  color: ${({ theme, isDanger }) => (isDanger ? theme.colors.status.error : theme.colors.textOnSecondary)};
   transition: background-color 0.1s;
 
   &:hover {
@@ -78,22 +57,36 @@ export const StyledContextMenuTitle = styled.div<{ size?: string }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.input.border};
 `;
 
+export const StyledContextMenuUserRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textOnSecondary};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.input.border};
+  margin-bottom: 4px;
+`;
+
 export const StyledSubMenuPopup = styled.div`
   position: fixed;
   z-index: 1002;
   min-width: 180px;
   background: ${({ theme }) => theme.colors.secondary};
   border: 1px solid ${({ theme }) => theme.colors.input.border};
-  border-radius: 10px;
+  border-radius: ${({ theme }) => theme.blockSettings.siteBorder ?? "15px"};
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   padding: 4px 0;
   overflow: hidden;
   opacity: 0;
-  animation: fadeIn 0.15s ease forwards;
+  transform: scale(0.9);
+  animation: scaleIn 0.2s ease forwards;
 
-  @keyframes fadeIn {
+  @keyframes scaleIn {
     to {
       opacity: 1;
+      transform: scale(1);
     }
   }
 `;

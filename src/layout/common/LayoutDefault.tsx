@@ -23,7 +23,7 @@ export const LayoutDefault: React.FC<DefaultProps> = (props) => {
       </Display>
       <StyledWrapper>
         {props.children}
-        <Display condition={isOpen && !isMobile}>
+        <Display condition={!isMobile}>
           <Drawer
             isOpen={isOpen}
             activeTab={activeTab}

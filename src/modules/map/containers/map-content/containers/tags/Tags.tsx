@@ -48,6 +48,7 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
               onClick={onOpenModalHandler}
               label={"Изменить"}
               prepend={<EditFillIcon />}
+              size="sm"
             />
           </Display>
         </StyledBox>

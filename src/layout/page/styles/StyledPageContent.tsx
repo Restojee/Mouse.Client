@@ -6,4 +6,7 @@ export const StyledPageContent = styled.div({
   padding: "20px",
   display: "flex",
   flexDirection: "column",
+  "@media (max-width: 768px)": {
+    padding: "10px 5px",
+  },
 });

@@ -8,6 +8,7 @@ type StyledIconButtonPropsType = {
   right?: Property.Right;
   isAdmin?: boolean;
   isStylized?: boolean;
+  isPanel?: boolean;
 };
 export const IconButton = styled.button<StyledIconButtonPropsType>(({ theme, ...props }) => ({
   display: "flex",
@@ -20,6 +21,7 @@ export const IconButton = styled.button<StyledIconButtonPropsType>(({ theme, ...
   padding: props.padding,
   transition: "0.2s",
   backgroundColor: "transparent",
+  borderRadius: "10px",
   transitionProperty: "transform",
   "&:hover": {
     transform: "scale(0.90)",
@@ -38,5 +40,23 @@ export const IconButton = styled.button<StyledIconButtonPropsType>(({ theme, ...
       height: "min-content",
       padding: 5,
       backgroundColor: theme.colors.secondaryAccent,
+    } as CSSObject)),
+  ...(props.isPanel &&
+    ({
+      opacity: 1,
+      padding: "5px 8px",
+      borderRadius: 10,
+      backgroundColor: theme.colors.neutral,
+      transitionProperty: "background-color",
+      transform: "none",
+      "&:hover": {
+        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        transform: "none",
+        opacity: 1,
+      },
+      svg: {
+        width: 14,
+        height: 14,
+      },
     } as CSSObject)),
 }));

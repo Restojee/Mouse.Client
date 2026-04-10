@@ -302,6 +302,7 @@ export type GetChatMessagesResponse = {
 export type GetChatMessagesRequest = {
   size: number;
   page: number;
+  sortDirection?: "asc" | "desc";
 };
 export type CreateChatMessageRequest = {
   text: string;

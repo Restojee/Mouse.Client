@@ -9,6 +9,7 @@ export type StyledButtonProps = {
   bgColor?: Property.BackgroundColor;
   color?: Property.Color;
   margin?: string | number;
+  padding?: Property.Padding;
   size?: "sm" | "md" | "lg";
   isWithError?: boolean;
   disabled?: boolean;
@@ -25,6 +26,7 @@ export const StyledButton = styled.button<StyledButtonProps>(
     borderRadius = "50px",
     width = "min-content",
     margin = "",
+    padding,
     disabled,
   }) => ({
     justifyContent: justify,
@@ -53,5 +55,6 @@ export const StyledButton = styled.button<StyledButtonProps>(
       opacity: 0.6,
     }),
     ...(size ? theme.sizes.button[size] : theme.sizes.button.md),
+    ...(padding !== undefined && { padding }),
   }),
 );

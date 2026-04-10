@@ -21,6 +21,9 @@ export const StyledMapCardFooter = styled.div<MapsCardPanelProps>((props) => ({
   opacity: 0,
   padding: "6px 10px",
   transition: "0.3s",
+  "@media (max-width: 768px)": {
+    padding: "3px 6px",
+  },
   ...(props.isMapHover && {
     opacity: 1,
   }),

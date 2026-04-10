@@ -1,7 +1,9 @@
 import { MapParametersForm } from "../containers/create-form/MapParametersForm";
 import { Input } from "@/ui/Input";
 import { StyledBox } from "@/ui/Box";
-import { AddImageIcon } from "@/svg/AddImageIcon";
+import { DotsHorizontalIcon } from "@/svg/DotsHorizontalIcon";
+import { IconButton } from "@/ui/Button/IconButton";
+import React from "react";
 
 type Props = {
   name: string;
@@ -24,19 +26,22 @@ export const MapCreatePopup = (props: Partial<Props>) => {
   };
 
   return (
-    <StyledBox position={"relative"}>
+    <StyledBox
+      position={"relative"}
+      align="center"
+      gap={4}
+    >
+      <IconButton onClick={onImagePopupToggle}>
+        <DotsHorizontalIcon size="17px" />
+      </IconButton>
       <Input
         value={name}
         onKeyDown={onKeyDownHandler}
         onChange={onNameChangeHandler}
         placeholder="Номер карты @123456"
+        width="auto"
         noBorder
-        inputAppend={
-          <AddImageIcon
-            onClick={onImagePopupToggle}
-            color="gray"
-          />
-        }
+        compact
       />
       {isVisible && <MapParametersForm />}
     </StyledBox>
