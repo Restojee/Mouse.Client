@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-// Module-level stack counter. Each mounted modal increments it, each unmount decrements.
-// This ensures newly opened modals always appear above previously opened ones.
 let _stackSize = 0;
 
 const BASE_Z = 300;

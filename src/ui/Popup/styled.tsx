@@ -6,7 +6,7 @@ export const StyledPopupOverlay = styled.div`
   z-index: 1000;
 `;
 
-export const StyledPopupContent = styled.div<{ minWidth?: number; noPadding?: boolean; transformOrigin?: string }>`
+export const StyledPopupContent = styled.div<{ minWidth?: number; noPadding?: boolean; transformOrigin?: string; borderRadius?: string }>`
   transform-origin: ${({ transformOrigin }) => transformOrigin ?? "center"};
 
   position: fixed;
@@ -14,7 +14,7 @@ export const StyledPopupContent = styled.div<{ minWidth?: number; noPadding?: bo
   min-width: ${({ minWidth }) => minWidth ?? 150}px;
   background: ${({ theme }) => theme.colors.secondary};
   border: 1px solid ${({ theme }) => theme.colors.input.border};
-  border-radius: ${({ theme }) => theme.blockSettings.siteBorder ?? "15px"};
+  border-radius: ${({ borderRadius, theme }) => borderRadius ?? theme.blockSettings.siteBorder ?? "15px"};
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   padding: ${({ noPadding }) => (noPadding ? 0 : "8px")};
   transition:

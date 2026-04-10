@@ -6,7 +6,6 @@ import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
 import { StyledMapContentPreview } from "@/ui/Message/styled";
 import React, { useCallback, useEffect, useState } from "react";
 import { ImageLoaderProps } from "next/image";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectIsAuth } from "@/modules/auth/slice";
 import { selectIsMapFetching } from "@/modules/map/containers/map-content/slice";
@@ -21,8 +20,6 @@ interface Props {
 }
 
 export const PreviewImageWrapper = ({ mapCompleted, onDeleteOpen, image, onClick }: Props) => {
-  const { theme } = useAppTheme();
-
   const isAuth = useAppSelector(selectIsAuth);
   const isMapFetching = useAppSelector(selectIsMapFetching);
 
@@ -53,7 +50,6 @@ export const PreviewImageWrapper = ({ mapCompleted, onDeleteOpen, image, onClick
 
   return (
     <StyledMapContentPreview
-      bgColor={theme.colors.mapBackground}
       maxHeight="250px"
       minHeight="250px"
       borderRadius={"20px"}

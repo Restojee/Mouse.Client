@@ -25,6 +25,7 @@ interface PopupProps {
   nonIntegration?: boolean;
   minWidth?: number;
   transformOrigin?: string;
+  borderRadius?: string;
 }
 
 export const Popup: React.FC<PopupProps> = (props) => {
@@ -41,6 +42,7 @@ export const Popup: React.FC<PopupProps> = (props) => {
     noPadding,
     minWidth,
     transformOrigin,
+    borderRadius,
   } = props;
 
   const { anchorRef, popupRef, popupPositionStyles, isRendered } = usePopup({
@@ -78,6 +80,7 @@ export const Popup: React.FC<PopupProps> = (props) => {
               minWidth={minWidth ?? 200}
               noPadding={noPadding}
               transformOrigin={transformOrigin}
+              borderRadius={borderRadius}
               className={className}
             >
               {children}

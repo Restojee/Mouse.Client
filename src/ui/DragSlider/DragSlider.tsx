@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -17,13 +17,11 @@ const Viewport = styled.div({
   WebkitUserSelect: "none",
 });
 
-const Track = styled.div<{ offset: number; isDragging: boolean; count: number }>(({ offset, isDragging, count }) => ({
+const Track = styled.div<{ count: number }>(({ count }) => ({
   display: "flex",
   flexDirection: "row",
   width: `${count * 100}%`,
   height: "100%",
-  transform: `translateX(${offset}px)`,
-  transition: isDragging ? "none" : "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   willChange: "transform",
 }));
 
@@ -41,8 +39,10 @@ const VELOCITY_THRESHOLD = 0.3;
 export const DragSlider = ({ activeIndex, onIndexChange, children }: Props) => {
   const count = children.length;
   const viewportRef = useRef<HTMLDivElement>(null);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const activeIndexRef = useRef(activeIndex);
+  activeIndexRef.current = activeIndex;
 
   const touch = useRef<{
     startX: number;
@@ -50,15 +50,23 @@ export const DragSlider = ({ activeIndex, onIndexChange, children }: Props) => {
     lastX: number;
     lastTime: number;
     velocity: number;
-    locked: boolean | null; // null = undecided, true = horizontal, false = vertical
+    locked: boolean | null;
+    dragOffset: number;
   } | null>(null);
 
   const getBaseOffset = useCallback((index: number) => {
-    const viewportWidth = viewportRef.current?.offsetWidth ?? 0;
-    return -(index * viewportWidth);
+    const w = viewportRef.current?.offsetWidth ?? 0;
+    return -(index * w);
   }, []);
 
-  const onTouchStart = (e: React.TouchEvent) => {
+  const applyTransform = useCallback((offset: number, animated: boolean) => {
+    const track = trackRef.current;
+    if (!track) return;
+    track.style.transition = animated ? "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)" : "none";
+    track.style.transform = `translateX(${offset}px)`;
+  }, []);
+
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
     const t = e.touches[0];
     touch.current = {
       startX: t.clientX,
@@ -67,23 +75,24 @@ export const DragSlider = ({ activeIndex, onIndexChange, children }: Props) => {
       lastTime: e.timeStamp,
       velocity: 0,
       locked: null,
+      dragOffset: 0,
     };
-    setIsDragging(false);
-  };
+    const track = trackRef.current;
+    if (track) track.style.transition = "none";
+  }, []);
 
-  const onTouchMove = (e: React.TouchEvent) => {
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
     if (!touch.current) return;
     const t = e.touches[0];
     const dx = t.clientX - touch.current.startX;
     const dy = t.clientY - touch.current.startY;
 
-    // Определяем направление при первом движении
     if (touch.current.locked === null) {
       if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
       touch.current.locked = Math.abs(dx) > Math.abs(dy);
     }
 
-    if (!touch.current.locked) return; // вертикальный скролл — не мешаем
+    if (!touch.current.locked) return;
 
     e.preventDefault();
 
@@ -92,48 +101,44 @@ export const DragSlider = ({ activeIndex, onIndexChange, children }: Props) => {
     touch.current.lastX = t.clientX;
     touch.current.lastTime = e.timeStamp;
 
-    const base = getBaseOffset(activeIndex);
-    const viewportWidth = viewportRef.current?.offsetWidth ?? 1;
-
-    // Резиновый эффект на краях
-    let offset = base + dx;
+    const base = getBaseOffset(activeIndexRef.current);
     const maxOffset = 0;
     const minOffset = getBaseOffset(count - 1);
+    let offset = base + dx;
     if (offset > maxOffset) offset = maxOffset + (offset - maxOffset) * 0.3;
     if (offset < minOffset) offset = minOffset + (offset - minOffset) * 0.3;
 
-    setDragOffset(offset - base);
-    setIsDragging(true);
-  };
+    touch.current.dragOffset = offset - base;
+    applyTransform(offset, false);
+  }, [applyTransform, getBaseOffset, count]);
 
-  const onTouchEnd = () => {
-    if (!touch.current || !isDragging) {
-      touch.current = null;
-      return;
-    }
+  const onTouchEnd = useCallback(() => {
+    if (!touch.current) return;
+    const { velocity, dragOffset, locked } = touch.current;
+    touch.current = null;
 
-    const { velocity } = touch.current;
-    const viewportWidth = viewportRef.current?.offsetWidth ?? 1;
+    if (!locked) return;
+
     const absOffset = Math.abs(dragOffset);
-
-    let nextIndex = activeIndex;
+    const current = activeIndexRef.current;
+    let nextIndex = current;
 
     if (velocity < -VELOCITY_THRESHOLD || (dragOffset < 0 && absOffset > SWIPE_THRESHOLD)) {
-      nextIndex = Math.min(count - 1, activeIndex + 1);
+      nextIndex = Math.min(count - 1, current + 1);
     } else if (velocity > VELOCITY_THRESHOLD || (dragOffset > 0 && absOffset > SWIPE_THRESHOLD)) {
-      nextIndex = Math.max(0, activeIndex - 1);
+      nextIndex = Math.max(0, current - 1);
     }
 
-    touch.current = null;
-    setDragOffset(0);
-    setIsDragging(false);
+    applyTransform(getBaseOffset(nextIndex), true);
 
-    if (nextIndex !== activeIndex) {
+    if (nextIndex !== current) {
       onIndexChange(nextIndex);
     }
-  };
+  }, [applyTransform, getBaseOffset, count, onIndexChange]);
 
-  const totalOffset = getBaseOffset(activeIndex) + dragOffset;
+  React.useLayoutEffect(() => {
+    applyTransform(getBaseOffset(activeIndex), true);
+  }, [activeIndex, applyTransform, getBaseOffset]);
 
   return (
     <Viewport
@@ -143,16 +148,9 @@ export const DragSlider = ({ activeIndex, onIndexChange, children }: Props) => {
       onTouchEnd={onTouchEnd}
       onTouchCancel={onTouchEnd}
     >
-      <Track
-        offset={totalOffset}
-        isDragging={isDragging}
-        count={count}
-      >
+      <Track ref={trackRef} count={count}>
         {children.map((child, i) => (
-          <Slide
-            key={i}
-            count={count}
-          >
+          <Slide key={i} count={count}>
             {child}
           </Slide>
         ))}

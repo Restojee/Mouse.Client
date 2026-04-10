@@ -8,6 +8,7 @@ import { BurgerIcon } from "@/svg/BurgerIcon";
 import { ChatFillIcon } from "@/svg/ChatFillIcon";
 import { NotificationsIcon } from "@/svg/NotificationIcon";
 import { PaperIcon } from "@/svg/PaperIcon";
+import { AddRoundIcon } from "@/svg/AddRoundIcon";
 import { ChartIcon } from "@/svg/ChartIcon";
 import { LogInIcon } from "@/svg/LogInIcon";
 import { MoonIcon } from "@/svg/MoonIcon";
@@ -29,11 +30,15 @@ import { AnchorAlign, PopupPosition } from "@/ui/Popup";
 import { Avatar } from "@/ui/Avatar";
 import { getAvatarImageLink } from "@/common/utils";
 
+const NAV_ICON_COLOR = "#CCD2E3";
+
 type Props = {
   activeTab: TabsType;
   isOpen: boolean;
   setActiveTab: (tab: TabsType) => void;
   setIsOpen: (isOpen: boolean) => void;
+  createOpen: boolean;
+  setCreateOpen: (open: boolean) => void;
 };
 
 const Bar = styled.div(({ theme }) => ({
@@ -56,28 +61,13 @@ const DotsIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <circle
-      cx="5"
-      cy="12"
-      r="2"
-      fill="#CCD2E3"
-    />
-    <circle
-      cx="12"
-      cy="12"
-      r="2"
-      fill="#CCD2E3"
-    />
-    <circle
-      cx="19"
-      cy="12"
-      r="2"
-      fill="#CCD2E3"
-    />
+    <circle cx="5" cy="12" r="2" fill={NAV_ICON_COLOR} />
+    <circle cx="12" cy="12" r="2" fill={NAV_ICON_COLOR} />
+    <circle cx="19" cy="12" r="2" fill={NAV_ICON_COLOR} />
   </svg>
 );
 
-export const MobilePanel: React.FC<Props> = ({ activeTab, isOpen, setActiveTab, setIsOpen }) => {
+export const MobilePanel: React.FC<Props> = ({ activeTab, isOpen, setActiveTab, setIsOpen, createOpen, setCreateOpen }) => {
   const [navOpen, setNavOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
 
@@ -110,6 +100,11 @@ export const MobilePanel: React.FC<Props> = ({ activeTab, isOpen, setActiveTab, 
 
   const menuItems = useMemo((): ListItemOptions[] => {
     const items: ListItemOptions[] = [
+      {
+        id: "info",
+        label: "Полезная инфа",
+        icon: <PaperIcon color={iconColor} />,
+      },
       {
         id: "stat",
         label: "Статистика",
@@ -150,6 +145,9 @@ export const MobilePanel: React.FC<Props> = ({ activeTab, isOpen, setActiveTab, 
   const handleMenuChange = useCallback(
     (item: ListItemOptions) => {
       switch (item.id) {
+        case "info":
+          onOpenTab("info");
+          break;
         case "stat":
           onOpenTab("statistic");
           break;
@@ -191,7 +189,7 @@ export const MobilePanel: React.FC<Props> = ({ activeTab, isOpen, setActiveTab, 
           onClick={() => onTabClick("notifications")}
           prepend={
             <StyledNavLinkSection>
-              <NotificationsIcon />
+              <NotificationsIcon color={NAV_ICON_COLOR} />
             </StyledNavLinkSection>
           }
         />
@@ -202,16 +200,20 @@ export const MobilePanel: React.FC<Props> = ({ activeTab, isOpen, setActiveTab, 
           onClick={() => onTabClick("chat")}
           prepend={
             <StyledNavLinkSection>
-              <ChatFillIcon />
+              <ChatFillIcon color={NAV_ICON_COLOR} />
             </StyledNavLinkSection>
           }
         />
         <NavLink
-          isChecked={activeTab === "info" && isOpen}
-          onClick={() => onTabClick("info")}
+          isDisabled={!isAuth}
+          isChecked={createOpen}
+          onClick={() => {
+            setCreateOpen(!createOpen);
+            setUserMenuOpen(false);
+          }}
           prepend={
             <StyledNavLinkSection>
-              <PaperIcon />
+              <AddRoundIcon color={NAV_ICON_COLOR} />
             </StyledNavLinkSection>
           }
         />

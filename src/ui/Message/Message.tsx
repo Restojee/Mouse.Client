@@ -67,6 +67,7 @@ export const Message = (props: PropsType) => {
           dateTitle={time}
           onAuthorClick={onAuthorClick}
           onAvatarClick={isMobile ? () => setIsAuthorSheetOpen(true) : undefined}
+          hideHeader={false}
           padding={padding}
           headerMiddle={<StarRating count={starsCount} />}
           headerEnd={

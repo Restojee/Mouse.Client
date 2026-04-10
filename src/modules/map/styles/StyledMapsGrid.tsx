@@ -6,6 +6,6 @@ export const StyledMapsGrid = styled.div({
   gridGap: "20px",
   "@media (max-width: 768px)": {
     gridTemplateColumns: "repeat(2, 1fr)",
-    gridGap: "8px",
+    gridGap: "1px",
   },
 });

@@ -2,16 +2,20 @@ import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { selectIsAuth } from "@/modules/auth/slice";
 import { AddRoundIcon } from "@/svg/AddRoundIcon";
-import { Button } from "@/ui/Button";
 import { Display } from "@/ui/Display";
 import { StyledBox } from "@/ui/Box";
 import { useState } from "react";
 import { useMapCreate } from "../hooks/useMapCreate";
 import { MapCreatePopup } from "./MapCreatePopup";
+import { IconButton } from "@/ui/Button/IconButton";
 
-export const MapCreateSection = () => {
+type Props = {
+  defaultExpanded?: boolean;
+};
+
+export const MapCreateSection = ({ defaultExpanded = false }: Props) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isContentVisible, setIsContentVisible] = useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(defaultExpanded);
   const [isLoading, setIsLoading] = useState(false);
 
   const isAuth = useAppSelector(selectIsAuth);
@@ -54,28 +58,24 @@ export const MapCreateSection = () => {
       </Display>
 
       <Display condition={isContentVisible}>
-        <Button
-          bgColor={theme.colors.status.success}
+        <IconButton
           color={theme.colors.brandColorContrastText}
           onClick={onSubmitHandler}
           disabled={isSubmitDisabled}
-          size="sm"
           padding="8px 8px"
         >
           <AddRoundIcon />
-        </Button>
+        </IconButton>
       </Display>
 
       <Display condition={!isContentVisible}>
-        <Button
+        <IconButton
           disabled={!isAuth}
           onClick={onIconClickHandler}
-          size="sm"
-          bgColor={theme.colors.neutral}
           color={theme.colors.textOnSecondary}
         >
           <AddRoundIcon />
-        </Button>
+        </IconButton>
       </Display>
     </StyledBox>
   );

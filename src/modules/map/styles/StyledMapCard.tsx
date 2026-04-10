@@ -8,6 +8,10 @@ export const StyledMapCard = styled.div(({ theme }) => ({
   position: "relative",
   backgroundColor: theme.colors.mapBackground,
   boxShadow: "2px 2px 3px 1px rgba(0, 0, 0, 0.2)",
+  "@media (max-width: 768px)": {
+    boxShadow: "none",
+    borderRadius: 0,
+  },
   transition: "0.2s",
   cursor: "pointer",
   aspectRatio: "19/9",

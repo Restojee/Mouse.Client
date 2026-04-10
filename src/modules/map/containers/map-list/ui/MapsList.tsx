@@ -1,26 +1,34 @@
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { StyledMapsGrid } from "@/modules/map/styles/StyledMapsGrid";
 import { StyledBox } from "@/ui/Box";
 import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
-import { Button } from "@/ui/Button";
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useState } from "react";
-import { getMapsThunk, selectFilter, selectIsMapsFetching, selectMaps, selectMapsInfo } from "../slice";
+import React, { useCallback, useEffect, useRef } from "react";
+import { getMapsThunk, getMoreMapsThunk, selectIsMapsFetching, selectMaps, selectMapsInfo } from "../slice";
 import { MapCard } from "./map-card/MapCard";
-import { MapsListMoreModal } from "./MapsListMoreModal";
+
+const getScrollRoot = (): Element | null => {
+  // On desktop scroll lives inside #maps-page-container (overflow:auto).
+  // On mobile StyledWrapper is the scroller — its id is not set,
+  // so we fall back to null (viewport-based observation).
+  const el = document.getElementById("maps-page-container");
+  if (!el) return null;
+  const { overflowY } = window.getComputedStyle(el);
+  const isScrollable = overflowY === "auto" || overflowY === "scroll";
+  return isScrollable && el.scrollHeight > el.clientHeight ? el : null;
+};
 
 export const MapsList = React.memo(() => {
   const dispatch = useAppDispatch();
-  const isMobile = useIsMobile();
 
   const maps = useAppSelector(selectMaps);
   const isFetching = useAppSelector(selectIsMapsFetching);
   const mapsInfo = useAppSelector(selectMapsInfo);
-  const filter = useAppSelector(selectFilter);
 
-  const [moreOpen, setMoreOpen] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const isFetchingRef = useRef(isFetching);
+  isFetchingRef.current = isFetching;
 
   const router = useRouter();
 
@@ -30,11 +38,28 @@ export const MapsList = React.memo(() => {
   }, [router.query.filter, router.isReady]);
 
   const hasMore = mapsInfo ? mapsInfo.page < mapsInfo.totalPages : false;
-  const remaining = mapsInfo ? mapsInfo.totalItems - (maps?.length ?? 0) : 0;
+  const hasMoreRef = useRef(hasMore);
+  hasMoreRef.current = hasMore;
 
-  const onLoadMore = useCallback(() => {
-    setMoreOpen(true);
-  }, []);
+  const loadMore = useCallback(() => {
+    if (isFetchingRef.current || !hasMoreRef.current) return;
+    dispatch(getMoreMapsThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMore();
+      },
+      { root: getScrollRoot(), threshold: 0.1, rootMargin: "200px" },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loadMore, hasMore]);
 
   if (!maps?.length && !isFetching) {
     return (
@@ -62,25 +87,7 @@ export const MapsList = React.memo(() => {
         ))}
       </StyledMapsGrid>
       <BoxLoader isLoading={isFetching} />
-      {hasMore && (
-        <StyledBox
-          justify="center"
-          padding="12px 0 4px"
-        >
-          <Button
-            onClick={onLoadMore}
-            label={`Ещё ${remaining > 0 ? remaining : ""}`}
-            size="sm"
-          />
-        </StyledBox>
-      )}
-      {isMobile && (
-        <MapsListMoreModal
-          isOpen={moreOpen}
-          onClose={() => setMoreOpen(false)}
-          filter={filter}
-        />
-      )}
+      {hasMore && <div ref={sentinelRef} style={{ height: 1 }} />}
     </>
   );
 });

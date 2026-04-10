@@ -12,6 +12,7 @@ export const PageContent = React.forwardRef((props: Partial<Props>) => {
       overflow={"hidden"}
       position={"relative"}
       grow={1}
+      style={{ minHeight: 0 }}
     >
       <StyledPageContent id={"maps-page-container"}>{props.children}</StyledPageContent>
     </StyledBox>

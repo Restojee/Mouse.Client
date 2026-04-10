@@ -37,7 +37,7 @@ const Sheet = styled.div<{ isOpen: boolean; height: string; bgColor?: string }>(
     width: "100%",
     height,
     maxHeight: "90dvh",
-    backgroundColor: bgColor ?? theme.colors.secondary,
+    backgroundColor: bgColor ?? theme.colors.secondaryDark,
     color: theme.colors.textOnSecondary,
     borderRadius: "25px 25px 0 0",
     display: "flex",
@@ -45,7 +45,6 @@ const Sheet = styled.div<{ isOpen: boolean; height: string; bgColor?: string }>(
     overflow: "hidden",
     transform: isOpen ? "translateY(0)" : "translateY(100%)",
     transition: "transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)",
-    boxShadow: "0 -4px 24px rgba(0,0,0,0.2)",
     willChange: "transform",
   }),
 );
@@ -109,14 +108,12 @@ export const MobileSheet: React.FC<Props> = ({
 }) => {
   const { theme } = useAppTheme();
   const sheetRef = React.useRef<HTMLDivElement>(null);
-  const bodyRef = React.useRef<HTMLDivElement>(null);
+  const handleBarRef = React.useRef<HTMLDivElement>(null);
   const onCloseRef = React.useRef(onClose);
   onCloseRef.current = onClose;
 
   const drag = React.useRef({
     active: false,
-    intent: null as "drag" | "scroll" | null,
-    startX: 0,
     startY: 0,
     lastY: 0,
     lastTime: 0,
@@ -139,18 +136,15 @@ export const MobileSheet: React.FC<Props> = ({
     }
   }, []);
 
-  // Attach non-passive touch listeners so we can call preventDefault
   React.useEffect(() => {
-    const sheet = sheetRef.current;
-    if (!sheet) return;
+    const handle = handleBarRef.current;
+    if (!handle) return;
 
     const onTouchStart = (e: TouchEvent) => {
       if (e.touches.length !== 1) return;
       const t = e.touches[0];
       const d = drag.current;
       d.active = true;
-      d.intent = null;
-      d.startX = t.clientX;
       d.startY = t.clientY;
       d.lastY = t.clientY;
       d.lastTime = e.timeStamp;
@@ -160,95 +154,52 @@ export const MobileSheet: React.FC<Props> = ({
 
     const onTouchMove = (e: TouchEvent) => {
       const d = drag.current;
-      if (!d.active) return;
-      if (e.touches.length !== 1) return;
+      if (!d.active || e.touches.length !== 1) return;
+      e.preventDefault();
 
       const t = e.touches[0];
       const dy = t.clientY - d.startY;
-      const dx = t.clientX - d.startX;
-      const absDy = Math.abs(dy);
-      const absDx = Math.abs(dx);
-
-      // Determine intent once threshold exceeded
-      if (d.intent === null) {
-        if (absDy < LOCK_THRESHOLD_PX && absDx < LOCK_THRESHOLD_PX) return;
-        // Horizontal swipe → let browser handle
-        if (absDx > absDy) {
-          d.intent = "scroll";
-          d.active = false;
-          return;
-        }
-        const scrollTop = bodyRef.current?.scrollTop ?? 0;
-        if (dy > 0 && scrollTop <= 0) {
-          // Downward at top → take over as sheet drag
-          d.intent = "drag";
-        } else if (dy < 0 || scrollTop > 0) {
-          // Upward or content is scrolled → let scroll happen
-          d.intent = "scroll";
-          d.active = false;
-          return;
-        } else {
-          d.intent = "scroll";
-          d.active = false;
-          return;
-        }
-      }
-
-      if (d.intent !== "drag") return;
-
-      // Block native scroll and browser gestures
-      e.preventDefault();
-
-      // Velocity
       const dt = e.timeStamp - d.lastTime;
       if (dt > 0) d.velocity = (t.clientY - d.lastY) / dt;
       d.lastY = t.clientY;
       d.lastTime = e.timeStamp;
 
-      applyTransform(Math.max(0, dy), false);
+      applyTransform(dy, false);
     };
 
-    const onTouchEnd = (e: TouchEvent) => {
+    const onTouchEnd = () => {
       const d = drag.current;
-      if (!d.active || d.intent !== "drag") {
-        d.active = false;
-        d.intent = null;
-        return;
-      }
+      if (!d.active) return;
       d.active = false;
-      d.intent = null;
 
-      const sheetH = sheet.offsetHeight || 300;
+      const sheet = sheetRef.current;
+      const sheetH = sheet?.offsetHeight || 300;
       const isFlick = d.velocity > VELOCITY_THRESHOLD;
       const isPastThreshold = d.offset >= sheetH * CLOSE_THRESHOLD_RATIO;
       settle(isFlick || isPastThreshold);
     };
 
     const onTouchCancel = () => {
-      const d = drag.current;
-      d.active = false;
-      d.intent = null;
+      drag.current.active = false;
       applyTransform(0, true);
     };
 
-    sheet.addEventListener("touchstart", onTouchStart, { passive: true });
-    sheet.addEventListener("touchmove", onTouchMove, { passive: false });
-    sheet.addEventListener("touchend", onTouchEnd, { passive: true });
-    sheet.addEventListener("touchcancel", onTouchCancel, { passive: true });
+    handle.addEventListener("touchstart", onTouchStart, { passive: true });
+    handle.addEventListener("touchmove", onTouchMove, { passive: false });
+    handle.addEventListener("touchend", onTouchEnd, { passive: true });
+    handle.addEventListener("touchcancel", onTouchCancel, { passive: true });
 
     return () => {
-      sheet.removeEventListener("touchstart", onTouchStart);
-      sheet.removeEventListener("touchmove", onTouchMove);
-      sheet.removeEventListener("touchend", onTouchEnd);
-      sheet.removeEventListener("touchcancel", onTouchCancel);
+      handle.removeEventListener("touchstart", onTouchStart);
+      handle.removeEventListener("touchmove", onTouchMove);
+      handle.removeEventListener("touchend", onTouchEnd);
+      handle.removeEventListener("touchcancel", onTouchCancel);
     };
   }, [settle]);
 
-  // Reset when closed
   React.useEffect(() => {
     if (!isOpen && sheetRef.current) {
       drag.current.active = false;
-      drag.current.intent = null;
       sheetRef.current.style.transition = "";
       sheetRef.current.style.transform = "";
     }
@@ -269,7 +220,7 @@ export const MobileSheet: React.FC<Props> = ({
         height={height}
         bgColor={bgColor}
       >
-        <HandleBar>
+        <HandleBar ref={handleBarRef}>
           <HandleBarPill />
         </HandleBar>
         {!noHeader && (
@@ -281,7 +232,7 @@ export const MobileSheet: React.FC<Props> = ({
             />
           </SheetHeader>
         )}
-        <SheetBody ref={bodyRef}>{children}</SheetBody>
+        <SheetBody>{children}</SheetBody>
       </Sheet>
     </Overlay>
   );

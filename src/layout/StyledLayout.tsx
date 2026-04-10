@@ -31,6 +31,6 @@ export const StyledWrapper = styled.div(({ theme }) => ({
     borderRadius: 15,
     margin: "8px 8px 0 8px",
     flexDirection: "column",
-    overflow: "auto",
+    overflow: "hidden",
   },
 }));

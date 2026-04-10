@@ -2,36 +2,32 @@ import { createGlobalStyle } from "styled-components";
 import { DefaultTheme } from "@/layout/theme/constants";
 
 export const GlobalThemeStyles = createGlobalStyle((theme: typeof DefaultTheme) => ({
-  "::-webkit-scrollbar-button": {
-    backgroundRepeat: "no-repeat",
+  "::-webkit-scrollbar": {
     width: 6,
-    height: 0,
+    height: 6,
   },
 
-  "::-webkit-scrollbar-track": {
-    backgroundColor: "transparent",
-  },
-
-  "::-webkit-scrollbar-thumb": {
-    "-webkit-border-radius": 10,
-    borderRadius: 10,
-    backgroundColor: "rgba(95, 95, 95, 0.5)",
-    zIndex: 100,
-  },
-
-  "::-webkit-scrollbar-thumb:hover": {
-    backgroundColor: "#7b7b7b",
-  },
-
-  "::-webkit-resizer": {
-    "background-repeat": "no-repeat",
+  "::-webkit-scrollbar-button": {
+    display: "none",
     width: 0,
     height: 0,
   },
 
-  "::-webkit-scrollbar": {
-    width: 8,
-    height: 8,
+  "::-webkit-scrollbar-track": {
+    background: "none",
+  },
+
+  "::-webkit-scrollbar-thumb": {
+    borderRadius: 10,
+    backgroundColor: "rgba(95, 95, 95, 0.4)",
+  },
+
+  "::-webkit-scrollbar-thumb:hover": {
+    backgroundColor: "rgba(95, 95, 95, 0.7)",
+  },
+
+  "::-webkit-resizer": {
+    display: "none",
   },
 
   "::selection": {
@@ -46,6 +42,7 @@ export const GlobalThemeStyles = createGlobalStyle((theme: typeof DefaultTheme) 
     padding: 0,
     margin: 0,
     scrollbarWidth: "thin",
+    scrollbarColor: "rgba(95, 95, 95, 0.4) transparent",
     boxSizing: "border-box",
     fontFamily: "'Montserrat', sans-serif",
     fontSize: "inherit",
@@ -68,12 +65,5 @@ export const GlobalThemeStyles = createGlobalStyle((theme: typeof DefaultTheme) 
 
   "input:-internal-autofill-selected": {
     backgroundColor: "transparent !important",
-  },
-
-  // iOS Safari zooms the page on input focus when font-size < 16px
-  "@media screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 768px)": {
-    "input, textarea, select": {
-      fontSize: "16px !important",
-    },
   },
 }));

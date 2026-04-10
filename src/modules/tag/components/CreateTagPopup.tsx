@@ -1,22 +1,25 @@
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTag } from "@/modules/tag/hooks/useTag";
-import { DoneRoundIcon } from "@/svg/DoneRoundIcon";
-import { Button } from "@/ui/Button";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Form } from "@/ui/Form/Form";
 import FormElement from "@/ui/Form/FormElement";
-import { ModalCloseIcon } from "@/ui/ModalCloseIcon";
-import { PointBlock } from "@/ui/PointBlock/PointBlock";
+import { IconButton } from "@/ui/Button/IconButton";
+import { Popup } from "@/ui/Popup";
+import { AnchorAlign, PopupPosition } from "@/ui/Popup/usePopupPosition";
+import { StyledBox } from "@/ui/Box";
+import { Typography } from "@/ui/Typography/styles/Typography";
 import React from "react";
+import { AddRoundIcon } from "@/svg/AddRoundIcon";
 
 type CreateTagPopupProps = {
   isVisible: boolean;
   onClose: () => void;
+  anchor: React.ReactElement;
 };
 export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
-  const { theme } = useAppTheme();
   const [name, setName] = React.useState("");
   const { onTagCreate } = useTag();
-  const { isVisible = true } = props;
+  const { theme } = useAppTheme();
+  const { isVisible = false, anchor } = props;
   const [isLoading, setIsLoading] = React.useState(false);
 
   const isValid = React.useMemo(() => {
@@ -39,41 +42,44 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
     }
   };
 
-  if (isVisible) {
-    return (
-      <PointBlock
-        header="Добавить тег"
-        width="auto"
-        left="5px"
-        right="5px"
-        bottom="15px"
+  return (
+    <Popup
+      isVisible={isVisible}
+      onClose={props.onClose}
+      position={PopupPosition.TOP}
+      anchorAlign={AnchorAlign.END}
+      offset={15}
+      minWidth={220}
+      borderRadius="15px"
+      anchor={anchor ?? <span />}
+    >
+      <StyledBox
+        direction="column"
+        gap="8px"
+        padding="0"
+        color={theme.colors.textOnSecondary}
       >
-        <ModalCloseIcon
-          size={30}
-          onClick={props.onClose}
-        />
+        <Typography style={{ fontWeight: 600 }}>Добавить тег</Typography>
         <Form
           onSubmit={onFormSubmit}
-          gap="15px"
+          gap="5px"
+          align="center"
         >
           <FormElement
             autoFocus
+            noBorder
             value={name}
             onChange={onChangeHandler}
             placeholder="Введите название..."
           />
-          <Button
+          <IconButton
             disabled={!isValid || isLoading}
             type="submit"
-            width="70px"
-            bgColor={theme.colors.status.success}
           >
-            <DoneRoundIcon size={30} />
-          </Button>
+            <AddRoundIcon />
+          </IconButton>
         </Form>
-      </PointBlock>
-    );
-  }
-
-  return null;
+      </StyledBox>
+    </Popup>
+  );
 };

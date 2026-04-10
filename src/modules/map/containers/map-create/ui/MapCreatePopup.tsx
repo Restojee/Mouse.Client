@@ -3,6 +3,8 @@ import { Input } from "@/ui/Input";
 import { StyledBox } from "@/ui/Box";
 import { DotsHorizontalIcon } from "@/svg/DotsHorizontalIcon";
 import { IconButton } from "@/ui/Button/IconButton";
+import { Popup } from "@/ui/Popup";
+import { AnchorAlign, PopupPosition } from "@/ui/Popup/usePopupPosition";
 import React from "react";
 
 type Props = {
@@ -25,9 +27,8 @@ export const MapCreatePopup = (props: Partial<Props>) => {
     }
   };
 
-  return (
+  const formRow = (
     <StyledBox
-      position={"relative"}
       align="center"
       gap={4}
     >
@@ -43,7 +44,21 @@ export const MapCreatePopup = (props: Partial<Props>) => {
         noBorder
         compact
       />
-      {isVisible && <MapParametersForm />}
     </StyledBox>
+  );
+
+  return (
+    <Popup
+      isVisible={isVisible}
+      onClose={onImagePopupToggle}
+      position={PopupPosition.TOP}
+      anchorAlign={AnchorAlign.START}
+      offset={45}
+      minWidth={278}
+      noPadding
+      anchor={formRow}
+    >
+      <MapParametersForm />
+    </Popup>
   );
 };

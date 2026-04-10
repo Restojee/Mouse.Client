@@ -80,17 +80,17 @@ const MobileModalContent = (props: ModalPropsType) => {
 export const Modal = ({ isOpen, ...props }: ModalPropsType) => {
   const isMobile = useIsMobile();
 
-  if (!isOpen) {
-    return null;
-  }
-
   if (isMobile) {
+    if (!isOpen) return null;
     return <MobileModalContent {...props} />;
   }
 
   return (
     <Suspense>
-      <AsyncModalContent {...props} />
+      <AsyncModalContent
+        {...props}
+        isOpen={isOpen}
+      />
     </Suspense>
   );
 };

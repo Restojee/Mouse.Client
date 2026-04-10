@@ -83,10 +83,6 @@ export const MapContent = React.memo(() => {
 
   const sidebarContent = (
     <>
-      <SidebarProfile
-        user={activeMapCompleted?.user || map?.user}
-        date={dateTime}
-      />
       <SidebarIcons
         levelId={map?.id}
         favoritesCount={map?.favoritesCount}
@@ -145,6 +141,7 @@ export const MapContent = React.memo(() => {
             isOpen={isSidebarOpen}
             onClose={() => setIsSidebarOpen(false)}
             zIndex={450}
+            noHeader
           >
             {sidebarContent}
           </MobileSheet>

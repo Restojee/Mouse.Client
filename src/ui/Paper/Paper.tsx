@@ -20,8 +20,8 @@ export const Paper = ({ children, onClick, ...props }: PaperPropsType) => {
       height={"100%"}
       padding={"30px"}
       maxHeight={"100%"}
-      bgColor={theme.colors.default.paper}
       zIndex={theme.order.modal}
+      bgColor={"rgba(0, 0, 0, 0.03)"}
       {...props}
     >
       {children}

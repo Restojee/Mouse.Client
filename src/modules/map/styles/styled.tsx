@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { StyledBox } from "@/ui/Box";
 import { StyledTextarea } from "@/ui/Textarea/styled";
 
 export const StyledMapContentMain = styled.div(({ theme }) => ({
@@ -38,7 +37,7 @@ export const StyledMapContentNoteForm = styled(StyledTextarea)(({ theme }) => ({
 export const StyledMapContentSidebar = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  backgroundColor: theme.colors.secondary,
+  backgroundColor: theme.colors.secondaryDark,
   boxShadow: "-10px 0 20px 1px rgba(0, 0, 0, 0.4)",
   maxWidth: "370px",
   minWidth: "370px",
@@ -134,45 +133,12 @@ export const StyledMapContentPaper = styled.div(({ theme }) => ({
   height: "100%",
   maxWidth: 1200,
   overflow: "hidden",
-  backgroundColor: theme.colors.primary,
+  backgroundColor: theme.colors.primaryLight,
   borderRadius: theme.blockSettings.siteBorder,
   "@media all and (max-width: 790px)": {
     flexDirection: "column",
     height: "100%",
     borderRadius: 0,
+    backgroundColor: theme.colors.primaryLight,
   },
-}));
-
-export const StyledMobileMapViewContainer = styled.div(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  zIndex: theme.order.modal,
-  backgroundColor: theme.colors.primary,
-  borderRadius: theme.blockSettings.siteBorder,
-  top: "10px",
-  right: "10px",
-  left: "10px",
-  width: "100%",
-  overflow: "auto",
-}));
-
-export const StyledMobileMapViewMainBlock = styled(StyledBox)(({ theme }) => ({
-  flexDirection: "column",
-  color: theme.colors.textOnPrimary,
-  padding: 20,
-  height: "auto",
-  borderRadius: "inherit",
-
-  "&::placeholder": {
-    color: "rgba(255, 255, 255, 0.5)",
-  },
-}));
-
-export const StyledMobileMapViewSidebarBlock = styled(StyledBox)(({ theme }) => ({
-  flexDirection: "column",
-  backgroundColor: theme.colors.secondary,
-  boxShadow: "-10px 0 20px 1px rgba(0, 0, 0, 0.4)",
-  borderRadius: "inherit",
-  width: "100%",
-  padding: 0,
 }));

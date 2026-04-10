@@ -1,4 +1,5 @@
 import { useUser } from "@/modules/user/hooks/useUser";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useAppSelector } from "@/hooks/useAppSelector";
@@ -8,6 +9,7 @@ import { useMapComments } from "./useMapComments";
 import { StyledBox } from "@/ui/Box";
 import { Display } from "@/ui/Display/Display";
 import { Message } from "@/ui/Message";
+import { MessageList } from "@/ui/MessageList/MessageList";
 import { MessageSendFormContainer } from "@/ui/Message/MessagesSendForm";
 import { getStarsByUserId } from "@/modules/user/utils/getStarsByUserId";
 
@@ -15,6 +17,7 @@ type MapContentSidebarCommentsPropsType = {
   levelId: Map["id"];
 };
 export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType) => {
+  const { theme } = useAppTheme();
   const {
     comments,
     commentText,
@@ -97,13 +100,7 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
       textAlign={"start"}
     >
       <Display condition={comments?.length}>
-        <StyledBox
-          ref={scrollToBottomRef}
-          gap={10}
-          direction={"column"}
-          overflow={"auto"}
-          padding={"20px 0 0"}
-        >
+        <MessageList scrollRef={scrollToBottomRef}>
           {comments?.map((mapComment) => (
             <Message
               key={mapComment.id}
@@ -116,7 +113,7 @@ export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType)
               validUsernames={users?.map((u) => u.username ?? "")}
             />
           ))}
-        </StyledBox>
+        </MessageList>
       </Display>
       <BoxLoader isLoading={!isCommentsInitialized} />
       <Display condition={!comments?.length && isCommentsInitialized}>

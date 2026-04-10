@@ -20,6 +20,8 @@ type MessageCardProps = {
   headerEnd?: ReactNode;
   padding?: Property.Padding;
   children?: ReactNode;
+  /** Скрыть строку с именем/датой (на мобиле — в шит) */
+  hideHeader?: boolean;
 };
 
 export const MessageCard = ({
@@ -33,6 +35,7 @@ export const MessageCard = ({
   headerEnd,
   padding,
   children,
+  hideHeader = false,
 }: MessageCardProps) => {
   const { theme } = useAppTheme();
 
@@ -40,47 +43,30 @@ export const MessageCard = ({
     <StyledBox
       maxWidth="100%"
       bgColor={theme.colors.secondary}
+      border={`1px solid ${theme.colors.input.border}`}
       borderRadius="15px"
-      padding={padding || "0 10px"}
+      padding={padding || "8px 10px"}
       gap={15}
     >
       <div
         onClick={onAvatarClick}
         style={onAvatarClick ? { cursor: "pointer", flexShrink: 0 } : { flexShrink: 0 }}
       >
-        <Avatar
-          image={avatar}
-          username={username}
-        />
+        <Avatar image={avatar} username={username} />
       </div>
-      <StyledBox
-        direction="column"
-        grow={1}
-        gap={5}
-        overflow="hidden"
-      >
-        <StyledBox
-          align="center"
-          gap={5}
-          minHeight={25}
-        >
-          <TextLink
-            onClick={onAuthorClick}
-            isEllipsis
-          >
-            {username}
-          </TextLink>
-          {headerMiddle}
-          <Typography
-            title={dateTitle}
-            margin="0 0 0 auto"
-            fontSize="0.7rem"
-          >
-            {date}
-          </Typography>
-          {headerEnd}
-        </StyledBox>
-
+      <StyledBox direction="column" grow={1} gap={5} overflow="hidden">
+        {!hideHeader && (
+          <StyledBox align="center" gap={5} minHeight={25}>
+            <TextLink onClick={onAuthorClick} isEllipsis>
+              {username}
+            </TextLink>
+            {headerMiddle}
+            <Typography title={dateTitle} margin="0 0 0 auto" fontSize="0.7rem">
+              {date}
+            </Typography>
+            {headerEnd}
+          </StyledBox>
+        )}
         <StyledMessageText>{children}</StyledMessageText>
       </StyledBox>
     </StyledBox>

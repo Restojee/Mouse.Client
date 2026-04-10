@@ -7,6 +7,7 @@ import { Display } from "@/ui/Display";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { MobilePanel } from "@/layout/mobile/MobilePanel";
 import { MobileSheet } from "@/ui/MobileSheet/MobileSheet";
+import { MapCreateContext } from "@/layout/common/MapCreateContext";
 
 type DefaultProps = {
   children: React.ReactElement;
@@ -14,52 +15,57 @@ type DefaultProps = {
 export const LayoutDefault: React.FC<DefaultProps> = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState<TabsType>("chat");
+  const [createOpen, setCreateOpen] = React.useState(false);
   const isMobile = useIsMobile();
 
   return (
-    <StyledLayout>
-      <Display condition={!isMobile}>
-        <Sidebar />
-      </Display>
-      <StyledWrapper>
-        {props.children}
+    <MapCreateContext.Provider value={{ createOpen, setCreateOpen }}>
+      <StyledLayout>
         <Display condition={!isMobile}>
-          <Drawer
-            isOpen={isOpen}
-            activeTab={activeTab}
-          />
+          <Sidebar />
         </Display>
-      </StyledWrapper>
-      <Display condition={!isMobile}>
-        <Panel
-          setActiveTab={setActiveTab}
-          activeTab={activeTab}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />
-      </Display>
-      <Display condition={isMobile}>
-        <>
-          <MobileSheet
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
-            zIndex={300}
-            height="85dvh"
-            noHeader
-          >
+        <StyledWrapper>
+          {props.children}
+          <Display condition={!isMobile}>
             <Drawer
               isOpen={isOpen}
               activeTab={activeTab}
             />
-          </MobileSheet>
-          <MobilePanel
+          </Display>
+        </StyledWrapper>
+        <Display condition={!isMobile}>
+          <Panel
             setActiveTab={setActiveTab}
             activeTab={activeTab}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
           />
-        </>
-      </Display>
-    </StyledLayout>
+        </Display>
+        <Display condition={isMobile}>
+          <>
+            <MobileSheet
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              zIndex={300}
+              height="85dvh"
+              noHeader
+            >
+              <Drawer
+                isOpen={isOpen}
+                activeTab={activeTab}
+              />
+            </MobileSheet>
+            <MobilePanel
+              setActiveTab={setActiveTab}
+              activeTab={activeTab}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              createOpen={createOpen}
+              setCreateOpen={setCreateOpen}
+            />
+          </>
+        </Display>
+      </StyledLayout>
+    </MapCreateContext.Provider>
   );
 };

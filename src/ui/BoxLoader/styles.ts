@@ -1,4 +1,9 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
 
 export const StyledBoxLoader = styled.div(({ theme }) => ({
   display: "flex",
@@ -12,4 +17,5 @@ export const StyledBoxLoader = styled.div(({ theme }) => ({
   bottom: 0,
   zIndex: 3,
   pointerEvents: "none",
+  animation: `${fadeIn} 0.4s ease`,
 }));

@@ -17,6 +17,7 @@ export const StyledNavLink = styled.div<Props>(
     flexDirection: "row",
     alignItems: "center",
     padding: "8px",
+    justifyContent: justifyContent ?? (isOpen === false ? "flex-end" : undefined),
     borderRadius: "10px",
     position: "relative",
     zIndex: 1,

@@ -120,6 +120,8 @@ export const Panel = (props: PanelProps) => {
             onClick={() => onTabClickHandler(el.tab)}
             margin={el.margin}
             border={el.border}
+            gap="0"
+            justifyContent="center"
             prepend={<StyledNavLinkSection>{el.icon}</StyledNavLinkSection>}
           />
         ))}
@@ -168,7 +170,7 @@ export const tabsData: TabsDataType[] = [
     label: "Полезная инфа",
     tab: "info",
     isNeedAuth: true,
-    icon: <PaperIcon />,
+    icon: <PaperIcon color="white" />,
   },
   {
     label: "Статистика",

@@ -10,7 +10,8 @@ import { MapSearch } from "@/modules/map/containers/map-search/MapSearch";
 import { useUser } from "@/modules/user/hooks/useUser";
 import { StyledBox } from "@/ui/Box";
 import { Typography } from "@/ui/Typography";
-import React, { ReactNode, useCallback, useMemo, useState } from "react";
+import { MapCreateContext } from "@/layout/common/MapCreateContext";
+import React, { ReactNode, useCallback, useContext, useMemo, useState } from "react";
 import styled from "styled-components";
 
 const TitleWrapper = styled.div<{ hidden: boolean }>(({ hidden }) => ({
@@ -32,6 +33,7 @@ export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
   const { filter } = useFilterQueryParams();
   const { myId, getUserById } = useUser();
   const isMobile = useIsMobile();
+  const { createOpen } = useContext(MapCreateContext);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const onSearchOpenChange = useCallback((open: boolean) => {
@@ -79,9 +81,11 @@ export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
         </StyledBox>
       </PageHeader>
       <PageContent>{props.children}</PageContent>
-      <PageFooter>
-        <MapCreateSection />
-      </PageFooter>
+      {(!isMobile || createOpen) && (
+        <PageFooter>
+          <MapCreateSection defaultExpanded={isMobile} />
+        </PageFooter>
+      )}
     </StyledPageWrapper>
   );
 };

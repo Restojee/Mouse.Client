@@ -16,7 +16,7 @@ export const MessageList = ({ children, scrollRef }: MessageListProps) => {
       ref={scrollRef as React.Ref<HTMLDivElement>}
       direction="column"
       gap={10}
-      padding="0 0 20px 0"
+      padding="10px 12px 20px"
       overflow="auto"
       grow={1}
     >
