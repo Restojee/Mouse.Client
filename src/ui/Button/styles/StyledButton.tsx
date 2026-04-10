@@ -45,7 +45,6 @@ export const StyledButton = styled.button<StyledButtonProps>(
     backgroundColor: bgColor,
     rowGap: 10,
     borderRadius: borderRadius,
-    padding: "7px 10px",
     "&:hover": {
       transform: "scale(0.98)",
     },

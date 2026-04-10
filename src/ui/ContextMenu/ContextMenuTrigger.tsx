@@ -1,13 +1,13 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { ContextMenu } from './ContextMenu';
-import { PopupPosition, AnchorAlign } from '@/ui/Popup';
-import type { ListItemOptions } from './ContextMenuItem';
+import React, { useCallback, useRef, useState } from "react";
+import { ContextMenu } from "./ContextMenu";
+import { PopupPosition, AnchorAlign } from "@/ui/Popup";
+import type { ListItemOptions } from "./ContextMenuItem";
 
 interface ContextMenuTriggerProps {
   items: ListItemOptions[];
   children: React.ReactElement;
   onChange?: (option: ListItemOptions) => void;
-  size?: 'sm' | 'md';
+  size?: "sm" | "md";
   title?: string;
   showCheckbox?: boolean;
   showSearch?: boolean;
@@ -19,7 +19,7 @@ export const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({
   items,
   children,
   onChange,
-  size = 'sm',
+  size = "sm",
   title,
   showCheckbox = false,
   minWidth = 150,
@@ -48,12 +48,12 @@ export const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({
     <div
       ref={anchorRef}
       style={{
-        position: 'fixed',
+        position: "fixed",
         left: position.x,
         top: position.y,
         width: 0,
         height: 0,
-        pointerEvents: 'none',
+        pointerEvents: "none",
       }}
     />
   );

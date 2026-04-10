@@ -17,8 +17,7 @@ const TABS: { label: string; priority: NotificationPriority }[] = [
 ];
 
 export const Notifications = () => {
-  const { items, isLoading, activePriority, changeTab, markRead, refreshUnreadCount } =
-    useNotifications();
+  const { items, isLoading, activePriority, changeTab, markRead, refreshUnreadCount } = useNotifications();
 
   const activeTabIndex = TABS.findIndex((t) => t.priority === activePriority);
 

@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { List } from '@/ui/List/List';
-import { StyledContextMenuOption, StyledSubMenuIcon, StyledSubMenuPopup } from './styled';
-import type { ListItemOptions, ThemeSizes } from './ContextMenuItem';
+import React, { useCallback, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { List } from "@/ui/List/List";
+import { StyledContextMenuOption, StyledSubMenuIcon, StyledSubMenuPopup } from "./styled";
+import type { ListItemOptions, ThemeSizes } from "./ContextMenuItem";
 
 type SubMenuListProps = {
   item: ListItemOptions;
@@ -10,7 +10,7 @@ type SubMenuListProps = {
   onParentClose: () => void;
 };
 
-export const SubMenuList: React.FC<SubMenuListProps> = ({ item, size = 'sm', onParentClose }) => {
+export const SubMenuList: React.FC<SubMenuListProps> = ({ item, size = "sm", onParentClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
 
@@ -72,26 +72,7 @@ type PortalSubMenuProps = {
   size?: ThemeSizes;
 };
 
-const PortalSubMenu: React.FC<PortalSubMenuProps> = ({ items, parentRef, isOpen, onClose, size }) => {
-  const [position, setPosition] = useState({ top: 0, left: 0 });
-
-  const anchor = useMemo(
-    () => (
-      <div
-        ref={parentRef}
-        style={{
-          position: 'fixed',
-          top: position.top,
-          left: position.left,
-          width: 0,
-          height: 0,
-          pointerEvents: 'none',
-        }}
-      />
-    ),
-    [parentRef, position],
-  );
-
+const PortalSubMenu: React.FC<PortalSubMenuProps> = ({ items, onClose, size }) => {
   return createPortal(
     <StyledSubMenuPopup>
       <List

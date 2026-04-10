@@ -7,7 +7,7 @@ export const usePopupVisibility = (
   anchorRef: React.RefObject<HTMLElement>,
   popupRef: React.RefObject<HTMLElement>,
 ) => {
-  const [popupPositionStyles, setPopupPositionStyles] = useState<PositionStyles>(null);
+  const [popupPositionStyles, setPopupPositionStyles] = useState<PositionStyles | null>(null);
   const [isRendered, setIsRendered] = useState<boolean>(false);
 
   const updatePosition = useCallback(() => {

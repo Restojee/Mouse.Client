@@ -5,6 +5,8 @@ export const useOutsideClick = (
   handler?: () => void,
   enabled: boolean = true,
   checkAdditionalElements?: (target: Node) => boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _closeOnScroll?: boolean,
 ) => {
   useEffect(() => {
     if (!enabled || !handler) return;

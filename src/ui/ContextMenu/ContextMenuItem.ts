@@ -1,4 +1,4 @@
-export type ThemeSizes = 'sm' | 'md' | 'lg';
+export type ThemeSizes = "sm" | "md" | "lg";
 
 export interface ListItemOptions {
   id: string | number;

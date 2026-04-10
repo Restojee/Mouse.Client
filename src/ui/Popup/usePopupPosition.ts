@@ -16,8 +16,8 @@ const DEFAULT_BOUNDARY_OPTIONS: BoundaryOptions = {
 };
 
 export interface UsePopupPositionOptions {
-  anchorRef: React.MutableRefObject<HTMLElement>;
-  popupRef: React.MutableRefObject<HTMLElement>;
+  anchorRef: React.RefObject<HTMLDivElement>;
+  popupRef: React.RefObject<HTMLDivElement>;
   position?: PopupPosition | keyof typeof PopupPosition;
   offset?: number;
   boundary?: BoundaryOptions;
@@ -32,7 +32,7 @@ export const usePopupPosition = ({
   boundary = DEFAULT_BOUNDARY_OPTIONS,
   anchorAlign = AnchorAlign.CENTER,
 }: UsePopupPositionOptions) => {
-  const lastKnownRect = useRef({
+  const lastKnownRect = useRef<{ anchor: DOMRect | null; popup: DOMRect | null }>({
     anchor: null,
     popup: null,
   });

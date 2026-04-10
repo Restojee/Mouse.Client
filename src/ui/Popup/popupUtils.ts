@@ -108,7 +108,6 @@ export const adjustToViewport = (
 
   const { margin = 10, flip = true } = options;
   let { top, left } = basePosition;
-  let actualPosition = position;
 
   // Горизонтальный flip
   if (flip && (position === PopupPosition.LEFT || position === PopupPosition.RIGHT)) {
@@ -117,10 +116,8 @@ export const adjustToViewport = (
 
     if (position === PopupPosition.RIGHT && !fitsOnRight && fitsOnLeft) {
       left = anchorRect.left - popupRect.width - offset;
-      actualPosition = PopupPosition.LEFT;
     } else if (position === PopupPosition.LEFT && !fitsOnLeft && fitsOnRight) {
       left = anchorRect.right + offset;
-      actualPosition = PopupPosition.RIGHT;
     }
   }
 
@@ -131,10 +128,8 @@ export const adjustToViewport = (
 
     if (position === PopupPosition.BOTTOM && !fitsOnBottom && fitsOnTop) {
       top = anchorRect.top - popupRect.height - offset;
-      actualPosition = PopupPosition.TOP;
     } else if (position === PopupPosition.TOP && !fitsOnTop && fitsOnBottom) {
       top = anchorRect.bottom + offset;
-      actualPosition = PopupPosition.BOTTOM;
     }
   }
 

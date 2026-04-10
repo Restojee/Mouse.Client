@@ -16,16 +16,13 @@ export const collectNotificationsThunk = createAsyncThunk(
   },
 );
 
-export const fetchUnreadCountThunk = createAsyncThunk(
-  "notifications/unreadCount",
-  async (_, thunkAPI) => {
-    try {
-      return await notificationsApi.getUnreadCount();
-    } catch {
-      return thunkAPI.rejectWithValue(0);
-    }
-  },
-);
+export const fetchUnreadCountThunk = createAsyncThunk("notifications/unreadCount", async (_, thunkAPI) => {
+  try {
+    return await notificationsApi.getUnreadCount();
+  } catch {
+    return thunkAPI.rejectWithValue(0);
+  }
+});
 
 export const markNotificationsReadThunk = createAsyncThunk(
   "notifications/markRead",
@@ -72,14 +69,11 @@ const slice = createSlice({
       .addCase(collectNotificationsThunk.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(
-        collectNotificationsThunk.fulfilled,
-        (state, action: PayloadAction<PagedNotificationsResult>) => {
-          state.items = action.payload.records;
-          state.total = action.payload.total;
-          state.isLoading = false;
-        },
-      )
+      .addCase(collectNotificationsThunk.fulfilled, (state, action: PayloadAction<PagedNotificationsResult>) => {
+        state.items = action.payload.records;
+        state.total = action.payload.total;
+        state.isLoading = false;
+      })
       .addCase(collectNotificationsThunk.rejected, (state) => {
         state.isLoading = false;
       })

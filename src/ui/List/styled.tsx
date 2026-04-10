@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StyledList = styled.div`
   display: flex;
@@ -10,8 +10,8 @@ export const StyledListSearch = styled.div`
 `;
 
 export const StyledListEmpty = styled.div<{ size?: string }>`
-  padding: ${({ size }) => (size === 'sm' ? '12px 14px' : '16px 14px')};
-  font-size: ${({ size }) => (size === 'sm' ? '0.8rem' : '0.9rem')};
+  padding: ${({ size }) => (size === "sm" ? "12px 14px" : "16px 14px")};
+  font-size: ${({ size }) => (size === "sm" ? "0.8rem" : "0.9rem")};
   opacity: 0.5;
   text-align: center;
 `;

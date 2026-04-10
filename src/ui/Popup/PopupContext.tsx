@@ -9,7 +9,7 @@ export interface PopupContextValue {
   closeOtherPopups: (exceptId: string) => void;
 }
 
-const PopupContext = createContext<PopupContextValue>(null);
+const PopupContext = createContext<PopupContextValue>(null as unknown as PopupContextValue);
 
 export const PopupProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const popupsRef = useRef<Map<string, React.RefObject<HTMLElement>>>(new Map());
@@ -24,7 +24,7 @@ export const PopupProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const isClickInsideAnyPopup = useCallback((target: Node) => {
-    for (const [, ref] of popupsRef.current.entries()) {
+    for (const [, ref] of Array.from(popupsRef.current.entries())) {
       if (ref.current?.contains(target)) {
         return true;
       }

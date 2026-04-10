@@ -14,7 +14,7 @@ export const usePopup = (options: UsePopupOptions) => {
   const { isVisible, onClose, position, offset, boundary, anchorAlign } = options;
 
   const anchorRef = useRef<HTMLDivElement>(null);
-  const popupRef = useRef<HTMLElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
   const popupContext = usePopupRegistration(popupRef, isVisible);
 
   const getPopupPosition = usePopupPosition({
