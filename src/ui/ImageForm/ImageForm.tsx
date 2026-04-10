@@ -4,7 +4,7 @@ import { useImage } from "@/ui/ImageForm/hooks/useImage";
 import { StyledImageFormContainer, StyledImageFormLink, StyledImageHover } from "@/ui/ImageForm/ImageFormElements";
 import { Property } from "csstype";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { StyledText } from "./styled";
+import imageFormStyles from "./ImageForm.module.scss";
 
 type ImageFormPropsType = {
   placeholder?: string;
@@ -120,7 +120,7 @@ export const ImageForm = (props: ImageFormPropsType) => {
           <StyledImageHover>Изменить скрин</StyledImageHover>
         </Display>
       </StyledImageFormContainer>
-      <StyledText size={props.subTextSize || "md"}>Макс. размер файла - 1МБ</StyledText>
+      <form className={imageFormStyles.text}>Макс. размер файла - 1МБ</form>
     </div>
   );
 };

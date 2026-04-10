@@ -1,21 +1,9 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Sidebar.module.scss";
 
-export const StyledSidebarSwitcher = styled.div({
-  display: "flex",
-  justifyContent: "flex-end",
-  width: "100%",
-  height: "min-content",
-  padding: "10px",
-  marginBottom: -20,
-  transition: "0.2s",
-  cursor: "pointer",
-  svg: {
-    transition: "0.2s",
-    "&:hover": {
-      transform: "translateX(10px)",
-    },
-  },
-  "&:hover": {
-    transform: "scale(0.9)",
-  },
-});
+export const StyledSidebarSwitcher = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.sidebarSwitcher, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledSidebarSwitcher.displayName = "StyledSidebarSwitcher";

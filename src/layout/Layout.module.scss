@@ -1,0 +1,36 @@
+.layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-height: 100vh;
+  height: 100vh;
+  overflow: auto;
+  width: 100%;
+  padding: 10px 0;
+  font-size: var(--font-size);
+  background-color: var(--color-primary);
+
+  @media all and (max-width: 768px) {
+    flex-direction: column;
+    padding: 0;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-grow: 1;
+  background-color: var(--color-secondary);
+  border-radius: 20px;
+  min-width: 0;
+  overflow: hidden;
+
+  @media all and (max-width: 768px) {
+    border-radius: 15px;
+    margin: 8px 8px 0 8px;
+    flex-direction: column;
+    overflow: hidden;
+  }
+}

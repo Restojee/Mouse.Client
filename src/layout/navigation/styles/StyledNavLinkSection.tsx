@@ -1,15 +1,19 @@
+import React from "react";
 import { Property } from "csstype";
-import styled from "styled-components";
+import styles from "./Navigation.module.scss";
 
 type Props = {
   transition?: Property.Transition;
   isOpen?: boolean;
+  children?: React.ReactNode;
+  className?: string;
 };
-export const StyledNavLinkSection = styled.div<Props>((props) => ({
-  display: "flex",
-  alignItems: "center",
-  opacity: props.isOpen ? `0.7` : `1`,
-  transform: props.isOpen ? `scale(0.8)` : `scale(1)`,
-  transition: "0.5s",
-  cursor: "pointer",
-}));
+
+export const StyledNavLinkSection = React.forwardRef<HTMLDivElement, Props & React.HTMLAttributes<HTMLDivElement>>(
+  ({ isOpen, className, ...props }, ref) => {
+    const classes = [styles.navLinkSection, className];
+    if (isOpen) classes.push(styles.navLinkSectionOpen);
+    return <div ref={ref} className={classes.filter(Boolean).join(" ")} {...props} />;
+  },
+);
+StyledNavLinkSection.displayName = "StyledNavLinkSection";

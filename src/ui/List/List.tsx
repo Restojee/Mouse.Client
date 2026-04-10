@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo } from "react";
 import { Avatar } from "@/ui/Avatar";
-import { StyledList, StyledListSearch, StyledListEmpty, StyledListLoader } from "./styled";
-import { StyledContextMenuDivider, StyledContextMenuOption } from "@/ui/ContextMenu/styled";
+import listStyles from "./List.module.scss";
+import contextMenuStyles from "@/ui/ContextMenu/ContextMenu.module.scss";
 import { ThemeSizes, ListItemOptions } from "@/ui/ContextMenu/ContextMenuItem";
 
 type ListProps = {
@@ -59,9 +59,9 @@ export const List: React.FC<ListProps> = ({
   }, [options, searchValue]);
 
   return (
-    <StyledList className={className}>
+    <div className={[listStyles.list, className].filter(Boolean).join(" ")}>
       {showSearch && (
-        <StyledListSearch>
+        <div className={listStyles.listSearch}>
           <input
             value={searchValue}
             onChange={(e) => handleSearchChange(e.target.value)}
@@ -77,21 +77,20 @@ export const List: React.FC<ListProps> = ({
               color: "inherit",
             }}
           />
-        </StyledListSearch>
+        </div>
       )}
       <div ref={itemsContainerRef}>
         {isLoading ? (
-          <StyledListLoader />
+          <div className={listStyles.listLoader} />
         ) : filteredOptions.length === 0 ? (
-          <StyledListEmpty size={size}>{emptyMessage}</StyledListEmpty>
+          <div className={[listStyles.listEmpty, size === "sm" && listStyles.listEmptySm].filter(Boolean).join(" ")}>{emptyMessage}</div>
         ) : (
           filteredOptions.map((option) => (
             <React.Fragment key={option.id}>
-              {option.divider && <StyledContextMenuDivider />}
-              <StyledContextMenuOption
+              {option.divider && <div className={contextMenuStyles.divider} />}
+              <div
                 onClick={() => !option.disabled && handleClick(option)}
-                isDisabled={option.disabled}
-                isDanger={option.isDanger}
+                className={[contextMenuStyles.option, option.disabled && contextMenuStyles.optionDisabled, option.isDanger && contextMenuStyles.optionDanger].filter(Boolean).join(" ")}
                 data-active={activeItemId != null && option.id === activeItemId}
               >
                 {option.avatar !== undefined ? (
@@ -104,7 +103,7 @@ export const List: React.FC<ListProps> = ({
                   <span>{option.icon}</span>
                 ) : null}
                 {option.label}
-              </StyledContextMenuOption>
+              </div>
             </React.Fragment>
           ))
         )}
@@ -115,7 +114,7 @@ export const List: React.FC<ListProps> = ({
           />
         )}
       </div>
-    </StyledList>
+    </div>
   );
 };
 

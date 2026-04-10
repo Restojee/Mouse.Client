@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { List } from "@/ui/List/List";
-import { StyledContextMenuOption, StyledSubMenuIcon, StyledSubMenuPopup } from "./styled";
+import contextMenuStyles from "./ContextMenu.module.scss";
 import type { ListItemOptions, ThemeSizes } from "./ContextMenuItem";
 
 type SubMenuListProps = {
@@ -26,8 +26,8 @@ export const SubMenuList: React.FC<SubMenuListProps> = ({ item, size = "sm", onP
 
   if (!item.submenu) {
     return (
-      <StyledContextMenuOption
-        isDisabled={item.disabled}
+      <div
+        className={[contextMenuStyles.option, item.disabled && contextMenuStyles.optionDisabled].filter(Boolean).join(" ")}
         onMouseDown={(e) => {
           e.preventDefault();
           if (!item.disabled) {
@@ -37,20 +37,20 @@ export const SubMenuList: React.FC<SubMenuListProps> = ({ item, size = "sm", onP
       >
         {item.icon && <span>{item.icon}</span>}
         {item.label}
-      </StyledContextMenuOption>
+      </div>
     );
   }
 
   return (
     <>
-      <StyledContextMenuOption
-        isDisabled={item.disabled}
+      <div
+        className={[contextMenuStyles.option, item.disabled && contextMenuStyles.optionDisabled].filter(Boolean).join(" ")}
         onMouseEnter={handleOpen}
       >
         {item.icon && <span>{item.icon}</span>}
         {item.label}
-        <StyledSubMenuIcon>▶</StyledSubMenuIcon>
-      </StyledContextMenuOption>
+        <span className={contextMenuStyles.subMenuIcon}>▶</span>
+      </div>
       {isOpen && item.submenu && (
         <PortalSubMenu
           items={item.submenu}
@@ -74,13 +74,13 @@ type PortalSubMenuProps = {
 
 const PortalSubMenu: React.FC<PortalSubMenuProps> = ({ items, onClose, size }) => {
   return createPortal(
-    <StyledSubMenuPopup>
+    <div className={contextMenuStyles.subMenuPopup}>
       <List
         options={items}
         onChange={() => onClose()}
         size={size}
       />
-    </StyledSubMenuPopup>,
+    </div>,
     document.body,
   );
 };

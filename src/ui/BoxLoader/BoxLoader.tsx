@@ -1,29 +1,25 @@
-import { useEffect, useState } from "react";
 import { LoaderIcon } from "@/svg/loader/LoaderIcon";
-import { StyledBoxLoader } from "./styles";
+import { StyledBox } from "@/ui/Box";
 
 type BoxLoaderPropsType = {
   isLoading: boolean;
-  delay?: number;
 };
-
-export const BoxLoader = ({ isLoading, delay = 1000 }: BoxLoaderPropsType) => {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (!isLoading) {
-      setVisible(false);
-      return;
-    }
-    const timer = setTimeout(() => setVisible(true), delay);
-    return () => clearTimeout(timer);
-  }, [isLoading, delay]);
-
-  if (!visible) return null;
+export const BoxLoader = (props: BoxLoaderPropsType) => {
+  if (!props.isLoading) {
+    return null;
+  }
 
   return (
-    <StyledBoxLoader>
+    <StyledBox
+      align={"center"}
+      justify={"center"}
+      bgColor={"rgba(255, 255, 255, 0.2)"}
+      width={"100%"}
+      height={"100%"}
+      position={"absolute"}
+      zIndex={5}
+    >
       <LoaderIcon />
-    </StyledBoxLoader>
+    </StyledBox>
   );
 };

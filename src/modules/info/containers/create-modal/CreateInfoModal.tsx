@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-import { StyledInput, StyledInputWrapper } from "@/ui/Form/styled";
-import { Modal } from "@/ui/Modal/Modal";
-import { StyledTextarea } from "@/ui/Textarea/styled";
+import formStyles from "@/ui/Form/Form.module.scss";
+import { AsyncSheet as Modal } from "@/ui/Sheet/view";
+import textareaStyles from "@/ui/Textarea/Textarea.module.scss";
 import { CreateTipApiArg } from "@/api/codegen/genMouseMapsApi";
 import { useInfo } from "@/modules/info/hooks/useInfo";
 import { validationSchema } from "@/modules/info/schemas/validationSchema";
@@ -58,13 +58,16 @@ export const CreateInfoModal = () => {
           width={"100%"}
           gap={20}
         >
-          <StyledInputWrapper>
-            <StyledInput
+          <div className={formStyles.inputWrapper}>
+            <input
               {...register("title")}
+              className={formStyles.input}
               placeholder={"Заголовок"}
             />
-          </StyledInputWrapper>
-          <StyledTextarea
+          </div>
+          <textarea
+            className={textareaStyles.textarea}
+            style={{ backgroundColor: "var(--color-input-default)", height: "100px", minHeight: "100px" }}
             placeholder={"Описание"}
             {...register("text")}
           />

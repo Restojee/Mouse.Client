@@ -1,30 +1,23 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Info.module.scss";
 
-export const StyledInfoList = styled.div({
-  display: "flex",
-  flexDirection: "column",
-  maxHeight: "100%",
-  overflow: "auto",
-  padding: "0 20px 20px 20px",
-});
-export const StyledInfoBlock = styled.div(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  backgroundColor: theme.colors.default.paper,
-  color: "#333333",
-  padding: 15,
-  wordBreak: "break-word",
-  borderRadius: 15,
-}));
+export const StyledInfoList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.infoList, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledInfoList.displayName = "StyledInfoList";
 
-export const StyledInfoTitle = styled.div(({ theme }) => ({
-  wordBreak: "break-word",
-  margin: "0 0 0 5px",
-  opacity: 0.7,
-  cursor: "pointer",
-  padding: "2px 10px",
-  borderRadius: 10,
-  "&:hover": {
-    backgroundColor: theme.colors.secondaryDarker,
-  },
-}));
+export const StyledInfoBlock = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.infoBlock, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledInfoBlock.displayName = "StyledInfoBlock";
+
+export const StyledInfoTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.infoTitle, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledInfoTitle.displayName = "StyledInfoTitle";

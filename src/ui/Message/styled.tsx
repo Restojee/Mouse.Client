@@ -1,86 +1,16 @@
-import styled, { css, CSSObject, keyframes } from "styled-components";
-import { StyledTextarea } from "@/ui/Textarea/styled";
+import React from "react";
 import { Property } from "csstype";
+import styles from "./Message.module.scss";
 
-const moveLeftRight = keyframes`
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-`;
-
-export const StyledMessageText = styled.div({
-  wordBreak: "break-word",
-  maxWidth: "100%",
-  textAlign: "initial",
-});
-
-export const StyledMessageSendFormTextarea = styled(StyledTextarea)<{ bgColor?: Property.BackgroundColor }>(
-  ({ theme, ...props }) => ({
-    flexGrow: 1,
-    borderRadius: theme.blockSettings.siteBorder,
-    height: 54,
-    minHeight: 54,
-    overflow: "hidden",
-    transition: "0.2s",
-    border: "1px solid rgba(0, 0, 0, 0.1)",
-    backgroundColor: props.bgColor || "",
-    "&:focus": {
-      height: 100,
-      overflow: "auto",
-    },
-  }),
+/** @deprecated Use CSS module classes directly */
+export const StyledMapContentCount = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.contentCount, className].filter(Boolean).join(" ")} {...props} />
+  ),
 );
+StyledMapContentCount.displayName = "StyledMapContentCount";
 
-export const StyledMessageSendFormIcon = styled.div<{ isFetching: boolean; isDisabled: boolean }>(
-  (props) => css`
-    ${props.isFetching &&
-    css`
-      animation: ${moveLeftRight} 2s linear infinite;
-      pointer-events: none;
-      opacity: 0.3;
-    `}
-    ${props.isDisabled &&
-    css`
-      pointer-events: none;
-      opacity: 0.3;
-    `}
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    cursor: pointer;
-    transition: 0.1s;
-    transition-property: transform, opacity;
-
-    &:hover {
-      transform: translateX(5px);
-    }
-
-    &:active {
-      transform: translateX(5px) scale(1.1);
-    }
-  `,
-);
-
-export const StyledMapContentCount = styled.div({
-  position: "absolute",
-  zIndex: 10,
-  bottom: 10,
-  right: 10,
-  backgroundColor: "rgba(255, 255, 255, 0.2)",
-  borderRadius: 25,
-  padding: "2px 10px",
-  backdropFilter: "blur(4px)",
-  textShadow: "0 0 1px rgba(0, 0, 0, 1)",
-  boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.1)",
-});
-
+/** @deprecated Use CSS module classes directly */
 type StyledImageContainerPropsType = {
   borderRadius?: Property.BorderRadius;
   margin?: Property.Margin;
@@ -90,46 +20,24 @@ type StyledImageContainerPropsType = {
   minHeight?: Property.MinHeight;
   bgColor?: Property.BackgroundColor;
 };
-export const StyledMapContentPreview = styled.div<StyledImageContainerPropsType>((props) => ({
-  display: "flex",
-  position: "relative",
-  justifyContent: "center",
-  alignItems: "center",
-  borderRadius: props.borderRadius || "inherit",
-  margin: props.margin,
-  width: props.width,
-  height: props.height,
-  overflow: "hidden",
-  maxHeight: props.maxHeight,
-  minHeight: props.minHeight,
-  transition: "0.2s",
-  backgroundColor: props.bgColor,
-  flexGrow: 1,
-}));
-
-export const StyledMessageDisabled = styled.div({
-  display: "flex",
-  position: "absolute",
-  left: 0,
-  top: 0,
-  right: 0,
-  bottom: 0,
-  textAlign: "center",
-  alignItems: "center",
-  justifyContent: "center",
-  opacity: 0.7,
-  userSelect: "none",
-  msUserSelect: "none",
-});
-
-export const StyledSpoiler = styled.span<{ isOpened: boolean }>(
-  ({ isOpened }) =>
-    ({
-      ...(!isOpened && {
-        filter: "blur(6px)",
-        msFilter: "blur(6px)",
-        opacity: 0.6,
-        cursor: "pointer",
-      }),
-    }) as CSSObject,
-);
+export const StyledMapContentPreview = React.forwardRef<
+  HTMLDivElement,
+  StyledImageContainerPropsType & React.HTMLAttributes<HTMLDivElement>
+>(({ borderRadius, margin, width, height, maxHeight, minHeight, bgColor, className, style, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={[styles.contentPreview, className].filter(Boolean).join(" ")}
+    style={{
+      borderRadius: borderRadius || "inherit",
+      margin,
+      width,
+      height,
+      maxHeight,
+      minHeight,
+      backgroundColor: bgColor,
+      ...style,
+    }}
+    {...props}
+  />
+));
+StyledMapContentPreview.displayName = "StyledMapContentPreview";

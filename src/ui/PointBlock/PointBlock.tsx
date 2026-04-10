@@ -1,7 +1,6 @@
-import { StyledBox } from "@/ui/Box";
 import React from "react";
 import { Property } from "csstype";
-import { StyledPointBlockContainer, StyledPointBlockFooter } from "@/ui/PointBlock/styled";
+import pointBlockStyles from "./PointBlock.module.scss";
 
 type PointBlockViewPropsType = {
   header: string;
@@ -17,22 +16,30 @@ type PointBlockViewPropsType = {
 
 export function PointBlock(props: Partial<PointBlockViewPropsType>) {
   return (
-    <StyledPointBlockContainer
-      isVisible={props.isVisible}
-      left={props.left}
-      right={props.right}
-      width={props.width}
-      bottom={props.bottom}
+    <div
+      className={pointBlockStyles.container}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 0,
+        bottom: props.bottom,
+        left: props.left,
+        right: props.right,
+        width: props.width || 250,
+      }}
     >
-      <StyledBox
-        justify={props.centeredTitle ? "center" : "initial"}
-        margin={"0 0 15px 0"}
-        textAlign={props.centeredTitle ? "center" : "initial"}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: props.centeredTitle ? "center" : "initial",
+          margin: "0 0 15px 0",
+          textAlign: props.centeredTitle ? "center" : "initial",
+        }}
       >
         {props.header}
-      </StyledBox>
-      <StyledBox gap={20}>{props.children}</StyledBox>
-      <StyledPointBlockFooter>{props.footer}</StyledPointBlockFooter>
-    </StyledPointBlockContainer>
+      </div>
+      <div style={{ display: "flex", gap: 20 }}>{props.children}</div>
+      <div>{props.footer}</div>
+    </div>
   );
 }

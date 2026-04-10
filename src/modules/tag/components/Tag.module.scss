@@ -1,0 +1,21 @@
+.updateTagModal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: var(--color-text-on-secondary);
+}
+
+.tagActions {
+  display: flex;
+  gap: 10px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

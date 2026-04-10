@@ -2,8 +2,7 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { AnchorAlign, type BoundaryOptions, PopupPosition } from "./usePopupPosition";
 import { usePopup } from "@/hooks/usePopup";
-import { StyledPopupContent, StyledPopupOverlay } from "@/ui/Popup/styled";
-import { StyledBox } from "@/ui/Box";
+import popupStyles from "./Popup.module.scss";
 
 interface PopupProps {
   header?: React.ReactElement;
@@ -56,35 +55,33 @@ export const Popup: React.FC<PopupProps> = (props) => {
 
   return (
     <>
-      <StyledBox
+      <div
         ref={anchorRef}
-        style={{
-          display: "contents",
-        }}
+        style={{ display: "contents" }}
       >
         {anchor}
-      </StyledBox>
+      </div>
       {isVisible &&
         createPortal(
           <>
-            <StyledPopupOverlay onClick={onClose} />
-            <StyledPopupContent
+            <div className={popupStyles.overlay} onClick={onClose} />
+            <div
               ref={popupRef}
+              className={[popupStyles.popupContent, className].filter(Boolean).join(" ")}
               style={{
                 left: popupPositionStyles?.left ?? 0,
                 top: popupPositionStyles?.top ?? 0,
                 opacity: isRendered ? 1 : 0,
                 transform: isRendered ? "scale(1)" : "scale(0.9)",
                 pointerEvents: isRendered ? "auto" : "none",
+                transformOrigin: transformOrigin ?? "center",
+                minWidth: minWidth ?? 200,
+                borderRadius: borderRadius ?? "var(--site-border, 15px)",
+                padding: noPadding ? 0 : "8px",
               }}
-              minWidth={minWidth ?? 200}
-              noPadding={noPadding}
-              transformOrigin={transformOrigin}
-              borderRadius={borderRadius}
-              className={className}
             >
               {children}
-            </StyledPopupContent>
+            </div>
           </>,
           document.body,
         )}

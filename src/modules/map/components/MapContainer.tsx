@@ -12,18 +12,7 @@ import { StyledBox } from "@/ui/Box";
 import { Typography } from "@/ui/Typography";
 import { MapCreateContext } from "@/layout/common/MapCreateContext";
 import React, { ReactNode, useCallback, useContext, useMemo, useState } from "react";
-import styled from "styled-components";
-
-const TitleWrapper = styled.div<{ hidden: boolean }>(({ hidden }) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: 5,
-  overflow: "hidden",
-  maxWidth: hidden ? 0 : 400,
-  opacity: hidden ? 0 : 1,
-  transition: "max-width 0.25s ease, opacity 0.2s ease",
-  whiteSpace: "nowrap",
-}));
+import mapStyles from "./MapContainer.module.scss";
 
 type Props = {
   children: ReactNode;
@@ -66,7 +55,7 @@ export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
           gap={5}
           grow={1}
         >
-          <TitleWrapper hidden={isMobile && isSearchOpen}>
+          <div className={[mapStyles.titleWrapper, isMobile && isSearchOpen ? mapStyles.titleWrapperHidden : mapStyles.titleWrapperVisible].filter(Boolean).join(" ")}>
             <Typography
               opacity={0.6}
               fontSize={"1rem"}
@@ -74,7 +63,7 @@ export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
               {currentPageTitle.collect}
             </Typography>
             <Typography fontSize={"1rem"}>{currentPageTitle.username}</Typography>
-          </TitleWrapper>
+          </div>
           <StyledBox margin={"0 0 0 auto"}>
             <MapSearch onOpenChange={onSearchOpenChange} />
           </StyledBox>

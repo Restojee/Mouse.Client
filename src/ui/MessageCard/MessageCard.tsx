@@ -5,7 +5,7 @@ import { Avatar } from "@/ui/Avatar";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { TextLink } from "@/ui/TextLink/TextLink";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { StyledMessageText } from "@/ui/Message/styled";
+import messageStyles from "@/ui/Message/Message.module.scss";
 
 type MessageCardProps = {
   avatar?: string;
@@ -67,7 +67,7 @@ export const MessageCard = ({
             {headerEnd}
           </StyledBox>
         )}
-        <StyledMessageText>{children}</StyledMessageText>
+        <div className={messageStyles.messageText}>{children}</div>
       </StyledBox>
     </StyledBox>
   );

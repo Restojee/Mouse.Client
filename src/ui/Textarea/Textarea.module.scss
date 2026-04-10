@@ -1,0 +1,26 @@
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 15px;
+  border: 1px solid var(--color-input-border);
+  resize: none;
+  font: inherit;
+  font-size: var(--font-size);
+  color: inherit;
+  outline: none;
+  padding: 10px 15px;
+  transition: 0.2s;
+  transition-property: opacity, background-color, border, box-shadow;
+
+  &::placeholder {
+    opacity: 0.6;
+  }
+
+  &:hover {
+    background-color: var(--color-input-hover);
+  }
+
+  &:focus {
+    background-color: var(--color-input-hover);
+  }
+}

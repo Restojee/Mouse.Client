@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { StyledSpoiler } from "@/ui/Message/styled";
+import messageStyles from "./Message.module.scss";
 
 interface Props {
   children: ReactNode;
@@ -8,12 +8,12 @@ interface Props {
 export const Spoiler = (props: Props) => {
   const [isOpened, setIsOpened] = useState(false);
   return (
-    <StyledSpoiler
+    <span
+      className={[messageStyles.spoiler, !isOpened && messageStyles.spoilerClosed].filter(Boolean).join(" ")}
       title={isOpened ? "" : "Открыть спойлер"}
-      isOpened={isOpened}
       onClick={() => setIsOpened(true)}
     >
       {props.children}
-    </StyledSpoiler>
+    </span>
   );
 };

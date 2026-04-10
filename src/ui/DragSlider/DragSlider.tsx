@@ -1,37 +1,11 @@
 import React, { useCallback, useRef } from "react";
-import styled from "styled-components";
+import styles from "./DragSlider.module.scss";
 
 type Props = {
   activeIndex: number;
   onIndexChange: (index: number) => void;
   children: React.ReactNode[];
 };
-
-const Viewport = styled.div({
-  overflow: "hidden",
-  width: "100%",
-  flexGrow: 1,
-  display: "flex",
-  flexDirection: "column",
-  userSelect: "none",
-  WebkitUserSelect: "none",
-});
-
-const Track = styled.div<{ count: number }>(({ count }) => ({
-  display: "flex",
-  flexDirection: "row",
-  width: `${count * 100}%`,
-  height: "100%",
-  willChange: "transform",
-}));
-
-const Slide = styled.div<{ count: number }>(({ count }) => ({
-  width: `${100 / count}%`,
-  flexShrink: 0,
-  display: "flex",
-  flexDirection: "column",
-  overflow: "hidden",
-}));
 
 const SWIPE_THRESHOLD = 40;
 const VELOCITY_THRESHOLD = 0.3;
@@ -141,20 +115,29 @@ export const DragSlider = ({ activeIndex, onIndexChange, children }: Props) => {
   }, [activeIndex, applyTransform, getBaseOffset]);
 
   return (
-    <Viewport
+    <div
       ref={viewportRef}
+      className={styles.viewport}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
       onTouchCancel={onTouchEnd}
     >
-      <Track ref={trackRef} count={count}>
+      <div
+        ref={trackRef}
+        className={styles.track}
+        style={{ width: `${count * 100}%` }}
+      >
         {children.map((child, i) => (
-          <Slide key={i} count={count}>
+          <div
+            key={i}
+            className={styles.slide}
+            style={{ width: `${100 / count}%` }}
+          >
             {child}
-          </Slide>
+          </div>
         ))}
-      </Track>
-    </Viewport>
+      </div>
+    </div>
   );
 };

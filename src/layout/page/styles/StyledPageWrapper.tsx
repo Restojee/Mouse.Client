@@ -1,14 +1,9 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Page.module.scss";
 
-export const StyledPageWrapper = styled.div(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  height: "100%",
-  overflow: "hidden",
-  flexGrow: 1,
-  backgroundColor: theme.colors.secondary,
-  transition: "background-color 0.3s",
-  [`@media all and (max-width: ${theme.sizes.media.medium}px)`]: {
-    marginBottom: 0,
-  },
-}));
+export const StyledPageWrapper = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.pageWrapper, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledPageWrapper.displayName = "StyledPageWrapper";

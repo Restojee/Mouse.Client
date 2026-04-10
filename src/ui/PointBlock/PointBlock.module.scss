@@ -1,0 +1,13 @@
+.container {
+  position: absolute;
+  flex-direction: column;
+  background-color: var(--color-secondary);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  z-index: var(--z-popup);
+  color: var(--color-text-on-secondary);
+  font-size: var(--font-size);
+  transition: 0.2s;
+  pointer-events: initial;
+}

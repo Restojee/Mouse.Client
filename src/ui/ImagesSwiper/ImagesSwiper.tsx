@@ -3,7 +3,7 @@ import { Navigation, Pagination } from "swiper";
 import "swiper/css/pagination";
 import "swiper/css";
 import { ReactNode } from "react";
-import { CardSliderNavArrow, CardSliderWrapper } from "./styles";
+import swiperStyles from "./ImagesSwiper.module.scss";
 import { ExpandRightIcon } from "@/svg/ExpandRightIcon";
 import { ExpandLeftIcon } from "@/svg/ExpandLeftIcon";
 
@@ -16,11 +16,9 @@ export const ImagesSwiper = ({ children, ...swiperProps }: Props) => {
   const slideNextClass = `images-slider-nav-arrow-next`;
 
   return (
-    <CardSliderWrapper
-      width={"100%"}
-      align={"center"}
-      height={"max-content"}
-      position={"relative"}
+    <div
+      className={swiperStyles.wrapper}
+      style={{ display: "flex", width: "100%", alignItems: "center", height: "max-content", position: "relative" }}
     >
       <Swiper
         spaceBetween={10}
@@ -38,18 +36,18 @@ export const ImagesSwiper = ({ children, ...swiperProps }: Props) => {
       >
         {children}
       </Swiper>
-      <CardSliderNavArrow
-        className={slideNextClass}
-        isNext
+      <div
+        className={[swiperStyles.navArrow, slideNextClass].join(" ")}
+        style={{ right: -18 }}
       >
         <ExpandRightIcon />
-      </CardSliderNavArrow>
-      <CardSliderNavArrow
-        className={slidePrevClass}
-        isPrev
+      </div>
+      <div
+        className={[swiperStyles.navArrow, slidePrevClass].join(" ")}
+        style={{ left: -18 }}
       >
         <ExpandLeftIcon />
-      </CardSliderNavArrow>
-    </CardSliderWrapper>
+      </div>
+    </div>
   );
 };

@@ -1,0 +1,142 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+  column-gap: 20px;
+  row-gap: 20px;
+}
+
+.formColumn {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  align-items: flex-end;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  column-gap: 20px;
+  row-gap: 20px;
+  max-width: 100%;
+  width: 100%;
+}
+
+.formElementContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+}
+
+.formElementHeader {
+  margin: 0 0 10px 10px;
+  opacity: 0.6;
+  font-size: 12px;
+}
+
+.inputWrapper {
+  display: flex;
+  border-radius: 50px;
+  max-width: 100%;
+  z-index: 1;
+  position: relative;
+  border: 1px solid var(--color-input-border);
+  transition: 0.2s;
+  transition-property: opacity, background-color, border, box-shadow, margin;
+
+  &:focus {
+    box-shadow: inset 0 0 100px 100px var(--color-input-hover);
+  }
+}
+
+.inputWrapperError {
+  margin-bottom: 5px;
+  border: 1px solid var(--color-error);
+}
+
+.inputWrapperNoBorder {
+  border: none;
+}
+
+.inputWrapperDisabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.input {
+  background-color: transparent;
+  background: none;
+  border: none;
+  outline: none;
+  resize: none;
+  flex-grow: 1;
+  font: inherit;
+  width: 100%;
+  max-width: 100%;
+  color: inherit;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: inherit;
+  box-shadow: inherit;
+  text-overflow: ellipsis;
+
+  &::placeholder {
+    opacity: 0.6;
+  }
+
+  &[readonly] {
+    cursor: pointer;
+  }
+}
+
+.inputCompact {
+  padding: 7px 15px;
+}
+
+.inputNoBorder {
+  padding: 12px 0;
+}
+
+.inputCompactNoBorder {
+  padding: 7px 0;
+}
+
+.inputIcon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  svg {
+    width: 18px;
+    height: 18px;
+    z-index: var(--z-other);
+  }
+}
+
+.inputIconLeft {
+  left: 15px;
+}
+
+.inputIconRight {
+  right: 15px;
+  cursor: pointer;
+
+  svg {
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.cardActions {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+}

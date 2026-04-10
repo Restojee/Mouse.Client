@@ -20,7 +20,10 @@ export function MapsByFiltersNavigation(props: MapsByFiltersNavigationSectionPro
       direction="column"
       gap={props.isOpen ? 5 : 10}
     >
-      <SidebarSection label="Моя коллекция" isOpen={props.isOpen} />
+      <SidebarSection
+        label="Моя коллекция"
+        isOpen={props.isOpen}
+      />
       {navItems.map(({ label, IconComponent, query }) => (
         <NavLink
           key={label}

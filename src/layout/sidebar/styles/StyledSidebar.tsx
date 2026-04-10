@@ -1,27 +1,19 @@
+import React from "react";
 import { Property } from "csstype";
-import styled from "styled-components";
+import styles from "./Sidebar.module.scss";
 
 type Props = {
   isOpen: boolean;
-  transition: Property.Transition;
-  sidebarXPadding: Property.Padding;
+  transition?: Property.Transition;
+  sidebarXPadding?: Property.Padding;
+  children?: React.ReactNode;
+  className?: string;
 };
-export const StyledSidebar = styled.div<Partial<Props>>(({ theme, isOpen }) => ({
-  display: "flex",
-  flexDirection: "column",
-  height: "100%",
-  maxHeight: "100%",
-  rowGap: isOpen ? 5 : 10,
-  position: "relative",
-  padding: "10px 5px",
-  minWidth: theme.sizes.sitePanel.width,
-  maxWidth: theme.sizes.sitePanel.width,
-  overflow: "hidden",
-  zIndex: theme.order.leftSidebar,
-  color: theme.colors.textOnPrimary,
-  transition: "0.3s",
-  ...(isOpen && {
-    minWidth: theme.sizes.leftSidebar.width,
-    maxWidth: theme.sizes.leftSidebar.width,
-  }),
-}));
+export const StyledSidebar = React.forwardRef<HTMLDivElement, Partial<Props> & React.HTMLAttributes<HTMLDivElement>>(
+  ({ isOpen, className, ...props }, ref) => {
+    const classes = [styles.sidebar, className];
+    if (isOpen) classes.push(styles.sidebarOpen);
+    return <div ref={ref} className={classes.filter(Boolean).join(" ")} {...props} />;
+  },
+);
+StyledSidebar.displayName = "StyledSidebar";

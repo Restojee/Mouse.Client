@@ -3,10 +3,10 @@ import { getMapImageLink } from "@/common/utils";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useMap } from "@/modules/map/common";
 import { removeNonDigits } from "@/modules/map/containers/map-list";
-import { StyledMapCard } from "@/modules/map/styles/StyledMapCard";
-import { StyledMapCardBody } from "@/modules/map/styles/StyledMapCardBody";
-import { StyledMapCardFooter } from "@/modules/map/styles/StyledMapCardFooter";
-import { StyledMapCardHeader } from "@/modules/map/styles/StyledMapCardHeader";
+import { MapCard as MapCardWrapper } from "@/modules/map/styles/MapCard/MapCard";
+import { MapCardBody } from "@/modules/map/styles/MapCardBody/MapCardBody";
+import { MapCardFooter } from "@/modules/map/styles/MapCardFooter/MapCardFooter";
+import { MapCardHeader } from "@/modules/map/styles/MapCardHeader/MapCardHeader";
 import { BookCheckIcon } from "@/svg/BookCheckIcon";
 import { CommentIcon } from "@/svg/CommentIcon";
 import { CopyIcon } from "@/svg/CopyIcon";
@@ -56,44 +56,34 @@ export const MapCard = React.memo((props: MapCardProps) => {
     onToggleMapFavorite(Boolean(isFavoriteByUser));
   }, [onToggleMapFavorite, isFavoriteByUser]);
 
-  const mapImage = useMemo(() => getMapImageLink(image?.name), [image]);
+  const mapImage = useMemo(() => getMapImageLink(image?.name, "thumb"), [image]);
 
   return (
-    <StyledMapCard
+    <MapCardWrapper
       onMouseLeave={() => setIsMapHover(false)}
       onMouseEnter={() => setIsMapHover(true)}
     >
-      <StyledMapCardHeader onClick={onIconsClick}>
+      <MapCardHeader onClick={onIconsClick}>
         <Typography>{formattedName}</Typography>
         <IconButton>
           <CopyIcon size={24} />
         </IconButton>
-      </StyledMapCardHeader>
-      <StyledMapCardBody>
+      </MapCardHeader>
+      <MapCardBody>
         <MapCardButton
           id={id}
           isMapHover={isMapHover}
         />
         <AppImage
-          src={mapImage}
-          alt={name || ""}
-          objectFit={"contain"}
-          objectPosition={"center"}
-          width={300}
-          height={150}
+          image={mapImage}
+          alt={name}
         />
-      </StyledMapCardBody>
-      <StyledMapCardFooter
-        isMapHover={isMapHover}
-        justify="space-between"
-      >
+      </MapCardBody>
+      <MapCardFooter isMapHover={isMapHover}>
         <StyledBox
           gap={"10px"}
           justify="flex-start"
         >
-          {/*<IconButton onClick={onCompletedMapModalOpen}>*/}
-          {/*    <ImageIcon />*/}
-          {/*</IconButton>*/}
           <IconButton onClick={onToggleMapFavoriteHandler}>
             <FavoriteIcon color={isFavoriteByUser ? theme.colors.brandColor : undefined} />
           </IconButton>
@@ -120,7 +110,7 @@ export const MapCard = React.memo((props: MapCardProps) => {
             <Typography>{commentsCount}</Typography>
           </StyledBox>
         </StyledBox>
-      </StyledMapCardFooter>
-    </StyledMapCard>
+      </MapCardFooter>
+    </MapCardWrapper>
   );
 });

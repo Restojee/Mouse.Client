@@ -12,7 +12,7 @@ import { InIcon } from "@/svg/InIcon";
 import { Avatar } from "@/ui/Avatar";
 import { StyledBox } from "@/ui/Box";
 import { Button } from "@/ui/Button";
-import { Modal } from "@/ui/Modal/Modal";
+import { AsyncSheet as Modal } from "@/ui/Sheet/view";
 import { Typography } from "@/ui/Typography";
 import React, { useMemo } from "react";
 import { getStarsByUserId } from "@/modules/user/utils/getStarsByUserId";

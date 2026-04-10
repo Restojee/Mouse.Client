@@ -1,5 +1,6 @@
-import styled, { CSSObject } from "styled-components";
+import React from "react";
 import { Property } from "csstype";
+import styles from "./styles/Button.module.scss";
 
 type StyledIconButtonPropsType = {
   opacity?: Property.Opacity;
@@ -9,54 +10,36 @@ type StyledIconButtonPropsType = {
   isAdmin?: boolean;
   isStylized?: boolean;
   isPanel?: boolean;
+  children?: React.ReactNode;
+  className?: string;
 };
-export const IconButton = styled.button<StyledIconButtonPropsType>(({ theme, ...props }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  cursor: "pointer",
-  margin: props.margin,
-  color: "inherit",
-  opacity: props.opacity || 0.7,
-  padding: props.padding,
-  transition: "0.2s",
-  backgroundColor: "transparent",
-  borderRadius: "10px",
-  transitionProperty: "transform",
-  "&:hover": {
-    transform: "scale(0.90)",
-    opacity: 0.5 + "!important",
-  },
-  ...(props.right && {
-    marginLeft: "auto",
-  }),
-  ...(props.disabled && {
-    opacity: 0.5,
-    pointerEvents: "none",
-  }),
-  ...(props.isStylized &&
-    ({
-      borderRadius: "50%",
-      height: "min-content",
-      padding: 5,
-      backgroundColor: theme.colors.secondaryAccent,
-    } as CSSObject)),
-  ...(props.isPanel &&
-    ({
-      opacity: 1,
-      padding: "5px 8px",
-      borderRadius: 10,
-      backgroundColor: theme.colors.neutral,
-      transitionProperty: "background-color",
-      transform: "none",
-      "&:hover": {
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
-        transform: "none",
-        opacity: 1,
-      },
-      svg: {
-        width: 14,
-        height: 14,
-      },
-    } as CSSObject)),
-}));
+
+export const IconButton = React.forwardRef<
+  HTMLButtonElement,
+  StyledIconButtonPropsType & React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ opacity, margin, padding, right, isStylized, isPanel, disabled, className, children, style, ...htmlProps }, ref) => {
+  const classes = [styles.iconButton, className];
+  if (disabled) classes.push(styles.iconButtonDisabled);
+  if (isStylized) classes.push(styles.iconButtonStylized);
+  if (isPanel) classes.push(styles.iconButtonPanel);
+
+  return (
+    <button
+      ref={ref}
+      className={classes.filter(Boolean).join(" ")}
+      style={{
+        margin,
+        opacity: opacity || 0.7,
+        padding,
+        ...(right && { marginLeft: "auto" }),
+        ...style,
+      }}
+      disabled={disabled}
+      {...htmlProps}
+    >
+      {children}
+    </button>
+  );
+});
+
+IconButton.displayName = "IconButton";

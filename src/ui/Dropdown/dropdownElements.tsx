@@ -1,72 +1,77 @@
-import styled from "styled-components";
-import { StyledBox } from "@/ui/Box";
+import React from "react";
+import { StyledBox, StyledBoxProps } from "@/ui/Box";
+import styles from "./Dropdown.module.scss";
 
 type DropdownWrapperProps = {
   top: string;
   right: string;
 };
+export const DropdownWrapper = React.forwardRef<
+  HTMLDivElement,
+  Partial<StyledBoxProps> & DropdownWrapperProps & React.HTMLAttributes<HTMLDivElement>
+>(({ top, right, style, ...props }, ref) => (
+  <StyledBox
+    ref={ref}
+    style={{ position: "absolute", top, right, ...style }}
+    {...props}
+  />
+));
+DropdownWrapper.displayName = "DropdownWrapper";
 
 type DropdownContainerProps = {
   width: string;
   isOpen?: boolean;
 };
+export const DropdownContainer = React.forwardRef<
+  HTMLDivElement,
+  Partial<StyledBoxProps> & DropdownContainerProps & React.HTMLAttributes<HTMLDivElement>
+>(({ width, isOpen, style, ...props }, ref) => (
+  <StyledBox
+    ref={ref}
+    style={{
+      position: "relative",
+      maxWidth: width,
+      width,
+      backgroundColor: "white",
+      borderRadius: 20,
+      ...style,
+    }}
+    {...props}
+  />
+));
+DropdownContainer.displayName = "DropdownContainer";
 
 type DropdownListProps = {
   width?: string;
   isOpen?: boolean;
 };
+export const DropdownList = React.forwardRef<
+  HTMLDivElement,
+  Partial<StyledBoxProps> & DropdownListProps & React.HTMLAttributes<HTMLDivElement>
+>(({ width, isOpen, className, ...props }, ref) => (
+  <StyledBox
+    ref={ref}
+    className={[styles.list, className].filter(Boolean).join(" ")}
+    direction={"column"}
+    gap={0}
+    {...props}
+  />
+));
+DropdownList.displayName = "DropdownList";
 
 type DropdownItemProps = {
   blockedItem?: boolean;
 };
-
-export const DropdownWrapper = styled(StyledBox)<DropdownWrapperProps>(({ top, right }) => ({
-  position: "absolute",
-  top: top,
-  right: right,
-}));
-
-export const DropdownContainer = styled(StyledBox)<DropdownContainerProps>(({ width }) => ({
-  position: "relative",
-  maxWidth: width,
-  width: width,
-  backgroundColor: "white",
-  borderRadius: 20,
-}));
-
-export const DropdownList = styled(StyledBox)<DropdownListProps>(({ theme }) => ({
-  flexDirection: "column",
-  gap: 0,
-  rowGap: 0,
-  columnGap: 0,
-  position: "absolute",
-  top: "50px",
-  backgroundColor: theme.colors.secondary,
-  zIndex: theme.order.dropdown,
-  borderRadius: "10px",
-  color: theme.colors.textOnSecondary,
-  boxShadow: "0 0 10px 1px rgba(0, 0, 0, 0.3)",
-  width: "100%",
-  overflow: "hidden",
-  transition: "0.2s",
-  maxHeight: "300px",
-}));
-
-export const DropdownItemStyled = styled(StyledBox)<DropdownItemProps>(({ blockedItem }) => ({
-  alignItems: "center",
-  padding: "10px 15px",
-  cursor: "pointer",
-  "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-  },
-  svg: {
-    width: "18px",
-    height: "18px",
-  },
-  ...(blockedItem && {
-    cursor: "default",
-    "&:hover": {
-      backgroundColor: "initial",
-    },
-  }),
-}));
+export const DropdownItemStyled = React.forwardRef<
+  HTMLDivElement,
+  Partial<StyledBoxProps> & DropdownItemProps & React.HTMLAttributes<HTMLDivElement>
+>(({ blockedItem, className, ...props }, ref) => (
+  <StyledBox
+    ref={ref}
+    className={[styles.item, blockedItem && styles.itemBlocked, className].filter(Boolean).join(" ")}
+    align={"center"}
+    padding={"10px 15px"}
+    {...props}
+  />
+));
+DropdownItemStyled.displayName = "DropdownItemStyled";

@@ -1,6 +1,6 @@
 import { useLogin } from "@/modules/auth/hooks/useLogin";
 import { Login } from "./Login";
-import { Modal } from "@/ui/Modal/Modal";
+import { AsyncSheet as Modal } from "@/ui/Sheet/view";
 
 const LoginModal = () => {
   const { onLoginModalClose } = useLogin();

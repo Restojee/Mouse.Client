@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export interface UseInfiniteScrollOptions {
   onLoadMore: () => void | Promise<void>;
@@ -15,7 +15,7 @@ export const useInfiniteScroll = ({
   isLoading,
   rootRef,
   rootMargin = "150px",
-  threshold = 0.01,
+  threshold = 0.5,
 }: UseInfiniteScrollOptions) => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);

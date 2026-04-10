@@ -1,0 +1,38 @@
+.tabsGroup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.tabSlideIndicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s;
+  z-index: 0;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+  width: var(--site-panel-width);
+  min-width: var(--site-panel-width);
+  max-width: var(--site-panel-width);
+  min-height: 100%;
+  height: 100%;
+  padding: 10px 0;
+}
+
+.mobilePanel {
+  display: flex;
+  padding: 10px;
+}

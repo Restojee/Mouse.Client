@@ -1,8 +1,10 @@
-import styled from "styled-components";
-import { StyledBox } from "@/ui/Box";
+import React from "react";
+import { StyledBox, StyledBoxProps } from "@/ui/Box";
 import { Property } from "csstype";
+import styles from "./Tag.module.scss";
 
-export const StyledMapContentTags = styled(StyledBox)({});
+/** @deprecated Use CSS module classes directly */
+export const StyledMapContentTags = StyledBox;
 
 type StyledTagType = {
   bgColor?: Property.BackgroundColor;
@@ -10,32 +12,26 @@ type StyledTagType = {
   isActive?: boolean;
   small?: boolean;
 };
-export const StyledTag = styled(StyledBox)<StyledTagType>(({ theme, ...props }) => ({
-  justifyContent: "center",
-  textAlign: "center",
-  width: "min-content",
-  whiteSpace: "nowrap",
-  alignItems: "center",
-  backgroundColor: props.bgColor || theme.colors.neutral,
-  padding: "8px 15px",
-  fontSize: "0.8rem",
-  borderRadius: "20px",
-  svg: {
-    opacity: 0.8,
-  },
-  ...(props.chips && {
-    cursor: "pointer",
-    border: "1px solid transparent",
-    "&:hover": {
-      transform: "scale(0.95)",
-    },
-  }),
-  ...(props.isActive && {
-    backgroundColor: theme.colors.brandColor,
-    color: theme.colors.brandColorContrastText,
-  }),
-  ...(props.small && {
-    fontSize: "0.7rem",
-    padding: "8px 10px",
-  }),
-}));
+/** @deprecated Use CSS module classes directly */
+export const StyledTag = React.forwardRef<
+  HTMLDivElement,
+  Partial<StyledBoxProps> & StyledTagType & React.HTMLAttributes<HTMLDivElement>
+>(({ chips, isActive, small, bgColor, className, style, ...props }, ref) => {
+  const classes = [styles.tag, className];
+  if (chips) classes.push(styles.chips);
+  if (isActive) classes.push(styles.active);
+  if (small) classes.push(styles.small);
+
+  return (
+    <StyledBox
+      ref={ref}
+      className={classes.filter(Boolean).join(" ")}
+      style={{
+        backgroundColor: isActive ? undefined : (bgColor || "var(--color-neutral)"),
+        ...style,
+      }}
+      {...props}
+    />
+  );
+});
+StyledTag.displayName = "StyledTag";

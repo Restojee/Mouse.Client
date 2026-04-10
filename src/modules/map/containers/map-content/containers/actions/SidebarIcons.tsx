@@ -11,7 +11,8 @@ import { AddImageIcon } from "@/svg/AddImageIcon";
 import { FavoriteIcon } from "@/svg/FavoriteIcon";
 import { Map } from "@/api/codegen/genMouseMapsApi";
 import { SvgIconPropsType } from "@/svg/common/types";
-import { StyledContentSidebarBodyCount, StyledContentSidebarBodyIcon } from "@/modules/map/styles/styled";
+import { ContentSidebarBodyCount } from "@/modules/map/styles/ContentSidebarBodyCount/ContentSidebarBodyCount";
+import { ContentSidebarBodyIcon } from "@/modules/map/styles/ContentSidebarBodyIcon/ContentSidebarBodyIcon";
 import { useCompletedMap } from "../completed-images/hooks/useCompletedMap";
 
 type MapContentSidebarIconsPropsType = {
@@ -44,7 +45,7 @@ export const SidebarIcons = ({ levelId, isFavorite, isCompleted, favoritesCount 
       padding={"10px 0 10px 0"}
       borderBottom={`1px solid ${theme.colors.neutral}`}
     >
-      <StyledContentSidebarBodyIcon
+      <ContentSidebarBodyIcon
         disabled={!isAuth}
         onClick={onCompletedMapModalOpen}
       >
@@ -52,8 +53,8 @@ export const SidebarIcons = ({ levelId, isFavorite, isCompleted, favoritesCount 
           {...iconsProps}
           color={isCompleted ? theme.colors.brandColor : iconsProps.color}
         />
-      </StyledContentSidebarBodyIcon>
-      <StyledContentSidebarBodyIcon
+      </ContentSidebarBodyIcon>
+      <ContentSidebarBodyIcon
         disabled={!isAuth}
         onClick={onToggleMapFavoriteHandler}
       >
@@ -62,18 +63,18 @@ export const SidebarIcons = ({ levelId, isFavorite, isCompleted, favoritesCount 
           color={isFavorite ? theme.colors.brandColor : iconsProps.color}
         />
         <Display condition={favoritesCount}>
-          <StyledContentSidebarBodyCount>{favoritesCount}</StyledContentSidebarBodyCount>
+          <ContentSidebarBodyCount>{favoritesCount}</ContentSidebarBodyCount>
         </Display>
-      </StyledContentSidebarBodyIcon>
-      <StyledContentSidebarBodyIcon onClick={onMapShare}>
+      </ContentSidebarBodyIcon>
+      <ContentSidebarBodyIcon onClick={onMapShare}>
         <OutIcon {...iconsProps} />
-      </StyledContentSidebarBodyIcon>
-      <StyledContentSidebarBodyIcon
+      </ContentSidebarBodyIcon>
+      <ContentSidebarBodyIcon
         disabled={!isAuth || !isAdmin}
         onClick={onMapDelete}
       >
         <TrashIcon {...iconsProps} />
-      </StyledContentSidebarBodyIcon>
+      </ContentSidebarBodyIcon>
     </StyledBox>
   );
 };

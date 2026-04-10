@@ -1,0 +1,25 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  column-gap: 5px;
+  color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  position: absolute;
+  z-index: var(--z-other);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  bottom: 0;
+  opacity: 0;
+  padding: 6px 10px;
+  transition: 0.3s;
+
+  @media (max-width: 768px) {
+    padding: 3px 6px;
+  }
+}
+
+.visible {
+  opacity: 1;
+}

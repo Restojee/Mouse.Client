@@ -1,0 +1,17 @@
+.scrollWrapper {
+  display: flex;
+  position: relative;
+  overflow-x: auto;
+  min-height: max-content;
+}
+
+.scrollWrapperSlider {
+  flex-grow: initial;
+  align-items: center;
+}
+
+.scrollContainer {
+  min-width: 100%;
+  display: inline-table;
+  height: 100px;
+}

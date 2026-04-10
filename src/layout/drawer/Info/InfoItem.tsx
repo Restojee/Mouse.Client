@@ -5,7 +5,7 @@ import { StyledInfoBlock, StyledInfoTitle } from "@/layout/drawer/Info/styled";
 import { selectIsAuth } from "@/modules/auth/slice";
 import { CloseIcon } from "@/svg/CloseIcon";
 import { StyledBox } from "@/ui/Box";
-import { StyledButtonIcon } from "@/ui/Button/styles/StyledButtonIcon";
+import buttonStyles from "@/ui/Button/styles/Button.module.scss";
 import { Display } from "@/ui/Display";
 import { Typography } from "@/ui/Typography";
 import React, { useMemo, useState } from "react";
@@ -52,13 +52,13 @@ export const InfoItem = (props: InfoItemPropsType) => {
       <StyledBox align="center">
         <StyledInfoTitle onClick={selectInfoHandler}>{info.title}</StyledInfoTitle>
         <Display condition={isAuth}>
-          <StyledButtonIcon
-            opacity={isHovered ? "0.4" : "0"}
+          <div
+            className={buttonStyles.buttonIcon}
+            style={{ opacity: isHovered ? 0.4 : 0, margin: "0 0 0 auto" }}
             onClick={removeInfoHandler}
-            margin="0 0 0 auto"
           >
             <CloseIcon />
-          </StyledButtonIcon>
+          </div>
         </Display>
       </StyledBox>
       <StyledInfoBlock>

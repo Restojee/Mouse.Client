@@ -1,10 +1,4 @@
-import {
-  StyledFormElementContainer,
-  StyledFormElementHeader,
-  StyledInput,
-  StyledInputIcon,
-  StyledInputWrapper,
-} from "@/ui/Form/styled";
+import formStyles from "@/ui/Form/Form.module.scss";
 import { DefaultInputType } from "@/ui/Input/Input";
 import { Property } from "csstype";
 import React, { ChangeEvent } from "react";
@@ -38,14 +32,14 @@ export default function FormElement(props: Partial<PropsType>) {
     //     </FormRow>
     // </Form>
 
-    <StyledFormElementContainer>
-      {title && <StyledFormElementHeader>{title}</StyledFormElementHeader>}
+    <div className={formStyles.formElementContainer}>
+      {title && <div className={formStyles.formElementHeader}>{title}</div>}
 
-      <StyledInputWrapper bgColor={bgColor} noBorder={noBorder}>
-        {inputPrepend && <StyledInputIcon left>{inputPrepend}</StyledInputIcon>}
-        <StyledInput {...inputProps} noBorder={noBorder} />
-        {props.inputAppend && <StyledInputIcon right>{inputAppend}</StyledInputIcon>}
-      </StyledInputWrapper>
-    </StyledFormElementContainer>
+      <div className={[formStyles.inputWrapper, noBorder && formStyles.inputWrapperNoBorder].filter(Boolean).join(" ")} style={bgColor ? { backgroundColor: bgColor } : undefined}>
+        {inputPrepend && <div className={[formStyles.inputIcon, formStyles.inputIconLeft].filter(Boolean).join(" ")}>{inputPrepend}</div>}
+        <input {...inputProps} className={[formStyles.input, noBorder && formStyles.inputNoBorder].filter(Boolean).join(" ")} />
+        {props.inputAppend && <div className={[formStyles.inputIcon, formStyles.inputIconRight].filter(Boolean).join(" ")}>{inputAppend}</div>}
+      </div>
+    </div>
   );
 }

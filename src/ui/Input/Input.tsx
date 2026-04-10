@@ -1,8 +1,8 @@
 import { StyledBox } from "@/ui/Box";
 import { Display } from "@/ui/Display";
-import { StyledInput, StyledInputIcon, StyledInputWrapper } from "@/ui/Form/styled";
+import formStyles from "@/ui/Form/Form.module.scss";
 import React from "react";
-import { StyledFieldError } from "./styled";
+import inputStyles from "./Input.module.scss";
 
 export type DefaultInputType = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
@@ -36,23 +36,20 @@ export const Input = (props: InputPropsType) => {
           {props.title}
         </StyledBox>
       </Display>
-      <StyledInputWrapper
-        isDisabled={props.disabled}
-        bgColor={bgColor}
-        isError={isError}
-        noBorder={noBorder}
+      <div
+        className={[formStyles.inputWrapper, props.disabled && formStyles.inputWrapperDisabled, isError && formStyles.inputWrapperError, noBorder && formStyles.inputWrapperNoBorder].filter(Boolean).join(" ")}
+        style={bgColor ? { backgroundColor: bgColor } : undefined}
       >
-        {inputPrepend && <StyledInputIcon left>{inputPrepend}</StyledInputIcon>}
-        <StyledInput
+        {inputPrepend && <div className={[formStyles.inputIcon, formStyles.inputIconLeft].filter(Boolean).join(" ")}>{inputPrepend}</div>}
+        <input
           {...inputProps}
-          compact={compact}
-          noBorder={noBorder}
+          className={[formStyles.input, compact && formStyles.inputCompact, noBorder && formStyles.inputNoBorder, compact && noBorder && formStyles.inputCompactNoBorder].filter(Boolean).join(" ")}
           ref={null}
           style={(inputPrepend && { paddingLeft: 40 }) || (inputAppend && { paddingRight: 40 }) || {}}
         />
-        {props.inputAppend && <StyledInputIcon right>{inputAppend}</StyledInputIcon>}
-      </StyledInputWrapper>
-      <StyledFieldError isError={isError}>{error}</StyledFieldError>
+        {props.inputAppend && <div className={[formStyles.inputIcon, formStyles.inputIconRight].filter(Boolean).join(" ")}>{inputAppend}</div>}
+      </div>
+      <div className={[inputStyles.fieldError, isError && inputStyles.fieldErrorVisible].filter(Boolean).join(" ")}>{error}</div>
     </StyledBox>
   );
 };

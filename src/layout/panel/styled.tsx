@@ -1,38 +1,30 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Panel.module.scss";
 
-export const StyledTabsGroup = styled.div({
-  position: "relative",
-  display: "flex",
-  flexDirection: "column",
-  gap: 10,
-  width: "100%",
-});
+export const StyledTabsGroup = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.tabsGroup, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledTabsGroup.displayName = "StyledTabsGroup";
 
-export const StyledTabSlideIndicator = styled.div(({ theme }) => ({
-  position: "absolute",
-  left: 0,
-  right: 0,
-  borderRadius: 10,
-  backgroundColor: "rgba(255, 255, 255, 0.08)",
-  pointerEvents: "none",
-  transition: "top 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s",
-  zIndex: 0,
-}));
+export const StyledTabSlideIndicator = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.tabSlideIndicator, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledTabSlideIndicator.displayName = "StyledTabSlideIndicator";
 
-export const StyledPanel = styled.div((props) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  rowGap: 10,
-  width: props.theme.sizes.sitePanel.width,
-  minWidth: props.theme.sizes.sitePanel.width,
-  maxWidth: props.theme.sizes.sitePanel.width,
-  minHeight: "100%",
-  height: "100%",
-  padding: "10px 0",
-}));
+export const StyledPanel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.panel, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledPanel.displayName = "StyledPanel";
 
-export const StyledMobilePanel = styled.div({
-  display: "flex",
-  padding: 10,
-});
+export const StyledMobilePanel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.mobilePanel, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledMobilePanel.displayName = "StyledMobilePanel";

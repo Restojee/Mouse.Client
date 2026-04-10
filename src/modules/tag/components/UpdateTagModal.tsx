@@ -2,11 +2,11 @@ import { Tag } from "@/api/codegen/genMouseMapsApi";
 import { useAppNotifications } from "@/hooks/useAppNotifications";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectTagModalType } from "@/modules/tag";
-import { StylesUpdateTagModal } from "@/modules/tag/components/styled";
 import { useTag } from "@/modules/tag/hooks/useTag";
+import styles from "./Tag.module.scss";
 import { Input } from "@/ui/Input";
-import { Modal } from "@/ui/Modal/Modal";
-import { StyledTextarea } from "@/ui/Textarea/styled";
+import { AsyncSheet as Modal } from "@/ui/Sheet/view";
+import textareaStyles from "@/ui/Textarea/Textarea.module.scss";
 import React, { useCallback, useLayoutEffect, useState } from "react";
 
 interface Props {
@@ -60,18 +60,20 @@ export const UpdateTagModal = (props: Props) => {
       onAccess={onSuccess}
       title={"Редактирование тега"}
     >
-      <StylesUpdateTagModal>
+      <div className={styles.updateTagModal}>
         <Input
           placeholder={"Название тега"}
           value={tagName}
           onChange={onTagNameChange}
         />
-        <StyledTextarea
+        <textarea
+          className={textareaStyles.textarea}
+          style={{ backgroundColor: "var(--color-input-default)", height: "100px", minHeight: "100px" }}
           placeholder={"Описание тега"}
           value={tagDescription}
           onChange={onTagDescriptionChange}
         />
-      </StylesUpdateTagModal>
+      </div>
     </Modal>
   );
 };

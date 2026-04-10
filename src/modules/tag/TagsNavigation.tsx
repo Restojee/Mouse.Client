@@ -15,11 +15,12 @@ import { AddIcon } from "@/svg/AddIcon";
 import { CreateTagPopup } from "@/modules/tag/components/CreateTagPopup";
 import { StyledBox } from "@/ui/Box";
 import { Display } from "@/ui/Display";
-import { Modal } from "@/ui/Modal/Modal";
+import { AsyncSheet as Modal } from "@/ui/Sheet/view";
 import React, { useEffect } from "react";
 
 type TagsNavigationSectionProps = {
   isOpen: boolean;
+  noScroll?: boolean;
 };
 
 export function TagsNavigation(props: TagsNavigationSectionProps) {
@@ -30,7 +31,7 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
   const filter = useAppSelector(selectFilter);
   const [tempTag, setTempTag] = React.useState<Tag>();
 
-  const { isOpen } = props;
+  const { isOpen, noScroll } = props;
 
   const onTagClickHandler = async (id: Tag["id"]) => {
     await updateFilter({ page: 1 });
@@ -74,7 +75,7 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
           }
         />
       </Display>
-      <StyledBox grow={1} minHeight={0} overflow="auto" direction="column" display={isOpen ? "flex" : "none"}>
+      <StyledBox grow={1} minHeight={0} overflow={noScroll ? "visible" : "auto"} direction="column" display={isOpen ? "flex" : "none"}>
         {tagsList?.map((el) => (
           <NavLink
             key={el.id}

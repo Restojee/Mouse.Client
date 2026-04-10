@@ -1,0 +1,62 @@
+.root {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  align-items: center;
+  border-radius: 15px;
+  background-color: var(--color-primary-light);
+  cursor: pointer;
+  position: relative;
+  transition: 0.1s;
+  transition-property: background-color, transform, box-shadow;
+
+  img {
+    filter: blur(4px);
+    -webkit-filter: blur(4px);
+  }
+
+  &:hover {
+    transform: scale(0.97);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.visible {
+  &::after {
+    content: " ";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    bottom: -20px;
+    right: -20px;
+    border-radius: inherit;
+    transition: 0.7s;
+    transition-property: opacity;
+  }
+
+  &:hover::after {
+    opacity: 0.3;
+  }
+}
+
+.active {
+  background-color: var(--color-map-background);
+  pointer-events: none;
+
+  img {
+    filter: none;
+    -webkit-filter: none;
+  }
+
+  &::after {
+    opacity: 0.3;
+  }
+}

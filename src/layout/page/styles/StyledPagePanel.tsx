@@ -1,21 +1,16 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Page.module.scss";
 
 export type Props = {
   top?: boolean;
   bottom?: boolean;
 };
-export const StyledPagePanel = styled.div<Partial<Props>>((props) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: "10px",
-  minHeight: "50px",
-  height: "50px",
-  width: "100%",
-  ...(props.top && {
-    borderTop: "1px solid rgba(0, 0, 0, 0.1)",
-  }),
-  ...(props.bottom && {
-    borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-  }),
-}));
+export const StyledPagePanel = React.forwardRef<HTMLDivElement, Partial<Props> & React.HTMLAttributes<HTMLDivElement>>(
+  ({ top, bottom, className, ...props }, ref) => {
+    const classes = [styles.pagePanel, className];
+    if (top) classes.push(styles.pagePanelTop);
+    if (bottom) classes.push(styles.pagePanelBottom);
+    return <div ref={ref} className={classes.filter(Boolean).join(" ")} {...props} />;
+  },
+);
+StyledPagePanel.displayName = "StyledPagePanel";

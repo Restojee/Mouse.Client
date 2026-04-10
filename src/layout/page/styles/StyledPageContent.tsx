@@ -1,12 +1,9 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Page.module.scss";
 
-export const StyledPageContent = styled.div({
-  flexGrow: 1,
-  overflow: "auto",
-  padding: "20px",
-  display: "flex",
-  flexDirection: "column",
-  "@media (max-width: 768px)": {
-    padding: "10px 5px",
-  },
-});
+export const StyledPageContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.pageContent, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledPageContent.displayName = "StyledPageContent";

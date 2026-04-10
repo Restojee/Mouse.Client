@@ -1,0 +1,51 @@
+.tabsRow {
+  position: relative;
+  display: flex;
+  gap: 20px;
+  margin: 0 0 20px 0;
+}
+
+.tabSlideIndicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 15px;
+  background-color: var(--color-brand);
+  pointer-events: none;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s;
+  z-index: 0;
+}
+
+.tab {
+  flex-grow: 1;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 8px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.tabActive {
+  color: #FFFFFF;
+  font-weight: bold;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.tabDisabled {
+  pointer-events: none;
+  color: var(--color-disabled);
+}

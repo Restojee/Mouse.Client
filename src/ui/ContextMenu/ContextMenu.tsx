@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Popup, PopupPosition, AnchorAlign } from "@/ui/Popup";
-import { StyledContextMenuList, StyledContextMenuTitle, StyledContextMenuDivider } from "./styled";
+import contextMenuStyles from "./ContextMenu.module.scss";
 import { SubMenuList } from "./SubMenuList";
 import { List } from "@/ui/List/List";
 import type { ListItemOptions, ThemeSizes } from "./ContextMenuItem";
@@ -59,10 +59,10 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   const hasSubmenus = items.some((opt) => opt.submenu);
 
   const content = hasSubmenus ? (
-    <StyledContextMenuList>
+    <div className={contextMenuStyles.list}>
       {items.map((item) => (
         <React.Fragment key={item.id}>
-          {item.divider && <StyledContextMenuDivider />}
+          {item.divider && <div className={contextMenuStyles.divider} />}
           <SubMenuList
             item={item}
             size={size}
@@ -70,11 +70,11 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
           />
         </React.Fragment>
       ))}
-    </StyledContextMenuList>
+    </div>
   ) : (
     <>
       {header}
-      {title && <StyledContextMenuTitle size={size}>{title}</StyledContextMenuTitle>}
+      {title && <div className={[contextMenuStyles.title, size === "sm" ? contextMenuStyles.titleSm : ""].filter(Boolean).join(" ")}>{title}</div>}
       <List
         options={items}
         onChange={handleOptionChange}

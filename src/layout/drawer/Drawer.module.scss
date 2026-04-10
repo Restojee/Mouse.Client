@@ -1,0 +1,85 @@
+.drawer {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-secondary-dark);
+  color: var(--color-text-on-secondary);
+  height: 100%;
+  position: relative;
+  padding: 0;
+  width: var(--right-sidebar-width);
+  flex-shrink: 0;
+  overflow: hidden;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: var(--z-right-sidebar);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.3s;
+  will-change: transform;
+
+  @media all and (max-width: 1140px) {
+    background-color: var(--color-secondary);
+  }
+
+  @media all and (max-width: 768px) {
+    width: 100%;
+    transform: none;
+    margin-right: 0;
+    border-left: none;
+    background-color: var(--color-secondary);
+    overflow: auto;
+  }
+}
+
+.drawerOpen {
+  transform: translateX(0);
+  margin-right: 0;
+}
+
+.drawerClosed {
+  transform: translateX(var(--right-sidebar-width));
+  margin-right: calc(-1 * var(--right-sidebar-width));
+
+  @media all and (max-width: 768px) {
+    transform: none;
+    margin-right: 0;
+  }
+}
+
+.drawerContent {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex-grow: 1;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: inherit;
+  z-index: 1;
+  position: sticky;
+  font-weight: bolder;
+  font-size: calc(var(--font-size) + 2px);
+  top: 0;
+}
+
+.drawerBlock {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-secondary);
+  border-radius: var(--site-border);
+  gap: 20px;
+  padding: 15px;
+
+  @media all and (max-width: 1140px) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.drawerBlockMy {
+  box-shadow: inset 0 0 3px 0 var(--color-map-background);
+}

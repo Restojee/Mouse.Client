@@ -1,0 +1,31 @@
+.statisticIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--color-secondary);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: 0 0 2px 1px var(--color-icon-on-secondary);
+  cursor: pointer;
+  color: var(--color-text-on-secondary);
+  transition: 0.2s;
+  transition-property: transform;
+
+  &:hover {
+    transform: scale(1.06);
+  }
+
+  svg {
+    -webkit-filter: drop-shadow(0px 0px 2px var(--color-icon-on-secondary));
+    filter: drop-shadow(0px 0px 2px var(--color-icon-on-secondary));
+  }
+}
+
+.statisticIconText {
+  text-align: center;
+  font-size: calc(var(--font-size) - 2px);
+  opacity: 0.6;
+}

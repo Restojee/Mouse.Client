@@ -1,0 +1,106 @@
+.page {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: initial;
+  gap: 15px;
+  row-gap: 15px;
+  column-gap: 15px;
+  margin: 0;
+  padding: 30px;
+  background-color: initial;
+  max-width: 100%;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+.pageButtonSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 5px 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.pageContent {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding: 10px 5px;
+  }
+}
+
+.pagePanel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  min-height: 50px;
+  height: 50px;
+  width: 100%;
+}
+
+.pagePanelTop {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.pagePanelBottom {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.pagePanelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: inherit;
+  padding: 5px 8px;
+  background-color: var(--color-neutral);
+  transition: 0.2s;
+  cursor: pointer;
+  border: none;
+  outline: none;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.pagePanelButtonDisabled {
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  flex-grow: 1;
+  background-color: var(--color-secondary);
+  transition: background-color 0.3s;
+
+  @media all and (max-width: 600px) {
+    margin-bottom: 0;
+  }
+}

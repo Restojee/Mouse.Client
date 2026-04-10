@@ -1,18 +1,9 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Page.module.scss";
 
-export const StyledPage = styled.div({
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "initial",
-  gap: 15,
-  rowGap: 15,
-  columnGap: 15,
-  margin: 0,
-  padding: 30,
-  backgroundColor: "initial",
-  maxWidth: "100%",
-  width: "100%",
-  height: "100vh",
-  maxHeight: "100vh",
-});
+export const StyledPage = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.page, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledPage.displayName = "StyledPage";

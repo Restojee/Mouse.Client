@@ -1,7 +1,7 @@
 import { Tag } from "@/api/codegen/genMouseMapsApi";
 import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
-import { StyledTagActions } from "@/modules/tag/components/styled";
 import { useTag } from "@/modules/tag/hooks/useTag";
+import styles from "./Tag.module.scss";
 import { CloseIcon } from "@/svg/CloseIcon";
 import { EditIcon } from "@/svg/EditIcon";
 import React from "react";
@@ -34,13 +34,13 @@ export const TagItemActions = (props: Props) => {
   }
 
   return (
-    <StyledTagActions>
+    <div className={styles.tagActions}>
       <StyledNavLinkSection onClick={onTagEditHandler}>
         <EditIcon />
       </StyledNavLinkSection>
       <StyledNavLinkSection onClick={onTagDeleteHandler}>
         <CloseIcon />
       </StyledNavLinkSection>
-    </StyledTagActions>
+    </div>
   );
 };

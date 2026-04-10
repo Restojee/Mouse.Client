@@ -1,0 +1,15 @@
+.root {
+  margin-bottom: auto;
+  position: relative;
+  background-color: var(--color-primary-accent) !important;
+
+  &:hover {
+    opacity: 0.8;
+    background-color: var(--color-primary-accent);
+  }
+
+  &:focus {
+    opacity: 0.8;
+    background-color: var(--color-primary-accent);
+  }
+}

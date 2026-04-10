@@ -1,69 +1,40 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Drawer.module.scss";
 
-export const StyledDrawer = styled.div<{ isOpen: boolean }>(({ theme, isOpen }) => ({
-  display: "flex",
-  flexDirection: "column",
-  backgroundColor: theme.colors.secondaryDark,
-  color: theme.colors.textOnSecondary,
-  height: "100%",
-  position: "relative",
-  padding: 0,
-  width: theme.sizes.rightSidebar.width,
-  flexShrink: 0,
-  overflow: "hidden",
-  borderLeft: "1px solid rgba(0, 0, 0, 0.1)",
-  zIndex: theme.order.rightSidebar,
-  transform: isOpen ? "translateX(0)" : `translateX(${theme.sizes.rightSidebar.width})`,
-  marginRight: isOpen ? 0 : `calc(-1 * ${theme.sizes.rightSidebar.width})`,
-  transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1), margin-right 0.3s cubic-bezier(0.4,0,0.2,1), background-color 0.3s",
-  willChange: "transform",
+type StyledDrawerProps = { isOpen: boolean };
+export const StyledDrawer = React.forwardRef<HTMLDivElement, StyledDrawerProps & React.HTMLAttributes<HTMLDivElement>>(
+  ({ isOpen, className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={[styles.drawer, isOpen ? styles.drawerOpen : styles.drawerClosed, className].filter(Boolean).join(" ")}
+      {...props}
+    />
+  ),
+);
+StyledDrawer.displayName = "StyledDrawer";
 
-  "@media all and (max-width: 1140px)": {
-    backgroundColor: theme.colors.secondary,
-  },
-  "@media all and (max-width: 768px)": {
-    width: "100%",
-    transform: "none",
-    marginRight: 0,
-    borderLeft: "none",
-    backgroundColor: theme.colors.secondary,
-    overflow: "auto",
-  },
-}));
+export const StyledDrawerContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.drawerContent, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledDrawerContent.displayName = "StyledDrawerContent";
 
-export const StyledDrawerContent = styled.div({
-  display: "flex",
-  flexDirection: "column",
-  overflow: "auto",
-  flexGrow: 1,
-});
+export const StyledDrawerHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.drawerHeader, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledDrawerHeader.displayName = "StyledDrawerHeader";
 
-export const StyledDrawerHeader = styled.div(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 10,
-  margin: "0 auto",
-  padding: "20px",
-  borderRadius: "inherit",
-  zIndex: 1,
-  position: "sticky",
-  fontWeight: "bolder",
-  fontSize: `calc(${theme.font.fontSize} + 2px)`,
-  top: 0,
-}));
-
-export const StyledDrawerBlock = styled.div<{ isMyCard: boolean }>(({ theme, isMyCard }) => ({
-  display: "flex",
-  flexDirection: "column",
-  backgroundColor: theme.colors.secondary,
-  borderRadius: theme.blockSettings.siteBorder,
-  gap: 20,
-  padding: 15,
-  "@media all and (max-width: 1140px)": {
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-  },
-  ...(isMyCard && {
-    boxShadow: ` inset 0 0 3px 0 ${theme.colors.mapBackground}`,
-  }),
-}));
+type StyledDrawerBlockProps = { isMyCard: boolean };
+export const StyledDrawerBlock = React.forwardRef<HTMLDivElement, StyledDrawerBlockProps & React.HTMLAttributes<HTMLDivElement>>(
+  ({ isMyCard, className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={[styles.drawerBlock, isMyCard && styles.drawerBlockMy, className].filter(Boolean).join(" ")}
+      {...props}
+    />
+  ),
+);
+StyledDrawerBlock.displayName = "StyledDrawerBlock";

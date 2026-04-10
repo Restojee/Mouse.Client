@@ -1,5 +1,5 @@
 import { useRegister } from "@/modules/auth/hooks/useRegister";
-import { Modal } from "@/ui/Modal/Modal";
+import { AsyncSheet as Modal } from "@/ui/Sheet/view";
 import { Register } from "./Register";
 
 const RegisterModal = () => {

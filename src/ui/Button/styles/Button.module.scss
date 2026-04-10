@@ -1,0 +1,139 @@
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: none;
+  white-space: nowrap;
+  text-align: center;
+  transition: 0.2s;
+  cursor: pointer;
+  gap: 10px;
+  column-gap: 10px;
+  row-gap: 10px;
+
+  &:hover {
+    transform: scale(0.98);
+  }
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.sizeSm {
+  padding: var(--button-sm-padding);
+  font-size: var(--button-sm-font-size);
+
+  svg {
+    width: var(--button-sm-svg-size);
+    height: var(--button-sm-svg-size);
+  }
+}
+
+.sizeMd {
+  padding: var(--button-md-padding);
+  font-size: var(--button-md-font-size);
+
+  svg {
+    width: var(--button-md-svg-size);
+    height: var(--button-md-svg-size);
+  }
+}
+
+.sizeLg {
+  padding: var(--button-lg-padding);
+  font-size: var(--button-lg-font-size);
+
+  svg {
+    width: var(--button-lg-svg-size);
+    height: var(--button-lg-svg-size);
+  }
+}
+
+.buttonIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  transition-property: transform;
+
+  &:hover {
+    transform: scale(0.92);
+  }
+}
+
+.buttonIconCircle {
+  background-color: rgba(0, 0, 0, 0.1);
+  height: min-content;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.roundButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    transform: scale(0.9);
+  }
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: inherit;
+  transition: 0.2s;
+  background-color: transparent;
+  border-radius: 10px;
+  transition-property: transform;
+
+  &:hover {
+    transform: scale(0.90);
+    opacity: 0.5 !important;
+  }
+}
+
+.iconButtonDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.iconButtonStylized {
+  border-radius: 50%;
+  height: min-content;
+  padding: 5px;
+  background-color: var(--color-secondary-accent);
+}
+
+.iconButtonPanel {
+  opacity: 1;
+  padding: 5px 8px;
+  border-radius: 10px;
+  background-color: var(--color-neutral);
+  transition-property: background-color;
+  transform: none;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: none;
+    opacity: 1;
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}

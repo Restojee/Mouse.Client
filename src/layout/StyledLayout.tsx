@@ -1,36 +1,16 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Layout.module.scss";
 
-export const StyledLayout = styled.div(({ theme }) => ({
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  maxHeight: "100vh",
-  height: "100vh",
-  overflow: "auto",
-  width: "100%",
-  padding: "10px 0",
-  fontSize: theme.font.fontSize,
-  backgroundColor: theme.colors.primary,
-  "@media all and (max-width: 768px)": {
-    flexDirection: "column",
-    padding: 0,
-    height: "100dvh",
-    maxHeight: "100dvh",
-    overflow: "hidden",
-  },
-}));
+export const Layout = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.layout, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+Layout.displayName = "Layout";
 
-export const StyledWrapper = styled.div(({ theme }) => ({
-  display: "flex",
-  flexGrow: 1,
-  backgroundColor: theme.colors.secondary,
-  borderRadius: 20,
-  minWidth: 0,
-  overflow: "hidden",
-  "@media all and (max-width: 768px)": {
-    borderRadius: 15,
-    margin: "8px 8px 0 8px",
-    flexDirection: "column",
-    overflow: "hidden",
-  },
-}));
+export const Wrapper = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.wrapper, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+Wrapper.displayName = "Wrapper";

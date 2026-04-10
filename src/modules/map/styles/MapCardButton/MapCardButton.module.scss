@@ -1,0 +1,14 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transition: 0.2s;
+  z-index: 1;
+}
+
+.hidden {
+  opacity: 0;
+}

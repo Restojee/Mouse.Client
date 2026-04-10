@@ -11,6 +11,7 @@ import { mapCreateReducer } from "@/modules/map/containers/map-create";
 import { mapsReducer } from "@/modules/map/containers/map-list/slice";
 import { tagsReducer } from "@/modules/tag";
 import { usersReducer } from "@/modules/user/slice";
+import { sheetReducer } from "@/ui/Sheet/slice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   mapCreate: mapCreateReducer,
   info: infoReducer,
   notifications: notificationsReducer,
+  sheet: sheetReducer,
 });
 
 const makeStore = () => configureStore({ reducer: rootReducer });

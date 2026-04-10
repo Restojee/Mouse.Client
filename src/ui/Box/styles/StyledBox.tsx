@@ -1,6 +1,5 @@
 import { Property } from "csstype";
 import React from "react";
-import styled from "styled-components";
 
 export type StyledBoxProps = {
   direction: Property.FlexDirection;
@@ -42,48 +41,97 @@ export type StyledBoxProps = {
   bgColorByActive: string;
   stylized: boolean;
   children: React.ReactNode;
+  className: string;
 };
-export const StyledBox = styled.div<Partial<StyledBoxProps>>(({ theme, ...props }) => ({
-  display: props.display || "flex",
-  flexDirection: props.direction || "row",
-  alignItems: props.align,
-  flex: props.flex,
-  boxShadow: props.boxShadow,
-  justifyContent: props.justify,
-  gap: props.gap,
-  gridTemplateColumns: props.gridTemplateColumns,
-  rowGap: props.gap,
-  margin: props.margin,
-  padding: props.padding,
-  backgroundColor: props.bgColor,
-  border: props.border,
-  textAlign: props.textAlign,
-  fontSize: props.fontSize,
-  fontWeight: props.fontWeight,
-  color: props.color,
-  borderRadius: props.borderRadius,
-  maxWidth: props.maxWidth,
-  maxHeight: props.maxHeight,
-  minHeight: props.minHeight,
-  minWidth: props.minWidth,
-  width: props.width,
-  height: props.height,
-  opacity: props.opacity,
-  position: props.position,
-  overflow: props.overflow,
-  flexGrow: props.grow,
-  flexWrap: props.wrap,
-  borderBottom: props.borderBottom,
-  columnGap: props.gap,
-  transform: props.transform,
-  transition: props.transition,
-  cursor: props.cursor,
-  ...(props.stylized && {
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: props.bgColor || theme.colors.primary,
-    "&:hover": {
-      backgroundColor: props.bgColorByActive || theme.colors.primaryLight,
-    },
-  }),
-}));
+
+const stylePropKeys = new Set([
+  "direction", "align", "borderRadius", "justify", "position", "gap",
+  "margin", "padding", "bgColor", "border", "maxWidth", "minWidth",
+  "minHeight", "color", "width", "height", "opacity", "overflow",
+  "wrap", "transform", "transition", "grow", "cursor", "textAlign",
+  "fontSize", "fontWeight", "boxShadow", "display", "zIndex",
+  "borderBottom", "gridTemplateColumns", "flex", "maxHeight",
+  "isClickable", "isActive", "bgColorByActive", "stylized",
+]);
+
+/** @deprecated Use plain `<div>` with inline styles or CSS module classes instead */
+export const StyledBox = React.forwardRef<
+  HTMLDivElement,
+  Partial<StyledBoxProps> & React.HTMLAttributes<HTMLDivElement>
+>(({ children, className, style, ...props }, ref) => {
+  const {
+    direction, align, borderRadius, justify, position, gap,
+    margin, padding, bgColor, border, maxWidth, minWidth,
+    minHeight, color, width, height, opacity, overflow,
+    wrap, transform, transition, grow, cursor, textAlign,
+    fontSize, fontWeight, boxShadow, display, zIndex,
+    borderBottom, gridTemplateColumns, flex, maxHeight,
+    stylized,
+    ...htmlProps
+  } = props as Partial<StyledBoxProps> & Record<string, unknown>;
+
+  // Filter out custom props that shouldn't go to DOM
+  const cleanHtmlProps: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(htmlProps)) {
+    if (!stylePropKeys.has(key)) {
+      cleanHtmlProps[key] = value;
+    }
+  }
+
+  const computedStyle: React.CSSProperties = {
+    display: display || "flex",
+    flexDirection: direction || "row",
+    alignItems: align,
+    flex,
+    boxShadow,
+    justifyContent: justify,
+    gap,
+    gridTemplateColumns,
+    rowGap: gap,
+    margin,
+    padding,
+    backgroundColor: bgColor,
+    border,
+    textAlign,
+    fontSize,
+    fontWeight,
+    color,
+    borderRadius,
+    maxWidth,
+    maxHeight,
+    minHeight,
+    minWidth,
+    width,
+    height,
+    opacity,
+    position,
+    overflow,
+    flexGrow: grow,
+    flexWrap: wrap,
+    borderBottom,
+    columnGap: gap,
+    transform,
+    transition,
+    cursor,
+    zIndex,
+    ...(stylized && {
+      padding: padding ?? 15,
+      borderRadius: borderRadius ?? 10,
+      backgroundColor: bgColor || "var(--color-primary)",
+    }),
+    ...style,
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={computedStyle}
+      {...cleanHtmlProps}
+    >
+      {children}
+    </div>
+  );
+});
+
+StyledBox.displayName = "StyledBox";

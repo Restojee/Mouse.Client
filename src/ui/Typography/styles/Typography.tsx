@@ -1,5 +1,6 @@
-import styled from "styled-components";
+import React from "react";
 import { Property } from "csstype";
+import styles from "./Typography.module.scss";
 
 type Props = {
   textAlign?: Property.TextAlign;
@@ -13,39 +14,47 @@ type Props = {
   isLink?: boolean;
   isClickable?: boolean;
   isUnselectable?: boolean;
+  color?: string;
+  children?: React.ReactNode;
+  className?: string;
 };
-export const Typography = styled.p<Props>((props) => ({
-  textAlign: props.textAlign,
-  wordWrap: "break-word",
-  opacity: props.opacity,
-  fontWeight: props.fontWeight,
-  margin: props.margin,
-  fontSize: props.fontSize,
-  ...(props.isUpperCase && {
-    textTransform: "uppercase",
-  }),
-  ...(props.isUnselectable && {
-    userSelect: "none",
-  }),
-  color: props.color,
-  ...(props.isEllipsis && {
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
-  }),
-  ...(props.isLink && {
-    color: props.theme.colors.brandColor,
-    cursor: "pointer",
-    "&:hover": {
-      textDecoration: "underline",
-    },
-  }),
-  ...(props.isClickable && {
-    opacity: 0.5,
-    fontSize: 12,
-    cursor: "pointer",
-    "&:hover": {
-      opacity: 0.7,
-    },
-  }),
-}));
+
+export const Typography = React.forwardRef<
+  HTMLParagraphElement,
+  Props & React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
+  const {
+    textAlign, fontWeight, opacity, margin, fontSize, color,
+    isEllipsis, isUpperCase, isLink, isClickable, isUnselectable,
+    ...htmlProps
+  } = props;
+
+  const classes = [styles.typography, className];
+  if (isEllipsis) classes.push(styles.ellipsis);
+  if (isUpperCase) classes.push(styles.uppercase);
+  if (isLink) classes.push(styles.link);
+  if (isClickable) classes.push(styles.clickable);
+  if (isUnselectable) classes.push(styles.unselectable);
+
+  const style: React.CSSProperties = {
+    textAlign,
+    fontWeight,
+    opacity,
+    margin,
+    fontSize,
+    color,
+  };
+
+  return (
+    <p
+      ref={ref}
+      className={classes.filter(Boolean).join(" ")}
+      style={style}
+      {...htmlProps}
+    >
+      {children}
+    </p>
+  );
+});
+
+Typography.displayName = "Typography";

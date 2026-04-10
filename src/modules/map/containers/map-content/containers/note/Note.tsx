@@ -1,4 +1,4 @@
-import { StyledMapContentNoteForm } from "@/modules/map/styles/styled";
+import { MapContentNoteForm } from "@/modules/map/styles/MapContentNoteForm/MapContentNoteForm";
 import { StyledBox } from "@/ui/Box";
 import { Typography } from "@/ui/Typography";
 import React, { ChangeEvent, useEffect, useState } from "react";
@@ -51,7 +51,7 @@ export const Note = () => {
       >
         Моя заметка
       </Typography>
-      <StyledMapContentNoteForm
+      <MapContentNoteForm
         value={value}
         onBlur={onSaveNoteHandler}
         onChange={onChangeHandler}

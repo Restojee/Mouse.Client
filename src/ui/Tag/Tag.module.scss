@@ -1,0 +1,33 @@
+.tag {
+  justify-content: center;
+  text-align: center;
+  width: min-content;
+  white-space: nowrap;
+  align-items: center;
+  padding: 8px 15px;
+  font-size: 0.8rem;
+  border-radius: 20px;
+
+  svg {
+    opacity: 0.8;
+  }
+}
+
+.chips {
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &:hover {
+    transform: scale(0.95);
+  }
+}
+
+.active {
+  background-color: var(--color-brand);
+  color: var(--color-brand-contrast-text);
+}
+
+.small {
+  font-size: 0.7rem;
+  padding: 8px 10px;
+}

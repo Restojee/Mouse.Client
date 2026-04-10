@@ -1,0 +1,48 @@
+.wrapper {
+  width: 100%;
+  align-items: center;
+  max-height: 400px;
+  height: 100%;
+  position: relative;
+
+  :global(.swiper-pagination-bullet) {
+    background-color: rgba(255, 255, 255, 0.8);
+    opacity: 0.6;
+    width: 12px;
+    height: 12px;
+  }
+
+  :global(.swiper-pagination-bullet-active-main) {
+    background-color: rgba(255, 255, 255, 0.8);
+    opacity: 1;
+  }
+
+  :global(.swiper-button-disabled) {
+    transition: none;
+    opacity: 0;
+  }
+}
+
+.navArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+  color: rgba(0, 0, 0, 0.8);
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  user-select: none;
+  transition-property: transform;
+  transition: 0.2s;
+  z-index: 1;
+
+  &:hover {
+    transform: scale(0.92);
+  }
+}

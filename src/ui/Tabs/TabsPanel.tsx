@@ -1,46 +1,33 @@
 import React from "react";
-import styled from "styled-components";
+import styles from "./Tabs.module.scss";
 
 type Props = {
   activeIndex: number;
   children: React.ReactNode[];
 };
 
-const Viewport = styled.div({
-  overflow: "hidden",
-  width: "100%",
-});
-
-const Track = styled.div<{ activeIndex: number; count: number }>(({ activeIndex, count }) => ({
-  display: "flex",
-  width: `${count * 100}%`,
-  transform: `translateX(-${(activeIndex / count) * 100}%)`,
-  transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-}));
-
-const Slide = styled.div<{ count: number }>(({ count }) => ({
-  width: `${100 / count}%`,
-  flexShrink: 0,
-}));
-
 export const TabsPanel = ({ activeIndex, children }: Props) => {
   const count = children.length;
 
   return (
-    <Viewport>
-      <Track
-        activeIndex={activeIndex}
-        count={count}
+    <div className={styles.viewport}>
+      <div
+        className={styles.track}
+        style={{
+          width: `${count * 100}%`,
+          transform: `translateX(-${(activeIndex / count) * 100}%)`,
+        }}
       >
         {children.map((child, i) => (
-          <Slide
+          <div
             key={i}
-            count={count}
+            className={styles.slide}
+            style={{ width: `${100 / count}%` }}
           >
             {child}
-          </Slide>
+          </div>
         ))}
-      </Track>
-    </Viewport>
+      </div>
+    </div>
   );
 };

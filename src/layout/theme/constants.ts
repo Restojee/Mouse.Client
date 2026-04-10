@@ -144,7 +144,7 @@ const DarkTheme: GlobalTheme = {
   },
 };
 
-export const GlobalThemes = {
+export const GlobalThemes: Record<ThemeKey, GlobalTheme> = {
   [ThemeKey.DARK]: DarkTheme,
   [ThemeKey.LIGHT]: DefaultTheme,
 };

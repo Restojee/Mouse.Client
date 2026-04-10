@@ -1,7 +1,7 @@
 import { LayoutProvider } from "@/layout/common/LayoutProvider";
 import { AuthProvider } from "@/modules/auth/AuthProvider";
 import { RootState, wrapper } from "@/store";
-import "@/styles/globals.css";
+import "@/styles/globals.scss";
 import Notification from "@/ui/Notification/Notification";
 import { Session } from "next-auth";
 import { AppProps } from "next/app";
@@ -9,6 +9,8 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { Provider } from "react-redux";
 import { PopupProvider } from "@/ui/Popup/PopupContext";
+import { SheetOutlet } from "@/ui/Sheet/view";
+import Maps from "@/pages/index";
 
 const ThemeProvider = dynamic(() => import("@/layout/theme/ThemeProvider"), { ssr: false });
 
@@ -25,8 +27,9 @@ function App({ Component, ...rest }: AppProps<{ session: Session; initialState: 
         <AuthProvider>
           <ThemeProvider>
             <LayoutProvider>
-              <Component {...props.pageProps} />
+              <Maps {...props.pageProps} />
             </LayoutProvider>
+            <SheetOutlet />
             <Notification />
           </ThemeProvider>
         </AuthProvider>

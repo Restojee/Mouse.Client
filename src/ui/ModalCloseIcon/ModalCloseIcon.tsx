@@ -1,7 +1,7 @@
 import { CloseIcon } from "@/svg/CloseIcon";
 import { IconButton } from "@/ui/Button/IconButton";
 import React from "react";
-import { StyledModalCloseIcon } from "./styles";
+import styles from "./ModalCloseIcon.module.scss";
 
 type CloseIconPropsType = {
   onClick?: () => void;
@@ -10,10 +10,10 @@ type CloseIconPropsType = {
 };
 export const ModalCloseIcon = ({ onClick }: CloseIconPropsType) => {
   return (
-    <StyledModalCloseIcon>
+    <div className={styles.closeIcon}>
       <IconButton onClick={onClick}>
         <CloseIcon />
       </IconButton>
-    </StyledModalCloseIcon>
+    </div>
   );
 };

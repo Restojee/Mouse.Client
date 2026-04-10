@@ -7,7 +7,7 @@ import ImageModal from "@/ui/ImageModal/ImageModal";
 import { ImagesSwiper } from "@/ui/ImagesSwiper/ImagesSwiper";
 import { PreviewImageWrapper } from "./components/PreviewImageWrapper";
 import { StyledBox } from "@/ui/Box";
-import { DeleteModal } from "@/modules/map/containers/map-content/containers/image/components/DeleteModal";
+import { useDeleteCompletedModal } from "./hooks/useDeleteCompletedModal";
 import Swiper from "swiper";
 
 type MapContentPreviewPropsType = {
@@ -20,7 +20,7 @@ export const Preview = React.memo(
   ({ images, image, setActiveMapCompleted, mapCompleted }: MapContentPreviewPropsType) => {
     const [openedImage, setOpenedImage] = useState<string | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const { showDeleteModal } = useDeleteCompletedModal();
     const [actualImages, setActualImages] = useState(images || []);
 
     const swiperRef = useRef<Swiper | null>(null);
@@ -31,14 +31,6 @@ export const Preview = React.memo(
 
     const onOpenImage = useCallback((image: string) => {
       setOpenedImage(image);
-    }, []);
-
-    const onCloseDeleteModal = useCallback(() => {
-      setIsDeleteOpen(false);
-    }, []);
-
-    const onOpenDeleteModal = useCallback(() => {
-      setIsDeleteOpen(true);
     }, []);
 
     const onSwiper = useCallback((swiper: SwiperClass) => {
@@ -112,10 +104,6 @@ export const Preview = React.memo(
           onClose={onCloseImage}
           imageSrc={openedImage}
         />
-        <DeleteModal
-          isOpen={isDeleteOpen}
-          onClose={onCloseDeleteModal}
-        />
         <Display condition={imagesCount && imagesCount > 1}>
           <StyledMapContentCount>
             {activeIndex + 1} из {imagesCount}
@@ -128,7 +116,7 @@ export const Preview = React.memo(
           {images?.map((el) => (
             <SwiperSlide key={el.id}>
               <PreviewImageWrapper
-                onDeleteOpen={onOpenDeleteModal}
+                onDeleteOpen={showDeleteModal}
                 onClick={onOpenImage}
                 imagesCount={imagesCount}
                 image={el.image?.name}

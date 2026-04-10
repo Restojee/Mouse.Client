@@ -2,7 +2,7 @@ import { Swiper } from "swiper/react";
 import { Navigation } from "swiper";
 import "swiper/css";
 import { ReactNode } from "react";
-import { CardSliderNavArrow, CardSliderWrapper } from "@/ui/CardsSwiper/styles";
+import swiperStyles from "./CardsSwiper.module.scss";
 import { ExpandRightIcon } from "@/svg/ExpandRightIcon";
 import { ExpandLeftIcon } from "@/svg/ExpandLeftIcon";
 
@@ -15,7 +15,7 @@ export const CardsSwiper = (props: Props) => {
   const slideNextClass = `card-slider-nav-arrow-next`;
 
   return (
-    <CardSliderWrapper>
+    <div className={swiperStyles.wrapper} style={{ display: "flex" }}>
       <Swiper
         centeredSlides={false}
         navigation={{
@@ -28,18 +28,18 @@ export const CardsSwiper = (props: Props) => {
       >
         {props.children}
       </Swiper>
-      <CardSliderNavArrow
-        className={slideNextClass}
-        isNext
+      <div
+        className={[swiperStyles.navArrow, slideNextClass].join(" ")}
+        style={{ right: -18 }}
       >
         <ExpandRightIcon />
-      </CardSliderNavArrow>
-      <CardSliderNavArrow
-        className={slidePrevClass}
-        isPrev
+      </div>
+      <div
+        className={[swiperStyles.navArrow, slidePrevClass].join(" ")}
+        style={{ left: -18 }}
       >
         <ExpandLeftIcon />
-      </CardSliderNavArrow>
-    </CardSliderWrapper>
+      </div>
+    </div>
   );
 };

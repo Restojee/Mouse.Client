@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { getMapImageLink } from "@/common/utils";
 import { EditFillIcon } from "@/svg/EditFillIcon";
 import { useImage } from "@/ui/ImageForm/hooks/useImage";
-import { StyledUpdateAvatar, StyledUpdateAvatarShadow } from "./styles";
+import styles from "./UpdateAvatar.module.scss";
 
 type UpdateAvatarType = {
   currentImage?: string;
@@ -32,8 +32,9 @@ export const UpdateAvatar = (props: UpdateAvatarType) => {
   }, [image]);
 
   return (
-    <StyledUpdateAvatar
-      image={`url(${image || getMapImageLink(currentImage)})` || ""}
+    <div
+      className={styles.avatar}
+      style={{ backgroundImage: `url(${image || getMapImageLink(currentImage)})` || "" }}
       onClick={onClickHandler}
     >
       <input
@@ -43,9 +44,9 @@ export const UpdateAvatar = (props: UpdateAvatarType) => {
         accept={".png, .jpg, .jpeg"}
         style={{ display: "none" }}
       />
-      <StyledUpdateAvatarShadow>
+      <div className={styles.shadow}>
         <EditFillIcon size={30} />
-      </StyledUpdateAvatarShadow>
-    </StyledUpdateAvatar>
+      </div>
+    </div>
   );
 };

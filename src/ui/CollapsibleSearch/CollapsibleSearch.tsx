@@ -1,5 +1,4 @@
 import * as React from "react";
-import styled from "styled-components";
 import { SearchIcon } from "@/svg/SearchIcon";
 import { IconButton } from "@/ui/Button/IconButton";
 import { Input } from "@/ui/Input";
@@ -10,16 +9,8 @@ type Props = {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onOpenChange?: (isOpen: boolean) => void;
   placeholder?: string;
-  /** Always show the input expanded, never collapsible. Useful on desktop. */
   alwaysOpen?: boolean;
 };
-
-const Wrapper = styled.div({
-  display: "flex",
-  alignItems: "center",
-  gap: 4,
-  position: "relative",
-});
 
 export const CollapsibleSearch: React.FC<Props> = ({
   value = "",
@@ -64,7 +55,7 @@ export const CollapsibleSearch: React.FC<Props> = ({
   const resolvedOpen = isOpen || alwaysOpen;
 
   return (
-    <Wrapper>
+    <div style={{ display: "flex", alignItems: "center", gap: 4, position: "relative" }}>
       <div
         style={{
           width: resolvedOpen ? 215 : 0,
@@ -95,6 +86,6 @@ export const CollapsibleSearch: React.FC<Props> = ({
       >
         <SearchIcon />
       </IconButton>
-    </Wrapper>
+    </div>
   );
 };

@@ -1,20 +1,19 @@
 import { formatDateTime } from "@/common/utils/formatDateTime";
-import { selectAppTheme } from "@/bll/appReducer";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { GlobalThemes } from "@/layout/theme/constants";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { selectIsAuth } from "@/modules/auth/slice";
 import { useMap } from "@/modules/map/common";
 import { removeNonDigits } from "@/modules/map/containers/map-list";
 import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
-import { CommentFillIcon } from "@/svg/CommentFillIcon";
 import { Display } from "@/ui/Display";
 import { ModalCloseIcon } from "@/ui/ModalCloseIcon/ModalCloseIcon";
-import { MobileSheet } from "@/ui/MobileSheet/MobileSheet";
-import React, { useCallback, useMemo, useState } from "react";
-import styled, { ThemeProvider } from "styled-components";
-import { StyledMapContentMain, StyledMapContentSidebar, StyledMapContentPaper } from "../../styles/styled";
+import { useSheet } from "@/ui/Sheet";
+import React, { useCallback, useMemo } from "react";
+import { MapContentMain } from "../../styles/MapContentMain/MapContentMain";
+import { MapContentPaper } from "../../styles/MapContentPaper/MapContentPaper";
+import { MapContentSidebar } from "../../styles/MapContentSidebar/MapContentSidebar";
+import contentStyles from "./MapContent.module.scss";
 import { SidebarProfile } from "./components/sidebar-profile/SidebarProfile";
 import { SidebarIcons } from "./containers/actions/SidebarIcons";
 import { SidebarComments } from "./containers/comments/SidebarComments";
@@ -24,48 +23,16 @@ import { Header } from "./containers/header/Header";
 import { Preview } from "./containers/image/Preview";
 import { Note } from "./containers/note/Note";
 import { Tags } from "./containers/tags/Tags";
-
-const MobileScrollArea = styled.div(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  flexGrow: 1,
-  minHeight: 0,
-  overflowY: "auto",
-  overflowX: "hidden",
-  gap: 26,
-  padding: "20px 10px 40px",
-  color: theme.colors.textOnPrimary,
-}));
-
-const MobileSidebarButton = styled.button(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-  padding: "12px 16px",
-  borderRadius: 12,
-  border: "none",
-  backgroundColor: theme.colors.primaryAccent,
-  color: theme.colors.textOnPrimary,
-  cursor: "pointer",
-  fontSize: "14px",
-  fontWeight: 500,
-  width: "100%",
-  justifyContent: "center",
-  transition: "opacity 0.2s",
-  marginTop: "auto",
-  "&:hover": { opacity: 0.8 },
-}));
+import { Button } from "@/ui/Button";
 
 export const MapContent = React.memo(() => {
   const { theme } = useAppTheme();
-  const appThemeKey = useAppSelector(selectAppTheme);
-  const appTheme = appThemeKey ? GlobalThemes[appThemeKey] : theme;
   const { closeMap } = useMapView();
   const { map } = useMap();
   const { activeMapCompleted, changeActiveCompletedMap, selectedCompletedMaps } = useCompletedMap();
   const isAuth = useAppSelector(selectIsAuth);
   const isMobile = useIsMobile();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const sheet = useSheet();
 
   const fixEventPropagation = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -83,6 +50,10 @@ export const MapContent = React.memo(() => {
 
   const sidebarContent = (
     <>
+      <SidebarProfile
+        user={activeMapCompleted?.user || map?.user}
+        date={dateTime}
+      />
       <SidebarIcons
         levelId={map?.id}
         favoritesCount={map?.favoritesCount}
@@ -113,40 +84,39 @@ export const MapContent = React.memo(() => {
       </Display>
       <Tags tags={map?.tags} />
       <Display condition={isMobile}>
-        <MobileSidebarButton onClick={() => setIsSidebarOpen(true)}>
-          <CommentFillIcon />
-          Комментарии
-        </MobileSidebarButton>
+        <Button
+          label="Комментарии"
+          bgColor={theme.colors.primary}
+          width="100%"
+          className={contentStyles.mobileSidebarButton}
+          onClick={() =>
+            sheet.show(sidebarContent, {
+              noHeader: true,
+              zIndex: 450,
+              withoutButtons: true,
+              withoutTitle: true,
+              height: 600,
+            })
+          }
+        />
       </Display>
     </>
   );
 
   return (
-    <StyledMapContentPaper onClick={fixEventPropagation}>
+    <MapContentPaper onClick={fixEventPropagation}>
       {isMobile ? (
-        <MobileScrollArea>{mainContent}</MobileScrollArea>
+        <div className={contentStyles.mobileScrollArea}>{mainContent}</div>
       ) : (
-        <StyledMapContentMain>{mainContent}</StyledMapContentMain>
+        <MapContentMain>{mainContent}</MapContentMain>
       )}
-      <StyledMapContentSidebar>
+      <MapContentSidebar>
         <ModalCloseIcon
           color={theme.colors.textOnSecondary}
           onClick={closeMap}
         />
         {sidebarContent}
-      </StyledMapContentSidebar>
-      <Display condition={isMobile}>
-        <ThemeProvider theme={appTheme}>
-          <MobileSheet
-            isOpen={isSidebarOpen}
-            onClose={() => setIsSidebarOpen(false)}
-            zIndex={450}
-            noHeader
-          >
-            {sidebarContent}
-          </MobileSheet>
-        </ThemeProvider>
-      </Display>
-    </StyledMapContentPaper>
+      </MapContentSidebar>
+    </MapContentPaper>
   );
 });

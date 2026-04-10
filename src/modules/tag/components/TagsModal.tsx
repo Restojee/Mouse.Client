@@ -1,20 +1,20 @@
 import { useTag } from "@/modules/tag/hooks/useTag";
 import { StyledBox } from "@/ui/Box";
-import { Modal } from "@/ui/Modal/Modal";
-import { StyledTag } from "@/ui/Tag/styled";
+import { AsyncSheet } from "@/ui/Sheet/view";
+import tagStyles from "@/ui/Tag/Tag.module.scss";
 import { Typography } from "@/ui/Typography";
 
 const TagsModal = () => {
   const { tagsList, onCloseModal, updateMapTags, toggleSelectedTag, checkIsSelectedTagId } = useTag();
 
   return (
-    <Modal
+    <AsyncSheet
       isOpen={true}
       title={"Выберите теги"}
       onClose={onCloseModal}
       onAccess={updateMapTags}
       width={600}
-      autoHeight
+      height={500}
     >
       <StyledBox
         gap="20px"
@@ -28,18 +28,23 @@ const TagsModal = () => {
           overflow={"auto"}
         >
           {tagsList.map(({ name, id }) => (
-            <StyledTag
+            <div
               key={name}
               onClick={() => toggleSelectedTag(id)}
-              isActive={checkIsSelectedTagId(id)}
-              chips
+              className={[tagStyles.tag, tagStyles.chips, checkIsSelectedTagId(id) && tagStyles.active]
+                .filter(Boolean)
+                .join(" ")}
+              style={{
+                display: "flex",
+                backgroundColor: checkIsSelectedTagId(id) ? undefined : "var(--color-neutral)",
+              }}
             >
               <Typography isEllipsis>{name}</Typography>
-            </StyledTag>
+            </div>
           ))}
         </StyledBox>
       </StyledBox>
-    </Modal>
+    </AsyncSheet>
   );
 };
 

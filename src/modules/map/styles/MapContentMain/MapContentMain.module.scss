@@ -1,0 +1,20 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+  color: var(--color-text-on-primary);
+  padding: 20px 20px 40px 20px;
+  border-radius: inherit;
+  flex-grow: 1;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  @media all and (max-width: 790px) {
+    max-width: 100%;
+  }
+}

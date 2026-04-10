@@ -1,5 +1,4 @@
 import { useUser } from "@/modules/user/hooks/useUser";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useAppSelector } from "@/hooks/useAppSelector";
@@ -17,7 +16,6 @@ type MapContentSidebarCommentsPropsType = {
   levelId: Map["id"];
 };
 export const SidebarComments = ({ levelId }: MapContentSidebarCommentsPropsType) => {
-  const { theme } = useAppTheme();
   const {
     comments,
     commentText,

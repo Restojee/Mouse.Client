@@ -1,43 +1,27 @@
-import styled, { CSSObject } from "styled-components";
+import React from "react";
+import styles from "./Notifications.module.scss";
 
-export const StyledTabsRow = styled.div({
-  position: "relative",
-  display: "flex",
-  gap: "20px",
-  margin: "0 0 20px 0",
-});
+export const StyledTabsRow = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.tabsRow, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledTabsRow.displayName = "StyledTabsRow";
 
-export const StyledTabSlideIndicator = styled.div(({ theme }) => ({
-  position: "absolute",
-  top: 0,
-  bottom: 0,
-  borderRadius: 15,
-  backgroundColor: theme.colors.brandColor,
-  pointerEvents: "none",
-  transition: "left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s",
-  zIndex: 0,
-}));
+export const StyledTabSlideIndicator = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={[styles.tabSlideIndicator, className].filter(Boolean).join(" ")} {...props} />
+  ),
+);
+StyledTabSlideIndicator.displayName = "StyledTabSlideIndicator";
 
-export const StyledTab = styled.div<{ isDisabled?: boolean; isActive: boolean }>(({ theme, ...props }) => ({
-  flexGrow: 1,
-  textAlign: "center",
-  whiteSpace: "nowrap",
-  textOverflow: "ellipsis",
-  overflow: "hidden",
-  padding: "8px 10px",
-  borderRadius: 15,
-  cursor: "pointer",
-  position: "relative",
-  zIndex: 1,
-  transition: "color 0.2s",
-  color: props.isActive ? "#FFFFFF" : "inherit",
-  fontWeight: props.isActive ? "bold" : "normal",
-  "&:hover": {
-    backgroundColor: props.isActive ? "transparent" : "rgba(0, 0, 0, 0.1)",
+type StyledTabProps = { isDisabled?: boolean; isActive: boolean };
+export const StyledTab = React.forwardRef<HTMLDivElement, StyledTabProps & React.HTMLAttributes<HTMLDivElement>>(
+  ({ isDisabled, isActive, className, ...props }, ref) => {
+    const classes = [styles.tab, className];
+    if (isActive) classes.push(styles.tabActive);
+    if (isDisabled) classes.push(styles.tabDisabled);
+    return <div ref={ref} className={classes.filter(Boolean).join(" ")} {...props} />;
   },
-  ...(props.isDisabled &&
-    ({
-      pointerEvents: "none",
-      color: theme.colors.disabled,
-    } as CSSObject)),
-}));
+);
+StyledTab.displayName = "StyledTab";

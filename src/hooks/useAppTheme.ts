@@ -3,18 +3,18 @@ import { LOCAL_STORAGE_KEYS } from "@/common/constants";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { GlobalThemes } from "@/layout/theme/constants";
 import { GlobalTheme, ThemeKey } from "@/layout/theme/types";
 import { useCallback, useMemo } from "react";
-import { useTheme } from "styled-components";
 
 export const useAppTheme = () => {
   const dispatch = useAppDispatch();
 
   const { getValue, setValue } = useLocalStorage<ThemeKey>(LOCAL_STORAGE_KEYS.APP_THEME);
 
-  const theme = useTheme();
-
   const themeKey = useAppSelector(selectAppTheme);
+
+  const theme: GlobalTheme = useMemo(() => (themeKey ? GlobalThemes[themeKey] : GlobalThemes["LIGHT"]), [themeKey]);
 
   const localStorageTheme = useMemo(() => {
     return getValue();
@@ -49,7 +49,7 @@ export const useAppTheme = () => {
   }, [dispatch, getValue, setValue, themeKey]);
 
   return {
-    theme: theme as GlobalTheme,
+    theme,
     themeKey: themeKey,
     onChangeTheme,
     toggleTheme,

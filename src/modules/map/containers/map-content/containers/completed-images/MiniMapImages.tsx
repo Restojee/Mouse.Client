@@ -1,7 +1,6 @@
 import { getMapImageLink } from "@/common/utils";
 import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
 import { StyledBox } from "@/ui/Box";
-import Image from "next/image";
 import React from "react";
 import { MINI_IMAGES_HEIGHT, MINI_IMAGES_WIDTH } from "./constants";
 import { useCompletedMap } from "./hooks/useCompletedMap";
@@ -48,13 +47,15 @@ export const MiniMapImages = () => {
               <Display condition={item.count && item.count > 1}>
                 <StyledMiniMapCount>{item.count}</StyledMiniMapCount>
               </Display>
-              <Image
+              <img
                 alt={item.user?.username}
-                src={getMapImageLink(item?.image?.name)}
+                src={getMapImageLink(item?.image?.name, "display")}
                 height={MINI_IMAGES_HEIGHT}
                 width={MINI_IMAGES_WIDTH}
-                objectPosition={"center"}
-                objectFit={"cover"}
+                style={{
+                  objectPosition: "center",
+                  objectFit: "cover",
+                }}
               />
             </StyledMiniMapImageContainer>
           </SwiperSlide>

@@ -1,16 +1,27 @@
-import styled from "styled-components";
-import { StyledBox } from "@/ui/Box";
+import React from "react";
+import { StyledBox, StyledBoxProps } from "@/ui/Box";
+import styles from "./ClickableBox.module.scss";
 
-export const StyledClickableBox = styled(StyledBox)((props) => ({
-  cursor: "pointer",
-  borderRadius: 10,
-  transition: "0.2s",
-  "&:hover": {
-    opacity: 0.7,
-    transform: "scale(0.95)",
+type Props = Partial<StyledBoxProps> & React.HTMLAttributes<HTMLDivElement>;
+
+export const StyledClickableBox = React.forwardRef<HTMLDivElement, Props>(
+  ({ className, isActive, bgColorByActive, ...props }, ref) => {
+    const classes = [styles.clickableBox, className];
+    if (isActive) classes.push(styles.active);
+
+    return (
+      <StyledBox
+        ref={ref}
+        className={classes.filter(Boolean).join(" ")}
+        style={
+          isActive
+            ? { backgroundColor: bgColorByActive || "var(--color-primary-light)", pointerEvents: "none" }
+            : undefined
+        }
+        {...props}
+      />
+    );
   },
-  ...(props.isActive && {
-    backgroundColor: props.bgColorByActive || props.theme.colors.primaryLight,
-    pointerEvents: "none",
-  }),
-}));
+);
+
+StyledClickableBox.displayName = "StyledClickableBox";

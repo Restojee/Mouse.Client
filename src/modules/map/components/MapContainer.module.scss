@@ -1,0 +1,18 @@
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  transition: max-width 0.25s ease, opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.titleWrapperHidden {
+  max-width: 0;
+  opacity: 0;
+}
+
+.titleWrapperVisible {
+  max-width: 400px;
+  opacity: 1;
+}

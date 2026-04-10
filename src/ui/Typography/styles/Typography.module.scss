@@ -1,0 +1,36 @@
+.typography {
+  word-wrap: break-word;
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.link {
+  color: var(--color-brand);
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.clickable {
+  opacity: 0.5;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.unselectable {
+  user-select: none;
+}

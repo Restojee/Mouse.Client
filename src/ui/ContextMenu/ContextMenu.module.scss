@@ -1,0 +1,98 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--color-text-on-secondary);
+  transition: background-color 0.1s;
+
+  &:hover {
+    background-color: var(--color-paper-accent);
+  }
+
+  &[data-active="true"] {
+    background-color: var(--color-paper-accent);
+    font-weight: 600;
+  }
+}
+
+.optionDisabled {
+  cursor: default;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.optionDanger {
+  color: var(--color-error);
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-input-border);
+  margin: 4px 0;
+}
+
+.subMenuIcon {
+  margin-left: auto;
+  opacity: 0.5;
+  font-size: 0.7rem;
+}
+
+.title {
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--color-input-border);
+}
+
+.titleSm {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+}
+
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-on-secondary);
+  border-bottom: 1px solid var(--color-input-border);
+  margin-bottom: 4px;
+}
+
+@keyframes scaleIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.subMenuPopup {
+  position: fixed;
+  z-index: 1002;
+  min-width: 180px;
+  background: var(--color-secondary);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--site-border, 15px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 4px 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.9);
+  animation: scaleIn 0.2s ease forwards;
+}

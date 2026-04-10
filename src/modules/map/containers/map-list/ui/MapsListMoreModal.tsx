@@ -1,28 +1,23 @@
 import { GetMapsApiArg, Map } from "@/api/codegen/genMouseMapsApi";
 import { mapsApi } from "@/api/mapsApi";
-import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
-import { StyledMapsGrid } from "@/modules/map/styles/StyledMapsGrid";
+import { MapsGrid } from "@/modules/map/styles/MapsGrid/MapsGrid";
 import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
-import { MobileSheet } from "@/ui/MobileSheet/MobileSheet";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MapCard } from "./map-card/MapCard";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useSheet } from "@/ui/Sheet";
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
   filter: GetMapsApiArg;
   zIndex?: number;
 };
 
-export const MapsListMoreModal: React.FC<Props> = ({ isOpen, onClose, filter, zIndex }) => {
+const MapsListContent: React.FC<{ filter: GetMapsApiArg }> = ({ filter }) => {
   const [maps, setMaps] = useState<Map[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  const { openMap } = useMapView();
 
   const hasMore = page < totalPages;
 
@@ -43,14 +38,8 @@ export const MapsListMoreModal: React.FC<Props> = ({ isOpen, onClose, filter, zI
   );
 
   useEffect(() => {
-    if (isOpen) {
-      setMaps([]);
-      setPage(1);
-      setTotalPages(1);
-      loadPage(1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+    loadPage(1);
+  }, []);
 
   const onLoadMore = useCallback(() => {
     if (!isLoading && hasMore) loadPage(page + 1);
@@ -64,33 +53,44 @@ export const MapsListMoreModal: React.FC<Props> = ({ isOpen, onClose, filter, zI
   });
 
   return (
-    <MobileSheet
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Все карты"
-      zIndex={zIndex}
-      height="92dvh"
+    <div
+      ref={scrollRef}
+      style={{ flex: 1, overflowY: "auto", padding: "0 8px 16px" }}
     >
-      <div
-        ref={scrollRef}
-        style={{ flex: 1, overflowY: "auto", padding: "0 8px 16px" }}
-      >
-        <StyledMapsGrid>
-          {maps.map((map) => (
-            <MapCard
-              key={map.id}
-              map={map}
-            />
-          ))}
-        </StyledMapsGrid>
-        <BoxLoader isLoading={isLoading} />
-        {hasMore && (
-          <div
-            ref={sentinelRef}
-            style={{ height: 1 }}
+      <StyledMapsGrid>
+        {maps.map((map) => (
+          <MapCard
+            key={map.id}
+            map={map}
           />
-        )}
-      </div>
-    </MobileSheet>
+        ))}
+      </StyledMapsGrid>
+      <BoxLoader isLoading={isLoading} />
+      {hasMore && (
+        <div
+          ref={sentinelRef}
+          style={{ height: 1 }}
+        />
+      )}
+    </div>
+  );
+};
+
+/**
+ * Хук для открытия модалки со списком карт.
+ */
+export const useShowMapsListMore = () => {
+  const sheet = useSheet();
+
+  return useCallback(
+    (filter: GetMapsApiArg, options?: { zIndex?: number }) => {
+      return sheet.show(<MapsListContent filter={filter} />, {
+        title: "Все карты",
+        height: "92dvh",
+        zIndex: options?.zIndex,
+        withoutButtons: true,
+      });
+    },
+    [sheet],
   );
 };

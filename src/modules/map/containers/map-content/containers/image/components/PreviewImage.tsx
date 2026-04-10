@@ -1,20 +1,16 @@
 import { getMapImageLink } from "@/common/utils";
-import Image, { ImageLoader } from "next/image";
 import React, { useCallback, useMemo } from "react";
 import { StyledBox } from "@/ui/Box";
 
 type PreviewImagePropsType = {
-  setIsLoading: (isLoading: boolean) => void;
   onClick?: (image: string) => void;
   image?: string | null;
-  onLoadingHandler: ImageLoader;
-  isMapFetching: boolean;
 };
 export const PreviewImage = (props: PreviewImagePropsType) => {
-  const { image, onLoadingHandler, setIsLoading, isMapFetching } = props;
+  const { image } = props;
 
   const mapImage = useMemo(() => {
-    return getMapImageLink(image);
+    return getMapImageLink(image, "display");
   }, [image]);
 
   const onImageOpen = useCallback(() => {
@@ -25,7 +21,7 @@ export const PreviewImage = (props: PreviewImagePropsType) => {
     props.onClick?.(mapImage);
   }, [image, mapImage, props]);
 
-  if (!image && isMapFetching) {
+  if (!image) {
     return null;
   }
 
@@ -34,17 +30,15 @@ export const PreviewImage = (props: PreviewImagePropsType) => {
       onClick={onImageOpen}
       cursor={props.image ? "zoom-in" : "default"}
     >
-      <Image
-        onLoadStart={() => setIsLoading(true)}
-        onLoadingComplete={() => setIsLoading(false)}
+      <img
         src={mapImage}
-        loader={onLoadingHandler}
         width={800}
         height={400}
-        objectFit={"contain"}
-        objectPosition={"center"}
-        alt={"map"}
-        priority
+        style={{
+          objectPosition: "center",
+          objectFit: "cover",
+        }}
+        alt="map"
       />
     </StyledBox>
   );

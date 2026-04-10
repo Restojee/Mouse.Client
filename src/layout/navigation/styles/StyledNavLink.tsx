@@ -1,5 +1,6 @@
+import React from "react";
 import { Property } from "csstype";
-import styled from "styled-components";
+import styles from "./Navigation.module.scss";
 
 type Props = {
   margin?: Property.Margin;
@@ -10,66 +11,27 @@ type Props = {
   isDisabled?: boolean;
   isChecked?: boolean;
   hasPin?: boolean;
+  children?: React.ReactNode;
+  className?: string;
 };
-export const StyledNavLink = styled.div<Props>(
-  ({ theme, margin, isOpen, withBorder, hasPin, isDisabled, gap, justifyContent }) => ({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    padding: "8px",
-    justifyContent: justifyContent ?? (isOpen === false ? "flex-end" : undefined),
-    borderRadius: "10px",
-    position: "relative",
-    zIndex: 1,
-    whiteSpace: "nowrap",
-    gap: gap,
-    border: "1px solid transparent",
-    margin: margin,
-    justifyContent: justifyContent,
-    transitionProperty: "background-color",
-    transition: "0.5s",
 
-    svg: {
-      transition: "0.2s",
-    },
-    ...(withBorder && {
-      "&:after": {
-        content: '""',
-        position: "absolute",
-        bottom: -5,
-        right: 5,
-        left: 5,
-        height: 1,
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
-      },
-    }),
-    ...(isDisabled && {
-      opacity: 0.3,
-      "*": {
-        cursor: "default",
-      },
-    }),
-    ...(hasPin && {
-      "&:before": {
-        content: '""',
-        position: "absolute",
-        top: 6,
-        right: 6,
-        height: 6,
-        width: 6,
-        borderRadius: 50,
-        backgroundColor: theme.colors.brandColor,
-        zIndex: 1,
-      },
-    }),
-    ...(!isDisabled && {
-      cursor: "pointer",
-      "&:hover": {
-        backgroundColor: isOpen ? `rgba(255, 255, 255, 0.05)` : `rgba(255, 255, 255, 0.1)`,
-        svg: {
-          transform: "scale(0.85)",
-        },
-      },
-    }),
-  }),
+export const StyledNavLink = React.forwardRef<HTMLDivElement, Props & React.HTMLAttributes<HTMLDivElement>>(
+  ({ margin, justifyContent, gap, isOpen, withBorder, isDisabled, hasPin, className, style, ...props }, ref) => {
+    const classes = [styles.navLink, className];
+    if (!isDisabled) classes.push(styles.navLinkClickable);
+    if (isOpen !== undefined) classes.push(isOpen ? styles.navLinkOpen : styles.navLinkClosed);
+    if (withBorder) classes.push(styles.navLinkWithBorder);
+    if (isDisabled) classes.push(styles.navLinkDisabled);
+    if (hasPin) classes.push(styles.navLinkHasPin);
+
+    return (
+      <div
+        ref={ref}
+        className={classes.filter(Boolean).join(" ")}
+        style={{ margin, justifyContent, gap, ...style }}
+        {...props}
+      />
+    );
+  },
 );
+StyledNavLink.displayName = "StyledNavLink";

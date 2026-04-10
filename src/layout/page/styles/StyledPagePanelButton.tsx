@@ -1,24 +1,11 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Page.module.scss";
 
-export const StyledPagePanelButton = styled.button((props) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  borderRadius: 10,
-  color: "inherit",
-  padding: "5px 8px",
-  backgroundColor: props.theme.colors.neutral,
-  transition: "0.2s",
-  cursor: "pointer",
-  "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
+export const StyledPagePanelButton = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
+  ({ className, disabled, ...props }, ref) => {
+    const classes = [styles.pagePanelButton, className];
+    if (disabled) classes.push(styles.pagePanelButtonDisabled);
+    return <button ref={ref} className={classes.filter(Boolean).join(" ")} disabled={disabled} {...props} />;
   },
-  svg: {
-    width: 14,
-    height: 14,
-  },
-  ...(props.disabled && {
-    pointerEvents: "none",
-    opacity: 0.3,
-  }),
-}));
+);
+StyledPagePanelButton.displayName = "StyledPagePanelButton";

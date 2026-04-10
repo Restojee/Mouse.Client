@@ -1,0 +1,121 @@
+// CSS Custom Properties for theming
+// Light theme (default)
+:root,
+[data-theme="LIGHT"] {
+  // Brand
+  --color-brand: #e96b6b;
+  --color-brand-contrast-text: #ffffff;
+  --color-selection: #e96b6b;
+
+  // Primary
+  --color-primary-dark: #3d3d3d;
+  --color-primary: #2b2b2b;
+  --color-primary-light: #383838;
+  --color-primary-lighter: #3d3d3d;
+  --color-primary-accent: rgba(255, 255, 255, 0.08);
+  --color-text-on-primary: #fff;
+
+  // Secondary
+  --color-secondary: #fff;
+  --color-secondary-darker: #eaeaea;
+  --color-secondary-dark: #f8f8f8;
+  --color-secondary-accent: rgba(0, 0, 0, 0.28);
+  --color-text-on-secondary: #333333;
+  --color-icon-on-secondary: #555555;
+  --color-disabled: #b9b9b9;
+
+  // Neutral
+  --color-neutral: #F3F2F5;
+
+  // Map
+  --color-map-background: #6b7494;
+  --color-map-background-light: #a7acc7;
+  --color-background-shadow: rgba(255, 255, 255, 0.4);
+
+  // Default
+  --color-paper: #FFFFFF;
+  --color-paper-accent: rgba(0, 0, 0, 0.07);
+
+  // Status
+  --color-success: #70c073;
+  --color-danger: #ff8935;
+  --color-info: #6b88e9;
+  --color-error: #ce5252;
+
+  // Input
+  --color-input-border: rgba(0, 0, 0, 0.1);
+  --color-input-default: #fff;
+  --color-input-hover: #f5f5f5;
+  --color-input-focus: red;
+
+  // Font
+  --font-size: 14px;
+  --font-logo: 'Stick', sans-serif;
+  --font-size-h1: 20px;
+  --font-size-h2: 18px;
+  --font-size-h3: 16px;
+
+  // Block settings
+  --site-border: 20px;
+
+  // Sizes
+  --left-sidebar-width: 300px;
+  --right-sidebar-width: 380px;
+  --site-panel-width: 50px;
+  --modal-width: 540px;
+
+  --media-extra-large: 1140px;
+  --media-large: 960px;
+  --media-medium: 600px;
+  --media-small: 540px;
+
+  // Input sizes
+  --input-default-padding: 7px 15px;
+  --input-lg-padding: 13px 20px;
+
+  // Button sizes
+  --button-sm-padding: 8px 15px;
+  --button-sm-font-size: 12px;
+  --button-sm-svg-size: 12px;
+  --button-md-padding: 12px 25px;
+  --button-md-font-size: 0.9rem;
+  --button-md-svg-size: 16px;
+  --button-lg-padding: 16px 32px;
+  --button-lg-font-size: 16px;
+  --button-lg-svg-size: 14px;
+
+  // Z-index
+  --z-other: 1;
+  --z-popup: 3;
+  --z-left-sidebar: 5;
+  --z-right-sidebar: 5;
+  --z-mega-shadow: 200;
+  --z-notifications: 1500;
+  --z-modal: 201;
+  --z-dropdown: 5;
+}
+
+// Dark theme
+[data-theme="DARK"] {
+  --color-primary: #232323;
+  --color-secondary: #2b2b2b;
+  --color-secondary-accent: #1c1c1c;
+  --color-text-on-secondary: #eaeaea;
+  --color-text-on-primary: #eaeaea;
+  --color-disabled: #727272;
+
+  --color-input-default: rgb(61, 61, 61);
+  --color-input-hover: rgb(68, 68, 68);
+  --color-input-focus: rgb(68, 68, 68);
+  --color-input-border: rgb(68, 68, 68);
+
+  --color-secondary-dark: #262626;
+  --color-secondary-darker: #1e1e1e;
+  --color-icon-on-secondary: rgb(62, 62, 62);
+
+  --color-paper: #232323;
+  --color-paper-accent: rgba(255, 255, 255, 0.07);
+
+  --color-neutral: rgba(255, 255, 255, 0.05);
+  --color-background-shadow: rgba(0, 0, 0, 0.4);
+}

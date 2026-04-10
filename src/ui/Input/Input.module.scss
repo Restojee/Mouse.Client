@@ -1,0 +1,15 @@
+.fieldError {
+  font-size: 10px;
+  position: absolute;
+  text-align: center;
+  opacity: 0;
+  top: 80%;
+  overflow: hidden;
+  color: var(--color-error);
+  transition: 0.3s;
+}
+
+.fieldErrorVisible {
+  top: 100%;
+  opacity: 1;
+}

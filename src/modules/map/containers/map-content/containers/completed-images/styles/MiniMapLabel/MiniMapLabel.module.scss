@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  z-index: 1;
+}
+
+.active {
+  opacity: 0;
+}

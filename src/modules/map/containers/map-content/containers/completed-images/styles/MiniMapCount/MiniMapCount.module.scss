@@ -1,0 +1,14 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 5px;
+  right: 5px;
+  position: absolute;
+  background-color: var(--color-brand);
+  border-radius: 25px;
+  width: 16px;
+  height: 16px;
+  font-size: 0.7rem;
+  z-index: 1;
+}

@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import { useEditor, useRegisterPlugin } from "../../core/EditorContext";
-import { Modal } from "@/ui/Modal/Modal";
+import { AsyncSheet as Modal } from "@/ui/Sheet/view";
 import { Input } from "@/ui/Input/Input";
 import { BoldIcon } from "@/svg/BoldIcon";
 import { ItalicIcon } from "@/svg/ItalicIcon";

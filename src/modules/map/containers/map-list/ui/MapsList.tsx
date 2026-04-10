@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { StyledMapsGrid } from "@/modules/map/styles/StyledMapsGrid";
+import { MapsGrid } from "@/modules/map/styles/MapsGrid/MapsGrid";
 import { StyledBox } from "@/ui/Box";
 import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
 import { useRouter } from "next/router";
@@ -78,14 +78,14 @@ export const MapsList = React.memo(() => {
 
   return (
     <>
-      <StyledMapsGrid>
+      <MapsGrid>
         {maps?.map((map) => (
           <MapCard
             key={map.id}
             map={map}
           />
         ))}
-      </StyledMapsGrid>
+      </MapsGrid>
       <BoxLoader isLoading={isFetching} />
       {hasMore && <div ref={sentinelRef} style={{ height: 1 }} />}
     </>

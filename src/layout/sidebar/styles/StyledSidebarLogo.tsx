@@ -1,14 +1,12 @@
-import styled from "styled-components";
+import React from "react";
+import styles from "./Sidebar.module.scss";
 
-export const StyledSidebarLogo = styled.div<{ isOpen: boolean }>(({ isOpen, theme }) => ({
-  margin: "0 auto",
-  color: theme.colors.brandColor,
-  fontFamily: theme.font.logoFont,
-  fontSize: 30,
-  userSelect: "none",
-  "-moz-user-select": "none",
-  marginTop: "auto",
-  visibility: isOpen ? "visible" : "hidden",
-  opacity: isOpen ? "1" : "0",
-  transition: "0.2s",
-}));
+type Props = { isOpen: boolean };
+export const StyledSidebarLogo = React.forwardRef<HTMLDivElement, Props & React.HTMLAttributes<HTMLDivElement>>(
+  ({ isOpen, className, ...props }, ref) => {
+    const classes = [styles.sidebarLogo, className];
+    if (!isOpen) classes.push(styles.sidebarLogoHidden);
+    return <div ref={ref} className={classes.filter(Boolean).join(" ")} {...props} />;
+  },
+);
+StyledSidebarLogo.displayName = "StyledSidebarLogo";

@@ -1,9 +1,10 @@
 import { DEFAULT_MAP_IMAGE } from "@/common/constants";
 import packageJson from "../../../package.json";
 
-export const getMapImageLink = (link: string | null | undefined) => {
+export const getMapImageLink = (link: string | null | undefined, variant: string) => {
+  const variantLink = variant ? `_${variant}.jpg` : "";
   if (link) {
-    return process.env.FILE_STORAGE_URL + "/" + link;
+    return process.env.FILE_STORAGE_URL + "/" + link + variantLink;
   }
   // NOT FOUND
   return DEFAULT_MAP_IMAGE;

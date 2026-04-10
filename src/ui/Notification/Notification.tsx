@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SNotificationContainer, SNotificationIcon, SNotificationWrapper } from "./styled";
+import styles from "./Notification.module.scss";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { CloseIcon } from "@/svg/CloseIcon";
 import { hideAppMessage, setAppLastMessage } from "@/bll/appReducer";
@@ -38,22 +38,29 @@ const Notification = () => {
   }
 
   return (
-    <SNotificationWrapper notificationsCount={messages.length < 100 ? messages.length : "99+"}>
+    <div
+      className={styles.wrapper}
+      style={{
+        maxHeight: 60 * 3 + 20 + 20,
+        "--notification-count": `'${messages.length < 100 ? messages.length : "99+"}'`,
+      } as React.CSSProperties}
+      data-count={messages.length > 1 ? (messages.length < 100 ? messages.length : "99+") : undefined}
+    >
       {messages.map(({ id, severity, text }) => (
-        <SNotificationContainer
+        <div
           onMouseOver={stopTimer}
           onMouseLeave={startTimer}
           title={text}
           key={id}
-          severity={severity}
+          className={[styles.container, severity === "error" ? styles.severityError : severity === "success" ? styles.severitySuccess : ""].filter(Boolean).join(" ")}
         >
           <Typography isEllipsis>{text}</Typography>
-          <SNotificationIcon onClick={() => setIsOpen(id)}>
+          <div className={styles.icon} onClick={() => setIsOpen(id)}>
             <CloseIcon />
-          </SNotificationIcon>
-        </SNotificationContainer>
+          </div>
+        </div>
       ))}
-    </SNotificationWrapper>
+    </div>
   );
 };
 

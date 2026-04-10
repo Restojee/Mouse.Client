@@ -1,0 +1,87 @@
+.navLink {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition-property: background-color;
+  transition: 0.5s;
+
+  svg {
+    transition: 0.2s;
+  }
+}
+
+.navLinkClickable {
+  cursor: pointer;
+
+  &:hover {
+    svg {
+      transform: scale(0.85);
+    }
+  }
+}
+
+.navLinkOpen {
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.navLinkClosed {
+  justify-content: flex-end;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.navLinkWithBorder {
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    right: 5px;
+    left: 5px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.navLinkDisabled {
+  opacity: 0.3;
+
+  * {
+    cursor: default;
+  }
+}
+
+.navLinkHasPin {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50px;
+    background-color: var(--color-brand);
+    z-index: 1;
+  }
+}
+
+.navLinkSection {
+  display: flex;
+  align-items: center;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.navLinkSectionOpen {
+  opacity: 0.7;
+  transform: scale(0.8);
+}

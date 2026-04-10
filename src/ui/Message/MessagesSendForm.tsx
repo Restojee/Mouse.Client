@@ -2,7 +2,7 @@ import { Display } from "@/ui/Display";
 import React from "react";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { StyledBox } from "@/ui/Box";
-import { StyledMessageDisabled } from "./styled";
+import messageStyles from "./Message.module.scss";
 import { EditorContent } from "@/ui/TextEditor/editor/EditorContent";
 
 type PropsType = {
@@ -50,7 +50,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
       position={"relative"}
     >
       <Display condition={disabled}>
-        <StyledMessageDisabled>Вы не авторизованы</StyledMessageDisabled>
+        <div className={messageStyles.messageDisabled}>Вы не авторизованы</div>
       </Display>
 
       <div style={{ ...editorStyle, flex: 1, minWidth: 0 }}>

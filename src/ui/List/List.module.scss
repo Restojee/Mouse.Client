@@ -1,0 +1,26 @@
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.listSearch {
+  padding: 4px 8px;
+}
+
+.listEmpty {
+  padding: 16px 14px;
+  font-size: 0.9rem;
+  opacity: 0.5;
+  text-align: center;
+}
+
+.listEmptySm {
+  padding: 12px 14px;
+  font-size: 0.8rem;
+}
+
+.listLoader {
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}

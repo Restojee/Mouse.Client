@@ -1,0 +1,26 @@
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  transition-property: transform;
+
+  &:hover {
+    transform: scale(0.92);
+  }
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.iconText {
+  position: absolute;
+  bottom: -20px;
+  font-size: calc(var(--font-size) - 2px);
+  opacity: 0.6;
+}

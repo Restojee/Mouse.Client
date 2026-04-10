@@ -1,4 +1,4 @@
-import { Modal } from "@/ui/Modal/Modal";
+import { AsyncSheet as Modal } from "@/ui/Sheet/view";
 import React, { useCallback, useMemo } from "react";
 import { useCompletedMap } from "../../completed-images/hooks/useCompletedMap";
 import { useMapView } from "@/modules/map/containers";
