@@ -3,6 +3,7 @@ import { StyledBox } from "@/ui/Box";
 
 type BoxLoaderPropsType = {
   isLoading: boolean;
+  isAbsolute?: boolean;
 };
 export const BoxLoader = (props: BoxLoaderPropsType) => {
   if (!props.isLoading) {
@@ -13,11 +14,14 @@ export const BoxLoader = (props: BoxLoaderPropsType) => {
     <StyledBox
       align={"center"}
       justify={"center"}
-      bgColor={"rgba(255, 255, 255, 0.2)"}
       width={"100%"}
       height={"100%"}
-      position={"absolute"}
+      padding={20}
       zIndex={5}
+      gap={10}
+      {...(props.isAbsolute && {
+        position: "absolute",
+      })}
     >
       <LoaderIcon />
     </StyledBox>

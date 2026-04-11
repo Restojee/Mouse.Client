@@ -3,8 +3,8 @@ export const LoaderIcon = () => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.0"
-      width="64px"
-      height="64px"
+      width="48px"
+      height="48px"
       viewBox="0 0 128 128"
     >
       <g>

@@ -1,42 +1,48 @@
 .wrapper {
-  position: relative;
-  width: 100%;
-  box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    padding: 10px 10px 0 10px;
+    box-sizing: border-box;
 }
 
 .editor {
-  width: 100%;
-  min-height: var(--editor-min-height, 56px);
-  padding: 10px 12px;
-  box-sizing: border-box;
-  font-size: var(--editor-font-size, 14px);
-  font-family: inherit;
-  line-height: 1.6;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  border: none;
-  outline: none;
-  color: var(--editor-color, #333);
-  caret-color: var(--editor-color, #333);
-  cursor: text;
+    width: 100%;
+    min-height: var(--editor-min-height, 56px);
+    padding: 10px 12px;
+    box-sizing: border-box;
+    font-size: var(--editor-font-size, 14px);
+    font-family: inherit;
+    line-height: 1.6;
+    background-color: var(--color-neutral);
+    border-radius: 15px;
+    white-space: pre-wrap;
+    max-height: 120px;
+    overflow: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    border: none;
+    outline: none;
+    color: var(--editor-color, #333);
+    caret-color: var(--editor-color, #333);
+    cursor: text;
 }
 
 .editor:empty::before {
-  content: attr(data-placeholder);
-  color: var(--editor-placeholder, #a3a3a3);
-  pointer-events: none;
-  user-select: none;
+    content: attr(data-placeholder);
+    color: var(--editor-placeholder, #a3a3a3);
+    pointer-events: none;
+    user-select: none;
 }
 
 .disabled {
-  cursor: default;
-  opacity: 0.6;
-  pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+    pointer-events: none;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 600px) {
-  .editor {
-    min-height: 73px;
-  }
+    .editor {
+        min-height: 73px;
+    }
 }

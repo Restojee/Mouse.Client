@@ -43,7 +43,7 @@
   --color-error: #ce5252;
 
   // Input
-  --color-input-border: rgba(0, 0, 0, 0.1);
+  --color-input-border: rgba(0, 0, 0, 0.05);
   --color-input-default: #fff;
   --color-input-hover: #f5f5f5;
   --color-input-focus: red;
@@ -56,7 +56,7 @@
   --font-size-h3: 16px;
 
   // Block settings
-  --site-border: 20px;
+  --site-border: 15px;
 
   // Sizes
   --left-sidebar-width: 300px;
@@ -107,7 +107,7 @@
   --color-input-default: rgb(61, 61, 61);
   --color-input-hover: rgb(68, 68, 68);
   --color-input-focus: rgb(68, 68, 68);
-  --color-input-border: rgb(68, 68, 68);
+  --color-input-border: rgb(255, 255, 255, 0.05);
 
   --color-secondary-dark: #262626;
   --color-secondary-darker: #1e1e1e;

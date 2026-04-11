@@ -25,6 +25,10 @@ export const StyledStatisticIconText = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <Typography ref={ref} className={[styles.statisticIconText, className].filter(Boolean).join(" ")} {...props} />
+  <Typography
+    ref={ref}
+    className={[styles.statisticIconText, className].filter(Boolean).join(" ")}
+    {...props}
+  />
 ));
 StyledStatisticIconText.displayName = "StyledStatisticIconText";

@@ -17,29 +17,35 @@ type StyledIconButtonPropsType = {
 export const IconButton = React.forwardRef<
   HTMLButtonElement,
   StyledIconButtonPropsType & React.ButtonHTMLAttributes<HTMLButtonElement>
->(({ opacity, margin, padding, right, isStylized, isPanel, disabled, className, children, style, ...htmlProps }, ref) => {
-  const classes = [styles.iconButton, className];
-  if (disabled) classes.push(styles.iconButtonDisabled);
-  if (isStylized) classes.push(styles.iconButtonStylized);
-  if (isPanel) classes.push(styles.iconButtonPanel);
+>(
+  (
+    { opacity, color, margin, padding, right, isStylized, isPanel, disabled, className, children, style, ...htmlProps },
+    ref,
+  ) => {
+    const classes = [styles.iconButton, className];
+    if (disabled) classes.push(styles.iconButtonDisabled);
+    if (isStylized) classes.push(styles.iconButtonStylized);
+    if (isPanel) classes.push(styles.iconButtonPanel);
 
-  return (
-    <button
-      ref={ref}
-      className={classes.filter(Boolean).join(" ")}
-      style={{
-        margin,
-        opacity: opacity || 0.7,
-        padding,
-        ...(right && { marginLeft: "auto" }),
-        ...style,
-      }}
-      disabled={disabled}
-      {...htmlProps}
-    >
-      {children}
-    </button>
-  );
-});
+    return (
+      <button
+        ref={ref}
+        className={classes.filter(Boolean).join(" ")}
+        style={{
+          margin,
+          opacity: disabled ? 0.3 : opacity || 0.7,
+          padding,
+          color,
+          ...(right && { marginLeft: "auto" }),
+          ...style,
+        }}
+        disabled={disabled}
+        {...htmlProps}
+      >
+        {children}
+      </button>
+    );
+  },
+);
 
 IconButton.displayName = "IconButton";

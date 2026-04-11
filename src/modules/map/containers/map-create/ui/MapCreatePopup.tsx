@@ -6,6 +6,7 @@ import { IconButton } from "@/ui/Button/IconButton";
 import { Popup } from "@/ui/Popup";
 import { AnchorAlign, PopupPosition } from "@/ui/Popup/usePopupPosition";
 import React from "react";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 type Props = {
   name: string;
@@ -16,6 +17,7 @@ type Props = {
 };
 export const MapCreatePopup = (props: Partial<Props>) => {
   const { name, setName, onMapCreate, isVisible = true, onImagePopupToggle } = props;
+  const { theme } = useAppTheme();
 
   const onNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.currentTarget.value;
@@ -31,17 +33,32 @@ export const MapCreatePopup = (props: Partial<Props>) => {
     <StyledBox
       align="center"
       gap={4}
+      position={"relative"}
     >
-      <IconButton onClick={onImagePopupToggle}>
-        <DotsHorizontalIcon size="17px" />
-      </IconButton>
+      <StyledBox
+        style={{
+          left: 8,
+          bottom: 6,
+          backgroundColor: theme.colors.input.border,
+          border: `1px solid ${theme.colors.input.border}`,
+          borderRadius: 10,
+          padding: 2,
+        }}
+        position={"absolute"}
+        zIndex={2}
+      >
+        <IconButton onClick={onImagePopupToggle}>
+          <DotsHorizontalIcon size="17px" />
+        </IconButton>
+      </StyledBox>
+
       <Input
+        style={{ paddingLeft: 40 }}
         value={name}
         onKeyDown={onKeyDownHandler}
         onChange={onNameChangeHandler}
         placeholder="Номер карты @123456"
         width="auto"
-        noBorder
         compact
       />
     </StyledBox>

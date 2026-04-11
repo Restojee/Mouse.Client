@@ -6,6 +6,7 @@ import { LinkPlugin } from "../plugins/link/LinkPlugin";
 import { ToolbarPlugin } from "../plugins/toolbar/ToolbarPlugin";
 import styles from "./TextEditor.module.css";
 import type { EditorContentProps } from "../types";
+import { Display } from "@/ui/Display";
 
 export type { EditorContentProps };
 
@@ -64,13 +65,17 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           onKeyDown={onKeyDown as ((e: React.KeyboardEvent<HTMLElement>) => void) | undefined}
           onFocus={handleFocus}
         />
-        <ToolbarPlugin
-          onSend={disabled ? undefined : onSend}
-          sendDisabled={sendDisabled}
-          isFocused={isFocused}
-        />
-        <MentionPlugin onInsert={onMentionInsert} />
-        <LinkPlugin />
+        <Display condition={!disabled}>
+          <>
+            <ToolbarPlugin
+              onSend={disabled ? undefined : onSend}
+              sendDisabled={sendDisabled}
+              isFocused={isFocused}
+            />
+            <MentionPlugin onInsert={onMentionInsert} />
+            <LinkPlugin />
+          </>
+        </Display>
       </div>
     </EditorProvider>
   );

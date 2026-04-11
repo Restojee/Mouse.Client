@@ -1,7 +1,7 @@
+import * as apiTypes from "@/api/codegen/genMouseMapsApi";
 import { RemoveTipApiArg } from "@/api/codegen/genMouseMapsApi";
 import { AxiosResponse } from "axios";
 import api from "@/api/coreMapsApi";
-import * as apiTypes from "@/api/codegen/genMouseMapsApi";
 
 export const infoApi = {
   getInfo: async (params: apiTypes.GetTipPaginateApiArg) => {
@@ -9,7 +9,6 @@ export const infoApi = {
       `/tips/collect`,
       { params },
     );
-    res.data.records = res.data.records.reverse();
     return res.data;
   },
   createInfo: async (body: apiTypes.CreateTipApiArg) => {

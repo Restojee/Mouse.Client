@@ -49,7 +49,10 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
   };
 
   const addTagAnchor = (
-    <StyledNavLinkSection onClick={modalToggleHandler} isOpen={isAuth}>
+    <StyledNavLinkSection
+      onClick={modalToggleHandler}
+      isOpen={isAuth}
+    >
       <AddIcon />
     </StyledNavLinkSection>
   );
@@ -59,7 +62,12 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
   }, []);
 
   return (
-    <StyledBox direction="column" gap={10} overflow="hidden" grow={1}>
+    <StyledBox
+      direction="column"
+      gap={10}
+      overflow="hidden"
+      grow={1}
+    >
       <Display condition={tagsList.length}>
         <SidebarSection
           label="Поиск по тегам"
@@ -75,7 +83,13 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
           }
         />
       </Display>
-      <StyledBox grow={1} minHeight={0} overflow={noScroll ? "visible" : "auto"} direction="column" display={isOpen ? "flex" : "none"}>
+      <StyledBox
+        grow={1}
+        minHeight={0}
+        overflow={noScroll ? "visible" : "auto"}
+        direction="column"
+        display={isOpen ? "flex" : "none"}
+      >
         {tagsList?.map((el) => (
           <NavLink
             key={el.id}
@@ -85,7 +99,10 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
             isChecked={filter.tagIds?.includes(el.id)}
             append={
               isAuth ? (
-                <TagItemActions tag={el} setTempTag={setTempTag} />
+                <TagItemActions
+                  tag={el}
+                  setTempTag={setTempTag}
+                />
               ) : undefined
             }
             justifyContent="space-between"

@@ -59,10 +59,11 @@ export const MapCreateSection = ({ defaultExpanded = false }: Props) => {
 
       <Display condition={isContentVisible}>
         <IconButton
-          color={theme.colors.brandColorContrastText}
+          color={theme.colors.textOnPrimary}
           onClick={onSubmitHandler}
           disabled={isSubmitDisabled}
-          padding="8px 8px"
+          padding="4px 4px"
+          style={{ backgroundColor: theme.colors.status.success, borderRadius: 50 }}
         >
           <AddRoundIcon />
         </IconButton>
@@ -73,6 +74,8 @@ export const MapCreateSection = ({ defaultExpanded = false }: Props) => {
           disabled={!isAuth}
           onClick={onIconClickHandler}
           color={theme.colors.textOnSecondary}
+          padding="8px 8px"
+          style={{ backgroundColor: theme.colors.neutral, borderRadius: 50 }}
         >
           <AddRoundIcon />
         </IconButton>

@@ -5,9 +5,15 @@
 }
 
 @keyframes moveLeftRight {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(5px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .sendFormTextarea {
@@ -75,6 +81,7 @@
   overflow: hidden;
   transition: 0.2s;
   flex-grow: 1;
+  aspect-ratio: 16/8;
 }
 
 .messageDisabled {
@@ -92,7 +99,8 @@
   -ms-user-select: none;
 }
 
-.spoiler {}
+.spoiler {
+}
 
 .spoilerClosed {
   filter: blur(6px);

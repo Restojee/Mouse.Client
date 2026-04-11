@@ -19,17 +19,31 @@ export const Sidebar = () => {
 
   return (
     <StyledSidebar isOpen={isOpen}>
-      <StyledBox direction="column" gap={isOpen ? 20 : 10}>
-        <SidebarSwitcher onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+      <StyledBox
+        direction="column"
+        gap={isOpen ? 20 : 10}
+      >
+        <SidebarSwitcher
+          onClick={() => setIsOpen(!isOpen)}
+          isOpen={isOpen}
+        />
         <MapsByCategoryNavigation isOpen={isOpen} />
         <Display condition={isAuth}>
           <MapsByFiltersNavigation isOpen={isOpen} />
         </Display>
       </StyledBox>
-      <StyledBox direction="column" overflow="hidden" grow={1}>
+      <StyledBox
+        direction="column"
+        overflow="hidden"
+        grow={1}
+      >
         <TagsNavigation isOpen={isOpen} />
         <StyledSidebarLogo isOpen={isOpen}>OnlyPlanks</StyledSidebarLogo>
-        <StyledBox opacity={isOpen ? 0.6 : 0} textAlign="center" margin="5px auto 0 auto">
+        <StyledBox
+          opacity={isOpen ? 0.6 : 0}
+          textAlign="center"
+          margin="5px auto 0 auto"
+        >
           {appVersion}
         </StyledBox>
       </StyledBox>

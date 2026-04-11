@@ -67,8 +67,7 @@
 }
 
 .input {
-  background-color: transparent;
-  background: none;
+  background-color: var(--color-input-default);
   border: none;
   outline: none;
   resize: none;

@@ -64,10 +64,10 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupProps>) => {
           onSubmit={onFormSubmit}
           gap="5px"
           align="center"
+          direction={"row"}
         >
           <FormElement
             autoFocus
-            noBorder
             value={name}
             onChange={onChangeHandler}
             placeholder="Введите название..."

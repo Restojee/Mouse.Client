@@ -10,7 +10,13 @@ export const StyledPagePanel = React.forwardRef<HTMLDivElement, Partial<Props> &
     const classes = [styles.pagePanel, className];
     if (top) classes.push(styles.pagePanelTop);
     if (bottom) classes.push(styles.pagePanelBottom);
-    return <div ref={ref} className={classes.filter(Boolean).join(" ")} {...props} />;
+    return (
+      <div
+        ref={ref}
+        className={classes.filter(Boolean).join(" ")}
+        {...props}
+      />
+    );
   },
 );
 StyledPagePanel.displayName = "StyledPagePanel";

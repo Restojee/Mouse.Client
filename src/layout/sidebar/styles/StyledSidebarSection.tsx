@@ -10,18 +10,19 @@ export type Props = {
   children?: React.ReactNode;
   className?: string;
 };
-export const StyledSidebarSection = React.forwardRef<HTMLDivElement, Partial<Props> & React.HTMLAttributes<HTMLDivElement>>(
-  ({ isOpen, justifyContent, gap, className, style, ...props }, ref) => {
-    const classes = [styles.sidebarSection, className];
-    classes.push(isOpen ? styles.sidebarSectionOpen : styles.sidebarSectionClosed);
-    return (
-      <div
-        ref={ref}
-        className={classes.filter(Boolean).join(" ")}
-        style={{ justifyContent, gap, ...style }}
-        {...props}
-      />
-    );
-  },
-);
+export const StyledSidebarSection = React.forwardRef<
+  HTMLDivElement,
+  Partial<Props> & React.HTMLAttributes<HTMLDivElement>
+>(({ isOpen, justifyContent, gap, className, style, ...props }, ref) => {
+  const classes = [styles.sidebarSection, className];
+  classes.push(isOpen ? styles.sidebarSectionOpen : styles.sidebarSectionClosed);
+  return (
+    <div
+      ref={ref}
+      className={classes.filter(Boolean).join(" ")}
+      style={{ justifyContent, gap, ...style }}
+      {...props}
+    />
+  );
+});
 StyledSidebarSection.displayName = "StyledSidebarSection";

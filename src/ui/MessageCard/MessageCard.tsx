@@ -52,16 +52,35 @@ export const MessageCard = ({
         onClick={onAvatarClick}
         style={onAvatarClick ? { cursor: "pointer", flexShrink: 0 } : { flexShrink: 0 }}
       >
-        <Avatar image={avatar} username={username} />
+        <Avatar
+          image={avatar}
+          username={username}
+        />
       </div>
-      <StyledBox direction="column" grow={1} gap={5} overflow="hidden">
+      <StyledBox
+        direction="column"
+        grow={1}
+        gap={5}
+        overflow="hidden"
+      >
         {!hideHeader && (
-          <StyledBox align="center" gap={5} minHeight={25}>
-            <TextLink onClick={onAuthorClick} isEllipsis>
+          <StyledBox
+            align="center"
+            gap={5}
+            minHeight={25}
+          >
+            <TextLink
+              onClick={onAuthorClick}
+              isEllipsis
+            >
               {username}
             </TextLink>
             {headerMiddle}
-            <Typography title={dateTitle} margin="0 0 0 auto" fontSize="0.7rem">
+            <Typography
+              title={dateTitle}
+              margin="0 0 0 auto"
+              fontSize="0.7rem"
+            >
               {date}
             </Typography>
             {headerEnd}

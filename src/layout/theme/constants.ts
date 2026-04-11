@@ -40,7 +40,7 @@ export const DefaultTheme = {
     },
 
     input: {
-      border: "rgba(0, 0, 0, 0.1)",
+      border: "rgba(0, 0, 0, 0.05)",
       default: "#fff",
       hover: "#f5f5f5",
       focus: "red",
@@ -130,7 +130,7 @@ const DarkTheme: GlobalTheme = {
       default: "rgb(61,61,61)",
       hover: "rgb(68,68,68)",
       focus: "rgb(68,68,68)",
-      border: "rgb(68,68,68)",
+      border: "rgb(255, 255, 255, 0.05)",
     },
     secondaryDark: "#262626",
     secondaryDarker: "#1e1e1e",

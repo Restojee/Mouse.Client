@@ -32,8 +32,8 @@ export const PreviewImage = (props: PreviewImagePropsType) => {
     >
       <img
         src={mapImage}
-        width={800}
-        height={400}
+        width={"100%"}
+        height={"100%"}
         style={{
           objectPosition: "center",
           objectFit: "cover",

@@ -20,7 +20,7 @@ type Props = {
 
 export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
   const { filter } = useFilterQueryParams();
-  const { myId, getUserById } = useUser();
+  const { myId, getUserById, currentUser } = useUser();
   const isMobile = useIsMobile();
   const { createOpen } = useContext(MapCreateContext);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -55,7 +55,14 @@ export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
           gap={5}
           grow={1}
         >
-          <div className={[mapStyles.titleWrapper, isMobile && isSearchOpen ? mapStyles.titleWrapperHidden : mapStyles.titleWrapperVisible].filter(Boolean).join(" ")}>
+          <div
+            className={[
+              mapStyles.titleWrapper,
+              isMobile && isSearchOpen ? mapStyles.titleWrapperHidden : mapStyles.titleWrapperVisible,
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
             <Typography
               opacity={0.6}
               fontSize={"1rem"}
@@ -71,9 +78,7 @@ export const MapPageContainer: React.FC<Partial<Props>> = (props) => {
       </PageHeader>
       <PageContent>{props.children}</PageContent>
       {(!isMobile || createOpen) && (
-        <PageFooter>
-          <MapCreateSection defaultExpanded={isMobile} />
-        </PageFooter>
+        <PageFooter>{currentUser && <MapCreateSection defaultExpanded={isMobile} />}</PageFooter>
       )}
     </StyledPageWrapper>
   );

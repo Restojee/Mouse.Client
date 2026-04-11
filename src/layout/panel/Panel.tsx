@@ -36,7 +36,7 @@ export const Panel = (props: PanelProps) => {
 
   const { toggleTheme, themeKey } = useAppTheme();
 
-  const { isHasNewMessage, messages } = useChat();
+  const { isHasNewMessage } = useChat();
   const { isHasNewNotifications } = useNotifications();
 
   const isAuth = useAppSelector(selectIsAuth);
@@ -91,7 +91,6 @@ export const Panel = (props: PanelProps) => {
   return (
     <StyledPanel>
       <NavLink
-        isDisabled={!isAuth}
         onClick={() => props.setIsOpen(!props.isOpen)}
         prepend={
           <StyledNavLinkSection>

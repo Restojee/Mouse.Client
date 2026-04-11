@@ -16,13 +16,17 @@ type Props = {
 };
 
 export const StyledNavLink = React.forwardRef<HTMLDivElement, Props & React.HTMLAttributes<HTMLDivElement>>(
-  ({ margin, justifyContent, gap, isOpen, withBorder, isDisabled, hasPin, className, style, ...props }, ref) => {
+  (
+    { margin, isChecked, justifyContent, gap, isOpen, withBorder, isDisabled, hasPin, className, style, ...props },
+    ref,
+  ) => {
     const classes = [styles.navLink, className];
     if (!isDisabled) classes.push(styles.navLinkClickable);
     if (isOpen !== undefined) classes.push(isOpen ? styles.navLinkOpen : styles.navLinkClosed);
     if (withBorder) classes.push(styles.navLinkWithBorder);
     if (isDisabled) classes.push(styles.navLinkDisabled);
     if (hasPin) classes.push(styles.navLinkHasPin);
+    if (isChecked) classes.push(styles.navLinkChecked);
 
     return (
       <div

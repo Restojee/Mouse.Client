@@ -21,10 +21,9 @@ export const PreviewImageWrapper = ({ mapCompleted, onDeleteOpen, image, onClick
 
   return (
     <StyledMapContentPreview
-      maxHeight="250px"
-      minHeight="250px"
       borderRadius={"20px"}
       height="100%"
+      minHeight={"395px"}
     >
       <Display condition={isAuth}>
         <ImageActions

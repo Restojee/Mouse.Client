@@ -35,10 +35,24 @@ export default function FormElement(props: Partial<PropsType>) {
     <div className={formStyles.formElementContainer}>
       {title && <div className={formStyles.formElementHeader}>{title}</div>}
 
-      <div className={[formStyles.inputWrapper, noBorder && formStyles.inputWrapperNoBorder].filter(Boolean).join(" ")} style={bgColor ? { backgroundColor: bgColor } : undefined}>
-        {inputPrepend && <div className={[formStyles.inputIcon, formStyles.inputIconLeft].filter(Boolean).join(" ")}>{inputPrepend}</div>}
-        <input {...inputProps} className={[formStyles.input, noBorder && formStyles.inputNoBorder].filter(Boolean).join(" ")} />
-        {props.inputAppend && <div className={[formStyles.inputIcon, formStyles.inputIconRight].filter(Boolean).join(" ")}>{inputAppend}</div>}
+      <div
+        className={[formStyles.inputWrapper, noBorder && formStyles.inputWrapperNoBorder].filter(Boolean).join(" ")}
+        style={bgColor ? { backgroundColor: bgColor } : undefined}
+      >
+        {inputPrepend && (
+          <div className={[formStyles.inputIcon, formStyles.inputIconLeft].filter(Boolean).join(" ")}>
+            {inputPrepend}
+          </div>
+        )}
+        <input
+          {...inputProps}
+          className={[formStyles.input, noBorder && formStyles.inputNoBorder].filter(Boolean).join(" ")}
+        />
+        {props.inputAppend && (
+          <div className={[formStyles.inputIcon, formStyles.inputIconRight].filter(Boolean).join(" ")}>
+            {inputAppend}
+          </div>
+        )}
       </div>
     </div>
   );

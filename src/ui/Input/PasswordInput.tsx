@@ -3,6 +3,7 @@ import { Input } from "./Input";
 import { EyeIcon } from "@/svg/EyeIcon";
 import { EyeOffIcon } from "@/svg/EyeOffIcon";
 import React, { useState } from "react";
+import styles from "./Input.module.scss";
 
 type PasswordInputProps = DefaultInputType & {
   error?: string;
@@ -23,6 +24,7 @@ export const PasswordInput = (props: PasswordInputProps) => {
       title={title}
       inputAppend={
         <div
+          className={styles.icon}
           onClick={toggle}
           title={visible ? "Скрыть" : "Показать"}
         >
