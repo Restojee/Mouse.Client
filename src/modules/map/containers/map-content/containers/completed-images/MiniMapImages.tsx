@@ -1,66 +1,20 @@
-import { getMapImageLink } from "@/common/utils";
-import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
-import { StyledBox } from "@/ui/Box";
 import React from "react";
-import { MINI_IMAGES_HEIGHT, MINI_IMAGES_WIDTH } from "./constants";
-import { useCompletedMap } from "./hooks/useCompletedMap";
-import { StyledMiniMapCount, StyledMiniMapImageContainer, StyledMiniMapLabel } from "./styles";
 import { CardsSwiper } from "@/ui/CardsSwiper/CardsSwiper";
-import { SwiperSlide } from "swiper/react";
-import { Display } from "@/ui/Display";
+import { useMiniMapImages } from "./useMiniMapImages";
 
 export const MiniMapImages = () => {
-  const { levelId } = useMapView();
+  const { hasMaps, baseSlide, renderedSlides } = useMiniMapImages();
 
-  const { maps, onMapClick, activeMapCompleted } = useCompletedMap(levelId);
-
-  if (!maps) {
+  if (!hasMaps) {
     return null;
   }
 
   return (
-    <StyledBox>
+    <div>
       <CardsSwiper>
-        <SwiperSlide style={{ width: "auto" }}>
-          <StyledMiniMapImageContainer
-            onClick={() => onMapClick(null)}
-            isActive={!activeMapCompleted}
-          >
-            Карта
-          </StyledMiniMapImageContainer>
-        </SwiperSlide>
-
-        {maps?.map((item) => (
-          <SwiperSlide
-            key={item.id}
-            style={{ width: "auto" }}
-          >
-            <StyledMiniMapImageContainer
-              key={item.createdUtcDate}
-              onClick={() => onMapClick(item)}
-              isActive={activeMapCompleted?.user.id === item.user.id}
-              isVisible
-            >
-              <StyledMiniMapLabel isActive={activeMapCompleted?.user.id === item.user.id}>
-                {item.user.username}
-              </StyledMiniMapLabel>
-              <Display condition={item.count && item.count > 1}>
-                <StyledMiniMapCount>{item.count}</StyledMiniMapCount>
-              </Display>
-              <img
-                alt={item.user?.username}
-                src={getMapImageLink(item?.image?.name, "display")}
-                height={MINI_IMAGES_HEIGHT}
-                width={MINI_IMAGES_WIDTH}
-                style={{
-                  objectPosition: "center",
-                  objectFit: "cover",
-                }}
-              />
-            </StyledMiniMapImageContainer>
-          </SwiperSlide>
-        ))}
+        {baseSlide}
+        {renderedSlides}
       </CardsSwiper>
-    </StyledBox>
+    </div>
   );
 };

@@ -34,7 +34,7 @@ export const UpdateAvatar = (props: UpdateAvatarType) => {
   return (
     <div
       className={styles.avatar}
-      style={{ backgroundImage: `url(${image || getMapImageLink(currentImage)})` || "" }}
+      style={{ backgroundImage: `url(${image || getMapImageLink(currentImage, "display")})` || "" }}
       onClick={onClickHandler}
     >
       <input

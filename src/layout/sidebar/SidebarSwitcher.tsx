@@ -1,4 +1,4 @@
-import { StyledSidebarSwitcher } from "@/layout/sidebar/styles/StyledSidebarSwitcher";
+import { SidebarSwitcher as SidebarSwitcherRoot } from "@/layout/sidebar/styles/SidebarSwitcher";
 import { LeftSidebarArrowIcon } from "@/svg/SidebarArrowIcon";
 
 type Props = {
@@ -8,8 +8,8 @@ type Props = {
 export const SidebarSwitcher = (props: Props) => {
   const { onClick } = props;
   return (
-    <StyledSidebarSwitcher onClick={onClick}>
+    <SidebarSwitcherRoot onClick={onClick}>
       <LeftSidebarArrowIcon rotate={props.isOpen ? "rotate(180deg)" : ""} />
-    </StyledSidebarSwitcher>
+    </SidebarSwitcherRoot>
   );
 };

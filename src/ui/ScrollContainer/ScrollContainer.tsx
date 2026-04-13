@@ -2,16 +2,16 @@ import React from "react";
 import { Property } from "csstype";
 import styles from "./ScrollContainer.module.scss";
 
-type StyledScrollWrapperPropsType = {
+type ScrollWrapperPropsType = {
   isSlider?: boolean;
   grow?: Property.FlexGrow;
   maxHeight?: Property.MaxHeight;
   children?: React.ReactNode;
   className?: string;
 };
-export const StyledScrollWrapper = React.forwardRef<
+export const ScrollWrapper = React.forwardRef<
   HTMLDivElement,
-  StyledScrollWrapperPropsType & React.HTMLAttributes<HTMLDivElement>
+  ScrollWrapperPropsType & React.HTMLAttributes<HTMLDivElement>
 >(({ isSlider, grow, maxHeight, className, style, ...props }, ref) => (
   <div
     ref={ref}
@@ -20,18 +20,18 @@ export const StyledScrollWrapper = React.forwardRef<
     {...props}
   />
 ));
-StyledScrollWrapper.displayName = "StyledScrollWrapper";
+ScrollWrapper.displayName = "ScrollWrapper";
 
-type StyledScrollContainerPropsType = {
+type ScrollContainerPropsType = {
   padding?: Property.Padding;
   bgColor?: Property.BackgroundColor;
   borderRadius?: Property.BorderRadius;
   children?: React.ReactNode;
   className?: string;
 };
-export const StyledScrollContainer = React.forwardRef<
+export const ScrollContainer = React.forwardRef<
   HTMLDivElement,
-  StyledScrollContainerPropsType & React.HTMLAttributes<HTMLDivElement>
+  ScrollContainerPropsType & React.HTMLAttributes<HTMLDivElement>
 >(({ padding, bgColor, borderRadius, className, style, ...props }, ref) => (
   <div
     ref={ref}
@@ -40,4 +40,4 @@ export const StyledScrollContainer = React.forwardRef<
     {...props}
   />
 ));
-StyledScrollContainer.displayName = "StyledScrollContainer";
+ScrollContainer.displayName = "ScrollContainer";

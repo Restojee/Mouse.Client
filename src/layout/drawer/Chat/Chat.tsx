@@ -1,145 +1,92 @@
-import { useUser } from "@/modules/user/hooks/useUser";
-import React, { useCallback, useEffect, useRef } from "react";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { selectCurrentUser, selectIsAuth } from "@/modules/auth/slice";
-import { useChat } from "@/modules/chat/hooks/useChat";
-import { Message } from "@/ui/Message";
+import React, { useCallback, useMemo } from "react";
+import { Virtuoso } from "react-virtuoso";
+import { Comment } from "@/api/codegen/genMouseMapsApi";
 import { MessageSendFormContainer } from "@/ui/Message/MessagesSendForm";
-import { MessageList } from "@/ui/MessageList/MessageList";
-import { StyledDrawerHeader } from "@/layout/drawer/styled";
-import { StyledBox } from "@/ui/Box";
-import { User } from "@/api/codegen/genMouseMapsApi";
-import { getStarsByUserId } from "@/modules/user/utils/getStarsByUserId";
-import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
-
-const LOAD_OLDER_THRESHOLD = 80;
+import drawerStyles from "@/layout/drawer/Drawer.module.scss";
+import chatStyles from "@/layout/drawer/Chat/Chat.module.scss";
+import { MessageSkeleton } from "@/ui/Skeleton";
+import { ChatMessageItem } from "./ChatMessageItem";
+import { useChatView } from "./useChatView";
 
 export const Chat = () => {
-  const isAuth = useAppSelector(selectIsAuth);
-  const currentUser = useAppSelector(selectCurrentUser);
-
   const {
-    updateMessagesCount,
+    isAuth,
     messages,
     messageText,
-    onMessageAdd,
     isSendLoading,
-    onInputKeyUp,
-    onInputChange,
-    onMessageDelete,
     isLoadingOlder,
-    hasMoreOlder,
-    fetchOlderMessages,
-  } = useChat();
-  const { theme } = useAppTheme();
-  const { onOpenUserModal, users } = useUser();
+    isChatInitialized,
+    onInputChange,
+    onMessageAdd,
+    onMessageDelete,
+    onSendFormFocus,
+    onUsernameClick,
+    onMentionClick,
+    onLevelClick,
+    getStarsCount,
+    isOwnMessage,
+    validUsernames,
+    sendFormStyle,
+    firstItemIndex,
+    initialTopMostItemIndex,
+    startReached,
+    virtuosoRef,
+  } = useChatView();
 
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const isAtBottomRef = useRef(true);
-  const wasLoadingOlderRef = useRef(false);
-  const prevScrollHeightRef = useRef(0);
-  const isLoadingOlderRef = useRef(isLoadingOlder);
-  isLoadingOlderRef.current = isLoadingOlder;
-
-  const getUserStarsCount = useCallback((id: User["id"]) => getStarsByUserId(id, users), [users]);
-
-  const scrollToBottom = useCallback((instant?: boolean) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setTimeout(
-      () => el.scrollTo({ top: el.scrollHeight, behavior: instant ? undefined : "smooth" }),
-      instant ? 0 : 200,
-    );
-  }, []);
-
-  const onFocusHandler = useCallback(() => scrollToBottom(), [scrollToBottom]);
-
-  const onUsernameClickHandler = useCallback((id: number) => onOpenUserModal(id), [onOpenUserModal]);
-
-  const onMentionClickHandler = useCallback(
-    (username: string) => {
-      const user = users?.find((u) => u.username === username);
-      if (user?.id) onOpenUserModal(user.id);
-    },
-    [users, onOpenUserModal],
+  const itemContent = useCallback(
+    (_index: number, message: Comment) => (
+      <ChatMessageItem
+        message={message}
+        isOwn={isOwnMessage(message)}
+        getStarsCount={getStarsCount}
+        onDelete={onMessageDelete}
+        onUsernameClick={onUsernameClick}
+        onMentionClick={onMentionClick}
+        onLevelClick={onLevelClick}
+        validUsernames={validUsernames}
+      />
+    ),
+    [isOwnMessage, getStarsCount, onMessageDelete, onUsernameClick, onMentionClick, onLevelClick, validUsernames],
   );
 
-  const handleLoadOlder = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el || isLoadingOlderRef.current || !hasMoreOlder) return;
-    prevScrollHeightRef.current = el.scrollHeight;
-    wasLoadingOlderRef.current = true;
-    isLoadingOlderRef.current = true;
-    fetchOlderMessages();
-  }, [hasMoreOlder, fetchOlderMessages]);
+  const VirtuosoHeader = useCallback(() => {
+    if (!isLoadingOlder) return null;
+    return <MessageSkeleton count={3} />;
+  }, [isLoadingOlder]);
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const onScroll = () => {
-      isAtBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 100;
-      if (el.scrollTop < LOAD_OLDER_THRESHOLD) {
-        handleLoadOlder();
-      }
-    };
-
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [handleLoadOlder]);
-
-  useEffect(() => {
-    if (wasLoadingOlderRef.current && !isLoadingOlder) {
-      const el = scrollRef.current;
-      if (el && prevScrollHeightRef.current) {
-        el.scrollTop = el.scrollHeight - prevScrollHeightRef.current;
-      }
-      wasLoadingOlderRef.current = false;
-      prevScrollHeightRef.current = 0;
-    } else if (isAtBottomRef.current) {
-      scrollToBottom(true);
-    }
-    updateMessagesCount();
-  }, [messages?.length, isLoadingOlder]);
+  const virtuosoComponents = useMemo(() => ({ Header: VirtuosoHeader }), [VirtuosoHeader]);
 
   return (
     <>
-      <StyledBox
-        direction="column"
-        overflow={"hidden"}
-        grow={1}
-      >
-        <StyledDrawerHeader>Чат</StyledDrawerHeader>
-        <MessageList scrollRef={scrollRef}>
-          <BoxLoader isLoading={isLoadingOlder} />
-          {messages?.map((el) => (
-            <Message
-              key={el.id}
-              comment={el}
-              padding={"10px"}
-              getStarsCount={getUserStarsCount}
-              onDelete={onMessageDelete}
-              isDeleteView={currentUser?.id === el.user?.id}
-              onUsernameClick={onUsernameClickHandler}
-              onMentionClick={onMentionClickHandler}
-              validUsernames={users?.map((u) => u.username ?? "")}
-            />
-          ))}
-        </MessageList>
-      </StyledBox>
+      <div className={chatStyles.chatBody}>
+        <div className={drawerStyles.drawerHeader}>Чат</div>
+        {!isChatInitialized ? (
+          <MessageSkeleton alternate />
+        ) : (
+          <Virtuoso
+            ref={virtuosoRef}
+            data={messages ?? []}
+            firstItemIndex={firstItemIndex}
+            initialTopMostItemIndex={initialTopMostItemIndex}
+            startReached={startReached}
+            followOutput="smooth"
+            itemContent={itemContent}
+            increaseViewportBy={{ top: 400, bottom: 400 }}
+            components={virtuosoComponents}
+          />
+        )}
+      </div>
 
-      <StyledBox bgColor={theme.colors.secondary}>
+      <div style={sendFormStyle}>
         <MessageSendFormContainer
           onChange={onInputChange}
           value={messageText}
-          onFocus={onFocusHandler}
+          onFocus={onSendFormFocus}
           onSendClick={onMessageAdd}
-          onKeyUp={onInputKeyUp}
           isFetching={isSendLoading}
           disabled={!isAuth}
         />
-      </StyledBox>
+      </div>
     </>
   );
 };

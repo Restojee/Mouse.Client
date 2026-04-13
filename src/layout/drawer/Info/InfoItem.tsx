@@ -1,10 +1,9 @@
 import { Tip } from "@/api/codegen/genMouseMapsApi";
 import { formatDateTime } from "@/common/utils/formatDateTime";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { StyledInfoBlock, StyledInfoTitle } from "@/layout/drawer/Info/styled";
+import infoStyles from "@/layout/drawer/Info/Info.module.scss";
 import { selectIsAuth } from "@/modules/auth/slice";
 import { CloseIcon } from "@/svg/CloseIcon";
-import { StyledBox } from "@/ui/Box";
 import buttonStyles from "@/ui/Button/styles/Button.module.scss";
 import { Display } from "@/ui/Display";
 import { Typography } from "@/ui/Typography";
@@ -42,38 +41,45 @@ export const InfoItem = (props: InfoItemPropsType) => {
     return formatDateTime(info.createdUtcDate);
   }, [info.createdUtcDate]);
 
+  const onMouseEnterHandler = () => setIsHovered(true);
+  const onMouseLeaveHandler = () => setIsHovered(false);
+
+  const closeButtonStyle = { opacity: isHovered ? 0.4 : 0, margin: "0 0 0 auto" };
+  const metaStyle = { opacity: isHovered ? 0.5 : 0 };
+
   return (
-    <StyledBox
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      gap="5px"
-      direction="column"
+    <div
+      className={infoStyles.infoItem}
+      onMouseEnter={onMouseEnterHandler}
+      onMouseLeave={onMouseLeaveHandler}
     >
-      <StyledBox align="center">
-        <StyledInfoTitle onClick={selectInfoHandler}>{info.title}</StyledInfoTitle>
+      <div className={infoStyles.infoItemHeader}>
+        <div
+          className={infoStyles.infoTitle}
+          onClick={selectInfoHandler}
+        >
+          {info.title}
+        </div>
         <Display condition={isAuth}>
           <div
             className={buttonStyles.buttonIcon}
-            style={{ opacity: isHovered ? 0.4 : 0, margin: "0 0 0 auto" }}
+            style={closeButtonStyle}
             onClick={removeInfoHandler}
           >
             <CloseIcon />
           </div>
         </Display>
-      </StyledBox>
-      <StyledInfoBlock>
+      </div>
+      <div className={infoStyles.infoBlock}>
         <Typography>{info.text}</Typography>
-      </StyledInfoBlock>
-      <StyledBox
-        margin={"0 15px 0 auto"}
-        gap={5}
-        justify={"space-between"}
-        fontSize={"0.8rem"}
-        opacity={isHovered ? "0.5" : "0"}
+      </div>
+      <div
+        className={infoStyles.infoItemMeta}
+        style={metaStyle}
       >
         <Typography>{info.user?.username},</Typography>
         <Typography>{formattedDate}</Typography>
-      </StyledBox>
-    </StyledBox>
+      </div>
+    </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { ReactNode, Ref } from "react";
-import { StyledBox } from "@/ui/Box";
+import { Box } from "@/ui/Box";
 
 type MessageListProps = {
   children: ReactNode;
@@ -12,7 +12,7 @@ type MessageListProps = {
  */
 export const MessageList = ({ children, scrollRef }: MessageListProps) => {
   return (
-    <StyledBox
+    <Box
       ref={scrollRef as React.Ref<HTMLDivElement>}
       direction="column"
       gap={10}
@@ -21,6 +21,6 @@ export const MessageList = ({ children, scrollRef }: MessageListProps) => {
       grow={1}
     >
       {children}
-    </StyledBox>
+    </Box>
   );
 };

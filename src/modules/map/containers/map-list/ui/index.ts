@@ -1,1 +1,1 @@
-export * from "./MapsList";
+export * from "./maps-list/MapsList";

@@ -2,7 +2,7 @@ import { RegisterRequest } from "@/api/codegen/genMouseMapsApi";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useRegister } from "@/modules/auth/hooks/useRegister";
 import { registerValidation } from "@/modules/auth/schemas/registerValidation";
-import { StyledBox } from "@/ui/Box";
+import { Box } from "@/ui/Box";
 import { Button } from "@/ui/Button";
 import { Form } from "@/ui/Form/Form";
 import { Input, PasswordInput } from "@/ui/Input";
@@ -39,7 +39,7 @@ export const Register = () => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <StyledBox
+      <Box
         direction={"column"}
         width={"100%"}
         gap={30}
@@ -108,7 +108,7 @@ export const Register = () => {
           type={"submit"}
           disabled={isLoading}
         />
-      </StyledBox>
+      </Box>
     </Form>
   );
 };

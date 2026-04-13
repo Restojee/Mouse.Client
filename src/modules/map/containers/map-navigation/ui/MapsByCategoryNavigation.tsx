@@ -1,38 +1,36 @@
+import React from "react";
+import clsx from "clsx";
 import { NavLink } from "@/layout/navigation/NavLink";
-import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
+import { NavLinkSection } from "@/layout/navigation/styles/NavLinkSection";
 import { SidebarSection } from "@/layout/sidebar/SidebarSection";
 import { WidgetIcon } from "@/svg/WidgetIcon";
-import { StyledBox } from "@/ui/Box";
-import React from "react";
-import { useMapNavigation } from "../hooks/useMapNavigation";
+import styles from "./MapsByCategoryNavigation.module.scss";
+import { useMapsByCategoryNavigation } from "./useMapsByCategoryNavigation";
 
-type MapsByCategoryNavigationSectionProps = {
+type MapsByCategoryNavigationPropsType = {
   isOpen: boolean;
 };
-export const MapsByCategoryNavigation = React.memo((props: MapsByCategoryNavigationSectionProps) => {
-  const { filters, navigateTo } = useMapNavigation();
+
+export const MapsByCategoryNavigation = React.memo((props: MapsByCategoryNavigationPropsType) => {
+  const { isAllChecked, onAllClickHandler } = useMapsByCategoryNavigation();
+  const rootClassName = clsx(styles.root, props.isOpen && styles.open);
 
   return (
-    <StyledBox
-      transition="0.3s"
-      direction="column"
-      gap={props.isOpen ? 5 : 10}
-    >
-      <SidebarSection
-        label="Общие разделы"
-        isOpen={props.isOpen}
-      />
+    <div className={rootClassName}>
+      <SidebarSection label="Общие разделы" isOpen={props.isOpen} />
       <NavLink
-        onClick={() => navigateTo({})}
-        isChecked={Object.entries(filters).length < 4}
+        onClick={onAllClickHandler}
+        isChecked={isAllChecked}
         label="Все карты"
         prepend={
-          <StyledNavLinkSection isOpen={props.isOpen}>
+          <NavLinkSection isOpen={props.isOpen}>
             <WidgetIcon />
-          </StyledNavLinkSection>
+          </NavLinkSection>
         }
         isOpen={props.isOpen}
       />
-    </StyledBox>
+    </div>
   );
 });
+
+MapsByCategoryNavigation.displayName = "MapsByCategoryNavigation";

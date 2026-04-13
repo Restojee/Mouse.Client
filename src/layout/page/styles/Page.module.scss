@@ -36,13 +36,8 @@
 .pageContent {
   flex-grow: 1;
   overflow: auto;
-  padding: 20px;
   display: flex;
   flex-direction: column;
-
-  @media (max-width: 768px) {
-    padding: 10px 5px;
-  }
 }
 
 .pagePanel {

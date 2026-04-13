@@ -22,6 +22,7 @@ export interface UsePopupPositionOptions {
   offset?: number;
   boundary?: BoundaryOptions;
   anchorAlign?: AnchorAlign;
+  fixedAnchorRect?: { top: number; left: number; width?: number; height?: number };
 }
 
 export const usePopupPosition = ({
@@ -31,6 +32,7 @@ export const usePopupPosition = ({
   offset = DEFAULT_OFFSET,
   boundary = DEFAULT_BOUNDARY_OPTIONS,
   anchorAlign = AnchorAlign.CENTER,
+  fixedAnchorRect,
 }: UsePopupPositionOptions) => {
   const lastKnownRect = useRef<{ anchor: DOMRect | null; popup: DOMRect | null }>({
     anchor: null,
@@ -45,12 +47,33 @@ export const usePopupPosition = ({
       return { left: 0, position: "fixed", top: 0 };
     }
 
-    const actualAnchor = (anchorElement.firstElementChild as HTMLElement) || anchorElement;
-    const anchorRect = actualAnchor.getBoundingClientRect();
-    const popupRect = popupElement.getBoundingClientRect();
+    const popupWidth = popupElement.offsetWidth;
+    const popupHeight = popupElement.offsetHeight;
+    const popupRect = {
+      top: 0,
+      left: 0,
+      right: popupWidth,
+      bottom: popupHeight,
+      width: popupWidth,
+      height: popupHeight,
+    } as DOMRect;
+
+    const anchorRect: ElementRect = fixedAnchorRect
+      ? {
+          top: fixedAnchorRect.top,
+          bottom: fixedAnchorRect.top + (fixedAnchorRect.height ?? 0),
+          left: fixedAnchorRect.left,
+          right: fixedAnchorRect.left + (fixedAnchorRect.width ?? 0),
+          width: fixedAnchorRect.width ?? 0,
+          height: fixedAnchorRect.height ?? 0,
+        }
+      : (() => {
+          const actualAnchor = (anchorElement.firstElementChild as HTMLElement) || anchorElement;
+          return actualAnchor.getBoundingClientRect();
+        })();
 
     lastKnownRect.current = {
-      anchor: anchorRect,
+      anchor: anchorRect as DOMRect,
       popup: popupRect,
     };
 
@@ -60,7 +83,7 @@ export const usePopupPosition = ({
         : (position as PopupPosition);
 
     return calculatePopupPosition(positionEnum, anchorRect, popupRect, offset, boundary, anchorAlign);
-  }, [position, anchorRef, popupRef, offset, boundary, anchorAlign]);
+  }, [position, anchorRef, popupRef, offset, boundary, anchorAlign, fixedAnchorRect]);
 };
 
 export { PopupPosition, AnchorAlign, type PositionStyles, type BoundaryOptions, type ElementRect };

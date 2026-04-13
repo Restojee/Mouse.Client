@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { ContextMenu } from "@/ui/ContextMenu";
-import { PopupPosition, AnchorAlign } from "@/ui/Popup";
+import { AnchorAlign, PopupPosition } from "@/ui/Popup";
 import type { ListItemOptions } from "@/ui/ContextMenu/ContextMenuItem";
 
 export type AutocompleteItem = {
@@ -15,6 +15,12 @@ type AutocompleteProps = {
   items: AutocompleteItem[];
   isOpen: boolean;
   isLoading?: boolean;
+  /**
+   * Viewport-координаты курсора (из getCaretPosition).
+   * top = нижний край строки курсора, left = левый край курсора.
+   * Передаются напрямую как fixedAnchorRect чтобы избежать проблемы
+   * с CSS transform на предках (что ломает position:fixed).
+   */
   position: { top: number; left: number };
   onClose: () => void;
   onSelect: (item: AutocompleteItem) => void;
@@ -22,6 +28,12 @@ type AutocompleteProps = {
   emptyLabel?: string;
   activeItemId?: string | number | null;
 };
+
+/**
+ * Невидимый якорь, который рендерится в DOM, но не используется для вычисления позиции.
+ * Нужен только как обязательный prop для Popup/ContextMenu.
+ */
+const NullAnchor = <div style={{ display: "none" }} />;
 
 export const Autocomplete = ({
   items,
@@ -55,30 +67,18 @@ export const Autocomplete = ({
     [items, onSelect],
   );
 
-  const anchor = (
-    <div
-      style={{
-        position: "fixed",
-        top: position.top,
-        left: position.left,
-        width: 0,
-        height: 0,
-        pointerEvents: "none",
-      }}
-    />
-  );
-
   return (
     <ContextMenu
-      anchor={anchor}
+      anchor={NullAnchor}
       items={menuItems}
       isOpen={isOpen}
       onClose={onClose}
       onChange={handleChange}
       position={PopupPosition.TOP}
-      anchorAlign={AnchorAlign.CENTER}
+      anchorAlign={AnchorAlign.START}
       minWidth={minWidth}
       activeItemId={activeItemId}
+      fixedAnchorRect={{ top: position.top, left: position.left }}
     />
   );
 };

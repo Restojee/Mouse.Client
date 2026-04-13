@@ -13,6 +13,10 @@ export const mapsApi = {
     );
     return res.data;
   },
+  searchByName: async (name: string, size = 8) => {
+    const res = await mapsApi.getMaps({ name, page: 1, size });
+    return res.records;
+  },
   getMapsById: async (params: apiTypes.GetMapApiArg, signal?: AbortSignal) => {
     const res = await api.get<apiTypes.GetMapApiArg, AxiosResponse<apiTypes.GetMapApiResponse>>(
       `/levels/by-id/${params.levelId}`,

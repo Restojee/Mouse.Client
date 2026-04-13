@@ -2,15 +2,15 @@ import React from "react";
 import { Property } from "csstype";
 import styles from "./ImageForm.module.scss";
 
-type StyledImageFormContainerPropsType = {
+type ImageFormContainerPropsType = {
   image: string | null;
   isDrag: boolean;
   width?: Property.Width<number>;
   height?: Property.Height<number>;
 };
-export const StyledImageFormContainer = React.forwardRef<
+export const ImageFormContainer = React.forwardRef<
   HTMLDivElement,
-  StyledImageFormContainerPropsType & React.HTMLAttributes<HTMLDivElement>
+  ImageFormContainerPropsType & React.HTMLAttributes<HTMLDivElement>
 >(({ image, isDrag, width, height, className, style, ...props }, ref) => (
   <div
     ref={ref}
@@ -24,18 +24,26 @@ export const StyledImageFormContainer = React.forwardRef<
     {...props}
   />
 ));
-StyledImageFormContainer.displayName = "StyledImageFormContainer";
+ImageFormContainer.displayName = "ImageFormContainer";
 
-export const StyledImageFormLink = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
+export const ImageFormLink = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
   ({ className, ...props }, ref) => (
-    <span ref={ref} className={[styles.link, className].filter(Boolean).join(" ")} {...props} />
+    <span
+      ref={ref}
+      className={[styles.link, className].filter(Boolean).join(" ")}
+      {...props}
+    />
   ),
 );
-StyledImageFormLink.displayName = "StyledImageFormLink";
+ImageFormLink.displayName = "ImageFormLink";
 
-export const StyledImageHover = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
+export const ImageHover = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
   ({ className, ...props }, ref) => (
-    <span ref={ref} className={[styles.hover, className].filter(Boolean).join(" ")} {...props} />
+    <span
+      ref={ref}
+      className={[styles.hover, className].filter(Boolean).join(" ")}
+      {...props}
+    />
   ),
 );
-StyledImageHover.displayName = "StyledImageHover";
+ImageHover.displayName = "ImageHover";

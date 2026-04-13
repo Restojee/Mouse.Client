@@ -18,6 +18,37 @@
   border-radius: 15px;
 }
 
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex-grow: 1;
+}
+
+.infoEmpty {
+  display: flex;
+  margin: auto;
+}
+
+.infoItem {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+}
+
+.infoItemHeader {
+  display: flex;
+  align-items: center;
+}
+
+.infoItemMeta {
+  display: flex;
+  margin: 0 15px 0 auto;
+  gap: 5px;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
 .infoTitle {
   word-break: break-word;
   margin: 0 0 0 5px;

@@ -2,11 +2,12 @@ import * as React from "react";
 import { Drawer } from "@/layout/drawer/Drawer";
 import { Panel, TabsType } from "@/layout/panel/Panel";
 import { Sidebar } from "@/layout/sidebar/Sidebar";
-import { Layout, Wrapper } from "@/layout/StyledLayout";
+import { Layout } from "@/layout/Layout";
 import { Display } from "@/ui/Display";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { MobilePanel } from "@/layout/mobile/MobilePanel";
 import { MapCreateContext } from "@/layout/common/MapCreateContext";
+import { Wrapper } from "@/layout/Wrapper";
 
 type DefaultProps = {
   children: React.ReactElement;
@@ -17,6 +18,8 @@ export const LayoutDefault: React.FC<DefaultProps> = (props) => {
   const [activeTab, setActiveTab] = React.useState<TabsType>("chat");
   const [createOpen, setCreateOpen] = React.useState(false);
   const isMobile = useIsMobile();
+
+  const closeDrawer = React.useCallback(() => setIsOpen(false), []);
 
   return (
     <MapCreateContext.Provider value={{ createOpen, setCreateOpen }}>
@@ -30,6 +33,7 @@ export const LayoutDefault: React.FC<DefaultProps> = (props) => {
             <Drawer
               isOpen={isOpen}
               activeTab={activeTab}
+              onClose={closeDrawer}
             />
           </Display>
         </Wrapper>

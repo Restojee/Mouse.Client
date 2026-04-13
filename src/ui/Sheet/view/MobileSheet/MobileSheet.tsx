@@ -1,7 +1,10 @@
 import * as React from "react";
-import { ModalCloseIcon } from "@/ui/ModalCloseIcon/ModalCloseIcon";
+import clsx from "clsx";
+import { Typography } from "@/ui/Typography";
+import { useClosingAnimation } from "../../viewModel/useClosingAnimation";
 import { useDragToClose } from "../../viewModel/useDragToClose";
 import { useSheetZIndex } from "../../viewModel/useSheetZIndex";
+import { ThemeKey } from "@/layout/theme/types";
 import styles from "./MobileSheet.module.scss";
 
 export type MobileSheetProps = {
@@ -9,11 +12,14 @@ export type MobileSheetProps = {
   onClose: () => void;
   children: React.ReactNode;
   title?: string;
-  zIndex?: number;
   height?: number | string;
   noHeader?: boolean;
   padding?: number;
   style?: React.CSSProperties;
+  themeKey?: ThemeKey;
+  zIndex?: number;
+  withBackdrop?: boolean;
+  snapPoints?: number[];
 };
 
 export const MobileSheet: React.FC<MobileSheetProps> = ({
@@ -21,33 +27,52 @@ export const MobileSheet: React.FC<MobileSheetProps> = ({
   onClose,
   children,
   title,
-  zIndex,
   height,
   padding,
   style,
+  themeKey,
   noHeader = false,
+  zIndex: zIndexProp,
+  withBackdrop = true,
+  snapPoints,
 }) => {
-  const autoZIndex = useSheetZIndex();
-  const resolvedZIndex = zIndex ?? autoZIndex;
+  const fallbackZIndex = useSheetZIndex();
+  const resolvedZIndex = zIndexProp ?? fallbackZIndex;
 
   const sheetRef = React.useRef<HTMLDivElement>(null);
   const handleBarRef = React.useRef<HTMLDivElement>(null);
 
-  useDragToClose(sheetRef, handleBarRef, onClose, isOpen);
+  const { visible } = useClosingAnimation(isOpen);
+
+  useDragToClose(sheetRef, handleBarRef, onClose, isOpen, snapPoints);
+
+  const overlayStyle = React.useMemo<React.CSSProperties>(
+    () => ({ ...style, zIndex: resolvedZIndex, padding }),
+    [style, resolvedZIndex, padding],
+  );
+
+  const containerStyle = React.useMemo<React.CSSProperties>(() => ({ height }), [height]);
+
+  const overlayClassName = clsx(styles.overlay, { [styles.open]: visible });
+  const backdropClassName = clsx(styles.backdrop, { [styles.open]: visible });
+  const containerClassName = clsx(styles.container, { [styles.open]: visible });
 
   return (
     <div
-      className={`${styles.overlay}${isOpen ? ` ${styles.open}` : ""}`}
-      style={{ ...style, zIndex: resolvedZIndex, padding }}
+      className={overlayClassName}
+      style={overlayStyle}
+      data-theme={themeKey}
     >
-      <div
-        className={`${styles.backdrop}${isOpen ? ` ${styles.open}` : ""}`}
-        onClick={onClose}
-      />
+      {withBackdrop && (
+        <div
+          className={backdropClassName}
+          onClick={onClose}
+        />
+      )}
       <div
         ref={sheetRef}
-        className={`${styles.container}${isOpen ? ` ${styles.open}` : ""}`}
-        style={{ height }}
+        className={containerClassName}
+        style={containerStyle}
       >
         <div
           ref={handleBarRef}
@@ -57,8 +82,7 @@ export const MobileSheet: React.FC<MobileSheetProps> = ({
         </div>
         {!noHeader && (
           <div className={styles.header}>
-            <div className={styles.title}>{title}</div>
-            <ModalCloseIcon onClick={onClose} />
+            <Typography className={styles.title}>{title}</Typography>
           </div>
         )}
         <div className={styles.body}>{children}</div>

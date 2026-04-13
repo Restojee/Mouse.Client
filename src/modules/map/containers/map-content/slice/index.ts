@@ -8,10 +8,11 @@ import {
   UpdateMapApiArg,
 } from "@/api/codegen/genMouseMapsApi";
 import { mapsApi } from "@/api/mapsApi";
-import { setAppMessage, setAppModalType } from "@/bll/appReducer";
+import { setAppMessage } from "@/bll/appReducer";
 import { convertDataUrlToBlob } from "@/common/utils/convertDataUrlToBlob";
 import {
   fetchMapCommentsThunk,
+  setCommentDraft,
   setComments,
   setIsCommentsInitialized,
 } from "@/modules/map/containers/map-content/containers/comments/slice";
@@ -48,6 +49,8 @@ export const onCloseMapContentThunk = createAsyncThunk("map/close-map", async (a
     thunkAPI.dispatch(setMapNote(""));
     thunkAPI.dispatch(setComments([]));
     thunkAPI.dispatch(setIsCommentsInitialized(false));
+    thunkAPI.dispatch(setCommentDraft(""));
+    thunkAPI.dispatch(setPreviewImageSrc(null));
   } catch (error) {
     console.log(error);
   }
@@ -148,7 +151,6 @@ export const updateMapTagsThunk = createAsyncThunk("tag/set-map-tags", async (le
     const tagIds = state.map.selectedModalTagIds;
     if (tagIds) {
       const map = await mapsApi.setMapsTag({ levelId, tagIds });
-      thunkAPI.dispatch(setAppModalType(null));
       thunkAPI.dispatch(setMapContentTags(map.tags || []));
     }
     thunkAPI.dispatch(setAppMessage({ text: "Теги успешно добавлены", severity: "success" }));
@@ -156,6 +158,34 @@ export const updateMapTagsThunk = createAsyncThunk("tag/set-map-tags", async (le
     thunkAPI.dispatch(setAppMessage({ text: "Ошибка добавления тегов", severity: "error" }));
   }
 });
+
+export const openPreviewImageThunk = createAsyncThunk("map/open-preview-image", (src: string, thunkAPI) => {
+  thunkAPI.dispatch(setPreviewImageSrc(src));
+});
+
+export const closePreviewImageThunk = createAsyncThunk("map/close-preview-image", (_: void, thunkAPI) => {
+  thunkAPI.dispatch(setPreviewImageSrc(null));
+});
+
+export const copyTextThunk = createAsyncThunk("map/copy-text", async (text: string, thunkAPI) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    thunkAPI.dispatch(setAppMessage({ severity: "success", text: "Скопировано" }));
+  } catch {
+    thunkAPI.dispatch(setAppMessage({ severity: "error", text: "Ошибка копирования" }));
+  }
+});
+
+export const toggleMapFavoriteThunk = createAsyncThunk(
+  "map/toggle-favorite",
+  (arg: { levelId: Map["id"]; isFavorite: boolean }, thunkAPI) => {
+    if (!arg.isFavorite) {
+      thunkAPI.dispatch(addFavorite({ levelId: arg.levelId! }));
+    } else {
+      thunkAPI.dispatch(removeFavorite({ levelId: arg.levelId! }));
+    }
+  },
+);
 
 export const updateMapNameThunk = createAsyncThunk("map/update-name", async (arg: UpdateMapApiArg, thunkAPI) => {
   try {
@@ -179,6 +209,7 @@ const initialState: MapContentStateType = {
   mapContent: null,
   isMapFetching: true,
   selectedModalTagIds: [],
+  previewImageSrc: null,
 };
 
 const slice = createSlice({
@@ -226,6 +257,9 @@ const slice = createSlice({
         state.mapContent.tags = action.payload;
       }
     },
+    setPreviewImageSrc: (state, action: PayloadAction<string | null>) => {
+      state.previewImageSrc = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -245,6 +279,7 @@ export const selectSelectedTagIds = (state: RootState) => state.map.selectedModa
 export const selectMapContent = (state: RootState) => state.map.mapContent;
 export const selectIsMapImageModalOpen = (state: RootState) => state.map.isMapImageModalOpen;
 export const selectIsMapFetching = (state: RootState) => state.map.isMapFetching;
+export const selectPreviewImageSrc = (state: RootState) => state.map.previewImageSrc;
 
 export const {
   setMapContent,
@@ -256,5 +291,6 @@ export const {
   setIsFavorite,
   decreaseFavoriteCount,
   increaseFavoriteCount,
+  setPreviewImageSrc,
 } = slice.actions;
 export const mapReducer = slice.reducer;

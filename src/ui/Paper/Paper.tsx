@@ -1,27 +1,24 @@
-import { StyledBox, StyledBoxProps } from "@/ui/Box";
-import React from "react";
+import React, { CSSProperties, ReactNode } from "react";
+import clsx from "clsx";
+import styles from "./Paper.module.scss";
 
-type PaperPropsType = Partial<StyledBoxProps> & {
+type PaperPropsType = {
+  children?: ReactNode;
+  className?: string;
+  style?: CSSProperties;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseDown?: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
-export const Paper = ({ children, onClick, ...props }: PaperPropsType) => {
+
+export const Paper = ({ children, className, style, onClick, onMouseDown }: PaperPropsType) => {
   return (
-    <StyledBox
+    <div
+      className={clsx(styles.root, className)}
+      style={style}
       onClick={onClick}
-      direction={"column"}
-      textAlign={"center"}
-      align={"center"}
-      width={"100%"}
-      borderRadius={15}
-      height={"100%"}
-      padding={"30px"}
-      maxHeight={"100%"}
-      zIndex={"var(--z-modal)"}
-      bgColor={"var(--color-secondary)"}
-      {...props}
+      onMouseDown={onMouseDown}
     >
       {children}
-    </StyledBox>
+    </div>
   );
 };

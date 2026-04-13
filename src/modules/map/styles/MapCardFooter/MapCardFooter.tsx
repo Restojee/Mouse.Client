@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import styles from "./MapCardFooter.module.scss";
 
 type Props = {
@@ -6,12 +7,15 @@ type Props = {
 };
 
 export const MapCardFooter = React.forwardRef<HTMLDivElement, Props & React.HTMLAttributes<HTMLDivElement>>(
-  ({ isMapHover, className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={[styles.root, isMapHover && styles.visible, className].filter(Boolean).join(" ")}
-      {...props}
-    />
-  ),
+  ({ isMapHover, className, ...props }, ref) => {
+    const rootClassName = clsx(styles.root, isMapHover && styles.visible, className);
+    return (
+      <div
+        ref={ref}
+        className={rootClassName}
+        {...props}
+      />
+    );
+  },
 );
 MapCardFooter.displayName = "MapCardFooter";

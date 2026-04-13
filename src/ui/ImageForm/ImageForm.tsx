@@ -1,7 +1,7 @@
 import { useAppNotifications } from "@/hooks/useAppNotifications";
 import { Display } from "@/ui/Display";
 import { useImage } from "@/ui/ImageForm/hooks/useImage";
-import { StyledImageFormContainer, StyledImageFormLink, StyledImageHover } from "@/ui/ImageForm/ImageFormElements";
+import { ImageFormContainer, ImageFormLink, ImageHover } from "@/ui/ImageForm/ImageFormElements";
 import { Property } from "csstype";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import imageFormStyles from "./ImageForm.module.scss";
@@ -91,7 +91,7 @@ export const ImageForm = (props: ImageFormPropsType) => {
 
   return (
     <div>
-      <StyledImageFormContainer
+      <ImageFormContainer
         onClick={onClickHandler}
         onDragStart={(e) => dragStartHandler(e)}
         onDragLeave={(e) => dragLeaveHandler(e)}
@@ -103,7 +103,7 @@ export const ImageForm = (props: ImageFormPropsType) => {
         height={props.height}
       >
         <input
-          accept={props.fileType && inputAccept[props.fileType]}
+          accept={props.fileType ? inputAccept[props.fileType] : undefined}
           name={props.name}
           type="file"
           ref={inputFile}
@@ -112,14 +112,14 @@ export const ImageForm = (props: ImageFormPropsType) => {
         />
         {!props.value && (
           <span>
-            <StyledImageFormLink>Загрузите {props.messageWords || "скрин"},</StyledImageFormLink>
+            <ImageFormLink>Загрузите {props.messageWords || "скрин"},</ImageFormLink>
             <span> перетащите или вставьте из буфера обмена (Ctrl+V)</span>
           </span>
         )}
         <Display condition={props.value}>
-          <StyledImageHover>Изменить скрин</StyledImageHover>
+          <ImageHover>Изменить скрин</ImageHover>
         </Display>
-      </StyledImageFormContainer>
+      </ImageFormContainer>
       <form className={imageFormStyles.text}>Макс. размер файла - 1МБ</form>
     </div>
   );

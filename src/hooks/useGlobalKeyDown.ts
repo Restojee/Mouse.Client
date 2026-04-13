@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 
-export const useGlobalKeyDown = (callback: (e: KeyboardEvent) => void) => {
+type KeyMap = Partial<Record<string, (e: KeyboardEvent) => void>>;
+
+export const useGlobalKeyDown = (keyMap: KeyMap) => {
   useEffect(() => {
-    const handleClick = (e: KeyboardEvent) => {
-      callback(e);
+    const handler = (e: KeyboardEvent) => {
+      keyMap[e.key]?.(e);
     };
-
-    document.addEventListener("keyup", handleClick);
-
-    return () => {
-      document.removeEventListener("keyup", handleClick);
-    };
-  }, [callback]);
+    document.addEventListener("keyup", handler);
+    return () => document.removeEventListener("keyup", handler);
+  }, [keyMap]);
 };

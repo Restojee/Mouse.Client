@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ContextMenu } from "./ContextMenu";
 import { PopupPosition, AnchorAlign } from "@/ui/Popup";
 import type { ListItemOptions } from "./ContextMenuItem";
@@ -27,7 +27,6 @@ export const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const anchorRef = useRef<HTMLDivElement>(null);
 
   const handleContextMenu = useCallback(
     (event: React.MouseEvent) => {
@@ -44,9 +43,15 @@ export const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({
     setIsOpen(false);
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const onScroll = () => setIsOpen(false);
+    window.addEventListener("scroll", onScroll, true);
+    return () => window.removeEventListener("scroll", onScroll, true);
+  }, [isOpen]);
+
   const anchor = (
     <div
-      ref={anchorRef}
       style={{
         position: "fixed",
         left: position.x,
@@ -61,7 +66,7 @@ export const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({
   return (
     <>
       {React.cloneElement(children, { onContextMenu: handleContextMenu })}
-      {isOpen && (
+      {isOpen ? (
         <ContextMenu
           items={items}
           anchor={anchor}
@@ -74,8 +79,9 @@ export const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({
           title={title}
           showCheckbox={showCheckbox}
           minWidth={minWidth}
+          offset={0}
         />
-      )}
+      ) : null}
     </>
   );
 };

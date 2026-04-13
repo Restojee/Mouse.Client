@@ -8,13 +8,10 @@ type TAppMessage = {
   text: string;
 };
 
-export type AppModalTypes = "login" | "user" | "map-tags-update" | "register" | "completed-delete";
-
 export type TAppState = {
   isInitialized: boolean;
   messages: TAppMessage[];
   isFetching: boolean;
-  modalType: AppModalTypes | null;
   currentTheme: ThemeKey | null;
 };
 
@@ -23,7 +20,6 @@ const slice = createSlice({
   initialState: {
     isInitialized: false,
     status: "idle",
-    modalType: null,
     messages: [],
     isFetching: false,
     currentTheme: null,
@@ -40,9 +36,6 @@ const slice = createSlice({
       };
       state.messages.push(newMessage);
     },
-    setAppModalType(state, action: PayloadAction<TAppState["modalType"]>) {
-      state.modalType = action.payload;
-    },
     setAppLastMessage(state) {
       state.messages.splice(-1);
     },
@@ -58,16 +51,8 @@ const slice = createSlice({
   },
 });
 
-export const selectAppModalType = (state: RootState) => state.app.modalType;
 export const selectAppTheme = (state: RootState) => state.app.currentTheme;
 
 export const appReducer = slice.reducer;
-export const {
-  setIsInitialized,
-  setAppMessage,
-  setAppLastMessage,
-  hideAppMessage,
-  setIsFetching,
-  setAppModalType,
-  setCurrentTheme,
-} = slice.actions;
+export const { setIsInitialized, setAppMessage, setAppLastMessage, hideAppMessage, setIsFetching, setCurrentTheme } =
+  slice.actions;

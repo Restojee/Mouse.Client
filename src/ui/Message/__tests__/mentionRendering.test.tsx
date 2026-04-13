@@ -1,16 +1,6 @@
 import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { ThemeProvider } from "styled-components";
-
-const mockTheme = {
-  colors: {
-    brandColor: "#4f8ef7",
-    input: { default: "#f5f5f5", border: "#ddd", hover: "#ececec" },
-    textOnSecondary: "#333",
-  },
-  font: { fontSize: "14px" },
-};
 
 jest.mock("@/common/utils", () => ({
   getAvatarImageLink: (v: string) => v ?? "",
@@ -40,12 +30,10 @@ const makeComment = (text: string) => ({
 
 const renderMessage = (text: string, onMentionClick?: (username: string) => void) =>
   render(
-    <ThemeProvider theme={mockTheme}>
-      <Message
-        comment={makeComment(text)}
-        onMentionClick={onMentionClick}
-      />
-    </ThemeProvider>,
+    <Message
+      comment={makeComment(text)}
+      onMentionClick={onMentionClick}
+    />,
   );
 
 describe("mention rendering as TextLink", () => {

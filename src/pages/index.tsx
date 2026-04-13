@@ -2,8 +2,7 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { MapPageContainer } from "@/modules/map/components/MapContainer";
 import { AsyncMapViewModal } from "@/modules/map/containers";
 import { MapsQueryParams } from "@/modules/map/containers/map-list";
-import { MapsList } from "@/modules/map/containers/map-list/ui/MapsList";
-import { AsyncModals } from "@/modules/modals/AsyncModals";
+import { MapsList } from "@/modules/map/containers/map-list/ui/maps-list/MapsList";
 import { getUsersThunk } from "@/modules/user/slice";
 import { MetaTags } from "@/ui/MetaTags/MetaTags";
 import React, { Suspense, useEffect } from "react";
@@ -23,7 +22,6 @@ export default function Maps() {
       <Suspense fallback={null}>
         <AsyncMapViewModal />
       </Suspense>
-      <AsyncModals />
     </MapPageContainer>
   );
 }

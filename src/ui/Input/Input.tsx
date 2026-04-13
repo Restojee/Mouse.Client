@@ -1,4 +1,4 @@
-import { StyledBox } from "@/ui/Box";
+import { Box } from "@/ui/Box";
 import { Display } from "@/ui/Display";
 import formStyles from "@/ui/Form/Form.module.scss";
 import React from "react";
@@ -20,7 +20,7 @@ export const Input = (props: InputPropsType) => {
   const isError = Boolean(error);
 
   return (
-    <StyledBox
+    <Box
       width={props.width || "100%"}
       direction={"column"}
       margin={isError ? "0 0 5px 0" : 0}
@@ -28,13 +28,13 @@ export const Input = (props: InputPropsType) => {
       position={"relative"}
     >
       <Display condition={props.title}>
-        <StyledBox
+        <Box
           opacity={0.5}
           fontSize={"0.8rem"}
           padding={"0 0 5px 15px"}
         >
           {props.title}
-        </StyledBox>
+        </Box>
       </Display>
       <div
         className={[
@@ -47,11 +47,11 @@ export const Input = (props: InputPropsType) => {
           .join(" ")}
         style={bgColor ? { backgroundColor: bgColor } : undefined}
       >
-        {inputPrepend && (
+        {inputPrepend ? (
           <div className={[formStyles.inputIcon, formStyles.inputIconLeft].filter(Boolean).join(" ")}>
             {inputPrepend}
           </div>
-        )}
+        ) : null}
         <input
           {...inputProps}
           className={[
@@ -65,15 +65,15 @@ export const Input = (props: InputPropsType) => {
           ref={null}
           style={(inputPrepend && { paddingLeft: 40 }) || (inputAppend && { paddingRight: 40 }) || inputProps.style}
         />
-        {props.inputAppend && (
+        {props.inputAppend ? (
           <div className={[formStyles.inputIcon, formStyles.inputIconRight].filter(Boolean).join(" ")}>
             {inputAppend}
           </div>
-        )}
+        ) : null}
       </div>
       <div className={[inputStyles.fieldError, isError && inputStyles.fieldErrorVisible].filter(Boolean).join(" ")}>
         {error}
       </div>
-    </StyledBox>
+    </Box>
   );
 };

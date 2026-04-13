@@ -13,6 +13,8 @@
   img {
     filter: blur(4px);
     -webkit-filter: blur(4px);
+    object-fit: cover;
+    object-position: center;
   }
 
   &:hover {

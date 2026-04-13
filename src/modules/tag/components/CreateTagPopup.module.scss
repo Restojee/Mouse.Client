@@ -1,0 +1,17 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  color: var(--color-text-on-secondary);
+}
+
+.title {
+  font-weight: 600;
+}
+
+.submitButton {
+  padding: 4px;
+  border-radius: 50%;
+  background-color: var(--color-success);
+}

@@ -120,3 +120,11 @@ export const selectActivePriority = (state: RootState) => state.notifications.ac
 
 export const { setActivePriority } = slice.actions;
 export const notificationsReducer = slice.reducer;
+
+export const changeTabThunk = createAsyncThunk(
+  "notifications/change-tab",
+  (priority: NotificationPriority, thunkAPI) => {
+    thunkAPI.dispatch(setActivePriority(priority));
+    thunkAPI.dispatch(collectNotificationsThunk(priority));
+  },
+);

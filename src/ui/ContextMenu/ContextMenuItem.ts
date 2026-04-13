@@ -8,7 +8,6 @@ export interface ListItemOptions {
   avatar?: string;
   disabled?: boolean;
   divider?: boolean;
-  submenu?: ListItemOptions[];
   checked?: boolean;
   showCheckbox?: boolean;
   isDanger?: boolean;

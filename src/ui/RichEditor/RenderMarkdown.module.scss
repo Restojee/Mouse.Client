@@ -1,0 +1,32 @@
+.content {
+  a {
+    color: var(--color-brand);
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+
+  [data-spoiler] {
+    cursor: pointer;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+  }
+
+  [data-spoiler="1"] {
+    filter: blur(6px);
+    -webkit-filter: blur(6px);
+    opacity: 0.6;
+  }
+
+  [data-spoiler="open"] {
+    filter: none;
+    opacity: 1;
+  }
+}

@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import {
+  changeTabThunk,
   collectNotificationsThunk,
   fetchUnreadCountThunk,
   markNotificationsReadThunk,
@@ -9,7 +10,6 @@ import {
   selectNotificationItems,
   selectNotificationsLoading,
   selectUnreadCount,
-  setActivePriority,
 } from "@/modules/notifications/slice";
 import { NotificationPriority } from "@/modules/notifications/types";
 import { notificationList } from "@/modules/notifications/constants";
@@ -46,8 +46,7 @@ export const useNotifications = () => {
 
   const changeTab = useCallback(
     (priority: NotificationPriority) => {
-      dispatch(setActivePriority(priority));
-      dispatch(collectNotificationsThunk(priority));
+      dispatch(changeTabThunk(priority));
     },
     [dispatch],
   );

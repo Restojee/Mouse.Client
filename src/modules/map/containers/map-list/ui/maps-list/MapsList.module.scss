@@ -1,0 +1,33 @@
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: auto;
+  opacity: 0.5;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(var(--maps-columns), 1fr);
+  gap: 5px;
+  padding: 0 20px 5px;
+  box-sizing: border-box;
+
+  &.rowCompact {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.listContainer {
+  height: 100%;
+}
+
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 0;
+  overflow: hidden;
+}

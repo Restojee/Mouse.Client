@@ -1,56 +1,47 @@
+import React from "react";
+import clsx from "clsx";
 import { DEFAULT_MAP_IMAGE } from "@/common/constants";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { AVATAR_SIZE } from "@/ui/Avatar/constants";
-import { getInitials } from "@/ui/Avatar/utils";
-import { StyledBox } from "@/ui/Box";
 import { Display } from "@/ui/Display";
-import Image from "next/image";
-import * as React from "react";
+import styles from "./Avatar.module.scss";
+import { useAvatar } from "./useAvatar";
 
 type AvatarPropsType = {
   image?: string;
   username?: string;
   size?: React.CSSProperties["width"];
 };
-export const Avatar: React.FunctionComponent<AvatarPropsType> = (props) => {
-  const { size, image, username } = props;
 
-  const { theme } = useAppTheme();
+export const Avatar = (props: AvatarPropsType) => {
+  const { size = AVATAR_SIZE, image, username } = props;
+  const { initials, isLarge, rootStyle, isImageLoaded, showSkeleton, onImageLoad } = useAvatar({
+    size,
+    image,
+    username,
+  });
 
-  const initials = React.useMemo(() => {
-    return getInitials(username);
-  }, [username]);
+  const rootClassName = clsx(styles.root, isLarge && styles.large);
+  const imageClassName = clsx(styles.image, !isImageLoaded && styles.imageHidden);
+  const imageSrc = image || DEFAULT_MAP_IMAGE;
 
   return (
-    <StyledBox
-      align={"center"}
-      justify={"center"}
-      fontSize={size && size > 70 ? "2.5rem" : "1.2rem"}
-      fontWeight={300}
-      borderRadius={"50%"}
-      overflow={"hidden"}
-      width={size}
-      height={size}
-      minWidth={size}
-      bgColor={image ? "" : theme.colors.mapBackgroundLight}
-      color={"#fff"}
-    >
+    <div className={rootClassName} style={rootStyle}>
       <Display condition={image}>
-        <Image
-          src={image || DEFAULT_MAP_IMAGE}
+        <img
+          src={imageSrc}
           width={size}
           height={size}
-          objectFit={"cover"}
-          objectPosition={"center"}
+          className={imageClassName}
+          alt={username}
+          onLoad={onImageLoad}
         />
       </Display>
       <Display condition={!image}>
-        <StyledBox>{initials}</StyledBox>
+        <div>{initials}</div>
       </Display>
-    </StyledBox>
+      <Display condition={showSkeleton}>
+        <div className={styles.skeleton} />
+      </Display>
+    </div>
   );
-};
-
-Avatar.defaultProps = {
-  size: AVATAR_SIZE,
 };

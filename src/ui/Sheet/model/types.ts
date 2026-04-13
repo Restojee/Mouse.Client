@@ -12,9 +12,9 @@ export type SheetConfig = {
   accessDisabled?: boolean;
   height?: number | string;
   noHeader?: boolean;
-  zIndex?: number;
   padding?: number;
   themeKey?: ThemeKey;
+  zIndex?: number;
 };
 
 /** Опции для sheet.show() — включает callbacks и контент */

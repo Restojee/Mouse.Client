@@ -1,12 +1,16 @@
-import { LayoutContext } from "@/layout/common/LayoutContext";
-import * as React from "react";
+import clsx from "clsx";
+import React from "react";
+import styles from "./Layout.module.scss";
 
-type Props = {
-  children: React.ReactElement;
-};
-export const Layout: React.FC<Props> = (props) => {
-  const layoutContext = React.useContext(LayoutContext);
-  const LayoutContainer = layoutContext.layout;
-
-  return <LayoutContainer>{props.children}</LayoutContainer>;
-};
+export const Layout = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => {
+    const rootClassName = clsx(styles.layout, className);
+    return (
+      <div
+        ref={ref}
+        className={rootClassName}
+        {...props}
+      />
+    );
+  },
+);

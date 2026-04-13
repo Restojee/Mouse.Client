@@ -1,15 +1,17 @@
 .root {
   margin-bottom: auto;
   position: relative;
-  background-color: var(--color-primary-accent) !important;
+  height: 100px;
+  min-height: 100px;
+  background-color: var(--color-input-default) !important;
 
   &:hover {
     opacity: 0.8;
-    background-color: var(--color-primary-accent);
+    background-color: var(--color-input-hover);
   }
 
   &:focus {
     opacity: 0.8;
-    background-color: var(--color-primary-accent);
+    background-color: var(--color-input-hover);
   }
 }

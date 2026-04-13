@@ -55,36 +55,39 @@ export const DragSlider = ({ activeIndex, onIndexChange, children }: Props) => {
     if (track) track.style.transition = "none";
   }, []);
 
-  const onTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!touch.current) return;
-    const t = e.touches[0];
-    const dx = t.clientX - touch.current.startX;
-    const dy = t.clientY - touch.current.startY;
+  const onTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (!touch.current) return;
+      const t = e.touches[0];
+      const dx = t.clientX - touch.current.startX;
+      const dy = t.clientY - touch.current.startY;
 
-    if (touch.current.locked === null) {
-      if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
-      touch.current.locked = Math.abs(dx) > Math.abs(dy);
-    }
+      if (touch.current.locked === null) {
+        if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+        touch.current.locked = Math.abs(dx) > Math.abs(dy);
+      }
 
-    if (!touch.current.locked) return;
+      if (!touch.current.locked) return;
 
-    e.preventDefault();
+      e.preventDefault();
 
-    const dt = e.timeStamp - touch.current.lastTime;
-    if (dt > 0) touch.current.velocity = (t.clientX - touch.current.lastX) / dt;
-    touch.current.lastX = t.clientX;
-    touch.current.lastTime = e.timeStamp;
+      const dt = e.timeStamp - touch.current.lastTime;
+      if (dt > 0) touch.current.velocity = (t.clientX - touch.current.lastX) / dt;
+      touch.current.lastX = t.clientX;
+      touch.current.lastTime = e.timeStamp;
 
-    const base = getBaseOffset(activeIndexRef.current);
-    const maxOffset = 0;
-    const minOffset = getBaseOffset(count - 1);
-    let offset = base + dx;
-    if (offset > maxOffset) offset = maxOffset + (offset - maxOffset) * 0.3;
-    if (offset < minOffset) offset = minOffset + (offset - minOffset) * 0.3;
+      const base = getBaseOffset(activeIndexRef.current);
+      const maxOffset = 0;
+      const minOffset = getBaseOffset(count - 1);
+      let offset = base + dx;
+      if (offset > maxOffset) offset = maxOffset + (offset - maxOffset) * 0.3;
+      if (offset < minOffset) offset = minOffset + (offset - minOffset) * 0.3;
 
-    touch.current.dragOffset = offset - base;
-    applyTransform(offset, false);
-  }, [applyTransform, getBaseOffset, count]);
+      touch.current.dragOffset = offset - base;
+      applyTransform(offset, false);
+    },
+    [applyTransform, getBaseOffset, count],
+  );
 
   const onTouchEnd = useCallback(() => {
     if (!touch.current) return;

@@ -1,10 +1,10 @@
-import { StyledStatisticIconContainer, StyledStatisticIconText } from "@/layout/drawer/Statistic/styled";
-import { StyledBox } from "@/ui/Box";
+import { Typography } from "@/ui/Typography/styles/Typography";
 import React, { ReactNode, useCallback } from "react";
 import { GetMapsApiArg } from "@/api/codegen/genMouseMapsApi";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectStaticMapsInfo } from "@/modules/map/containers";
 import { Display } from "@/ui/Display";
+import statStyles from "@/layout/drawer/Statistic/Statistic.module.scss";
 
 interface Props {
   onClick: (filters: Partial<GetMapsApiArg>) => void;
@@ -33,25 +33,29 @@ export const StatisticCircle = (props: Props) => {
     [staticMapsInfo],
   );
 
+  const fillingPercent = showPercent ? `${getMapsPercent(count)}%` : "0";
+  const containerStyle = {
+    background: `linear-gradient(to top, rgb(132, 208, 108) ${fillingPercent}, var(--color-secondary) ${fillingPercent})`,
+  };
+
   return (
-    <StyledBox
-      grow="1"
-      direction={"column"}
-      align={"center"}
-      gap={10}
-      justify="center"
+    <div
+      className={statStyles.statisticCircleItem}
       title={title}
       onClick={onClickHandler}
     >
-      <StyledStatisticIconContainer fillingPercent={showPercent ? `${getMapsPercent(count)}%` : "0"}>
+      <div
+        className={statStyles.statisticIconContainer}
+        style={containerStyle}
+      >
         {icon}
-      </StyledStatisticIconContainer>
-      <StyledStatisticIconText>
+      </div>
+      <Typography className={statStyles.statisticIconText}>
         {count}
         <Display condition={showPercent}>
           <> ({getMapsPercent(count)}%)</>
         </Display>
-      </StyledStatisticIconText>
-    </StyledBox>
+      </Typography>
+    </div>
   );
 };

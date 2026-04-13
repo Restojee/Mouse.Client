@@ -1,0 +1,49 @@
+.root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  font-weight: 300;
+  font-size: 1.2rem;
+  color: #fff;
+  flex-shrink: 0;
+
+  &.large {
+    font-size: 2.5rem;
+  }
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+  transition: opacity 0.2s ease;
+}
+
+.imageHidden {
+  opacity: 0;
+}
+
+.skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    var(--color-input-border, rgba(0, 0, 0, 0.1));
+  background-size: 200% 100%, 100% 100%;
+  animation: skeletonShimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -150% 0, 0 0;
+  }
+  100% {
+    background-position: 150% 0, 0 0;
+  }
+}

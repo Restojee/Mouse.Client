@@ -19,7 +19,7 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
 
   return (
     <MessageCard
-      avatar={actor?.avatar ? getAvatarImageLink(actor.avatar) : undefined}
+      avatar={actor?.avatar ? getAvatarImageLink(actor.avatar, "display") : undefined}
       username={actor?.userName ?? undefined}
       date={formatDateTime(notification.createdUtcDate)}
       padding="10px"

@@ -11,8 +11,13 @@ export const useOutsideClick = (
   useEffect(() => {
     if (!enabled || !handler) return;
 
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (event.type === "mousedown" && (event as MouseEvent).button === 2) {
+        return;
+      }
+
+      const target = event.target as Node | null;
+      if (!target) return;
 
       for (const ref of refs) {
         if (ref.current?.contains(target)) {
@@ -29,11 +34,13 @@ export const useOutsideClick = (
 
     const timeoutId = setTimeout(() => {
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside, { passive: true });
     }, 0);
 
     return () => {
       clearTimeout(timeoutId);
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
     };
   }, [refs, handler, enabled, checkAdditionalElements]);
 };

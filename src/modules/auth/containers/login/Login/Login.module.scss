@@ -1,0 +1,100 @@
+.login {
+  width: 100%;
+  padding: 4px 2px 8px;
+  gap: 22px;
+}
+
+.header {
+  gap: 6px;
+  align-items: center;
+  text-align: center;
+}
+
+.iconBadge {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-brand), #ff9a7a);
+  color: var(--color-brand-contrast-text);
+  box-shadow: 0 10px 24px -10px rgba(233, 107, 107, 0.55);
+  margin-bottom: 6px;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-text-on-primary);
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  color: var(--color-text-on-primary);
+  max-width: 260px;
+}
+
+.fields {
+  gap: 14px;
+}
+
+.forgot {
+  align-self: flex-end;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.divider {
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.dividerText {
+  font-size: 0.75rem;
+  opacity: 0.55;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.footer {
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.footerMuted {
+  opacity: 0.6;
+}
+
+.registerLink {
+  cursor: pointer;
+  color: var(--color-brand);
+  font-weight: 500;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.inviteHint {
+  font-size: 0.75rem;
+  opacity: 0.55;
+  text-align: center;
+  margin-top: -4px;
+}

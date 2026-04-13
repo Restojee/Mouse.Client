@@ -1,0 +1,30 @@
+.form {
+  display: flex;
+  width: 278px;
+  gap: 15px;
+  text-align: center;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.tagsContainer {
+  display: flex;
+  max-height: 150px;
+  flex-wrap: wrap;
+  gap: 5px;
+  overflow: auto;
+}
+
+.title {
+  text-align: center;
+  font-weight: 600;
+}
+
+.editButton {
+  margin: 10px auto 0;
+}
+
+.editButtonInline {
+  margin: initial;
+}
+

@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install && yarn build
+RUN yarn cache clean && yarn install && yarn build
 
 CMD ["yarn", "start"]

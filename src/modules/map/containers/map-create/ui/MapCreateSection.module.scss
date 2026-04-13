@@ -1,0 +1,17 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.submitButton {
+  padding: 4px;
+  border-radius: 50%;
+  background-color: var(--color-success);
+}
+
+.toggleButton {
+  padding: 8px;
+  border-radius: 50%;
+  background-color: var(--color-neutral);
+}

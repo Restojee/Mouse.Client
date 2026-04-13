@@ -1,0 +1,32 @@
+.card {
+  aspect-ratio: 19/9;
+  width: 100%;
+  border-radius: 10px;
+  background-color: var(--color-primary-accent);
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-background-shadow),
+      transparent
+    );
+    animation: cardShimmer 1.6s infinite;
+  }
+}
+
+@keyframes cardShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

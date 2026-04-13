@@ -2,17 +2,18 @@ import { Comment, Map } from "@/api/codegen/genMouseMapsApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { shallowEqual } from "react-redux";
 import {
-  addMapCommentsThunk,
-  deleteMapCommentsThunk,
+  deleteCommentGuardedThunk,
   fetchMapCommentsThunk,
+  selectCommentDraft,
   selectIsCommentCreateFetching,
   selectIsCommentsInitialized,
   selectMapComments,
+  setCommentDraft,
+  submitCommentThunk,
 } from "./slice";
-import { selectCurrentUser } from "@/modules/auth/slice";
 
 export const useMapComments = () => {
   const dispatch = useAppDispatch();
@@ -21,52 +22,39 @@ export const useMapComments = () => {
   const comments = useAppSelector(selectMapComments, shallowEqual);
   const isCommentsInitialized = useAppSelector(selectIsCommentsInitialized);
   const isCommentCreateFetching = useAppSelector(selectIsCommentCreateFetching);
-  const user = useAppSelector(selectCurrentUser);
-
-  const [commentText, setCommentText] = useState("");
+  const commentText = useAppSelector(selectCommentDraft);
 
   const { levelId } = router.query;
 
   const onCommentDelete = useCallback(
     (comment: Comment) => {
-      if (!comment.id || user?.id !== comment.user?.id || !levelId) {
-        return;
-      }
-      dispatch(deleteMapCommentsThunk({ commentId: comment.id, levelId: levelId as unknown as Comment["id"] }));
+      dispatch(deleteCommentGuardedThunk({ comment, levelId: levelId as unknown as Map["id"] }));
     },
-    [user, levelId],
+    [dispatch, levelId],
   );
 
   const onCommentAdd = useCallback(
-    async (levelId: Map["id"]): Promise<void> => {
-      const messageText = String(commentText).trim();
-
-      if (messageText.length) {
-        const res = await dispatch(addMapCommentsThunk({ levelId, text: commentText }));
-        if (res.payload) {
-          setCommentText("");
-        }
-      }
+    (id: Map["id"]) => {
+      dispatch(submitCommentThunk(id));
     },
-    [commentText],
+    [dispatch],
   );
 
-  const onInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const text = e.currentTarget.value;
-    setCommentText(text);
-  }, []);
+  const onInputChange = useCallback(
+    (value: string) => {
+      dispatch(setCommentDraft(value));
+    },
+    [dispatch],
+  );
 
   const onInputKeyUp = useCallback(
-    async (e: React.KeyboardEvent<HTMLTextAreaElement>, levelId: Map["id"]): Promise<void> => {
-      if (e.ctrlKey || e.shiftKey) {
-        return;
-      }
-
+    async (e: React.KeyboardEvent<HTMLTextAreaElement>, id: Map["id"]): Promise<void> => {
+      if (e.ctrlKey || e.shiftKey) return;
       if (e.key === "Enter") {
-        await onCommentAdd(levelId);
+        await dispatch(submitCommentThunk(id));
       }
     },
-    [onCommentAdd],
+    [dispatch],
   );
 
   useEffect(() => {
@@ -74,16 +62,13 @@ export const useMapComments = () => {
       const id = setInterval(() => {
         dispatch(fetchMapCommentsThunk({ levelId: Number(levelId) }));
       }, 5000);
-      return () => {
-        clearInterval(id);
-      };
+      return () => clearInterval(id);
     }
   }, [levelId]);
 
   return {
     comments,
     commentText,
-    setCommentText,
     onCommentDelete,
     onCommentAdd,
     onInputChange,

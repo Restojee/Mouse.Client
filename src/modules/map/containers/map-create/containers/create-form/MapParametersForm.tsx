@@ -1,57 +1,51 @@
-import { useAppTheme } from "@/hooks/useAppTheme";
+import React from "react";
+import clsx from "clsx";
 import { Tab } from "@/ui/Tabs/Tab";
 import { Tabs } from "@/ui/Tabs/Tabs";
 import { TabsPanel } from "@/ui/Tabs/TabsPanel";
-import React, { useMemo, useState } from "react";
-import { useMapCreate } from "@/modules/map/containers/map-create/hooks/useMapCreate";
-import { useTag } from "@/modules/tag/hooks/useTag";
 import { Button } from "@/ui/Button";
-import { StyledBox } from "@/ui/Box";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { EditFillIcon } from "@/svg/EditFillIcon";
 import { ImageForm } from "@/ui/ImageForm/ImageForm";
-import { StyledTag } from "@/ui/Tag/styled";
 import { Display } from "@/ui/Display";
+import formStyles from "./MapParametersForm.module.scss";
+import { useMapParametersForm } from "./useMapParametersForm";
 
 export const MapParametersForm = () => {
-  const { theme } = useAppTheme();
+  const {
+    image,
+    completedMapImage,
+    setImage,
+    setCompletedMapImage,
+    openTagsModal,
+    renderedTags,
+    hasSelectedTags,
+    isMapTab,
+    isCompletedTab,
+    activeTabIndex,
+    editButtonColor,
+    onMapTabClick,
+    onCompletedTabClick,
+  } = useMapParametersForm();
 
-  const [currentTab, setCurrentTab] = useState<"map" | "completed">("map");
-
-  const { image, completedMapImage, setImage, setCompletedMapImage } = useMapCreate();
-
-  const { tagsList, onOpenModal, selectedIdForCreateMap } = useTag();
-
-  const selectedTags = useMemo(() => {
-    return tagsList.filter((tag) => selectedIdForCreateMap?.includes(tag.id));
-  }, [tagsList, selectedIdForCreateMap]);
-
-  const onOpenModalHandler = () => {
-    onOpenModal("map-tags-update");
-  };
+  const editButtonWrapperClass = clsx(formStyles.editButton, hasSelectedTags && formStyles.editButtonInline);
 
   return (
-    <StyledBox
-      width={"278px"}
-      gap="15px"
-      textAlign={"center"}
-      direction="column"
-      padding="15px"
-    >
-      <Typography style={{ textAlign: "center", fontWeight: 600 }}>Доп. параметры карты</Typography>
+    <div className={formStyles.form}>
+      <Typography className={formStyles.title}>Доп. параметры карты</Typography>
       <Tabs>
         <Tab
-          onClick={() => setCurrentTab("map")}
-          isActive={currentTab === "map"}
+          onClick={onMapTabClick}
+          isActive={isMapTab}
           label={"Обложка"}
         />
         <Tab
-          onClick={() => setCurrentTab("completed")}
-          isActive={currentTab === "completed"}
+          onClick={onCompletedTabClick}
+          isActive={isCompletedTab}
           label={"Постройка"}
         />
       </Tabs>
-      <TabsPanel activeIndex={currentTab === "map" ? 0 : 1}>
+      <TabsPanel activeIndex={activeTabIndex}>
         <ImageForm
           subTextSize={"sm"}
           fileType="image"
@@ -67,35 +61,23 @@ export const MapParametersForm = () => {
           messageWords={"свою постройку"}
         />
       </TabsPanel>
-      <StyledBox
-        maxHeight={"150px"}
-        wrap={"wrap"}
-        gap={5}
-        overflow={"auto"}
-      >
-        <Display condition={selectedTags.length}>
+      <div className={formStyles.tagsContainer}>
+        <Display condition={hasSelectedTags}>
           <>
             <Typography>Теги: </Typography>
-            {selectedTags?.map((tag) => (
-              <StyledTag
-                key={tag.id}
-                small
-              >
-                {tag.name}
-              </StyledTag>
-            ))}
+            {renderedTags}
           </>
         </Display>
-        <StyledBox margin={selectedTags.length ? "initial" : "10px auto 0 auto"}>
+        <div className={editButtonWrapperClass}>
           <Button
-            color={theme.colors.brandColorContrastText}
-            onClick={onOpenModalHandler}
+            color={editButtonColor}
+            onClick={openTagsModal}
             size={"sm"}
             prepend={<EditFillIcon />}
             label={"Изменить теги"}
           />
-        </StyledBox>
-      </StyledBox>
-    </StyledBox>
+        </div>
+      </div>
+    </div>
   );
 };

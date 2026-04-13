@@ -1,69 +1,48 @@
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { selectIsAuth } from "@/modules/auth/slice";
+import React from "react";
 import { AddRoundIcon } from "@/svg/AddRoundIcon";
 import { Display } from "@/ui/Display";
-import { StyledBox } from "@/ui/Box";
-import { useState } from "react";
-import { useMapCreate } from "../hooks/useMapCreate";
-import { MapCreatePopup } from "./MapCreatePopup";
 import { IconButton } from "@/ui/Button/IconButton";
+import styles from "./MapCreateSection.module.scss";
+import { MapCreatePopup } from "./MapCreatePopup";
+import { useMapCreateSection } from "./useMapCreateSection";
 
-type Props = {
+type MapCreateSectionPropsType = {
   defaultExpanded?: boolean;
 };
 
-export const MapCreateSection = ({ defaultExpanded = false }: Props) => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isContentVisible, setIsContentVisible] = useState(defaultExpanded);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const isAuth = useAppSelector(selectIsAuth);
-  const { theme } = useAppTheme();
-
-  const { name, setName, onMapCreate } = useMapCreate();
-  const { isValid } = useMapCreate();
-
-  const onSubmitHandler = async () => {
-    try {
-      setIsLoading(true);
-      await onMapCreate();
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const onIconClickHandler = async () => {
-    if (!isContentVisible) {
-      setIsContentVisible(true);
-      setIsPopupOpen(false);
-    }
-  };
-
-  const isSubmitDisabled = isLoading || !isValid || !isAuth;
+export const MapCreateSection = (props: MapCreateSectionPropsType) => {
+  const {
+    name,
+    setName,
+    isPopupOpen,
+    isContentVisible,
+    isAuth,
+    isSubmitDisabled,
+    submitIconColor,
+    toggleIconColor,
+    onSubmitHandler,
+    onIconClickHandler,
+    onImagePopupToggle,
+  } = useMapCreateSection(props);
 
   return (
-    <StyledBox
-      align="center"
-      gap={10}
-    >
+    <div className={styles.root}>
       <Display condition={isContentVisible}>
         <MapCreatePopup
           name={name}
           setName={setName}
           isVisible={isPopupOpen}
-          onImagePopupToggle={() => setIsPopupOpen(!isPopupOpen)}
+          onImagePopupToggle={onImagePopupToggle}
           onMapCreate={onSubmitHandler}
         />
       </Display>
 
       <Display condition={isContentVisible}>
         <IconButton
-          color={theme.colors.textOnPrimary}
+          className={styles.submitButton}
+          color={submitIconColor}
           onClick={onSubmitHandler}
           disabled={isSubmitDisabled}
-          padding="4px 4px"
-          style={{ backgroundColor: theme.colors.status.success, borderRadius: 50 }}
         >
           <AddRoundIcon />
         </IconButton>
@@ -71,15 +50,14 @@ export const MapCreateSection = ({ defaultExpanded = false }: Props) => {
 
       <Display condition={!isContentVisible}>
         <IconButton
+          className={styles.toggleButton}
           disabled={!isAuth}
           onClick={onIconClickHandler}
-          color={theme.colors.textOnSecondary}
-          padding="8px 8px"
-          style={{ backgroundColor: theme.colors.neutral, borderRadius: 50 }}
+          color={toggleIconColor}
         >
           <AddRoundIcon />
         </IconButton>
       </Display>
-    </StyledBox>
+    </div>
   );
 };

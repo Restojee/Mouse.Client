@@ -59,6 +59,7 @@ export const getTagsThunk = createAsyncThunk("tag/get", async (arg, thunkAPI) =>
 const initialState: TagsStateType = {
   modalType: null,
   tagsList: [],
+  editingTag: null,
 };
 
 const slice = createSlice({
@@ -71,12 +72,33 @@ const slice = createSlice({
     setTags: (state, action: PayloadAction<Tag[]>) => {
       state.tagsList = [...action.payload].sort((a, b) => a.name.localeCompare(b.name));
     },
+    setEditingTag: (state, action: PayloadAction<Tag | null>) => {
+      state.editingTag = action.payload;
+    },
   },
 });
 
 export const selectTagModalType = (state: RootState) => state.tags.modalType;
 export const selectTags = (state: RootState) => state.tags.tagsList;
+export const selectEditingTag = (state: RootState) => state.tags.editingTag;
 
-export const { setTagModalType, setTags } = slice.actions;
-
+export const { setTagModalType, setTags, setEditingTag } = slice.actions;
 export const tagsReducer = slice.reducer;
+
+export const closeTagModalThunk = createAsyncThunk("tag/close-modal", (_, thunkAPI) => {
+  thunkAPI.dispatch(setTagModalType(null));
+  thunkAPI.dispatch(setEditingTag(null));
+});
+
+export const deleteTagFlowThunk = createAsyncThunk("tag/delete-flow", async (tagId: Tag["id"], thunkAPI) => {
+  await thunkAPI.dispatch(deleteTagThunk({ tagId: tagId! }));
+  thunkAPI.dispatch(closeTagModalThunk());
+});
+
+export const updateTagFlowThunk = createAsyncThunk(
+  "tag/update-flow",
+  async (arg: UpdateTagApiArg["updateTagRequest"], thunkAPI) => {
+    await thunkAPI.dispatch(updateTagThunk(arg));
+    thunkAPI.dispatch(closeTagModalThunk());
+  },
+);

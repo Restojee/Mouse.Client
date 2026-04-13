@@ -5,4 +5,5 @@ export type TagModalTypes = "tag-delete" | "tag-create" | "tag-update" | "map-ta
 export type TagsStateType = {
   modalType: TagModalTypes;
   tagsList: Tag[];
+  editingTag: Tag | null;
 };

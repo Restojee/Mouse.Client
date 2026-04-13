@@ -7,14 +7,19 @@ import { GlobalThemes } from "@/layout/theme/constants";
 import { GlobalTheme, ThemeKey } from "@/layout/theme/types";
 import { useCallback, useMemo } from "react";
 
-export const useAppTheme = () => {
+export const useAppTheme = (customThemeKey?: ThemeKey) => {
   const dispatch = useAppDispatch();
 
   const { getValue, setValue } = useLocalStorage<ThemeKey>(LOCAL_STORAGE_KEYS.APP_THEME);
 
-  const themeKey = useAppSelector(selectAppTheme);
+  const appThemeKey = useAppSelector(selectAppTheme);
 
-  const theme: GlobalTheme = useMemo(() => (themeKey ? GlobalThemes[themeKey] : GlobalThemes["LIGHT"]), [themeKey]);
+  const theme: GlobalTheme = useMemo(() => {
+    if (customThemeKey) {
+      return GlobalThemes[customThemeKey];
+    }
+    return appThemeKey ? GlobalThemes[appThemeKey] : GlobalThemes["LIGHT"];
+  }, [customThemeKey, appThemeKey]);
 
   const localStorageTheme = useMemo(() => {
     return getValue();
@@ -29,16 +34,16 @@ export const useAppTheme = () => {
   );
 
   const toggleTheme = useCallback(() => {
-    if (themeKey === ThemeKey.DARK) {
+    if (appThemeKey === ThemeKey.DARK) {
       onChangeTheme(ThemeKey.LIGHT);
     } else {
       onChangeTheme(ThemeKey.DARK);
     }
-  }, [onChangeTheme, themeKey]);
+  }, [onChangeTheme, appThemeKey]);
 
   const fetchTheme = useCallback(() => {
     const localStorageTheme = getValue();
-    const defaultTheme = themeKey || ThemeKey.LIGHT;
+    const defaultTheme = appThemeKey || ThemeKey.LIGHT;
 
     if (localStorageTheme) {
       dispatch(setCurrentTheme(localStorageTheme));
@@ -46,11 +51,11 @@ export const useAppTheme = () => {
       dispatch(setCurrentTheme(defaultTheme));
       setValue(defaultTheme);
     }
-  }, [dispatch, getValue, setValue, themeKey]);
+  }, [dispatch, getValue, setValue, appThemeKey]);
 
   return {
     theme,
-    themeKey: themeKey,
+    themeKey: appThemeKey,
     onChangeTheme,
     toggleTheme,
     fetchTheme,

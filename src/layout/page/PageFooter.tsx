@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
-import { StyledPagePanel } from "@/layout/page/styles/StyledPagePanel";
+import { PagePanel } from "@/layout/page/styles/PagePanel";
 
 type Props = {
   children: ReactNode;
 };
 export const PageFooter = (props: Partial<Props>) => {
-  return <StyledPagePanel top>{props.children}</StyledPagePanel>;
+  return <PagePanel top>{props.children}</PagePanel>;
 };

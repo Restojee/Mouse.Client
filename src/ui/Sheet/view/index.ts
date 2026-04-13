@@ -1,4 +1,3 @@
-export { SheetOutlet } from "./SheetOutlet";
-export { AsyncSheet } from "./AsyncSheet";
+export { SheetHost } from "./SheetHost";
 export { MobileSheet } from "./MobileSheet/MobileSheet";
 export { DesktopSheet } from "./DesktopSheet/DesktopSheet";

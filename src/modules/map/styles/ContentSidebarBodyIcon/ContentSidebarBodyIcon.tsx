@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import styles from "./ContentSidebarBodyIcon.module.scss";
 
 type Props = {
@@ -6,12 +7,15 @@ type Props = {
 };
 
 export const ContentSidebarBodyIcon = React.forwardRef<HTMLDivElement, Props & React.HTMLAttributes<HTMLDivElement>>(
-  ({ disabled, className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={[styles.root, disabled && styles.disabled, className].filter(Boolean).join(" ")}
-      {...props}
-    />
-  ),
+  ({ disabled, className, ...props }, ref) => {
+    const rootClassName = clsx(styles.root, disabled && styles.disabled, className);
+    return (
+      <div
+        ref={ref}
+        className={rootClassName}
+        {...props}
+      />
+    );
+  },
 );
 ContentSidebarBodyIcon.displayName = "ContentSidebarBodyIcon";

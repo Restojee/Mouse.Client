@@ -1,22 +1,43 @@
-import { StyledBox, StyledBoxProps } from "@/ui/Box";
-import { FormEvent, ReactNode } from "react";
+import React, { CSSProperties, FormEvent, ReactNode, useCallback, useMemo } from "react";
+import clsx from "clsx";
+import styles from "./FormContainer.module.scss";
 
-type FormProps = {
+type FormPropsType = {
   children: ReactNode;
   onSubmit: () => void;
+  className?: string;
+  gap?: string | number;
+  direction?: CSSProperties["flexDirection"];
+  align?: CSSProperties["alignItems"];
 };
-export const Form = (props: FormProps & Partial<StyledBoxProps>) => {
-  const { children, onSubmit, ...boxProps } = props;
-  const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSubmit && onSubmit();
-  };
+
+const FORM_STYLE: CSSProperties = { display: "contents" };
+
+export const Form = (props: FormPropsType) => {
+  const { children, onSubmit, className, gap, direction, align } = props;
+
+  const onSubmitHandler = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      onSubmit?.();
+    },
+    [onSubmit],
+  );
+
+  const rootStyle = useMemo<CSSProperties>(
+    () => ({
+      gap,
+      flexDirection: direction,
+      alignItems: align,
+    }),
+    [gap, direction, align],
+  );
 
   return (
-    <StyledBox direction="column" gap={20} {...boxProps}>
-      <form onSubmit={onSubmitHandler} style={{ display: "contents" }}>
+    <div className={clsx(styles.root, className)} style={rootStyle}>
+      <form onSubmit={onSubmitHandler} style={FORM_STYLE}>
         {children}
       </form>
-    </StyledBox>
+    </div>
   );
 };

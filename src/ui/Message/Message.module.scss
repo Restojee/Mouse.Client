@@ -23,7 +23,7 @@
   min-height: 54px;
   overflow: hidden;
   transition: 0.2s;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border);
 
   &:focus {
     height: 100px;
@@ -71,17 +71,6 @@
   backdrop-filter: blur(4px);
   text-shadow: 0 0 1px rgba(0, 0, 0, 1);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-}
-
-.contentPreview {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  transition: 0.2s;
-  flex-grow: 1;
-  aspect-ratio: 16/8;
 }
 
 .messageDisabled {

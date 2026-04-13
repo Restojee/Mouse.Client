@@ -1,0 +1,23 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.chip {
+  display: flex;
+  background-color: var(--color-neutral);
+
+  &.chipActive {
+    background-color: unset;
+  }
+}

@@ -85,6 +85,15 @@ const slice = createSlice({
     setMapTagIds: (state, action: PayloadAction<Tag["id"][]>) => {
       state.tags = action.payload;
     },
+    toggleMapTagId: (state, action: PayloadAction<Tag["id"]>) => {
+      const id = action.payload;
+      const tags = state.tags || [];
+      if (tags.includes(id)) {
+        state.tags = tags.filter((tagId) => tagId !== id);
+      } else {
+        state.tags = [...tags, id];
+      }
+    },
   },
 });
 
@@ -93,6 +102,6 @@ export const selectMapImage = (state: RootState) => state.mapCreate?.image;
 export const selectCompletedMapImage = (state: RootState) => state.mapCreate?.completedMapImage;
 export const selectMapTags = (state: RootState) => state.mapCreate?.tags;
 
-export const { setMapName, setMapImage, setMapTagIds, setCompletedMapImage } = slice.actions;
+export const { setMapName, setMapImage, setMapTagIds, setCompletedMapImage, toggleMapTagId } = slice.actions;
 
 export const mapCreateReducer = slice.reducer;

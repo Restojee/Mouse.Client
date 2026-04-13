@@ -3,6 +3,8 @@ import { Property } from "csstype";
 import React, { ButtonHTMLAttributes, ReactElement } from "react";
 import buttonStyles from "./styles/Button.module.scss";
 
+export type ButtonVariant = "primary" | "outline" | "ghost";
+
 export type StyledButtonProps = {
   justify?: Property.JustifyContent;
   borderRadius?: Property.BorderRadius;
@@ -13,6 +15,8 @@ export type StyledButtonProps = {
   margin?: string | number;
   padding?: Property.Padding;
   size?: "sm" | "md" | "lg";
+  variant?: ButtonVariant;
+  fullWidth?: boolean;
   isWithError?: boolean;
   disabled?: boolean;
   isBold?: boolean;
@@ -36,24 +40,55 @@ const sizeClassMap: Record<string, string> = {
   lg: buttonStyles.sizeLg,
 };
 
+const variantClassMap: Record<ButtonVariant, string> = {
+  primary: buttonStyles.variantPrimary,
+  outline: buttonStyles.variantOutline,
+  ghost: buttonStyles.variantGhost,
+};
+
 export const Button = (props: ButtonProps & StyledButtonProps) => {
   const {
-    label, append, prepend, onClick, type = "button", children, size = "md",
-    justify = "center", bgColor, color = "inherit", borderRadius = "50px",
-    width = "min-content", margin = "", padding, disabled, isBold,
-    className, style,
+    label,
+    append,
+    prepend,
+    onClick,
+    type = "button",
+    children,
+    size = "md",
+    variant = "primary",
+    fullWidth,
+    justify = "center",
+    bgColor,
+    color,
+    borderRadius = "50px",
+    width = "min-content",
+    margin = "",
+    padding,
+    disabled,
+    isBold,
+    className,
+    style,
     ...restProps
   } = props;
 
-  const classes = [buttonStyles.button, sizeClassMap[size], disabled && buttonStyles.disabled, className].filter(Boolean).join(" ");
+  const classes = [
+    buttonStyles.button,
+    sizeClassMap[size],
+    variantClassMap[variant],
+    fullWidth && buttonStyles.fullWidth,
+    disabled && buttonStyles.disabled,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   const computedStyle: React.CSSProperties = {
     justifyContent: justify,
-    width,
+    ...(fullWidth ? {} : { width }),
     margin,
     fontWeight: isBold ? 600 : 200,
-    color,
-    backgroundColor: bgColor || "var(--color-brand)",
+    ...(color !== undefined && { color }),
+    ...(bgColor !== undefined && { backgroundColor: bgColor }),
     borderRadius,
     ...(padding !== undefined && { padding }),
     ...style,

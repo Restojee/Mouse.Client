@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SheetConfig } from "../model/types";
+import { RootState } from "@/store";
+import { SheetConfig } from "../core/types";
 
-/** Сериализуемая запись в стеке (без ReactNode и callbacks) */
 export type SheetStoreEntry = {
   id: string;
   config: SheetConfig;
@@ -34,4 +34,4 @@ const sheetSlice = createSlice({
 export const { pushSheet, removeSheet, clearSheets } = sheetSlice.actions;
 export const sheetReducer = sheetSlice.reducer;
 
-export const selectSheetStack = (state: { sheet: SheetState }) => state.sheet.stack;
+export const selectSheetStack = (state: RootState) => state.sheet.stack;

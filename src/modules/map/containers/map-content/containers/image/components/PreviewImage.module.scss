@@ -1,0 +1,21 @@
+.image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.contentPreview {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: 0.2s;
+  flex-grow: 1;
+  aspect-ratio: 16/8;
+  min-height: 150px;
+
+  @media all and (min-width: 1199px) {
+    min-height: 350px;
+  }
+}
+

@@ -1,0 +1,39 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.metaRow {
+  display: flex;
+  overflow: hidden;
+}
+
+.metaText {
+  opacity: 0.5;
+}
+
+.stats {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}

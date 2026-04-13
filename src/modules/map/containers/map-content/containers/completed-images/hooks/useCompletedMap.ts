@@ -8,14 +8,11 @@ import {
   deleteCompletedMapThunk,
   selectActiveMapCompleted,
   selectCompletedMaps,
-  selectIsCompletedModalOpen,
   setActiveMapCompleted,
-  setIsCompletedMapModalOpen,
 } from "../slice";
 export const useCompletedMap = (levelId?: Map["id"]) => {
   const dispatch = useAppDispatch();
 
-  const isCompletedMapModalOpen = useAppSelector(selectIsCompletedModalOpen);
   const maps = useAppSelector(selectCompletedMaps);
   const userId = useAppSelector(selectCurrentUserId);
   const activeMapCompleted = useAppSelector(selectActiveMapCompleted);
@@ -68,14 +65,6 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
     [dispatch, levelId],
   );
 
-  const onCompletedMapModalClose = useCallback(() => {
-    dispatch(setIsCompletedMapModalOpen(false));
-  }, [dispatch]);
-
-  const onCompletedMapModalOpen = useCallback(() => {
-    dispatch(setIsCompletedMapModalOpen(true));
-  }, [dispatch]);
-
   const selectedCompletedMaps = useMemo(() => {
     const result = maps?.filter((el) => el && el.user.id === activeMapCompleted?.user.id);
     return result.length ? result : null;
@@ -98,8 +87,5 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
     deleteCompletedMap,
     activeMapCompleted,
     changeActiveCompletedMap,
-    isCompletedMapModalOpen,
-    onCompletedMapModalOpen,
-    onCompletedMapModalClose,
   };
 };

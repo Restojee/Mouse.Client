@@ -1,46 +1,30 @@
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { selectIsAuth } from "@/modules/auth/slice";
 import React from "react";
-import { useTag } from "@/modules/tag/hooks/useTag";
-import { StyledBox } from "@/ui/Box";
 import { Button } from "@/ui/Button";
 import { Display } from "@/ui/Display";
 import { Tag } from "@/api/codegen/genMouseMapsApi";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { EditFillIcon } from "@/svg/EditFillIcon";
-import { StyledTag } from "@/ui/Tag/styled";
+import tagsContainerStyles from "@/modules/map/containers/map-content/containers/tags/Tags.module.scss";
 import { Typography } from "@/ui/Typography";
+import { useTags } from "./useTags";
 
 type MapContentFooterPropsType = {
   tags?: Tag[];
 };
+
 export const Tags = ({ tags }: MapContentFooterPropsType) => {
-  const { theme } = useAppTheme();
-  const isAuth = useAppSelector(selectIsAuth);
-
-  const { onOpenModal } = useTag();
-
-  const onOpenModalHandler = () => {
-    onOpenModal("map-tags-update");
-  };
+  const { theme, isAuth, tagClassName, onOpenModalHandler } = useTags();
 
   return (
-    <StyledBox
-      justify={"center"}
-      margin={"auto 0 0 0 "}
-    >
+    <div className={tagsContainerStyles.tagsOuter}>
       <Display condition={tags?.length}>
-        <StyledBox
-          wrap={"wrap"}
-          gap={10}
-        >
+        <div className={tagsContainerStyles.tagsList}>
           {tags?.map(({ name, id }) => (
-            <StyledTag
+            <div
               key={id}
-              bgColor={theme.colors.primaryLighter}
+              className={tagClassName}
             >
               <Typography isEllipsis>{name}</Typography>
-            </StyledTag>
+            </div>
           ))}
           <Display condition={isAuth}>
             <Button
@@ -51,7 +35,7 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
               size="sm"
             />
           </Display>
-        </StyledBox>
+        </div>
       </Display>
       <Display condition={!tags?.length}>
         <Button
@@ -62,6 +46,6 @@ export const Tags = ({ tags }: MapContentFooterPropsType) => {
           prepend={<EditFillIcon />}
         />
       </Display>
-    </StyledBox>
+    </div>
   );
 };

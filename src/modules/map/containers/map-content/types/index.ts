@@ -5,6 +5,7 @@ export type MapContentStateType = {
   isMapImageModalOpen: boolean;
   isMapFetching: boolean;
   selectedModalTagIds: number[];
+  previewImageSrc: string | null;
 };
 
 export type UpdateMapImageThunkArgType = {

@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Property } from "csstype";
-import { StyledNavLink } from "@/layout/navigation/styles/StyledNavLink";
+import { NavLink as NavLinkRoot } from "@/layout/navigation/styles/NavLink";
 import { Typography } from "@/ui/Typography/styles/Typography";
 
 type NavLinkProps = {
@@ -37,7 +37,7 @@ export const NavLink = (props: NavLinkProps) => {
   } = props;
 
   return (
-    <StyledNavLink
+    <NavLinkRoot
       title={isDisabled ? `${description}: недоступно` : description}
       margin={margin}
       withBorder={border}
@@ -50,8 +50,8 @@ export const NavLink = (props: NavLinkProps) => {
       onClick={isDisabled ? undefined : onClick}
     >
       {prepend}
-      {isOpen && label && <Typography isEllipsis>{label}</Typography>}
+      {isOpen && label ? <Typography isEllipsis>{label}</Typography> : null}
       {append}
-    </StyledNavLink>
+    </NavLinkRoot>
   );
 };

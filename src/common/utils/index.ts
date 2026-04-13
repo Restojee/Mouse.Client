@@ -1,20 +1,26 @@
 import { DEFAULT_MAP_IMAGE } from "@/common/constants";
 import packageJson from "../../../package.json";
 
-export const getMapImageLink = (link: string | null | undefined, variant: string) => {
-  const variantLink = variant ? `_${variant}.jpg` : "";
-  if (link) {
-    return process.env.FILE_STORAGE_URL + "/" + link;
-    // return process.env.FILE_STORAGE_URL + "/" + link + variantLink;
-  }
-  // NOT FOUND
-  return DEFAULT_MAP_IMAGE;
+export const getImageVariant = (variant: string) => {
+  return variant ? `_${variant}.jpg` : "";
 };
 
-export const getAvatarImageLink = (link: string | null | undefined) => {
-  if (link) {
-    return process.env.FILE_STORAGE_URL + "/" + link;
+export const getStorageLink = (link: string) => {
+  return process.env.FILE_STORAGE_URL + "/" + link;
+};
+
+export const getMapImageLink = (link: string | null | undefined, variant: string) => {
+  if (!link) {
+    return DEFAULT_MAP_IMAGE;
   }
+  return getStorageLink(link) + getImageVariant(variant);
+};
+
+export const getAvatarImageLink = (link: string | null | undefined, variant: string) => {
+  if (!link) {
+    return "";
+  }
+  return getStorageLink(link) + getImageVariant(variant);
 };
 
 export const createRootContainerElement = (rootContainerClass: string): HTMLDivElement => {

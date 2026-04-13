@@ -42,7 +42,7 @@
   position: fixed;
   display: flex;
   justify-content: center;
-  overflow: auto;
+  overflow: hidden;
   background-color: rgba(0, 0, 0, 0.5);
   align-items: center;
   inset: 0;
@@ -51,6 +51,10 @@
 
   &.closing {
     animation: fadeOut 180ms ease forwards;
+  }
+
+  &.noBackdrop {
+    background-color: transparent;
   }
 
   @media all and (max-width: 790px) {
@@ -62,6 +66,8 @@
   animation: scaleIn 180ms ease forwards;
   display: flex;
   max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 
   &.closing {
     animation: scaleOut 180ms ease forwards;
@@ -72,4 +78,14 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  overflow-y: auto;
+  max-height: calc(90dvh - 120px);
+}
+
+.paper {
+  height: auto;
+  gap: 20px;
+  width: 100%;
+  padding: var(--sheet-padding, 30px);
+  background-color: var(--sheet-bg);
 }

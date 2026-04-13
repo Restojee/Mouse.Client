@@ -1,131 +1,71 @@
+import React from "react";
 import { MapCompleted, MapImage } from "@/api/codegen/genMouseMapsApi";
 import { Display } from "@/ui/Display";
-import { StyledMapContentCount } from "@/ui/Message/styled";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { SwiperClass, SwiperSlide } from "swiper/react";
 import ImageModal from "@/ui/ImageModal/ImageModal";
 import { ImagesSwiper } from "@/ui/ImagesSwiper/ImagesSwiper";
+import msgStyles from "@/ui/Message/Message.module.scss";
 import { PreviewImageWrapper } from "./components/PreviewImageWrapper";
-import { StyledBox } from "@/ui/Box";
-import { useDeleteCompletedModal } from "./hooks/useDeleteCompletedModal";
-import Swiper from "swiper";
+import previewStyles from "./Preview.module.scss";
+import { usePreview } from "./hooks/usePreview";
 
-type MapContentPreviewPropsType = {
+type PreviewPropsType = {
   images: MapCompleted[] | null;
   image?: MapImage | null;
   mapCompleted?: MapCompleted | null;
   setActiveMapCompleted?: (map: MapCompleted) => void;
 };
-export const Preview = React.memo(
-  ({ images, image, setActiveMapCompleted, mapCompleted }: MapContentPreviewPropsType) => {
-    const [openedImage, setOpenedImage] = useState<string | null>(null);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const { showDeleteModal } = useDeleteCompletedModal();
-    const [actualImages, setActualImages] = useState(images || []);
 
-    const swiperRef = useRef<Swiper | null>(null);
+export const Preview = React.memo((props: PreviewPropsType) => {
+  const { image } = props;
+  const {
+    openedImage,
+    activeIndex,
+    imagesCount,
+    hasImages,
+    showCount,
+    renderedSlides,
+    onCloseImage,
+    onOpenImage,
+    onSwiper,
+    onActiveIndexChange,
+  } = usePreview(props);
 
-    const onCloseImage = useCallback(() => {
-      setOpenedImage(null);
-    }, []);
-
-    const onOpenImage = useCallback((image: string) => {
-      setOpenedImage(image);
-    }, []);
-
-    const onSwiper = useCallback((swiper: SwiperClass) => {
-      swiperRef.current = swiper;
-    }, []);
-
-    const onActiveIndexChange = useCallback(
-      (swiper: SwiperClass) => {
-        if (!images) {
-          return;
-        }
-
-        setActiveIndex(swiper.activeIndex);
-        setActiveMapCompleted?.(images[swiper.activeIndex]);
-      },
-      [images, setActiveMapCompleted],
-    );
-
-    const imagesCount = useMemo(() => {
-      return images?.length;
-    }, [images]);
-
-    const onSlideChange = useCallback(
-      (map: MapCompleted, length: number) => {
-        setActiveMapCompleted?.(map);
-        setActiveIndex(length);
-        swiperRef.current?.slideTo(length);
-      },
-      [setActiveMapCompleted],
-    );
-    useEffect(() => {
-      const currentUserId = images?.[0]?.user.id;
-      const actualUserId = actualImages?.[0]?.user.id;
-      const isUserChanged = currentUserId !== actualUserId;
-
-      const lastMap = images?.at(1);
-
-      if (!currentUserId || !images?.length) {
-        return;
-      }
-
-      setActualImages(images);
-      if (images.length > actualImages.length && lastMap && !isUserChanged) {
-        onSlideChange(lastMap, images?.length);
-        return;
-      }
-
-      onSlideChange(images?.[0], 0);
-    }, [images]);
-
-    if (!images?.length) {
-      return (
-        <>
-          <ImageModal
-            altText={"map"}
-            onClose={onCloseImage}
-            imageSrc={openedImage}
-          />
-          <PreviewImageWrapper
-            onClick={onOpenImage}
-            image={image?.name}
-          />
-        </>
-      );
-    }
-
+  if (!hasImages) {
     return (
-      <StyledBox position={"relative"}>
+      <>
         <ImageModal
           altText={"map"}
           onClose={onCloseImage}
           imageSrc={openedImage}
         />
-        <Display condition={imagesCount && imagesCount > 1}>
-          <StyledMapContentCount>
-            {activeIndex + 1} из {imagesCount}
-          </StyledMapContentCount>
-        </Display>
-        <ImagesSwiper
-          onInit={onSwiper}
-          onActiveIndexChange={onActiveIndexChange}
-        >
-          {images?.map((el) => (
-            <SwiperSlide key={el.id}>
-              <PreviewImageWrapper
-                onDeleteOpen={showDeleteModal}
-                onClick={onOpenImage}
-                imagesCount={imagesCount}
-                image={el.image?.name}
-                mapCompleted={mapCompleted}
-              />
-            </SwiperSlide>
-          ))}
-        </ImagesSwiper>
-      </StyledBox>
+        <PreviewImageWrapper
+          onClick={onOpenImage}
+          image={image?.name}
+        />
+      </>
     );
-  },
-);
+  }
+
+  return (
+    <div className={previewStyles.previewContainer}>
+      <ImageModal
+        altText={"map"}
+        onClose={onCloseImage}
+        imageSrc={openedImage}
+      />
+      <Display condition={showCount}>
+        <div className={msgStyles.contentCount}>
+          {activeIndex + 1} из {imagesCount}
+        </div>
+      </Display>
+      <ImagesSwiper
+        onInit={onSwiper}
+        onActiveIndexChange={onActiveIndexChange}
+      >
+        {renderedSlides}
+      </ImagesSwiper>
+    </div>
+  );
+});
+
+Preview.displayName = "Preview";

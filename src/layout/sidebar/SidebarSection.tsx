@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Property } from "csstype";
-import { StyledSidebarSection } from "@/layout/sidebar/styles/StyledSidebarSection";
+import { SidebarSection as SidebarSectionWrapper } from "@/layout/sidebar/styles/SidebarSection";
 import { Typography } from "@/ui/Typography/styles/Typography";
 
 type Props = {
@@ -15,14 +15,14 @@ export const SidebarSection = (props: Partial<Props>) => {
   const { label, isOpen, gap = "15px", prepend, append, justifyContent } = props;
 
   return (
-    <StyledSidebarSection
+    <SidebarSectionWrapper
       justifyContent={justifyContent}
       gap={gap}
       isOpen={isOpen}
     >
       {prepend}
-      {isOpen && <Typography isUpperCase>{label}</Typography>}
+      {isOpen ? <Typography isUpperCase>{label}</Typography> : null}
       {append}
-    </StyledSidebarSection>
+    </SidebarSectionWrapper>
   );
 };

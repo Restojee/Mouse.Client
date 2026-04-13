@@ -5,6 +5,7 @@ import { useAppSelector } from "@/hooks/useAppSelector";
 import {
   addChatMessageThunk,
   deleteChatMessageThunk,
+  fetchChatMessagesThunk,
   fetchOlderMessagesThunk,
   initChatMessagesThunk,
   pollNewMessagesThunk,
@@ -46,8 +47,8 @@ export const useChat = () => {
     await dispatch(deleteChatMessageThunk({ messageId: message.id }));
   }, []);
 
-  const onInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessageText(e.currentTarget.value);
+  const onInputChange = useCallback((value: string) => {
+    setMessageText(value);
   }, []);
 
   const onInputKeyUp = useCallback(
@@ -85,8 +86,8 @@ export const useChat = () => {
   }, [dispatch]);
 
   const fetchChatMessages = useCallback(() => {
-    dispatch(isChatMessageInitialized ? pollNewMessagesThunk() : initChatMessagesThunk());
-  }, [dispatch, isChatMessageInitialized]);
+    dispatch(fetchChatMessagesThunk());
+  }, [dispatch]);
 
   const updateMessagesCount = useCallback(() => {
     if (messages?.length) {

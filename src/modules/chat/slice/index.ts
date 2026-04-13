@@ -5,7 +5,7 @@ import { ChatStateType } from "@/modules/chat/types";
 import { RootState } from "@/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export const CHAT_PAGE_SIZE = 15;
+export const CHAT_PAGE_SIZE = 40;
 
 export const initChatMessagesThunk = createAsyncThunk("chat/init", async (_, thunkAPI) => {
   try {
@@ -132,3 +132,12 @@ export const selectHasMoreOlderMessages = (state: RootState) => state.chat?.hasM
 
 export const { setChatMessages, addChatMessage, removeChatMessage } = slice.actions;
 export const chatReducer = slice.reducer;
+
+export const fetchChatMessagesThunk = createAsyncThunk("chat/fetch", (_, thunkAPI) => {
+  const state = thunkAPI.getState() as RootState;
+  if (state.chat.isMessagesInitialized) {
+    thunkAPI.dispatch(pollNewMessagesThunk());
+  } else {
+    thunkAPI.dispatch(initChatMessagesThunk());
+  }
+});

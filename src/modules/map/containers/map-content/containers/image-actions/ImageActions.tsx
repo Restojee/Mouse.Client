@@ -1,36 +1,23 @@
-import { useMap } from "@/modules/map/common";
-import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
-import { useCompletedMap } from "../completed-images/hooks/useCompletedMap";
+import React from "react";
+import { MapCompleted } from "@/api/codegen/genMouseMapsApi";
 import { IconButton } from "@/ui/Button/IconButton";
-import { StyledActionsContainer } from "./styles";
 import { EditFillIcon } from "@/svg/EditFillIcon";
 import { DeleteIcon } from "@/svg/DeleteIcon";
 import { Display } from "@/ui/Display";
-import React, { useCallback } from "react";
-import { MapCompleted } from "@/api/codegen/genMouseMapsApi";
+import { ImageActionsContainer } from "./styles/ImageActionsContainer/ImageActionsContainer";
+import { useImageActions } from "./useImageActions";
 
-interface Props {
+type ImageActionsPropsType = {
   onDeleteOpen?: () => void;
   mapCompleted?: MapCompleted | null;
-}
+};
 
-export const ImageActions = (props: Props) => {
-  const { levelId } = useMapView();
-
-  const { onMapImageModalOpen } = useMap();
-  const { activeMapCompleted, isMyMap } = useCompletedMap(levelId);
-
-  const onDeleteClick = useCallback(() => {
-    if (!props.mapCompleted) {
-      return;
-    }
-
-    props.onDeleteOpen?.();
-  }, [props]);
+export const ImageActions = (props: ImageActionsPropsType) => {
+  const { onMapImageModalOpen, showEdit, showDelete, onDeleteClick } = useImageActions(props);
 
   return (
-    <StyledActionsContainer>
-      <Display condition={!activeMapCompleted}>
+    <ImageActionsContainer>
+      <Display condition={showEdit}>
         <IconButton
           onClick={onMapImageModalOpen}
           isStylized
@@ -38,7 +25,7 @@ export const ImageActions = (props: Props) => {
           <EditFillIcon />
         </IconButton>
       </Display>
-      <Display condition={Boolean(activeMapCompleted && isMyMap)}>
+      <Display condition={showDelete}>
         <IconButton
           onClick={onDeleteClick}
           isStylized
@@ -46,6 +33,6 @@ export const ImageActions = (props: Props) => {
           <DeleteIcon />
         </IconButton>
       </Display>
-    </StyledActionsContainer>
+    </ImageActionsContainer>
   );
 };

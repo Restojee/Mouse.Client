@@ -3,7 +3,7 @@ import { Property } from "csstype";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import styles from "./Icon.module.scss";
 
-type StyledIconContainerPropsTypes = {
+type IconContainerPropsTypes = {
   opacity?: Property.Opacity;
   margin?: Property.Margin;
   padding?: Property.Padding;
@@ -11,9 +11,9 @@ type StyledIconContainerPropsTypes = {
   children?: React.ReactNode;
   className?: string;
 };
-export const StyledIconContainer = React.forwardRef<
+export const IconContainer = React.forwardRef<
   HTMLDivElement,
-  StyledIconContainerPropsTypes & React.HTMLAttributes<HTMLDivElement>
+  IconContainerPropsTypes & React.HTMLAttributes<HTMLDivElement>
 >(({ opacity, margin, padding, right, className, style, ...props }, ref) => (
   <div
     ref={ref}
@@ -28,12 +28,15 @@ export const StyledIconContainer = React.forwardRef<
     {...props}
   />
 ));
-StyledIconContainer.displayName = "StyledIconContainer";
+IconContainer.displayName = "IconContainer";
 
-export const StyledIconText = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} className={[styles.iconText, className].filter(Boolean).join(" ")} {...props} />
-));
-StyledIconText.displayName = "StyledIconText";
+export const IconText = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
+  ({ className, ...props }, ref) => (
+    <Typography
+      ref={ref}
+      className={[styles.iconText, className].filter(Boolean).join(" ")}
+      {...props}
+    />
+  ),
+);
+IconText.displayName = "IconText";

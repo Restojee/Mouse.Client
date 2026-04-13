@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { Property } from "csstype";
-import { StyledBox } from "@/ui/Box";
+import { Box } from "@/ui/Box";
 import { Avatar } from "@/ui/Avatar";
 import { Typography } from "@/ui/Typography/styles/Typography";
 import { TextLink } from "@/ui/TextLink/TextLink";
@@ -40,7 +40,7 @@ export const MessageCard = ({
   const { theme } = useAppTheme();
 
   return (
-    <StyledBox
+    <Box
       maxWidth="100%"
       bgColor={theme.colors.secondary}
       border={`1px solid ${theme.colors.input.border}`}
@@ -57,14 +57,14 @@ export const MessageCard = ({
           username={username}
         />
       </div>
-      <StyledBox
+      <Box
         direction="column"
         grow={1}
         gap={5}
         overflow="hidden"
       >
         {!hideHeader && (
-          <StyledBox
+          <Box
             align="center"
             gap={5}
             minHeight={25}
@@ -84,10 +84,10 @@ export const MessageCard = ({
               {date}
             </Typography>
             {headerEnd}
-          </StyledBox>
+          </Box>
         )}
         <div className={messageStyles.messageText}>{children}</div>
-      </StyledBox>
-    </StyledBox>
+      </Box>
+    </Box>
   );
 };

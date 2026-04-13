@@ -1,6 +1,6 @@
 import { FC, ReactElement, useState } from "react";
-import { StyledBox } from "@/ui/Box";
-import { StyledPagePanelButton } from "@/layout/page/styles/StyledPagePanelButton";
+import { Box } from "@/ui/Box";
+import { PagePanelButton } from "@/layout/page/styles/PagePanelButton";
 
 export type Props = {
   isOpen: boolean;
@@ -12,12 +12,12 @@ export const PagePanelSection: FC<Partial<Props>> = (props) => {
   const { content, icon, activeIcon } = props;
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <StyledBox>
-      <StyledPagePanelButton onClick={() => setIsOpen(false)}>
+    <Box>
+      <PagePanelButton onClick={() => setIsOpen(false)}>
         {icon}
-        {isOpen && activeIcon}
-      </StyledPagePanelButton>
-      {isOpen && content}
-    </StyledBox>
+        {isOpen ? activeIcon : null}
+      </PagePanelButton>
+      {isOpen ? content : null}
+    </Box>
   );
 };

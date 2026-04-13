@@ -101,6 +101,7 @@ export const adjustToViewport = (
   viewportSize: ViewportSize,
   options: BoundaryOptions,
   offset: number,
+  viewportOffset: { top: number; left: number } = { top: 0, left: 0 },
 ): PositionStyles => {
   if (!options.checkBoundary) {
     return { ...basePosition, position: "fixed" };
@@ -109,10 +110,15 @@ export const adjustToViewport = (
   const { margin = 10, flip = true } = options;
   let { top, left } = basePosition;
 
+  const minLeft = viewportOffset.left + margin;
+  const maxRight = viewportOffset.left + viewportSize.width - margin;
+  const minTop = viewportOffset.top + margin;
+  const maxBottom = viewportOffset.top + viewportSize.height - margin;
+
   // Горизонтальный flip
   if (flip && (position === PopupPosition.LEFT || position === PopupPosition.RIGHT)) {
-    const fitsOnRight = anchorRect.right + offset + popupRect.width <= viewportSize.width - margin;
-    const fitsOnLeft = anchorRect.left - offset - popupRect.width >= margin;
+    const fitsOnRight = anchorRect.right + offset + popupRect.width <= maxRight;
+    const fitsOnLeft = anchorRect.left - offset - popupRect.width >= minLeft;
 
     if (position === PopupPosition.RIGHT && !fitsOnRight && fitsOnLeft) {
       left = anchorRect.left - popupRect.width - offset;
@@ -123,8 +129,8 @@ export const adjustToViewport = (
 
   // Вертикальный flip
   if (flip && (position === PopupPosition.TOP || position === PopupPosition.BOTTOM)) {
-    const fitsOnBottom = anchorRect.bottom + offset + popupRect.height <= viewportSize.height - margin;
-    const fitsOnTop = anchorRect.top - offset - popupRect.height >= margin;
+    const fitsOnBottom = anchorRect.bottom + offset + popupRect.height <= maxBottom;
+    const fitsOnTop = anchorRect.top - offset - popupRect.height >= minTop;
 
     if (position === PopupPosition.BOTTOM && !fitsOnBottom && fitsOnTop) {
       top = anchorRect.top - popupRect.height - offset;
@@ -133,27 +139,37 @@ export const adjustToViewport = (
     }
   }
 
-  // Ограничиваем в пределах viewport
-  if (left < margin) left = margin;
-  if (left + popupRect.width > viewportSize.width - margin) {
-    left = viewportSize.width - popupRect.width - margin;
+  // Ограничиваем в пределах visual viewport
+  if (left < minLeft) left = minLeft;
+  if (left + popupRect.width > maxRight) {
+    left = maxRight - popupRect.width;
   }
-  if (top < margin) top = margin;
-  if (top + popupRect.height > viewportSize.height - margin) {
-    top = viewportSize.height - popupRect.height - margin;
+  if (top < minTop) top = minTop;
+  if (top + popupRect.height > maxBottom) {
+    top = maxBottom - popupRect.height;
   }
 
-  // Убедимся что не ушли в минус
-  left = Math.max(margin, left);
-  top = Math.max(margin, top);
+  left = Math.max(minLeft, left);
+  top = Math.max(minTop, top);
 
   return { top, left, position: "fixed" };
 };
 
-export const getViewportSize = (): ViewportSize => ({
-  width: window.innerWidth,
-  height: window.innerHeight,
-});
+export const getViewportSize = (): ViewportSize => {
+  const vv = typeof window !== "undefined" ? window.visualViewport : null;
+  return {
+    width: vv?.width ?? window.innerWidth,
+    height: vv?.height ?? window.innerHeight,
+  };
+};
+
+export const getViewportOffset = (): { top: number; left: number } => {
+  const vv = typeof window !== "undefined" ? window.visualViewport : null;
+  return {
+    top: vv?.offsetTop ?? 0,
+    left: vv?.offsetLeft ?? 0,
+  };
+};
 
 export const calculatePopupPosition = (
   position: PopupPosition,
@@ -165,5 +181,15 @@ export const calculatePopupPosition = (
 ): PositionStyles => {
   const basePosition = calculateBasePosition(position, anchorRect, popupRect, offset, anchorAlign);
   const viewportSize = getViewportSize();
-  return adjustToViewport(basePosition, position, anchorRect, popupRect, viewportSize, boundaryOptions, offset);
+  const viewportOffset = getViewportOffset();
+  return adjustToViewport(
+    basePosition,
+    position,
+    anchorRect,
+    popupRect,
+    viewportSize,
+    boundaryOptions,
+    offset,
+    viewportOffset,
+  );
 };

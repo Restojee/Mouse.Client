@@ -4,17 +4,15 @@ import { InfoItem } from "@/layout/drawer/Info/InfoItem";
 import { selectIsAuth } from "@/modules/auth/slice";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { CreateInfoModal } from "@/modules/info/containers/create-modal/CreateInfoModal";
 import { useInfo } from "@/modules/info/hooks/useInfo";
 import { getInfoThunk } from "@/modules/info/slice";
 import { AddIcon } from "@/svg/AddIcon";
-import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
+import { MessageSkeleton } from "@/ui/Skeleton";
 import { IconButton } from "@/ui/Button/IconButton";
 import { Display } from "@/ui/Display";
 import { Typography } from "@/ui/Typography/styles/Typography";
-import { StyledBox } from "@/ui/Box";
-import { StyledInfoList } from "@/layout/drawer/Info/styled";
-import { StyledDrawerHeader } from "@/layout/drawer/styled";
+import infoStyles from "@/layout/drawer/Info/Info.module.scss";
+import drawerStyles from "@/layout/drawer/Drawer.module.scss";
 
 export const Info = () => {
   const dispatch = useAppDispatch();
@@ -29,21 +27,20 @@ export const Info = () => {
   }, []);
 
   return (
-    <StyledBox
-      direction="column"
-      overflow={"auto"}
-      grow={1}
-    >
-      <StyledDrawerHeader>
+    <div className={infoStyles.infoContainer}>
+      <div className={drawerStyles.drawerHeader}>
         <Typography>Полезная инфа</Typography>
         <Display condition={isAuth}>
           <IconButton onClick={() => onModalOpen()}>
             <AddIcon color={theme.colors.textOnSecondary} />
           </IconButton>
         </Display>
-      </StyledDrawerHeader>
+      </div>
+      <Display condition={isInfoFetching && !infoList?.length}>
+        <MessageSkeleton count={4} />
+      </Display>
       <Display condition={infoList?.length}>
-        <StyledInfoList>
+        <div className={infoStyles.infoList}>
           {infoList?.map((info) => (
             <InfoItem
               key={info.id}
@@ -52,13 +49,11 @@ export const Info = () => {
               removeInfo={removeInfo}
             />
           ))}
-        </StyledInfoList>
+        </div>
       </Display>
       <Display condition={!infoList?.length && !isInfoFetching}>
-        <StyledBox margin={"auto"}>Полезной инфы еще нет.</StyledBox>
+        <div className={infoStyles.infoEmpty}>Полезной инфы еще нет.</div>
       </Display>
-      <BoxLoader isLoading={isInfoFetching} />
-      <CreateInfoModal />
-    </StyledBox>
+    </div>
   );
 };

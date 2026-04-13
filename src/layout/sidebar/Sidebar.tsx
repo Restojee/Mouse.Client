@@ -2,10 +2,10 @@ import * as React from "react";
 import { getAppVersion } from "@/common/utils";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectIsAuth } from "@/modules/auth/slice";
-import { StyledBox } from "@/ui/Box";
+import { Box } from "@/ui/Box";
 import { Display } from "@/ui/Display";
-import { StyledSidebar } from "@/layout/sidebar/styles/StyledSidebar";
-import { StyledSidebarLogo } from "@/layout/sidebar/styles/StyledSidebarLogo";
+import { Sidebar as SidebarRoot } from "@/layout/sidebar/styles/Sidebar";
+import { SidebarLogo } from "@/layout/sidebar/styles/SidebarLogo";
 import { SidebarSwitcher } from "@/layout/sidebar/SidebarSwitcher";
 import { TagsNavigation } from "@/modules/tag/TagsNavigation";
 import { MapsByFiltersNavigation } from "@/modules/map/containers/map-navigation/ui/MapsByFiltersNavigation";
@@ -18,8 +18,8 @@ export const Sidebar = () => {
   const isAuth = useAppSelector(selectIsAuth);
 
   return (
-    <StyledSidebar isOpen={isOpen}>
-      <StyledBox
+    <SidebarRoot isOpen={isOpen}>
+      <Box
         direction="column"
         gap={isOpen ? 20 : 10}
       >
@@ -31,22 +31,22 @@ export const Sidebar = () => {
         <Display condition={isAuth}>
           <MapsByFiltersNavigation isOpen={isOpen} />
         </Display>
-      </StyledBox>
-      <StyledBox
+      </Box>
+      <Box
         direction="column"
         overflow="hidden"
         grow={1}
       >
         <TagsNavigation isOpen={isOpen} />
-        <StyledSidebarLogo isOpen={isOpen}>OnlyPlanks</StyledSidebarLogo>
-        <StyledBox
+        <SidebarLogo isOpen={isOpen}>OnlyPlanks</SidebarLogo>
+        <Box
           opacity={isOpen ? 0.6 : 0}
           textAlign="center"
           margin="5px auto 0 auto"
         >
           {appVersion}
-        </StyledBox>
-      </StyledBox>
-    </StyledSidebar>
+        </Box>
+      </Box>
+    </SidebarRoot>
   );
 };

@@ -1,8 +1,8 @@
-import { StyledBox } from "@/ui/Box";
+import { Box } from "@/ui/Box";
 
 type TabsPropsType = {
   children: JSX.Element[];
 };
 export const Tabs = ({ children }: TabsPropsType) => {
-  return <StyledBox gap={10}>{children}</StyledBox>;
+  return <Box gap={10}>{children}</Box>;
 };

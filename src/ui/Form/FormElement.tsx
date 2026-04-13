@@ -33,26 +33,26 @@ export default function FormElement(props: Partial<PropsType>) {
     // </Form>
 
     <div className={formStyles.formElementContainer}>
-      {title && <div className={formStyles.formElementHeader}>{title}</div>}
+      {title ? <div className={formStyles.formElementHeader}>{title}</div> : null}
 
       <div
         className={[formStyles.inputWrapper, noBorder && formStyles.inputWrapperNoBorder].filter(Boolean).join(" ")}
         style={bgColor ? { backgroundColor: bgColor } : undefined}
       >
-        {inputPrepend && (
+        {inputPrepend ? (
           <div className={[formStyles.inputIcon, formStyles.inputIconLeft].filter(Boolean).join(" ")}>
             {inputPrepend}
           </div>
-        )}
+        ) : null}
         <input
           {...inputProps}
           className={[formStyles.input, noBorder && formStyles.inputNoBorder].filter(Boolean).join(" ")}
         />
-        {props.inputAppend && (
+        {props.inputAppend ? (
           <div className={[formStyles.inputIcon, formStyles.inputIconRight].filter(Boolean).join(" ")}>
             {inputAppend}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { getMapImageLink } from "@/common/utils";
 import React, { useCallback, useMemo } from "react";
-import { StyledBox } from "@/ui/Box";
+import { Box } from "@/ui/Box";
+import styles from "./PreviewImage.module.scss";
 
 type PreviewImagePropsType = {
   onClick?: (image: string) => void;
@@ -26,7 +27,7 @@ export const PreviewImage = (props: PreviewImagePropsType) => {
   }
 
   return (
-    <StyledBox
+    <Box
       onClick={onImageOpen}
       cursor={props.image ? "zoom-in" : "default"}
     >
@@ -34,12 +35,9 @@ export const PreviewImage = (props: PreviewImagePropsType) => {
         src={mapImage}
         width={"100%"}
         height={"100%"}
-        style={{
-          objectPosition: "center",
-          objectFit: "cover",
-        }}
+        className={styles.image}
         alt="map"
       />
-    </StyledBox>
+    </Box>
   );
 };

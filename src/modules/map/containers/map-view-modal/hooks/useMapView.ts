@@ -33,10 +33,8 @@ export const useMapView = () => {
     await dispatch(onCloseMapContentThunk());
   }, [router]);
 
-  useGlobalKeyDown(async (e) => {
-    if (e.key === "Escape") {
-      await closeMap();
-    }
+  useGlobalKeyDown({
+    Escape: closeMap,
   });
 
   return {

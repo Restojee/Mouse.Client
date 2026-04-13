@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { usePopupRegistration } from "./usePopupRegistration";
 import { usePopupVisibility } from "./usePopupVisibility";
 import { useOutsideClick } from "./useOutsideClick";
@@ -11,7 +11,7 @@ interface UsePopupOptions extends Omit<UsePopupPositionOptions, "anchorRef" | "p
 }
 
 export const usePopup = (options: UsePopupOptions) => {
-  const { isVisible, onClose, position, offset, boundary, anchorAlign } = options;
+  const { isVisible, onClose, position, offset, boundary, anchorAlign, fixedAnchorRect } = options;
 
   const anchorRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -24,9 +24,21 @@ export const usePopup = (options: UsePopupOptions) => {
     offset,
     boundary,
     anchorAlign,
+    fixedAnchorRect,
   });
 
-  const { popupPositionStyles, isRendered } = usePopupVisibility(isVisible, getPopupPosition, anchorRef, popupRef);
+  const { popupPositionStyles, isRendered, updatePosition } = usePopupVisibility(
+    isVisible,
+    getPopupPosition,
+    anchorRef,
+    popupRef,
+  );
+
+  useEffect(() => {
+    if (isVisible && fixedAnchorRect) {
+      updatePosition();
+    }
+  }, [fixedAnchorRect?.top, fixedAnchorRect?.left, isVisible]);
 
   const checkNestedPopups = useCallback(
     (target: Node) => {

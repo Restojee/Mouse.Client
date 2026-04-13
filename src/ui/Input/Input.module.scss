@@ -17,3 +17,21 @@
 .icon {
   color: var(--color-icon-on-secondary);
 }
+
+.root {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: 0.2s;
+  width: 100%;
+
+  &.hasError {
+    margin: 0 0 5px 0;
+  }
+}
+
+.title {
+  padding: 0 0 5px 15px;
+  font-size: 0.8rem;
+  opacity: 0.5;
+}

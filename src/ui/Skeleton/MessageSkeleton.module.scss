@@ -1,0 +1,75 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.rowReverse {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+  max-width: 80%;
+}
+
+.rowAligned {
+  max-width: 80%;
+}
+
+.bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background-color: var(--color-primary-accent);
+  min-width: 140px;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-background-shadow),
+      transparent
+    );
+    animation: messageShimmer 1.6s infinite;
+  }
+}
+
+.line {
+  height: 10px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.lineShort {
+  width: 40%;
+}
+
+.lineMedium {
+  width: 70%;
+}
+
+.lineLong {
+  width: 100%;
+}
+
+@keyframes messageShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

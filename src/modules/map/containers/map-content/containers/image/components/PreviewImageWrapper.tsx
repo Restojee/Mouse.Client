@@ -1,8 +1,9 @@
 import { Display } from "@/ui/Display";
 import { ImageActions } from "../../image-actions/ImageActions";
-import { StyledBox } from "@/ui/Box";
 import { PreviewImage } from "./PreviewImage";
-import { StyledMapContentPreview } from "@/ui/Message/styled";
+import msgStyles from "./PreviewImage.module.scss";
+import wrapperStyles from "./PreviewImageWrapper.module.scss";
+import clsx from "clsx";
 import React from "react";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectIsAuth } from "@/modules/auth/slice";
@@ -18,28 +19,23 @@ interface Props {
 
 export const PreviewImageWrapper = ({ mapCompleted, onDeleteOpen, image, onClick }: Props) => {
   const isAuth = useAppSelector(selectIsAuth);
+  const outerClassName = clsx(msgStyles.contentPreview, wrapperStyles.wrapper);
+  const innerClassName = wrapperStyles.imageTransition;
 
   return (
-    <StyledMapContentPreview
-      borderRadius={"20px"}
-      height="100%"
-      minHeight={"395px"}
-    >
+    <div className={outerClassName}>
       <Display condition={isAuth}>
         <ImageActions
           mapCompleted={mapCompleted}
           onDeleteOpen={onDeleteOpen}
         />
       </Display>
-      <StyledBox
-        height={"100%"}
-        transition={"0.2s"}
-      >
+      <div className={innerClassName}>
         <PreviewImage
           image={image}
           onClick={onClick}
         />
-      </StyledBox>
-    </StyledMapContentPreview>
+      </div>
+    </div>
   );
 };

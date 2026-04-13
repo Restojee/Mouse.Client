@@ -52,7 +52,24 @@ const slice = createSlice({
   initialState,
   reducers: {
     setCompletedMaps: (state, action: PayloadAction<MapCompleted[]>) => {
-      state.completedMapsList = action.payload;
+      const nextMaps = action.payload;
+      const prevMaps = state.completedMapsList;
+
+      const prevUserId = prevMaps[0]?.user.id;
+      const nextUserId = nextMaps[0]?.user.id;
+      const isUserChanged = prevUserId !== nextUserId;
+      const isNewImageAdded = nextMaps.length > prevMaps.length && !isUserChanged;
+      const lastAdded = nextMaps.at(-1);
+
+      state.completedMapsList = nextMaps;
+
+      if (!nextMaps.length) {
+        state.activeMapCompleted = null;
+      } else if (isNewImageAdded && lastAdded) {
+        state.activeMapCompleted = lastAdded;
+      } else {
+        state.activeMapCompleted = nextMaps[0];
+      }
     },
     setIsCompletedMapModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isModalOpen = action.payload;

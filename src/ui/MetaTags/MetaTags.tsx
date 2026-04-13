@@ -10,25 +10,25 @@ export type MetaTagsProps = {
 export const MetaTags = ({ title, description, keywords, viewport }: MetaTagsProps) => {
   return (
     <Head>
-      {title && <title>{`${title} • OnlyPlanks`}</title>}
-      {description && (
+      {title ? <title>{`${title} • OnlyPlanks`}</title> : null}
+      {description ? (
         <meta
           name="description"
           content={description}
         />
-      )}
-      {keywords && (
+      ) : null}
+      {keywords ? (
         <meta
           name="keywords"
           content={keywords.join(",")}
         />
-      )}
-      {viewport && (
+      ) : null}
+      {viewport ? (
         <meta
           name="viewport"
           content={viewport}
         />
-      )}
+      ) : null}
     </Head>
   );
 };

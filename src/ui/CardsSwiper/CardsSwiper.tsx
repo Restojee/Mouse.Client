@@ -15,7 +15,10 @@ export const CardsSwiper = (props: Props) => {
   const slideNextClass = `card-slider-nav-arrow-next`;
 
   return (
-    <div className={swiperStyles.wrapper} style={{ display: "flex" }}>
+    <div
+      className={swiperStyles.wrapper}
+      style={{ display: "flex" }}
+    >
       <Swiper
         centeredSlides={false}
         navigation={{

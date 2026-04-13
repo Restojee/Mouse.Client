@@ -1,5 +1,5 @@
-import { StyledPageContent } from "@/layout/page/styles/StyledPageContent";
-import { StyledBox } from "@/ui/Box";
+import { PageContent as PageContentLayout } from "@/layout/page/styles/PageContent";
+import { Box } from "@/ui/Box";
 import React, { ReactNode } from "react";
 
 type Props = {
@@ -8,13 +8,13 @@ type Props = {
 };
 export const PageContent = React.forwardRef((props: Partial<Props>) => {
   return (
-    <StyledBox
+    <Box
       overflow={"hidden"}
       position={"relative"}
       grow={1}
       style={{ minHeight: 0 }}
     >
-      <StyledPageContent id={"maps-page-container"}>{props.children}</StyledPageContent>
-    </StyledBox>
+      <PageContentLayout id={"maps-page-container"}>{props.children}</PageContentLayout>
+    </Box>
   );
 });

@@ -14,15 +14,11 @@ export const usePopupVisibility = (
     const anchor = anchorRef.current;
     const popup = popupRef.current;
     if (!anchor || !popup) return;
-
-    const popupRect = popup.getBoundingClientRect();
-    // Don't commit position until popup has actual dimensions
-    if (popupRect.width === 0 && popupRect.height === 0) return;
+    if (popup.offsetWidth === 0 && popup.offsetHeight === 0) return;
 
     setPopupPositionStyles(getPopupPosition());
   }, [getPopupPosition, anchorRef, popupRef]);
 
-  // Reset when hidden
   useEffect(() => {
     if (!isVisible) {
       setIsRendered(false);
@@ -30,9 +26,6 @@ export const usePopupVisibility = (
     }
   }, [isVisible]);
 
-  // ResizeObserver is the single source of truth for position calculation.
-  // It fires immediately on observe() with actual dimensions after browser layout,
-  // avoiding the race condition of useEffect + getBoundingClientRect() on fresh mount.
   useLayoutEffect(() => {
     if (!isVisible || !popupRef.current || !anchorRef.current) return;
 
@@ -46,19 +39,20 @@ export const usePopupVisibility = (
     observer.observe(popup);
     if (anchorChild) observer.observe(anchorChild);
 
-    // Also update on scroll/resize of the window
-    const onScroll = () => updatePosition();
-    window.addEventListener("scroll", onScroll, true);
-    window.addEventListener("resize", onScroll);
+    const onResize = () => updatePosition();
+    window.addEventListener("resize", onResize);
+    const vv = window.visualViewport;
+    vv?.addEventListener("resize", onResize);
+    vv?.addEventListener("scroll", onResize);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("scroll", onScroll, true);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
+      vv?.removeEventListener("resize", onResize);
+      vv?.removeEventListener("scroll", onResize);
     };
   }, [isVisible, popupRef, anchorRef, updatePosition]);
 
-  // Mark as rendered once we have a valid position
   useEffect(() => {
     if (popupPositionStyles) {
       setIsRendered(true);

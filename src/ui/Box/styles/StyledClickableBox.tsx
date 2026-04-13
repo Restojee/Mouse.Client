@@ -1,16 +1,16 @@
 import React from "react";
-import { StyledBox, StyledBoxProps } from "@/ui/Box";
+import { Box, BoxProps } from "@/ui/Box";
 import styles from "./ClickableBox.module.scss";
 
-type Props = Partial<StyledBoxProps> & React.HTMLAttributes<HTMLDivElement>;
+type Props = Partial<BoxProps> & React.HTMLAttributes<HTMLDivElement>;
 
-export const StyledClickableBox = React.forwardRef<HTMLDivElement, Props>(
+export const ClickableBox = React.forwardRef<HTMLDivElement, Props>(
   ({ className, isActive, bgColorByActive, ...props }, ref) => {
     const classes = [styles.clickableBox, className];
     if (isActive) classes.push(styles.active);
 
     return (
-      <StyledBox
+      <Box
         ref={ref}
         className={classes.filter(Boolean).join(" ")}
         style={
@@ -24,4 +24,4 @@ export const StyledClickableBox = React.forwardRef<HTMLDivElement, Props>(
   },
 );
 
-StyledClickableBox.displayName = "StyledClickableBox";
+ClickableBox.displayName = "ClickableBox";

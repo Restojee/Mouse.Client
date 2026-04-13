@@ -1,0 +1,32 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.titlePrefix {
+  font-size: 1.1rem;
+}
+
+.copyButton {
+  opacity: 0.6;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  opacity: 0.6;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

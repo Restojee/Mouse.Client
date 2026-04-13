@@ -60,7 +60,7 @@ export const List: React.FC<ListProps> = ({
 
   return (
     <div className={[listStyles.list, className].filter(Boolean).join(" ")}>
-      {showSearch && (
+      {showSearch ? (
         <div className={listStyles.listSearch}>
           <input
             value={searchValue}
@@ -78,19 +78,27 @@ export const List: React.FC<ListProps> = ({
             }}
           />
         </div>
-      )}
+      ) : null}
       <div ref={itemsContainerRef}>
         {isLoading ? (
           <div className={listStyles.listLoader} />
         ) : filteredOptions.length === 0 ? (
-          <div className={[listStyles.listEmpty, size === "sm" && listStyles.listEmptySm].filter(Boolean).join(" ")}>{emptyMessage}</div>
+          <div className={[listStyles.listEmpty, size === "sm" && listStyles.listEmptySm].filter(Boolean).join(" ")}>
+            {emptyMessage}
+          </div>
         ) : (
           filteredOptions.map((option) => (
             <React.Fragment key={option.id}>
-              {option.divider && <div className={contextMenuStyles.divider} />}
+              {option.divider ? <div className={contextMenuStyles.divider} /> : null}
               <div
                 onClick={() => !option.disabled && handleClick(option)}
-                className={[contextMenuStyles.option, option.disabled && contextMenuStyles.optionDisabled, option.isDanger && contextMenuStyles.optionDanger].filter(Boolean).join(" ")}
+                className={[
+                  contextMenuStyles.option,
+                  option.disabled && contextMenuStyles.optionDisabled,
+                  option.isDanger && contextMenuStyles.optionDanger,
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 data-active={activeItemId != null && option.id === activeItemId}
               >
                 {option.avatar !== undefined ? (
@@ -107,12 +115,12 @@ export const List: React.FC<ListProps> = ({
             </React.Fragment>
           ))
         )}
-        {sentinelRef?.current && (
+        {sentinelRef?.current ? (
           <div
             ref={sentinelRef}
             style={{ height: "1px", width: "100%" }}
           />
-        )}
+        ) : null}
       </div>
     </div>
   );

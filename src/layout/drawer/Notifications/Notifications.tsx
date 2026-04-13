@@ -1,9 +1,9 @@
-import { StyledBox } from "@/ui/Box";
 import React, { useEffect, useRef, useState } from "react";
-import { StyledTab, StyledTabSlideIndicator, StyledTabsRow } from "@/layout/drawer/Notifications/styled";
-import { StyledDrawerHeader } from "@/layout/drawer/styled";
+import clsx from "clsx";
+import notifStyles from "@/layout/drawer/Notifications/Notifications.module.scss";
+import drawerStyles from "@/layout/drawer/Drawer.module.scss";
 import { Display } from "@/ui/Display";
-import { BoxLoader } from "@/ui/BoxLoader/BoxLoader";
+import { MessageSkeleton } from "@/ui/Skeleton";
 import { useNotifications } from "@/modules/notifications";
 import { ApiNotification, NotificationPriority } from "@/modules/notifications/types";
 import { NotificationItem } from "@/layout/drawer/Notifications/NotificationItem";
@@ -61,25 +61,30 @@ export const Notifications = () => {
   };
 
   return (
-    <StyledBox
-      height="100%"
-      direction="column"
-      padding="0 20px"
-    >
-      <StyledDrawerHeader>Уведомления</StyledDrawerHeader>
+    <div className={notifStyles.container}>
+      <div className={drawerStyles.drawerHeader}>Уведомления</div>
 
-      <StyledTabsRow ref={tabsContainerRef}>
-        <StyledTabSlideIndicator style={indicatorStyle} />
-        {TABS.map(({ label, priority }, index) => (
-          <StyledTab
-            key={index}
-            onClick={() => changeTab(priority)}
-            isActive={activeTabIndex === index}
-          >
-            {label}
-          </StyledTab>
-        ))}
-      </StyledTabsRow>
+      <div
+        className={notifStyles.tabsRow}
+        ref={tabsContainerRef}
+      >
+        <div
+          className={notifStyles.tabSlideIndicator}
+          style={indicatorStyle}
+        />
+        {TABS.map(({ label, priority }, index) => {
+          const tabClassName = clsx(notifStyles.tab, activeTabIndex === index && notifStyles.tabActive);
+          return (
+            <div
+              key={index}
+              className={tabClassName}
+              onClick={() => changeTab(priority)}
+            >
+              {label}
+            </div>
+          );
+        })}
+      </div>
 
       <DragSlider
         activeIndex={activeTabIndex}
@@ -89,17 +94,17 @@ export const Notifications = () => {
           const items = itemsByPriority[priority];
           const isLoading = loadingByPriority[priority];
           return (
-            <StyledBox
+            <div
               key={priority}
-              direction="column"
-              grow={1}
-              overflow="hidden"
+              className={notifStyles.tabPanel}
             >
-              <BoxLoader isLoading={isLoading} />
+              <Display condition={isLoading && items.length === 0}>
+                <MessageSkeleton count={5} />
+              </Display>
               <Display condition={!isLoading && items.length === 0}>
                 <EmptyNotifications />
               </Display>
-              {!isLoading && items.length > 0 && (
+              {items.length > 0 && (
                 <MessageList>
                   {items.map((notification: ApiNotification) => (
                     <NotificationItem
@@ -109,10 +114,10 @@ export const Notifications = () => {
                   ))}
                 </MessageList>
               )}
-            </StyledBox>
+            </div>
           );
         })}
       </DragSlider>
-    </StyledBox>
+    </div>
   );
 };

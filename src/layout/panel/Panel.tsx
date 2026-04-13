@@ -2,8 +2,8 @@ import { getAvatarImageLink } from "@/common/utils";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { NavLink } from "@/layout/navigation/NavLink";
-import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
-import { StyledPanel, StyledTabsGroup, StyledTabSlideIndicator } from "@/layout/panel/styled";
+import { NavLinkSection } from "@/layout/navigation/styles/NavLinkSection";
+import panelStyles from "@/layout/panel/Panel.module.scss";
 import { ThemeKey } from "@/layout/theme/types";
 import { useLogin } from "@/modules/auth/hooks/useLogin";
 import { selectCurrentUser, selectIsAuth } from "@/modules/auth/slice";
@@ -89,25 +89,31 @@ export const Panel = (props: PanelProps) => {
   }, [props.activeTab, props.isOpen]);
 
   return (
-    <StyledPanel>
+    <div className={panelStyles.panel}>
       <NavLink
         onClick={() => props.setIsOpen(!props.isOpen)}
         prepend={
-          <StyledNavLinkSection>
+          <NavLinkSection>
             <BurgerIcon />
-          </StyledNavLinkSection>
+          </NavLinkSection>
         }
       />
       <Display condition={isAuth}>
         <Avatar
           size={40}
-          image={getAvatarImageLink(avatar)}
+          image={getAvatarImageLink(avatar, "display")}
           username={userData?.username}
         />
       </Display>
 
-      <StyledTabsGroup ref={tabsContainerRef}>
-        <StyledTabSlideIndicator style={indicatorStyle} />
+      <div
+        className={panelStyles.tabsGroup}
+        ref={tabsContainerRef}
+      >
+        <div
+          className={panelStyles.tabSlideIndicator}
+          style={indicatorStyle}
+        />
         {tabsData.map((el, index) => (
           <NavLink
             key={index}
@@ -121,24 +127,24 @@ export const Panel = (props: PanelProps) => {
             border={el.border}
             gap="0"
             justifyContent="center"
-            prepend={<StyledNavLinkSection>{el.icon}</StyledNavLinkSection>}
+            prepend={<NavLinkSection>{el.icon}</NavLinkSection>}
           />
         ))}
-      </StyledTabsGroup>
+      </div>
       <NavLink
         onClick={toggleTheme}
         border
         label="Сменить тему"
-        prepend={<StyledNavLinkSection>{themeIcon}</StyledNavLinkSection>}
+        prepend={<NavLinkSection>{themeIcon}</NavLinkSection>}
       />
       <Display condition={isAuth}>
         <NavLink
           label={"Выйти"}
           onClick={logout}
           prepend={
-            <StyledNavLinkSection>
+            <NavLinkSection>
               <OutIcon color={"#e87575"} />
-            </StyledNavLinkSection>
+            </NavLinkSection>
           }
         />
       </Display>
@@ -147,13 +153,13 @@ export const Panel = (props: PanelProps) => {
           label={"Войти"}
           onClick={onLoginModalOpen}
           prepend={
-            <StyledNavLinkSection>
+            <NavLinkSection>
               <LogInIcon />
-            </StyledNavLinkSection>
+            </NavLinkSection>
           }
         />
       </Display>
-    </StyledPanel>
+    </div>
   );
 };
 

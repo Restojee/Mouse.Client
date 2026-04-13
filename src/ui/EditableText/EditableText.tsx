@@ -80,7 +80,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
       ref={editableRef}
       role="textbox"
       aria-label={ariaLabel}
-      contentEditable={isEditing && !disabled}
+      contentEditable={isEditing ? !disabled : undefined}
       suppressContentEditableWarning
       onClick={startEdit}
       onInput={onEditableInput}

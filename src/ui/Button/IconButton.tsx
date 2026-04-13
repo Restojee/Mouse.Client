@@ -2,7 +2,7 @@ import React from "react";
 import { Property } from "csstype";
 import styles from "./styles/Button.module.scss";
 
-type StyledIconButtonPropsType = {
+type IconButtonPropsType = {
   opacity?: Property.Opacity;
   margin?: Property.Margin;
   padding?: Property.Padding;
@@ -16,7 +16,7 @@ type StyledIconButtonPropsType = {
 
 export const IconButton = React.forwardRef<
   HTMLButtonElement,
-  StyledIconButtonPropsType & React.ButtonHTMLAttributes<HTMLButtonElement>
+  IconButtonPropsType & React.ButtonHTMLAttributes<HTMLButtonElement>
 >(
   (
     { opacity, color, margin, padding, right, isStylized, isPanel, disabled, className, children, style, ...htmlProps },

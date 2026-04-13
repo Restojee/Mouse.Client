@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
-import { Popup, PopupPosition, AnchorAlign } from "@/ui/Popup";
+import { AnchorAlign, Popup, PopupPosition } from "@/ui/Popup";
 import contextMenuStyles from "./ContextMenu.module.scss";
-import { SubMenuList } from "./SubMenuList";
 import { List } from "@/ui/List/List";
 import type { ListItemOptions, ThemeSizes } from "./ContextMenuItem";
 
@@ -22,10 +21,12 @@ type ContextMenuProps = {
   showCheckbox?: boolean;
   showSearch?: boolean;
   minWidth?: number;
-  fixedAnchorRect?: { top: number; left: number; width?: number; height?: number };
   activeItemId?: string | number | null;
   transformOrigin?: string;
   offset?: number;
+  fixedAnchorRect?: { top: number; left: number; width?: number; height?: number };
+  noOverlay?: boolean;
+  className?: string;
 };
 
 export const ContextMenu: React.FC<ContextMenuProps> = ({
@@ -45,6 +46,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   transformOrigin,
   offset,
   header,
+  fixedAnchorRect,
+  noOverlay,
+  className,
 }) => {
   const handleOptionChange = useCallback(
     (option: ListItemOptions) => {
@@ -56,25 +60,18 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     [onChange, onClose, showCheckbox],
   );
 
-  const hasSubmenus = items.some((opt) => opt.submenu);
-
-  const content = hasSubmenus ? (
-    <div className={contextMenuStyles.list}>
-      {items.map((item) => (
-        <React.Fragment key={item.id}>
-          {item.divider && <div className={contextMenuStyles.divider} />}
-          <SubMenuList
-            item={item}
-            size={size}
-            onParentClose={onClose}
-          />
-        </React.Fragment>
-      ))}
-    </div>
-  ) : (
+  const content = (
     <>
       {header}
-      {title && <div className={[contextMenuStyles.title, size === "sm" ? contextMenuStyles.titleSm : ""].filter(Boolean).join(" ")}>{title}</div>}
+      {title && (
+        <div
+          className={[contextMenuStyles.title, size === "sm" ? contextMenuStyles.titleSm : ""]
+            .filter(Boolean)
+            .join(" ")}
+        >
+          {title}
+        </div>
+      )}
       <List
         options={items}
         onChange={handleOptionChange}
@@ -85,7 +82,6 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
       />
     </>
   );
-
   return (
     <Popup
       anchor={anchor}
@@ -96,6 +92,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
       minWidth={minWidth}
       transformOrigin={transformOrigin}
       offset={offset}
+      fixedAnchorRect={fixedAnchorRect}
+      noOverlay={noOverlay}
+      className={className}
       noPadding
     >
       {content}

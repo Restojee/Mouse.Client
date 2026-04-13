@@ -1,10 +1,10 @@
 import { inviteApi } from "@/api/inviteApi";
 import { useAppNotifications } from "@/hooks/useAppNotifications";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { StyledDrawerHeader } from "@/layout/drawer/styled";
+import drawerStyles from "@/layout/drawer/Drawer.module.scss";
+import settingsStyles from "@/layout/drawer/Settings/Settings.module.scss";
 import { getInviteLink } from "@/modules/auth";
 import { useUser } from "@/modules/user/hooks/useUser";
-import { StyledBox } from "@/ui/Box";
 import { Button } from "@/ui/Button";
 import { Input, PasswordInput } from "@/ui/Input";
 import { Typography } from "@/ui/Typography";
@@ -113,25 +113,15 @@ export const Settings = () => {
   }, [currentUser?.username, onError, onSuccess]);
 
   return (
-    <StyledBox
-      direction="column"
-      padding="0 20px 20px 20px"
-      overflow={"auto"}
-      grow={1}
-    >
-      <StyledDrawerHeader>
+    <div className={settingsStyles.settingsContainer}>
+      <div className={drawerStyles.drawerHeader}>
         <Typography>Мои данные</Typography>
-      </StyledDrawerHeader>
+      </div>
       <form
         autoComplete={"off"}
         onSubmit={handleSubmit(onSubmitHandler)}
       >
-        <StyledBox
-          align={"center"}
-          direction={"column"}
-          gap={20}
-          padding={"20px 0 0 0"}
-        >
+        <div className={settingsStyles.settingsForm}>
           <UpdateAvatar
             onChange={setImage}
             size={120}
@@ -183,32 +173,21 @@ export const Settings = () => {
             label={"Сохранить"}
             color={theme.colors.brandColorContrastText}
           />
-        </StyledBox>
+        </div>
       </form>
-      <StyledBox
-        align={"center"}
-        direction={"column"}
-        padding={"20px 0 0 0"}
-      >
-        <StyledDrawerHeader>
+      <div className={settingsStyles.inviteSection}>
+        <div className={drawerStyles.drawerHeader}>
           <Typography>Приглашение для друга</Typography>
-        </StyledDrawerHeader>
-        <StyledBox
-          fontSize={"0.8rem"}
-          padding={"0px 10px 20px"}
-          opacity={0.7}
-          textAlign={"center"}
-          borderRadius={15}
-          style={{ lineHeight: 1.5 }}
-        >
+        </div>
+        <div className={settingsStyles.inviteText}>
           Получите одноразовую ссылку-приглашение для регистрации. Помните, что ссылка не должна попасть в плохие руки!
-        </StyledBox>
+        </div>
         <Button
           onClick={onInviteCopy}
           label={"Скопировать"}
           color={theme.colors.brandColorContrastText}
         />
-      </StyledBox>
-    </StyledBox>
+      </div>
+    </div>
   );
 };

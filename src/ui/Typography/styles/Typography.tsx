@@ -19,42 +19,50 @@ type Props = {
   className?: string;
 };
 
-export const Typography = React.forwardRef<
-  HTMLParagraphElement,
-  Props & React.HTMLAttributes<HTMLParagraphElement>
->(({ className, children, ...props }, ref) => {
-  const {
-    textAlign, fontWeight, opacity, margin, fontSize, color,
-    isEllipsis, isUpperCase, isLink, isClickable, isUnselectable,
-    ...htmlProps
-  } = props;
+export const Typography = React.forwardRef<HTMLParagraphElement, Props & React.HTMLAttributes<HTMLParagraphElement>>(
+  ({ className, children, ...props }, ref) => {
+    const {
+      textAlign,
+      fontWeight,
+      opacity,
+      margin,
+      fontSize,
+      color,
+      isEllipsis,
+      isUpperCase,
+      isLink,
+      isClickable,
+      isUnselectable,
+      ...htmlProps
+    } = props;
 
-  const classes = [styles.typography, className];
-  if (isEllipsis) classes.push(styles.ellipsis);
-  if (isUpperCase) classes.push(styles.uppercase);
-  if (isLink) classes.push(styles.link);
-  if (isClickable) classes.push(styles.clickable);
-  if (isUnselectable) classes.push(styles.unselectable);
+    const classes = [styles.typography, className];
+    if (isEllipsis) classes.push(styles.ellipsis);
+    if (isUpperCase) classes.push(styles.uppercase);
+    if (isLink) classes.push(styles.link);
+    if (isClickable) classes.push(styles.clickable);
+    if (isUnselectable) classes.push(styles.unselectable);
 
-  const style: React.CSSProperties = {
-    textAlign,
-    fontWeight,
-    opacity,
-    margin,
-    fontSize,
-    color,
-  };
+    const style: React.CSSProperties = {
+      textAlign,
+      fontWeight,
+      opacity,
+      margin,
+      fontSize,
+      color,
+    };
 
-  return (
-    <p
-      ref={ref}
-      className={classes.filter(Boolean).join(" ")}
-      style={style}
-      {...htmlProps}
-    >
-      {children}
-    </p>
-  );
-});
+    return (
+      <p
+        ref={ref}
+        className={classes.filter(Boolean).join(" ")}
+        style={style}
+        {...htmlProps}
+      >
+        {children}
+      </p>
+    );
+  },
+);
 
 Typography.displayName = "Typography";

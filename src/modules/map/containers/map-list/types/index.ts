@@ -5,4 +5,6 @@ export type MapsStateType = {
   filter: GetMapsApiArg;
   mapsData: GetMapsApiResponse | null;
   staticMapsInfo: GetMapsApiResponse | null;
+  modalMapsData: GetMapsApiResponse | null;
+  isModalMapsFetching: boolean;
 };

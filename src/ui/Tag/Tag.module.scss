@@ -1,4 +1,5 @@
 .tag {
+  display: flex;
   justify-content: center;
   text-align: center;
   width: min-content;
@@ -7,10 +8,15 @@
   padding: 8px 15px;
   font-size: 0.8rem;
   border-radius: 20px;
+  background-color: var(--color-neutral);
 
   svg {
     opacity: 0.8;
   }
+}
+
+.primaryLighter {
+  background-color: var(--color-primary-lighter);
 }
 
 .chips {

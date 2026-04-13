@@ -24,9 +24,9 @@ function DropdownItem(props: PropsType) {
           key={props.option?.id}
           onClick={onClick}
         >
-          {/*{ props.leftIcon && <StyledIconContainer left>{ props.leftIcon }</StyledIconContainer> }*/}
+          {/*{ props.leftIcon && <IconContainer left>{ props.leftIcon }</IconContainer> }*/}
           <Typography>{props.label}</Typography>
-          {/*<StyledIconButton right>{ props.rightIcon }</StyledIconButton>*/}
+          {/*<IconButton right>{ props.rightIcon }</IconButton>*/}
         </DropdownItemStyled>
       ) : (
         <DropdownItemStyled

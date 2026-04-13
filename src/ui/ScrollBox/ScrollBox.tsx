@@ -1,24 +1,14 @@
 import React from "react";
-import { StyledBox } from "@/ui/Box";
+import styles from "./ScrollBox.module.scss";
 
-type ScrollBoxType = {
+type ScrollBoxPropsType = {
   children: React.ReactNode;
 };
-export const ScrollBox = ({ children }: ScrollBoxType) => {
+
+export const ScrollBox = ({ children }: ScrollBoxPropsType) => {
   return (
-    <StyledBox
-      padding={5}
-      width={"100%"}
-      overflow={"hidden"}
-    >
-      <StyledBox
-        gap={5}
-        width={"100%"}
-        overflow={"auto"}
-        direction={"column"}
-      >
-        {children}
-      </StyledBox>
-    </StyledBox>
+    <div className={styles.outer}>
+      <div className={styles.inner}>{children}</div>
+    </div>
   );
 };

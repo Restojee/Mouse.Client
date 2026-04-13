@@ -1,0 +1,12 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.textarea {
+  background-color: var(--color-input-default);
+  height: 100px;
+  min-height: 100px;
+}

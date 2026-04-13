@@ -36,7 +36,7 @@ export const getMoreMapsThunk = createAsyncThunk("map/get-more", async (arg, { g
     if (!mapsData || mapsData.page >= mapsData.totalPages) return;
 
     const nextPage = mapsData.page + 1;
-    const data = await mapsApi.getMaps({ ...filters, page: nextPage });
+    const data = await mapsApi.getMaps({ ...filters, size: 40, page: nextPage });
 
     dispatch(appendMaps(data));
     return data;
@@ -60,6 +60,32 @@ export const getMapByNameThunk = createAsyncThunk("map/get-by-name", async (arg:
   }
 });
 
+export const getModalMapsThunk = createAsyncThunk("map/modal-get", async (filter: GetMapsApiArg, { dispatch }) => {
+  try {
+    const data = await mapsApi.getMaps({ ...filter, page: 1 });
+    dispatch(setModalMaps(data));
+    return data;
+  } catch (error) {
+    dispatch(setAppMessage({ severity: "error", text: "Ошибка загрузки карт" }));
+  }
+});
+
+export const getMoreModalMapsThunk = createAsyncThunk(
+  "map/modal-get-more",
+  async (filter: GetMapsApiArg, { getState, dispatch }) => {
+    try {
+      const state = getState() as RootState;
+      const modalData = state.maps.modalMapsData;
+      if (!modalData || modalData.page >= modalData.totalPages) return;
+      const data = await mapsApi.getMaps({ ...filter, page: modalData.page + 1 });
+      dispatch(appendModalMaps(data));
+      return data;
+    } catch (error) {
+      dispatch(setAppMessage({ severity: "error", text: "Ошибка загрузки карт" }));
+    }
+  },
+);
+
 export const updateMapDataByIdThunk = createAsyncThunk("map/update-by-id", async (arg: GetMapApiArg, thunkAPI) => {
   try {
     const map = await mapsApi.getMapsById(arg);
@@ -74,11 +100,13 @@ const initialState: MapsStateType = {
   staticMapsInfo: null,
   mapsData: null,
   filter: {
-    size: 30,
+    size: 40,
     page: 1,
     // sortBy: 'DATE',
     // sortDirection: 'DESC',
   },
+  modalMapsData: null,
+  isModalMapsFetching: false,
 };
 
 const slice = createSlice({
@@ -149,6 +177,17 @@ const slice = createSlice({
     setStaticMapsInfo: (state, action: PayloadAction<GetMapsApiResponse>) => {
       state.staticMapsInfo = action.payload;
     },
+    setModalMaps: (state, action: PayloadAction<GetMapsApiResponse>) => {
+      state.modalMapsData = action.payload;
+    },
+    appendModalMaps: (state, action: PayloadAction<GetMapsApiResponse>) => {
+      if (state.modalMapsData) {
+        state.modalMapsData.records = [...state.modalMapsData.records, ...action.payload.records];
+        state.modalMapsData.page = action.payload.page;
+        state.modalMapsData.totalPages = action.payload.totalPages;
+        state.modalMapsData.totalItems = action.payload.totalItems;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -169,6 +208,24 @@ const slice = createSlice({
       })
       .addCase(getMoreMapsThunk.rejected, (state) => {
         state.isMapsFetching = false;
+      })
+      .addCase(getModalMapsThunk.pending, (state) => {
+        state.isModalMapsFetching = true;
+      })
+      .addCase(getModalMapsThunk.fulfilled, (state) => {
+        state.isModalMapsFetching = false;
+      })
+      .addCase(getModalMapsThunk.rejected, (state) => {
+        state.isModalMapsFetching = false;
+      })
+      .addCase(getMoreModalMapsThunk.pending, (state) => {
+        state.isModalMapsFetching = true;
+      })
+      .addCase(getMoreModalMapsThunk.fulfilled, (state) => {
+        state.isModalMapsFetching = false;
+      })
+      .addCase(getMoreModalMapsThunk.rejected, (state) => {
+        state.isModalMapsFetching = false;
       });
   },
 });
@@ -178,6 +235,9 @@ export const selectMaps = (state: RootState) => state.maps.mapsData?.records;
 export const selectIsMapsFetching = (state: RootState) => state.maps.isMapsFetching;
 export const selectStaticMapsInfo = (state: RootState) => state.maps.staticMapsInfo;
 export const selectMapsInfo = (state: RootState) => state.maps.mapsData;
+export const selectModalMaps = (state: RootState) => state.maps.modalMapsData?.records;
+export const selectIsModalMapsFetching = (state: RootState) => state.maps.isModalMapsFetching;
+export const selectModalMapsInfo = (state: RootState) => state.maps.modalMapsData;
 
 export const {
   addMap,
@@ -189,5 +249,7 @@ export const {
   setMapImageById,
   setStaticMapsInfo,
   updateMapData,
+  setModalMaps,
+  appendModalMaps,
 } = slice.actions;
 export const mapsReducer = slice.reducer;

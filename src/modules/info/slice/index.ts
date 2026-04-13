@@ -25,6 +25,8 @@ export const createInfoThunk = createAsyncThunk("info/create", async (arg: Creat
     await infoApi.createInfo(arg);
     thunkAPI.dispatch(getInfoThunk());
     thunkAPI.dispatch(setAppMessage({ severity: "success", text: "Инфа добавлена" }));
+    thunkAPI.dispatch(setIsCreateModalOpen(false));
+    thunkAPI.dispatch(setSelectedInfo(null));
     return thunkAPI.fulfillWithValue(true);
   } catch (error) {
     thunkAPI.dispatch(setAppMessage({ severity: "error", text: "Ошибка добавления инфы" }));
@@ -49,6 +51,8 @@ export const updateInfoThunk = createAsyncThunk("info/update", async (arg: Updat
     await infoApi.updateInfo(arg);
     thunkAPI.dispatch(getInfoThunk());
     thunkAPI.dispatch(setAppMessage({ severity: "success", text: "Инфа обновлена" }));
+    thunkAPI.dispatch(setIsCreateModalOpen(false));
+    thunkAPI.dispatch(setSelectedInfo(null));
     return thunkAPI.fulfillWithValue(true);
   } catch (error) {
     thunkAPI.dispatch(setAppMessage({ severity: "error", text: "Ошибка обновления инфы" }));
@@ -97,5 +101,9 @@ export const selectIsInfoFetching = (state: RootState) => state.info.isInfoFetch
 export const selectSelectedInfo = (state: RootState) => state.info.selectedInfo;
 
 export const { setInfo, setIsCreateModalOpen, setSelectedInfo } = slice.actions;
-
 export const infoReducer = slice.reducer;
+
+export const closeInfoModalThunk = createAsyncThunk("info/close-modal", (_, thunkAPI) => {
+  thunkAPI.dispatch(setIsCreateModalOpen(false));
+  thunkAPI.dispatch(setSelectedInfo(null));
+});

@@ -1,81 +1,48 @@
-import { Tag } from "@/api/codegen/genMouseMapsApi";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import useFilterQueryParams from "@/hooks/useFilterQueryParams";
-import { NavLink } from "@/layout/navigation/NavLink";
-import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
+import React from "react";
+import clsx from "clsx";
+import { NavLinkSection } from "@/layout/navigation/styles/NavLinkSection";
 import { SidebarSection } from "@/layout/sidebar/SidebarSection";
-import { selectIsAuth } from "@/modules/auth/slice";
-import { selectFilter } from "@/modules/map/containers/map-list/slice";
-import { TagItemActions } from "@/modules/tag/components/TagItemActions";
-import { UpdateTagModal } from "@/modules/tag/components/UpdateTagModal";
-import { useTag } from "@/modules/tag/hooks/useTag";
-import { getTagsThunk } from "@/modules/tag/slice";
-import { AddIcon } from "@/svg/AddIcon";
 import { CreateTagPopup } from "@/modules/tag/components/CreateTagPopup";
-import { StyledBox } from "@/ui/Box";
+import { AddIcon } from "@/svg/AddIcon";
 import { Display } from "@/ui/Display";
-import { AsyncSheet as Modal } from "@/ui/Sheet/view";
-import React, { useEffect } from "react";
+import styles from "./TagsNavigation.module.scss";
+import { useTagsNavigation } from "./useTagsNavigation";
 
-type TagsNavigationSectionProps = {
+type TagsNavigationPropsType = {
   isOpen: boolean;
   noScroll?: boolean;
 };
 
-export function TagsNavigation(props: TagsNavigationSectionProps) {
-  const { onTagDelete, modalType, onOpenModal, onCloseModal, tagsList } = useTag();
-  const { updateFilter } = useFilterQueryParams();
-  const dispatch = useAppDispatch();
-  const isAuth = useAppSelector(selectIsAuth);
-  const filter = useAppSelector(selectFilter);
-  const [tempTag, setTempTag] = React.useState<Tag>();
-
+export const TagsNavigation = (props: TagsNavigationPropsType) => {
   const { isOpen, noScroll } = props;
+  const {
+    isAuth,
+    hasTags,
+    isCreatePopupVisible,
+    showCreatePopup,
+    renderedTags,
+    onCloseModal,
+    modalToggleHandler,
+  } = useTagsNavigation({ isOpen });
 
-  const onTagClickHandler = async (id: Tag["id"]) => {
-    await updateFilter({ page: 1 });
-    if (filter.tagIds?.includes(id)) {
-      await updateFilter({ tagIds: filter.tagIds?.filter((el) => id !== el) });
-    } else if (filter.tagIds) {
-      await updateFilter({ tagIds: [...filter.tagIds, id] });
-    } else {
-      await updateFilter({ tagIds: [id] });
-    }
-  };
-
-  const modalToggleHandler = () => {
-    onOpenModal(modalType === "tag-create" ? null : "tag-create");
-  };
+  const listClassName = clsx(styles.list, isOpen && styles.listOpen, noScroll && styles.listNoScroll);
 
   const addTagAnchor = (
-    <StyledNavLinkSection
-      onClick={modalToggleHandler}
-      isOpen={isAuth}
-    >
+    <NavLinkSection onClick={modalToggleHandler} isOpen={isAuth}>
       <AddIcon />
-    </StyledNavLinkSection>
+    </NavLinkSection>
   );
 
-  useEffect(() => {
-    dispatch(getTagsThunk());
-  }, []);
-
   return (
-    <StyledBox
-      direction="column"
-      gap={10}
-      overflow="hidden"
-      grow={1}
-    >
-      <Display condition={tagsList.length}>
+    <div className={styles.root}>
+      <Display condition={hasTags}>
         <SidebarSection
           label="Поиск по тегам"
           isOpen={isOpen}
           append={
-            <Display condition={isAuth && isOpen}>
+            <Display condition={showCreatePopup}>
               <CreateTagPopup
-                isVisible={modalType === "tag-create" && isAuth}
+                isVisible={isCreatePopupVisible}
                 onClose={onCloseModal}
                 anchor={addTagAnchor}
               />
@@ -83,40 +50,7 @@ export function TagsNavigation(props: TagsNavigationSectionProps) {
           }
         />
       </Display>
-      <StyledBox
-        grow={1}
-        minHeight={0}
-        overflow={noScroll ? "visible" : "auto"}
-        direction="column"
-        display={isOpen ? "flex" : "none"}
-      >
-        {tagsList?.map((el) => (
-          <NavLink
-            key={el.id}
-            label={el.name}
-            description={el.description}
-            onClick={() => onTagClickHandler(el.id)}
-            isChecked={filter.tagIds?.includes(el.id)}
-            append={
-              isAuth ? (
-                <TagItemActions
-                  tag={el}
-                  setTempTag={setTempTag}
-                />
-              ) : undefined
-            }
-            justifyContent="space-between"
-            isOpen={isOpen}
-          />
-        ))}
-      </StyledBox>
-      <Modal
-        isOpen={modalType === "tag-delete"}
-        text="Вы действительно хотите удалить тег?"
-        onAccess={() => onTagDelete(tempTag?.id)}
-        onClose={onCloseModal}
-      />
-      <UpdateTagModal tag={tempTag} />
-    </StyledBox>
+      <div className={listClassName}>{renderedTags}</div>
+    </div>
   );
-}
+};

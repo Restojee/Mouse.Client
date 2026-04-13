@@ -40,10 +40,12 @@ const Notification = () => {
   return (
     <div
       className={styles.wrapper}
-      style={{
-        maxHeight: 60 * 3 + 20 + 20,
-        "--notification-count": `'${messages.length < 100 ? messages.length : "99+"}'`,
-      } as React.CSSProperties}
+      style={
+        {
+          maxHeight: 60 * 3 + 20 + 20,
+          "--notification-count": `'${messages.length < 100 ? messages.length : "99+"}'`,
+        } as React.CSSProperties
+      }
       data-count={messages.length > 1 ? (messages.length < 100 ? messages.length : "99+") : undefined}
     >
       {messages.map(({ id, severity, text }) => (
@@ -52,10 +54,18 @@ const Notification = () => {
           onMouseLeave={startTimer}
           title={text}
           key={id}
-          className={[styles.container, severity === "error" ? styles.severityError : severity === "success" ? styles.severitySuccess : ""].filter(Boolean).join(" ")}
+          className={[
+            styles.container,
+            severity === "error" ? styles.severityError : severity === "success" ? styles.severitySuccess : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
         >
           <Typography isEllipsis>{text}</Typography>
-          <div className={styles.icon} onClick={() => setIsOpen(id)}>
+          <div
+            className={styles.icon}
+            onClick={() => setIsOpen(id)}
+          >
             <CloseIcon />
           </div>
         </div>

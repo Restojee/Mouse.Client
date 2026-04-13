@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import { MINI_IMAGES_HEIGHT, MINI_IMAGES_WIDTH } from "../../constants";
 import styles from "./MiniMapImageContainer.module.scss";
 
@@ -9,22 +10,21 @@ type Props = {
 
 export const MiniMapImageContainer = React.forwardRef<HTMLDivElement, Props & React.HTMLAttributes<HTMLDivElement>>(
   ({ isVisible, isActive, className, style, ...props }, ref) => {
-    const classes = [styles.root, className];
-    if (isVisible) classes.push(styles.visible);
-    if (isActive) classes.push(styles.active);
+    const rootClassName = clsx(styles.root, isVisible && styles.visible, isActive && styles.active, className);
+    const rootStyle = {
+      height: MINI_IMAGES_HEIGHT,
+      maxHeight: MINI_IMAGES_HEIGHT,
+      minHeight: MINI_IMAGES_HEIGHT,
+      minWidth: MINI_IMAGES_WIDTH,
+      maxWidth: MINI_IMAGES_WIDTH,
+      ...style,
+    };
 
     return (
       <div
         ref={ref}
-        className={classes.filter(Boolean).join(" ")}
-        style={{
-          height: MINI_IMAGES_HEIGHT,
-          maxHeight: MINI_IMAGES_HEIGHT,
-          minHeight: MINI_IMAGES_HEIGHT,
-          minWidth: MINI_IMAGES_WIDTH,
-          maxWidth: MINI_IMAGES_WIDTH,
-          ...style,
-        }}
+        className={rootClassName}
+        style={rootStyle}
         {...props}
       />
     );

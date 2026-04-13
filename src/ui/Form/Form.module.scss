@@ -82,6 +82,11 @@
   box-shadow: inherit;
   text-overflow: ellipsis;
 
+  @media (max-width: 600px) {
+    padding: 11px 22px;
+    font-size: 14px;
+  }
+
   &::placeholder {
     opacity: 0.6;
   }

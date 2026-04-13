@@ -1,15 +1,6 @@
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { StyledBox } from "@/ui/Box";
+import React from "react";
+import styles from "./Divider.module.scss";
 
 export const Divider = () => {
-  const { theme } = useAppTheme();
-
-  return (
-    <StyledBox
-      height={1}
-      width={"100%"}
-      bgColor={theme.colors.iconOnSecondary}
-      opacity={0.5}
-    ></StyledBox>
-  );
+  return <div className={styles.root} />;
 };

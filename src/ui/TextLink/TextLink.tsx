@@ -5,7 +5,7 @@ import styles from "./TextLink.module.scss";
 
 type TextLinkProps = {
   children: ReactNode;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent) => void;
   href?: string;
   fontSize?: Property.FontSize;
   isEllipsis?: boolean;
@@ -16,15 +16,27 @@ export const TextLink = ({ children, onClick, href, fontSize, isEllipsis }: Text
 
   if (href) {
     return (
-      <Link href={href} passHref legacyBehavior>
-        <a className={classes} style={{ fontSize }} href={href}>
+      <Link
+        href={href}
+        passHref
+        legacyBehavior
+      >
+        <a
+          className={classes}
+          style={{ fontSize }}
+          href={href}
+        >
           {children}
         </a>
       </Link>
     );
   }
   return (
-    <span onClick={onClick} className={classes} style={{ fontSize }}>
+    <span
+      onClick={onClick}
+      className={classes}
+      style={{ fontSize }}
+    >
       {children}
     </span>
   );

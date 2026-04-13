@@ -1,11 +1,11 @@
 .root {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   border-radius: 10px;
   position: relative;
   background-color: var(--color-map-background);
   box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
   transition: 0.2s;
   cursor: pointer;
   aspect-ratio: 19/9;

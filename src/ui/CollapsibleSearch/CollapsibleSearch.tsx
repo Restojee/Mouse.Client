@@ -2,7 +2,6 @@ import * as React from "react";
 import { SearchIcon } from "@/svg/SearchIcon";
 import { IconButton } from "@/ui/Button/IconButton";
 import { Input } from "@/ui/Input";
-import { useAppTheme } from "@/hooks/useAppTheme";
 
 type Props = {
   value?: string;
@@ -23,7 +22,6 @@ export const CollapsibleSearch: React.FC<Props> = ({
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const { theme } = useAppTheme();
 
   const toggle = React.useCallback(() => {
     if (alwaysOpen) return;

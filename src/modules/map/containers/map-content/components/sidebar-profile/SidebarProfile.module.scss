@@ -1,0 +1,39 @@
+.mobile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+.mobileText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mobileName {
+  font-size: 0.9rem;
+}
+
+.mobileDate {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin: 0 30px;
+}
+
+.desktopText {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.desktopName {
+  font-size: 1.1rem;
+}

@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
-import { StyledPagePanel } from "@/layout/page/styles/StyledPagePanel";
+import { PagePanel } from "@/layout/page/styles/PagePanel";
 
 type Props = {
   children: ReactElement;
 };
 export const PageHeader = (props: Partial<Props>) => {
-  return <StyledPagePanel bottom>{props.children}</StyledPagePanel>;
+  return <PagePanel bottom>{props.children}</PagePanel>;
 };

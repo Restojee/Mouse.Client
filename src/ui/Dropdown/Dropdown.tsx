@@ -54,7 +54,7 @@ export default function Dropdown(props: Props) {
           )
         }
       />
-      {isDropdownOpen && (
+      {isDropdownOpen ? (
         <DropdownList
           width="100%"
           isOpen={isDropdownOpen}
@@ -68,7 +68,7 @@ export default function Dropdown(props: Props) {
             />
           ))}
         </DropdownList>
-      )}
+      ) : null}
     </DropdownContainer>
   );
 }

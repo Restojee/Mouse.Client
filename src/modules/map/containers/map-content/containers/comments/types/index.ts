@@ -4,4 +4,5 @@ export type MapCommentsStateType = {
   commentsList: Comment[];
   isCommentsInitialized: boolean;
   isCommentCreateFetching: boolean;
+  commentDraft: string;
 };

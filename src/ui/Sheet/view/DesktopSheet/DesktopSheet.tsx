@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import { Property } from "csstype";
 
 import { Display } from "@/ui/Display";
@@ -7,9 +8,9 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Button } from "@/ui/Button";
 import formStyles from "@/ui/Form/Form.module.scss";
 import { Typography } from "@/ui/Typography";
+import { Box } from "@/ui/Box";
 import { useSheetZIndex } from "../../viewModel/useSheetZIndex";
 import { useClosingAnimation } from "../../viewModel/useClosingAnimation";
-import { GlobalThemes } from "@/layout/theme/constants";
 import { ThemeKey } from "@/layout/theme/types";
 import styles from "./DesktopSheet.module.scss";
 
@@ -21,60 +22,114 @@ export type DesktopSheetProps = {
   text?: string;
   title?: string;
   width?: Property.Width<number>;
-  theme?: ThemeKey;
+  themeKey?: ThemeKey;
   children?: React.ReactNode;
   withoutTitle?: boolean;
   withoutButtons?: boolean;
   padding?: number;
   style?: React.CSSProperties;
+  zIndex?: number;
+  withBackdrop?: boolean;
 };
 
 export const DesktopSheet = (props: DesktopSheetProps) => {
-  const { onClose, onAccess, text, title, children, width, withoutTitle, withoutButtons, isOpen, padding, style } =
-    props;
-  const { theme: appTheme } = useAppTheme();
-  const theme = props.theme ? GlobalThemes[props.theme] : appTheme;
-  const zIndex = useSheetZIndex();
+  const {
+    onClose,
+    onAccess,
+    text,
+    title,
+    children,
+    width,
+    withoutTitle,
+    withoutButtons,
+    isOpen,
+    padding = 30,
+    style,
+    themeKey,
+    withBackdrop = true,
+  } = props;
+  const { theme } = useAppTheme(themeKey);
+  const fallbackZIndex = useSheetZIndex();
+  const resolvedZIndex = props.zIndex ?? fallbackZIndex;
   const { visible, closing } = useClosingAnimation(isOpen ?? false);
+
+  const handleMouseDown = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  }, []);
+
+  const sheetWidth = React.useMemo(
+    () => (typeof width === "number" ? `${width}px` : width || "400px"),
+    [width],
+  );
+
+  const overlayClassName = React.useMemo(
+    () =>
+      clsx(styles.overlay, {
+        [styles.closing]: closing,
+        [styles.noBackdrop]: !withBackdrop,
+      }),
+    [closing, withBackdrop],
+  );
+
+  const wrapperClassName = React.useMemo(
+    () => clsx(styles.wrapper, { [styles.closing]: closing }),
+    [closing],
+  );
+
+  const overlayStyle = React.useMemo<React.CSSProperties>(
+    () => ({ ...style, zIndex: resolvedZIndex }),
+    [style, resolvedZIndex],
+  );
+
+  const paperStyle = React.useMemo<React.CSSProperties>(
+    () => ({
+      width: sheetWidth,
+      maxWidth: sheetWidth,
+      ["--sheet-padding" as string]: `${padding}px`,
+    }),
+    [sheetWidth, padding],
+  );
+
+  const titleColor = theme.colors.textOnSecondary;
+  const hasChildren = Boolean(children);
+  const confirmText = text || "Вы действительно уверены?";
 
   if (!visible) return null;
 
   return (
-    <div
-      className={`${styles.overlay}${closing ? ` ${styles.closing}` : ""}`}
-      style={{ ...style, zIndex }}
+    <Box
+      className={overlayClassName}
+      data-theme={themeKey}
       onMouseDown={onClose}
+      style={overlayStyle}
     >
-      <div
-        className={`${styles.wrapper}${closing ? ` ${styles.closing}` : ""}`}
-        onMouseDown={(e) => e.stopPropagation()}
+      <Box
+        className={wrapperClassName}
+        onMouseDown={handleMouseDown}
       >
         <Paper
-          height="auto"
-          gap={20}
-          padding={padding ?? 30}
-          width={width || 400}
-          bgColor={theme.colors.secondaryDark}
+          style={paperStyle}
+          className={styles.paper}
         >
           <Display condition={!withoutTitle}>
             <Typography
               fontSize="18px"
-              color={theme.colors.textOnSecondary}
+              color={titleColor}
             >
               {title}
             </Typography>
           </Display>
-          <Display condition={!children}>
-            <Typography color={theme.colors.textOnSecondary}>{text || "Вы действительно уверены?"}</Typography>
+          <Display condition={!hasChildren}>
+            <Typography color={titleColor}>{confirmText}</Typography>
           </Display>
-          <Display condition={children}>
-            <div className={styles.childrenColumn}>{children}</div>
+          <Display condition={hasChildren}>
+            <Box className={styles.childrenColumn}>{children}</Box>
           </Display>
           <Display condition={!withoutButtons}>
-            <div className={formStyles.cardActions}>
+            <Box className={formStyles.cardActions}>
               <Button
                 label="Отмена"
-                color={theme.colors.textOnSecondary}
+                color={titleColor}
                 bgColor={theme.colors.default.paperAccent}
                 onClick={onClose}
               />
@@ -85,10 +140,10 @@ export const DesktopSheet = (props: DesktopSheetProps) => {
                 label="Подтвердить"
                 disabled={props.accessDisabled}
               />
-            </div>
+            </Box>
           </Display>
         </Paper>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };

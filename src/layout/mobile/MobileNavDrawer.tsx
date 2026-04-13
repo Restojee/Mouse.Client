@@ -5,7 +5,7 @@ import { TagsNavigation } from "@/modules/tag/TagsNavigation";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectIsAuth } from "@/modules/auth/slice";
 import { Display } from "@/ui/Display";
-import { StyledBox } from "@/ui/Box";
+import { Box } from "@/ui/Box";
 
 /**
  * View-слой: контент навигационного drawer (без обёртки в sheet).
@@ -15,7 +15,7 @@ export const MobileNavDrawerContent: React.FC = () => {
   const isAuth = useAppSelector(selectIsAuth);
 
   return (
-    <StyledBox
+    <Box
       direction="column"
       overflow="auto"
       grow={1}
@@ -26,7 +26,7 @@ export const MobileNavDrawerContent: React.FC = () => {
       <Display condition={isAuth}>
         <MapsByFiltersNavigation isOpen />
       </Display>
-      <StyledBox
+      <Box
         direction="column"
         grow={1}
       >
@@ -34,7 +34,7 @@ export const MobileNavDrawerContent: React.FC = () => {
           isOpen
           noScroll
         />
-      </StyledBox>
-    </StyledBox>
+      </Box>
+    </Box>
   );
 };

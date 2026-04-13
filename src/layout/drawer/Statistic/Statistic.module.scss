@@ -1,3 +1,58 @@
+.statisticContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 0 20px;
+  overflow: hidden;
+}
+
+.statisticList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 20px 20px 0;
+  overflow: auto;
+}
+
+.statisticUserRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.statisticUserInfo {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.statisticUserNameRow {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.statisticUserDate {
+  display: flex;
+  overflow: hidden;
+}
+
+.statisticStatsRow {
+  display: flex;
+  align-items: center;
+}
+
+.statisticCircleItem {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  cursor: pointer;
+}
+
 .statisticIconContainer {
   display: flex;
   align-items: center;

@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import styles from "./MiniMapLabel.module.scss";
 
 type Props = {
@@ -6,12 +7,15 @@ type Props = {
 };
 
 export const MiniMapLabel = React.forwardRef<HTMLDivElement, Props & React.HTMLAttributes<HTMLDivElement>>(
-  ({ isActive, className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={[styles.root, isActive && styles.active, className].filter(Boolean).join(" ")}
-      {...props}
-    />
-  ),
+  ({ isActive, className, ...props }, ref) => {
+    const rootClassName = clsx(styles.root, isActive && styles.active, className);
+    return (
+      <div
+        ref={ref}
+        className={rootClassName}
+        {...props}
+      />
+    );
+  },
 );
 MiniMapLabel.displayName = "MiniMapLabel";

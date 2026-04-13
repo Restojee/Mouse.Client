@@ -1,33 +1,17 @@
+import React from "react";
 import { Tag } from "@/api/codegen/genMouseMapsApi";
-import { StyledNavLinkSection } from "@/layout/navigation/styles/StyledNavLinkSection";
-import { useTag } from "@/modules/tag/hooks/useTag";
-import styles from "./Tag.module.scss";
+import { NavLinkSection } from "@/layout/navigation/styles/NavLinkSection";
 import { CloseIcon } from "@/svg/CloseIcon";
 import { EditIcon } from "@/svg/EditIcon";
-import React from "react";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { selectIsAdmin } from "@/modules/auth/slice";
+import styles from "./Tag.module.scss";
+import { useTagItemActions } from "./useTagItemActions";
 
-interface Props {
+type TagItemActionsPropsType = {
   tag: Tag;
-  setTempTag: (tag: Tag) => void;
-}
+};
 
-export const TagItemActions = (props: Props) => {
-  const { onOpenModal } = useTag();
-  const isAdmin = useAppSelector(selectIsAdmin);
-
-  const onTagEditHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    props.setTempTag(props.tag);
-    onOpenModal("tag-update");
-  };
-
-  const onTagDeleteHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    props.setTempTag(props.tag);
-    onOpenModal("tag-delete");
-  };
+export const TagItemActions = (props: TagItemActionsPropsType) => {
+  const { isAdmin, onTagEditHandler, onTagDeleteHandler } = useTagItemActions(props);
 
   if (!isAdmin) {
     return null;
@@ -35,12 +19,12 @@ export const TagItemActions = (props: Props) => {
 
   return (
     <div className={styles.tagActions}>
-      <StyledNavLinkSection onClick={onTagEditHandler}>
+      <NavLinkSection onClick={onTagEditHandler}>
         <EditIcon />
-      </StyledNavLinkSection>
-      <StyledNavLinkSection onClick={onTagDeleteHandler}>
+      </NavLinkSection>
+      <NavLinkSection onClick={onTagDeleteHandler}>
         <CloseIcon />
-      </StyledNavLinkSection>
+      </NavLinkSection>
     </div>
   );
 };
