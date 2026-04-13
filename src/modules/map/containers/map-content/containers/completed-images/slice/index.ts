@@ -68,7 +68,7 @@ const slice = createSlice({
       } else if (isNewImageAdded && lastAdded) {
         state.activeMapCompleted = lastAdded;
       } else {
-        state.activeMapCompleted = nextMaps[0];
+        state.activeMapCompleted = null;
       }
     },
     setIsCompletedMapModalOpen: (state, action: PayloadAction<boolean>) => {

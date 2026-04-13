@@ -49,38 +49,35 @@ export const useMapContent = () => {
     return "";
   }, [map, activeMapCompleted?.createdUtcDate]);
 
-  const sidebarContent = useMemo(
-    () => {
-      if (isMapContentLoading) {
-        return <MapContentSidebarSkeleton />;
-      }
-      return (
-        <>
-          <SidebarProfile
-            user={activeMapCompleted?.user || map?.user}
-            date={dateTime}
-          />
-          <SidebarIcons
-            levelId={map?.id}
-            favoritesCount={map?.favoritesCount}
-            isCompleted={map?.isCompletedByUser}
-            isFavorite={map?.isFavoriteByUser}
-          />
-          <SidebarComments levelId={map?.id} />
-        </>
-      );
-    },
-    [
-      isMapContentLoading,
-      activeMapCompleted?.user,
-      dateTime,
-      map?.favoritesCount,
-      map?.id,
-      map?.isCompletedByUser,
-      map?.isFavoriteByUser,
-      map?.user,
-    ],
-  );
+  const sidebarContent = useMemo(() => {
+    if (isMapContentLoading) {
+      return <MapContentSidebarSkeleton />;
+    }
+    return (
+      <>
+        <SidebarProfile
+          user={activeMapCompleted?.user || map?.user}
+          date={dateTime}
+        />
+        <SidebarIcons
+          levelId={map?.id}
+          favoritesCount={map?.favoritesCount}
+          isCompleted={map?.isCompletedByUser}
+          isFavorite={map?.isFavoriteByUser}
+        />
+        <SidebarComments levelId={map?.id} />
+      </>
+    );
+  }, [
+    isMapContentLoading,
+    activeMapCompleted?.user,
+    dateTime,
+    map?.favoritesCount,
+    map?.id,
+    map?.isCompletedByUser,
+    map?.isFavoriteByUser,
+    map?.user,
+  ]);
 
   const onShowSidebarHandler = useCallback(() => {
     sheetService.show(sidebarContent, {
@@ -91,59 +88,56 @@ export const useMapContent = () => {
     });
   }, [sidebarContent]);
 
-  const mainContent = useMemo(
-    () => {
-      if (isMapContentLoading) {
-        return <MapContentMainSkeleton />;
-      }
-      return (
-        <>
-          <Header
-            completeCount={map?.completedCount}
-            viewCount={map?.visitsCount}
-            commentsCount={map?.commentsCount}
-            title={title}
+  const mainContent = useMemo(() => {
+    if (isMapContentLoading) {
+      return <MapContentMainSkeleton />;
+    }
+    return (
+      <>
+        <Header
+          completeCount={map?.completedCount}
+          viewCount={map?.visitsCount}
+          commentsCount={map?.commentsCount}
+          title={title}
+        />
+        <Preview
+          image={map?.image}
+          setActiveMapCompleted={changeActiveCompletedMap}
+          images={selectedCompletedMaps}
+          mapCompleted={activeMapCompleted}
+        />
+        <MiniMapImages />
+        <Display condition={isAuth}>
+          <Note />
+        </Display>
+        <Tags tags={map?.tags} />
+        <Display condition={isMobile}>
+          <Button
+            label="Комментарии"
+            bgColor={theme.colors.primary}
+            width="100%"
+            className={contentStyles.mobileSidebarButton}
+            onClick={onShowSidebarHandler}
           />
-          <Preview
-            image={map?.image}
-            setActiveMapCompleted={changeActiveCompletedMap}
-            images={selectedCompletedMaps}
-            mapCompleted={activeMapCompleted}
-          />
-          <MiniMapImages />
-          <Display condition={isAuth}>
-            <Note />
-          </Display>
-          <Tags tags={map?.tags} />
-          <Display condition={isMobile}>
-            <Button
-              label="Комментарии"
-              bgColor={theme.colors.primary}
-              width="100%"
-              className={contentStyles.mobileSidebarButton}
-              onClick={onShowSidebarHandler}
-            />
-          </Display>
-        </>
-      );
-    },
-    [
-      isMapContentLoading,
-      map?.completedCount,
-      map?.visitsCount,
-      map?.commentsCount,
-      map?.image,
-      map?.tags,
-      title,
-      changeActiveCompletedMap,
-      selectedCompletedMaps,
-      activeMapCompleted,
-      isAuth,
-      isMobile,
-      theme.colors.primary,
-      onShowSidebarHandler,
-    ],
-  );
+        </Display>
+      </>
+    );
+  }, [
+    isMapContentLoading,
+    map?.completedCount,
+    map?.visitsCount,
+    map?.commentsCount,
+    map?.image,
+    map?.tags,
+    title,
+    changeActiveCompletedMap,
+    selectedCompletedMaps,
+    activeMapCompleted,
+    isAuth,
+    isMobile,
+    theme.colors.primary,
+    onShowSidebarHandler,
+  ]);
 
   const closeIconColor = theme.colors.textOnSecondary;
 

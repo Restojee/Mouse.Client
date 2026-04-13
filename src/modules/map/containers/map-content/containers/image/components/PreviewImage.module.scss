@@ -1,6 +1,8 @@
 .image {
-  object-fit: cover;
   object-position: center;
+  object-fit: contain;
+  width: 100%;
+  aspect-ratio: 16/8;
 }
 
 .contentPreview {
@@ -11,8 +13,8 @@
   overflow: hidden;
   transition: 0.2s;
   flex-grow: 1;
-  aspect-ratio: 16/8;
   min-height: 150px;
+  background-color: #6b7495;
 
   @media all and (min-width: 1199px) {
     min-height: 350px;

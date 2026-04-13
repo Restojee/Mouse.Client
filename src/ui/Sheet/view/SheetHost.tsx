@@ -5,8 +5,6 @@ import { selectSheetStack } from "../slice";
 import { sheetData } from "../core/sheetData";
 import SheetEntryRenderer from "./SheetEntryRenderer/SheetEntryRenderer";
 
-const BASE_Z = 300;
-
 export const SheetHost = () => {
   const dispatch = useAppDispatch();
   const stack = useAppSelector(selectSheetStack);
@@ -26,10 +24,9 @@ export const SheetHost = () => {
 
   return (
     <>
-      {stack.map((entry, index) => {
+      {stack.map((entry) => {
         const registryEntry = sheetData.getEntry(entry.id);
         if (!registryEntry) return null;
-        const zIndex = BASE_Z + (index + 1) * 10;
         return (
           <SheetEntryRenderer
             key={entry.id}
@@ -44,7 +41,6 @@ export const SheetHost = () => {
               registryEntry.resolve(result);
               sheetData.remove(entry.id);
             }}
-            zIndex={zIndex}
           />
         );
       })}

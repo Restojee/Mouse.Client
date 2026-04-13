@@ -94,7 +94,7 @@ export const useChatView = () => {
     [currentUser?.id],
   );
 
-  const sendFormStyle = useMemo(() => ({ backgroundColor: theme.colors.secondary }), [theme.colors.secondary]);
+  const sendFormStyle = useMemo(() => ({}), [theme.colors.secondary]);
 
   const initialTopMostItemIndex = useMemo(() => {
     const length = messages?.length ?? 0;

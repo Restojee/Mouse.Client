@@ -10,6 +10,7 @@ import {
   initChatMessagesThunk,
   pollNewMessagesThunk,
   selectChatMessages,
+  selectChatMessagesTotalCount,
   selectHasMoreOlderMessages,
   selectIsChatMessageInitialized,
   selectIsLoadingOlderMessages,
@@ -20,6 +21,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 
 export const useChat = () => {
   const dispatch = useAppDispatch();
+  const totalMessages = useAppSelector(selectChatMessagesTotalCount);
   const messages = useAppSelector(selectChatMessages);
   const isChatMessageInitialized = useAppSelector(selectIsChatMessageInitialized);
   const isLoadingOlder = useAppSelector(selectIsLoadingOlderMessages);
@@ -62,7 +64,7 @@ export const useChat = () => {
     [onMessageAdd, isSendLoading],
   );
 
-  const isHasNewMessage = useHasNewItems(LOCAL_STORAGE_KEYS.CHAT_MESSAGES_COUNT, messages?.length);
+  const isHasNewMessage = useHasNewItems(LOCAL_STORAGE_KEYS.CHAT_MESSAGES_COUNT, totalMessages);
 
   const initChatMessages = useCallback(() => {
     dispatch(initChatMessagesThunk());
@@ -90,10 +92,8 @@ export const useChat = () => {
   }, [dispatch]);
 
   const updateMessagesCount = useCallback(() => {
-    if (messages?.length) {
-      setValue(messages.length);
-    }
-  }, [messages?.length, setValue]);
+    setValue(totalMessages);
+  }, [totalMessages]);
 
   return {
     messageText,

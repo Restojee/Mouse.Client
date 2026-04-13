@@ -90,7 +90,7 @@ export const ImageForm = (props: ImageFormPropsType) => {
   }, [image]);
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <ImageFormContainer
         onClick={onClickHandler}
         onDragStart={(e) => dragStartHandler(e)}

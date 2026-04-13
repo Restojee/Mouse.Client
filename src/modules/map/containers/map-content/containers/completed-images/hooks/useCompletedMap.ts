@@ -10,6 +10,7 @@ import {
   selectCompletedMaps,
   setActiveMapCompleted,
 } from "../slice";
+
 export const useCompletedMap = (levelId?: Map["id"]) => {
   const dispatch = useAppDispatch();
 
@@ -49,6 +50,7 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
 
   const addCompletedMap = useCallback(
     async (levelId: Map["id"], file: string) => {
+      console.log(levelId, file);
       if (levelId && file) {
         return dispatch(addCompletedMapThunk({ levelId, file }));
       }

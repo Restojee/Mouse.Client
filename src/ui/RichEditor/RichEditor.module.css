@@ -38,7 +38,15 @@
     margin: 0;
 }
 
-.editor .is-editor-empty:first-child::before {
+.editor:global(.is-editor-empty)::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: var(--color-disabled);
+    pointer-events: none;
+    height: 0;
+}
+
+.editor p:global(.is-empty):first-child::before {
     content: attr(data-placeholder);
     float: left;
     color: var(--color-disabled);

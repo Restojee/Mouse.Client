@@ -14,4 +14,5 @@ type ImageUploadSheetProps = {
  */
 export const imageUploadSheet = createSheet<ImageUploadSheetProps, void>(ImageUploadContent, {
   width: 420,
+  withoutButtons: true,
 });

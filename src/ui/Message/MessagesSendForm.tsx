@@ -41,7 +41,7 @@ export const MessageSendFormContainer = (props: Partial<PropsType>) => {
           value={value}
           onChange={onChange}
           onFocus={onFocus}
-          placeholder={disabled ? "" : "Введите сообщение..."}
+          placeholder={"Введите сообщение..."}
           disabled={disabled}
           mention={userMentionSuggestion}
           levelMention={levelMentionSuggestion}

@@ -4,6 +4,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { selectIsAdmin, selectIsAuth } from "@/modules/auth/slice";
 import { useMap } from "@/modules/map/common";
 import { toggleMapFavoriteThunk } from "@/modules/map/containers/map-content/slice";
+import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
 import { Map } from "@/api/codegen/genMouseMapsApi";
 import { SvgIconPropsType } from "@/svg/common/types";
 import { useImageUploadSheet } from "@/ui/ImageUploadModal/useImageUploadSheet";
@@ -16,14 +17,18 @@ type UseSidebarIconsProps = {
   isCompleted?: boolean;
 };
 
-export const useSidebarIcons = ({ levelId, isFavorite, isCompleted }: UseSidebarIconsProps) => {
+export const useSidebarIcons = ({ levelId: levelIdProp, isFavorite, isCompleted }: UseSidebarIconsProps) => {
   const dispatch = useAppDispatch();
   const { theme } = useAppTheme();
   const isAuth = useAppSelector(selectIsAuth);
   const isAdmin = useAppSelector(selectIsAdmin);
+  const { levelId: routeLevelId } = useMapView();
+
+  const levelId = levelIdProp || routeLevelId;
 
   const { onMapShare, onMapDelete } = useMap(levelId);
   const { addCompletedMap } = useCompletedMap(levelId);
+
   const openImageSheet = useImageUploadSheet();
 
   const iconsProps = useMemo<SvgIconPropsType>(
@@ -48,10 +53,7 @@ export const useSidebarIcons = ({ levelId, isFavorite, isCompleted }: UseSidebar
   }, [dispatch, levelId, isFavorite]);
 
   const onCompletedMapModalOpen = useCallback(() => {
-    openImageSheet("Добавить свою постройку", async (image) => {
-      const res = await addCompletedMap(levelId, image);
-      return Boolean(res?.payload);
-    });
+    openImageSheet("Добавить свою постройку", async (image) => await addCompletedMap(levelId, image));
   }, [openImageSheet, addCompletedMap, levelId]);
 
   return {

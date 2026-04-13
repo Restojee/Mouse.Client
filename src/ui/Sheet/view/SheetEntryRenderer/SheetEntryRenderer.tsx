@@ -1,6 +1,7 @@
 import { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useZindexContext } from "@/hooks/useZindexContext";
 import { GlobalThemes } from "@/layout/theme/constants";
 import { AnySheetInstance } from "../../core/sheetData";
 import { MobileSheet } from "../MobileSheet/MobileSheet";
@@ -12,10 +13,10 @@ const DESKTOP_ANIM_MS = 180;
 type SheetEntryRendererProps = {
   instance: AnySheetInstance;
   onClose: (result?: unknown) => void;
-  zIndex: number;
 };
 
-const SheetEntryRenderer = ({ instance, onClose, zIndex }: SheetEntryRendererProps) => {
+const SheetEntryRenderer = ({ instance, onClose }: SheetEntryRendererProps) => {
+  const zIndex = useZindexContext();
   const { component: Component, props, config } = instance;
   const isMobile = useIsMobile();
   const { theme } = useAppTheme();

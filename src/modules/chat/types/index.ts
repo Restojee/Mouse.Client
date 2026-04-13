@@ -7,4 +7,5 @@ export type ChatStateType = {
   isLoadingOlder: boolean;
   hasMoreOlder: boolean;
   oldestLoadedPage: number;
+  totalMessages: number;
 };

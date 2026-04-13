@@ -10,7 +10,8 @@ export const CHAT_PAGE_SIZE = 40;
 export const initChatMessagesThunk = createAsyncThunk("chat/init", async (_, thunkAPI) => {
   try {
     const response = await chatApi.getChatMessages({ size: CHAT_PAGE_SIZE, page: 1 });
-    const { records, totalPages } = response;
+    const { records, totalPages, totalItems } = response;
+    thunkAPI.dispatch(setTotalMessages(totalItems));
     return { messages: [...records].reverse(), totalPages };
   } catch {
     thunkAPI.dispatch(setAppMessage({ severity: "error", text: "Ошибка загрузки чата" }));
@@ -71,6 +72,7 @@ export const deleteChatMessageThunk = createAsyncThunk("chat/delete", async (arg
 
 const initialState: ChatStateType = {
   messages: [],
+  totalMessages: 1,
   isCreateFetching: false,
   isMessagesInitialized: false,
   isLoadingOlder: false,
@@ -82,6 +84,9 @@ const slice = createSlice({
   name: "chat",
   initialState,
   reducers: {
+    setTotalMessages: (state, action: PayloadAction<number>) => {
+      state.totalMessages = action.payload;
+    },
     setChatMessages: (state, action: PayloadAction<Comment[]>) => {
       state.messages = action.payload;
     },
@@ -125,12 +130,13 @@ const slice = createSlice({
   },
 });
 
+export const selectChatMessagesTotalCount = (state: RootState) => state.chat?.totalMessages;
 export const selectChatMessages = (state: RootState) => state.chat?.messages;
 export const selectIsChatMessageInitialized = (state: RootState) => state.chat?.isMessagesInitialized;
 export const selectIsLoadingOlderMessages = (state: RootState) => state.chat?.isLoadingOlder;
 export const selectHasMoreOlderMessages = (state: RootState) => state.chat?.hasMoreOlder;
 
-export const { setChatMessages, addChatMessage, removeChatMessage } = slice.actions;
+export const { setChatMessages, addChatMessage, setTotalMessages, removeChatMessage } = slice.actions;
 export const chatReducer = slice.reducer;
 
 export const fetchChatMessagesThunk = createAsyncThunk("chat/fetch", (_, thunkAPI) => {

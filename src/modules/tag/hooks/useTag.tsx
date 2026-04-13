@@ -1,9 +1,11 @@
 import { Tag, UpdateTagApiArg } from "@/api/codegen/genMouseMapsApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { selectMapTags, setMapTagIds, toggleMapTagId } from "@/modules/map/containers";
+import { selectMapTags, setMapTagIds } from "@/modules/map/containers";
 import {
+  selectMapContent,
   selectSelectedTagIds,
+  setSelectedTagIds,
   toggleSelectedTagById,
   updateMapTagsThunk,
 } from "@/modules/map/containers/map-content/slice";
@@ -33,6 +35,7 @@ export const useTag = () => {
   const modalType = useAppSelector(selectTagModalType);
   const editingTag = useAppSelector(selectEditingTag);
   const selectedIdForCreateMap = useAppSelector(selectMapTags);
+  const mapContent = useAppSelector(selectMapContent);
   const tagsList = useAppSelector(selectTags);
 
   const onOpenTagModal = useCallback(
@@ -71,48 +74,48 @@ export const useTag = () => {
     [dispatch],
   );
 
-  const updateMapTags = useCallback((): void => {
-    const id = Number(levelId);
-    if (levelId) {
-      dispatch(updateMapTagsThunk(id));
-    } else {
-      dispatch(setMapTagIds(selectedIdForCreateMap || []));
-      onCloseModal();
-    }
-  }, [dispatch, levelId, onCloseModal, selectedIdForCreateMap]);
+  const commitDraft = useCallback((): void => {
+    dispatch((innerDispatch, getState) => {
+      const id = Number(levelId);
+      const draft = selectSelectedTagIds(getState()) || [];
+      if (levelId) {
+        innerDispatch(updateMapTagsThunk(id));
+      } else {
+        innerDispatch(setMapTagIds(draft));
+      }
+    });
+  }, [dispatch, levelId]);
 
   const toggleSelectedTag = useCallback(
     (id: Tag["id"]) => {
-      if (id && levelId) {
-        dispatch(toggleSelectedTagById(id));
-        return;
-      }
-      if (id && !levelId) {
-        dispatch(toggleMapTagId(id));
-      }
+      if (!id) return;
+      dispatch(toggleSelectedTagById(id));
     },
-    [dispatch, levelId],
+    [dispatch],
   );
 
   const checkIsSelectedTagId = useCallback(
     (id: Tag["id"]) => {
-      if (id && levelId) {
-        return selectedTagIds.includes(id);
-      }
-      if (id && !levelId) {
-        return (selectedIdForCreateMap || []).includes(id);
-      }
-      return false;
+      if (!id) return false;
+      return selectedTagIds.includes(id);
     },
-    [levelId, selectedTagIds, selectedIdForCreateMap],
+    [selectedTagIds],
   );
 
   const openTagsModal = useCallback(async () => {
+    const initial = levelId
+      ? mapContent?.tags?.map((tag) => tag.id as number) || []
+      : selectedIdForCreateMap || [];
+    dispatch(setSelectedTagIds(initial));
+
     const confirmed = await tagsUpdateSheet.show();
+
     if (confirmed) {
-      updateMapTags();
+      commitDraft();
+    } else {
+      dispatch(setSelectedTagIds(initial));
     }
-  }, [updateMapTags]);
+  }, [dispatch, levelId, mapContent?.tags, selectedIdForCreateMap, commitDraft]);
 
   const openTagUpdateModal = useCallback(
     (tag: Tag) => {
@@ -142,7 +145,7 @@ export const useTag = () => {
     modalType,
     editingTag,
     onOpenTagModal,
-    updateMapTags,
+    updateMapTags: commitDraft,
     toggleSelectedTag,
     checkIsSelectedTagId,
     selectedIdForCreateMap,

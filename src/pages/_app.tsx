@@ -2,6 +2,7 @@ import { LayoutProvider } from "@/layout/common/LayoutProvider";
 import { AuthProvider } from "@/modules/auth/AuthProvider";
 import { RootState, wrapper } from "@/store";
 import "@/styles/globals.scss";
+import ImageModal from "@/ui/ImageModal";
 import Notification from "@/ui/Notification/Notification";
 import { SheetHost } from "@/ui/Sheet/view/SheetHost";
 import { Session } from "next-auth";
@@ -31,6 +32,7 @@ function App({ Component: _Component, ...rest }: AppProps<{ session: Session; in
               <Maps {...props.pageProps} />
             </LayoutProvider>
             <Notification />
+            <ImageModal />
           </ThemeProvider>
         </AuthProvider>
       </PopupProvider>
