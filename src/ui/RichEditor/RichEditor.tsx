@@ -83,7 +83,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
       className={`${styles.wrapper}${onSend ? ` ${styles.wrapperWithSend}` : ""}${className ? ` ${className}` : ""}`}
     >
       <EditorContent
-        style={{ width: "100%" }}
+        className={styles.editor}
         editor={editor}
       />
       <IconButton

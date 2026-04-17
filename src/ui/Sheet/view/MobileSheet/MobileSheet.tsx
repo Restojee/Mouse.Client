@@ -1,7 +1,6 @@
 import * as React from "react";
 import clsx from "clsx";
 import { Typography } from "@/ui/Typography";
-import { useClosingAnimation } from "../../viewModel/useClosingAnimation";
 import { useDragToClose } from "../../viewModel/useDragToClose";
 import { useSheetZIndex } from "../../viewModel/useSheetZIndex";
 import { ThemeKey } from "@/layout/theme/types";
@@ -42,7 +41,15 @@ export const MobileSheet: React.FC<MobileSheetProps> = ({
   const sheetRef = React.useRef<HTMLDivElement>(null);
   const handleBarRef = React.useRef<HTMLDivElement>(null);
 
-  const { visible } = useClosingAnimation(isOpen);
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      const raf = requestAnimationFrame(() => setVisible(true));
+      return () => cancelAnimationFrame(raf);
+    }
+    setVisible(false);
+  }, [isOpen]);
 
   useDragToClose(sheetRef, handleBarRef, onClose, isOpen, snapPoints);
 

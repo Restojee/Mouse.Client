@@ -22,8 +22,8 @@ export const GESTURE_CONFIG = {
   transition: "transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)",
 };
 
-/** Дефолтные snap-позиции в процентах от высоты экрана: [компактная, полная]. */
-export const DEFAULT_SNAP_POINTS = [50, 90];
+/** Дефолтные snap-позиции в процентах от высоты экрана: [полная]. */
+export const DEFAULT_SNAP_POINTS = [90];
 
 /** Решение, что делать по завершении жеста. */
 export type GestureIntent = { type: "close" } | { type: "snap"; index: number };

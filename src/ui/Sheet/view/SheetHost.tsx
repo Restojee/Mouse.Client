@@ -3,7 +3,7 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectSheetStack } from "../slice";
 import { sheetData } from "../core/sheetData";
-import SheetEntryRenderer from "./SheetEntryRenderer/SheetEntryRenderer";
+import SheetProvider from "./SheetEntryRenderer/SheetProvider";
 
 export const SheetHost = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +28,7 @@ export const SheetHost = () => {
         const registryEntry = sheetData.getEntry(entry.id);
         if (!registryEntry) return null;
         return (
-          <SheetEntryRenderer
+          <SheetProvider
             key={entry.id}
             instance={{
               id: entry.id,

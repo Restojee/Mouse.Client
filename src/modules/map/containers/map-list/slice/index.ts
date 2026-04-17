@@ -15,7 +15,7 @@ export const getMapsThunk = createAsyncThunk("map/get", async (arg, { getState, 
 
     const [staticMapsData, mapsData] = await Promise.all([
       mapsApi.getMaps({ page: 1, size: filters.size }),
-      mapsApi.getMaps({ ...filters, page: 1 }),
+      mapsApi.getMaps(filters),
     ]);
 
     dispatch(setStaticMapsInfo(staticMapsData));

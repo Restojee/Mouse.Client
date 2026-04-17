@@ -1,9 +1,11 @@
-import React, { CSSProperties, useCallback, useEffect, useMemo } from "react";
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef } from "react";
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import useFilterQueryParams from "@/hooks/useFilterQueryParams";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useColumnsCount } from "@/hooks/useColumnsCount";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { getMapsThunk, getMoreMapsThunk, selectIsMapsFetching, selectMaps, selectMapsInfo } from "../../slice";
 import { MapCard } from "../map-card/MapCard";
 import { MapCardSkeleton } from "../map-card/MapCardSkeleton";
@@ -14,6 +16,8 @@ const SKELETON_ROWS = 3;
 export const useMapsList = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const isMobile = useIsMobile();
+  const { updateFilter } = useFilterQueryParams();
 
   const maps = useAppSelector(selectMaps);
   const isFetching = useAppSelector(selectIsMapsFetching);
@@ -41,6 +45,8 @@ export const useMapsList = () => {
   const rowClassName = useMemo(() => clsx(styles.row, columns === 2 && styles.rowCompact), [columns]);
 
   const rowStyle = useMemo<CSSProperties>(() => ({ ["--maps-columns" as string]: columns }), [columns]);
+
+  const gridClassName = useMemo(() => clsx(styles.grid, columns === 2 && styles.gridCompact), [columns]);
 
   const showEmpty = !maps?.length && !isFetching;
   const isInitialLoading = isFetching && !maps?.length;
@@ -115,14 +121,35 @@ export const useMapsList = () => {
 
   const virtuosoComponents = useMemo(() => ({ Footer }), [Footer]);
 
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const onPageChange = useCallback(
+    async (selectedItem: { selected: number }) => {
+      await updateFilter({ page: selectedItem.selected + 1 });
+      scrollAreaRef.current?.scrollTo({ behavior: "smooth", top: 0 });
+    },
+    [updateFilter],
+  );
+
+  const currentPage = mapsInfo?.page ?? 1;
+
   return {
     isFetching,
     isInitialLoading,
+    isPaginationLoading,
     rowCount,
     itemContent,
     endReached,
     showEmpty,
     skeletonRows,
     virtuosoComponents,
+    maps,
+    gridClassName,
+    rowStyle,
+    mapsInfo,
+    onPageChange,
+    currentPage,
+    isMobile,
+    scrollAreaRef,
   };
 };

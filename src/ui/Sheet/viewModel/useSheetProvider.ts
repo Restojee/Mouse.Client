@@ -1,23 +1,34 @@
 import { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useZindexContext } from "@/hooks/useZindexContext";
 import { GlobalThemes } from "@/layout/theme/constants";
-import { AnySheetInstance } from "../../core/sheetData";
-import { MobileSheet } from "../MobileSheet/MobileSheet";
-import { DesktopSheet } from "../DesktopSheet/DesktopSheet";
+import { ThemeKey } from "@/layout/theme/types";
+import { AnySheetInstance } from "../core/sheetData";
 
 const MOBILE_ANIM_MS = 350;
 const DESKTOP_ANIM_MS = 180;
 
-type SheetEntryRendererProps = {
+export type SheetProviderProps = {
   instance: AnySheetInstance;
   onClose: (result?: unknown) => void;
 };
 
-const SheetEntryRenderer = ({ instance, onClose }: SheetEntryRendererProps) => {
+type UseSheetProviderResult = {
+  isMobile: boolean;
+  isOpen: boolean;
+  zIndex: number;
+  vars: CSSProperties;
+  dataTheme: ThemeKey | undefined;
+  handleClose: (result?: unknown) => void;
+  handleCloseVoid: () => void;
+  handleAccess: () => void;
+};
+
+export const useSheetProvider = (props: SheetProviderProps): UseSheetProviderResult => {
+  const { instance, onClose } = props;
   const zIndex = useZindexContext();
-  const { component: Component, props, config } = instance;
+  const { config } = instance;
   const isMobile = useIsMobile();
   const { theme } = useAppTheme();
   const sheetTheme = config.themeKey ? GlobalThemes[config.themeKey] : theme;
@@ -45,8 +56,8 @@ const SheetEntryRenderer = ({ instance, onClose }: SheetEntryRendererProps) => {
   const handleCloseVoid = useCallback(() => handleClose(undefined), [handleClose]);
   const handleAccess = useCallback(() => handleClose(true), [handleClose]);
 
-  const vars = useMemo<CSSProperties>(
-    () =>
+  const vars = useMemo(
+    (): CSSProperties =>
       ({
         "--sheet-bg": sheetTheme.colors.secondaryDark,
         "--sheet-color": sheetTheme.colors.textOnSecondary,
@@ -56,52 +67,15 @@ const SheetEntryRenderer = ({ instance, onClose }: SheetEntryRendererProps) => {
   );
 
   const dataTheme = config.themeKey ?? undefined;
-  const content = (
-    <Component
-      {...props}
-      onClose={handleClose}
-    />
-  );
 
-  if (isMobile) {
-    return (
-      <MobileSheet
-        style={vars}
-        data-theme={dataTheme}
-        isOpen={isOpen}
-        onClose={handleCloseVoid}
-        title={config.withoutTitle ? undefined : config.title}
-        height={config.height}
-        noHeader={config.noHeader}
-        padding={config.padding}
-        zIndex={zIndex}
-        withBackdrop={true}
-      >
-        {content}
-      </MobileSheet>
-    );
-  }
-
-  return (
-    <DesktopSheet
-      style={vars}
-      data-theme={dataTheme}
-      isOpen={isOpen}
-      onClose={handleCloseVoid}
-      onAccess={handleAccess}
-      title={config.title}
-      text={config.text}
-      width={config.width}
-      withoutTitle={config.withoutTitle}
-      withoutButtons={config.withoutButtons}
-      accessDisabled={config.accessDisabled}
-      padding={config.padding}
-      zIndex={zIndex}
-      withBackdrop={true}
-    >
-      {content}
-    </DesktopSheet>
-  );
+  return {
+    isMobile,
+    isOpen,
+    zIndex,
+    vars,
+    dataTheme,
+    handleClose,
+    handleCloseVoid,
+    handleAccess,
+  };
 };
-
-export default SheetEntryRenderer;

@@ -12,6 +12,7 @@ import { GoogleIcon } from "@/svg/GoogleIcon";
 import loginStyles from "./Login.module.scss";
 import { useLoginForm } from "./useLoginForm";
 
+const textColor = "var(--color-text)";
 export const Login = () => {
   const {
     control,
@@ -34,8 +35,16 @@ export const Login = () => {
               color="#ffffff"
             />
           </div>
-          <Typography className={loginStyles.title}>С возвращением</Typography>
-          <Typography className={loginStyles.subtitle}>
+          <Typography
+            color={textColor}
+            className={loginStyles.title}
+          >
+            С возвращением
+          </Typography>
+          <Typography
+            color={textColor}
+            className={loginStyles.subtitle}
+          >
             Войдите в аккаунт, чтобы делиться своими прохождениями карт
           </Typography>
         </Column>
@@ -109,6 +118,7 @@ export const Login = () => {
           prepend={<GoogleIcon size={20} />}
           onClick={onGoogleLogin}
           disabled={isLoading}
+          color={textColor}
         />
 
         <Row className={loginStyles.footer}>

@@ -4,6 +4,10 @@
   max-height: 100%;
   overflow: auto;
   padding: 0 20px 20px 20px;
+
+  @media all and (max-width: 768px) {
+    padding: 0;
+  }
 }
 
 .infoBlock {

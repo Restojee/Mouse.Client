@@ -83,7 +83,7 @@ export const Panel = (props: PanelProps) => {
       setIndicatorStyle((s) => ({ ...s, opacity: 0 }));
       return;
     }
-    const el = container.children[activeIndex + 1] as HTMLElement | undefined;
+    const el = container.children[activeIndex + 1] as HTMLElement;
     if (!el) return;
     setIndicatorStyle({ top: el.offsetTop, height: el.offsetHeight, opacity: 1 });
   }, [props.activeTab, props.isOpen]);

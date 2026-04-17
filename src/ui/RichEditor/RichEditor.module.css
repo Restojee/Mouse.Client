@@ -15,10 +15,11 @@
     padding-right: 44px;
 }
 
+
 .editor {
     width: 100%;
     min-height: 56px;
-    padding: 4px 12px;
+    padding: 4px;
     box-sizing: border-box;
     font-size: var(--font-size, 14px);
     font-family: inherit;
@@ -29,8 +30,8 @@
     border: none;
     outline: none;
     background: transparent;
-    color: var(--color-text-on-secondary);
-    caret-color: var(--color-text-on-secondary);
+    color: var(--color-text);
+    caret-color: var(--color-text-primary);
     cursor: text;
 }
 

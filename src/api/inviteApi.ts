@@ -13,7 +13,7 @@ export const inviteApi = {
   },
   createInviteToken: async (body: CreateInviteCollectRequest) => {
     const res = await api.post<CreateInviteCollectRequest, AxiosResponse<CreateInviteCollectResponse>>(
-      "/api/invites/create",
+      "/invites/create",
       body,
     );
     return res.data;

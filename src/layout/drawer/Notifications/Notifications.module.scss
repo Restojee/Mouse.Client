@@ -3,6 +3,10 @@
   height: 100%;
   flex-direction: column;
   padding: 0 20px;
+
+  @media all and (max-width: 768px) {
+    padding: 0;
+  }
 }
 
 .tabPanel {
@@ -27,8 +31,8 @@
   background-color: var(--color-brand);
   pointer-events: none;
   transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.2s;
+  width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+  opacity 0.2s;
   z-index: 0;
 }
 
