@@ -23,7 +23,10 @@ export const TagsModalItem = memo(({ id, name, isActive, onToggle }: TagsModalIt
   const handleClick = useCallback(() => onToggle(id), [id, onToggle]);
 
   return (
-    <div className={className} onClick={handleClick}>
+    <div
+      className={className}
+      onClick={handleClick}
+    >
       <Typography isEllipsis>{name}</Typography>
     </div>
   );

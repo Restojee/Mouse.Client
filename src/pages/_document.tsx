@@ -2,11 +2,16 @@ import { Html, Main, Head, NextScript } from "next/document";
 
 export default function MyDocument() {
   return (
-    <Html>
+    <Html lang="ru">
       <Head>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href="/favicon.svg?v=2"
         />
         <link
           rel="preconnect"

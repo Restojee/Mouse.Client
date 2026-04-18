@@ -5,6 +5,7 @@ export const makeTokenProvider = (options: { storageKey: string }): TokenProvide
 
   return {
     getToken() {
+      if (typeof window === "undefined") return null;
       return localStorage.getItem(storageKey);
     },
 
@@ -13,6 +14,7 @@ export const makeTokenProvider = (options: { storageKey: string }): TokenProvide
     },
 
     setToken(refreshToken: string) {
+      if (typeof window === "undefined") return;
       localStorage.setItem(storageKey, refreshToken);
     },
   };

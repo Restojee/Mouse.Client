@@ -1,24 +1,20 @@
 import useFilterQueryParams from "@/hooks/useFilterQueryParams";
 import { useRouter } from "next/router";
-import queryString from "query-string";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 export const MapsQueryParams = React.memo(() => {
   const router = useRouter();
-
-  const { filter, updateFilter, updateQuery } = useFilterQueryParams();
-
-  useEffect(() => {
-    if (router.isReady && router.query.filter) {
-      updateFilter(queryString.parse(router.query.filter as string));
-    }
-  }, [router.isReady]);
+  const { filter, updateQuery } = useFilterQueryParams();
+  const isFirstFilterRunRef = useRef(true);
 
   useEffect(() => {
-    if (!router.isReady) {
+    if (!router.isReady) return;
+    if (isFirstFilterRunRef.current) {
+      isFirstFilterRunRef.current = false;
       return;
     }
     updateQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   return null;

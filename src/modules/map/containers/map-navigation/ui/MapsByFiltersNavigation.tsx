@@ -14,7 +14,10 @@ export const MapsByFiltersNavigation = (props: MapsByFiltersNavigationPropsType)
 
   return (
     <div className={rootClassName}>
-      <SidebarSection label="Моя коллекция" isOpen={props.isOpen} />
+      <SidebarSection
+        label="Моя коллекция"
+        isOpen={props.isOpen}
+      />
       {renderedItems}
     </div>
   );

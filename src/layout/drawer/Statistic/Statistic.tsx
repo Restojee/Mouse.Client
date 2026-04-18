@@ -34,7 +34,7 @@ export const Statistic = () => {
 
   useEffect(() => {
     dispatch(getUsersThunk());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={statStyles.statisticContainer}>

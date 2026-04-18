@@ -29,11 +29,12 @@ const useFilterQueryParams = () => {
   }, [router.query.filter]);
 
   const updateQuery = useCallback(async () => {
-    await router.push({
-      query: {
-        ...router.query,
-        filter: queryString.stringify(filter, { skipEmptyString: true }),
-      },
+    if (!router.isReady) return;
+    const nextFilter = queryString.stringify(filter, { skipEmptyString: true });
+    const currentFilter = (router.query.filter as string) ?? "";
+    if (nextFilter === currentFilter) return;
+    await router.push({ pathname: router.pathname, query: { ...router.query, filter: nextFilter } }, undefined, {
+      shallow: true,
     });
   }, [router, filter]);
 

@@ -2,7 +2,7 @@ import { LayoutContainer } from "@/layout/common/LayoutContainer";
 import React from "react";
 
 export type LayoutProps = {
-  children: React.ReactElement;
+  children: React.ReactNode;
 };
 
 export const withLayout =

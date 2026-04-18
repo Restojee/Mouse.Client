@@ -14,7 +14,7 @@ type InputPropsType = DefaultInputType & {
   noBorder?: boolean;
   compact?: boolean;
 };
-export const Input = (props: InputPropsType) => {
+export const Input = React.forwardRef<HTMLInputElement, InputPropsType>((props, ref) => {
   const { inputAppend, inputPrepend, bgColor, error, noBorder, compact, ...inputProps } = props;
 
   const isError = Boolean(error);
@@ -54,6 +54,7 @@ export const Input = (props: InputPropsType) => {
         ) : null}
         <input
           {...inputProps}
+          ref={ref}
           className={[
             formStyles.input,
             compact && formStyles.inputCompact,
@@ -62,7 +63,6 @@ export const Input = (props: InputPropsType) => {
           ]
             .filter(Boolean)
             .join(" ")}
-          ref={null}
           style={(inputPrepend && { paddingLeft: 40 }) || (inputAppend && { paddingRight: 40 }) || inputProps.style}
         />
         {props.inputAppend ? (
@@ -76,4 +76,6 @@ export const Input = (props: InputPropsType) => {
       </div>
     </Box>
   );
-};
+});
+
+Input.displayName = "Input";

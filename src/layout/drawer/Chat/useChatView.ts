@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { VirtuosoHandle } from "react-virtuoso";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { selectCurrentUser, selectIsAuth } from "@/modules/auth/slice";
 import { selectIsChatMessageInitialized } from "@/modules/chat/slice";
 import { useChat } from "@/modules/chat/hooks/useChat";
@@ -16,7 +15,6 @@ export const useChatView = () => {
   const isAuth = useAppSelector(selectIsAuth);
   const currentUser = useAppSelector(selectCurrentUser);
   const isChatInitialized = useAppSelector(selectIsChatMessageInitialized);
-  const { theme } = useAppTheme();
   const { onOpenUserModal, users } = useUser();
   const { openMap } = useMapView();
 
@@ -94,7 +92,7 @@ export const useChatView = () => {
     [currentUser?.id],
   );
 
-  const sendFormStyle = useMemo(() => ({}), [theme.colors.secondary]);
+  const sendFormStyle = useMemo(() => ({}), []);
 
   const initialTopMostItemIndex = useMemo(() => {
     const length = messages?.length ?? 0;

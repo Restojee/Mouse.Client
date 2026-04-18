@@ -4,7 +4,7 @@ import { LayoutProps } from "@/layout/common/withLayout";
 import * as React from "react";
 
 type LayoutProviderProps = {
-  children: React.ReactElement;
+  children: React.ReactNode;
 };
 export const LayoutProvider: React.FC<LayoutProviderProps> = (props) => {
   const [Layout, setLayout] = React.useState<React.FC<LayoutProps>>(() => LayoutDefault);

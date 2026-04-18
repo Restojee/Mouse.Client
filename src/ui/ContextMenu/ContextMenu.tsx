@@ -63,7 +63,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   const content = (
     <>
       {header}
-      {title && (
+      {title ? (
         <div
           className={[contextMenuStyles.title, size === "sm" ? contextMenuStyles.titleSm : ""]
             .filter(Boolean)
@@ -71,7 +71,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         >
           {title}
         </div>
-      )}
+      ) : null}
       <List
         options={items}
         onChange={handleOptionChange}

@@ -23,13 +23,13 @@ export const MessageSkeletonItem = memo(
     const rowClassName = clsx(styles.row, reverse ? styles.rowReverse : styles.rowAligned);
     return (
       <div className={rowClassName}>
-        {withAvatar && (
+        {withAvatar ? (
           <Skeleton
             variant="circle"
             width={avatarSize}
             height={avatarSize}
           />
-        )}
+        ) : null}
         <div className={styles.bubble}>
           {lines.map((size, idx) => (
             <div
@@ -70,7 +70,7 @@ export const MessageSkeleton = memo(
       if (items) return items;
       if (count !== undefined) {
         return Array.from({ length: count }, (_, idx) => ({
-          lines: (["long", "medium"] as LineSize[]),
+          lines: ["long", "medium"] as LineSize[],
           reverse: alternate && idx % 2 === 1,
         }));
       }

@@ -1,3 +1,4 @@
+import { ComponentType } from "react";
 import { Property } from "csstype";
 import { ThemeKey } from "@/layout/theme/types";
 
@@ -16,4 +17,14 @@ export type SheetConfig = {
   themeKey?: ThemeKey;
   zIndex?: number;
   onlyMobile?: boolean;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SheetComponent = ComponentType<any>;
+
+export type SheetViewInstance = {
+  id: string;
+  component: SheetComponent;
+  props: object;
+  config: SheetConfig;
 };

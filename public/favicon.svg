@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="cheese" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6dd94"/>
+      <stop offset="1" stop-color="#e4b75c"/>
+    </linearGradient>
+  </defs>
+  <path d="M4 48 L60 48 L60 32 C60 16 48 6 32 6 C16 6 4 16 4 32 Z"
+        fill="url(#cheese)" stroke="#8a6a2c" stroke-width="2" stroke-linejoin="round"/>
+  <ellipse cx="30" cy="20" rx="7" ry="6" fill="#7a4d1c"/>
+  <ellipse cx="30" cy="18" rx="6.5" ry="4" fill="#f6dd94" opacity="0.35"/>
+  <ellipse cx="46" cy="26" rx="3.5" ry="3" fill="#7a4d1c"/>
+  <ellipse cx="46" cy="25" rx="3" ry="1.8" fill="#f6dd94" opacity="0.35"/>
+  <circle cx="14" cy="40" r="2.5" fill="#7a4d1c"/>
+  <circle cx="23" cy="42" r="1.6" fill="#7a4d1c"/>
+  <circle cx="48" cy="40" r="2.2" fill="#7a4d1c"/>
+  <circle cx="36" cy="43" r="1.2" fill="#7a4d1c"/>
+</svg>

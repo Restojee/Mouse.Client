@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /maps
+Allow: /maps/
+
+Disallow: /api/
+Disallow: /_next/
+Disallow: /*?invite=*
+Disallow: /*?filter=*
+
+Sitemap: https://onlyplanks.ru/sitemap.xml

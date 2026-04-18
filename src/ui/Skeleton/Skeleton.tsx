@@ -13,22 +13,20 @@ type SkeletonProps = {
   style?: CSSProperties;
 };
 
-export const Skeleton = memo(
-  ({ variant = "rect", width, height, borderRadius, className, style }: SkeletonProps) => {
-    const mergedStyle: CSSProperties = {
-      width,
-      height,
-      ...(borderRadius !== undefined && { borderRadius }),
-      ...style,
-    };
+export const Skeleton = memo(({ variant = "rect", width, height, borderRadius, className, style }: SkeletonProps) => {
+  const mergedStyle: CSSProperties = {
+    width,
+    height,
+    ...(borderRadius !== undefined && { borderRadius }),
+    ...style,
+  };
 
-    return (
-      <span
-        className={clsx(skeletonStyles.skeleton, skeletonStyles[variant], className)}
-        style={mergedStyle}
-      />
-    );
-  },
-);
+  return (
+    <span
+      className={clsx(skeletonStyles.skeleton, skeletonStyles[variant], className)}
+      style={mergedStyle}
+    />
+  );
+});
 
 Skeleton.displayName = "Skeleton";

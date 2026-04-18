@@ -8,8 +8,14 @@ import { SidebarContent } from "./containers/sidebar/SidebarContent";
 import { useMapContent } from "./useMapContent";
 import { Column } from "@/ui/Column";
 
-export const MapContent = React.memo(() => {
+type MapContentProps = {
+  onClose?: () => void;
+};
+
+export const MapContent = React.memo(({ onClose }: MapContentProps) => {
   const { closeMap, fixEventPropagation, isMobile, mainContent, closeIconColor } = useMapContent();
+
+  const handleClose = onClose ?? closeMap;
 
   return (
     <MapContentPaper onClick={fixEventPropagation}>
@@ -21,7 +27,7 @@ export const MapContent = React.memo(() => {
       <MapContentSidebar>
         <ModalCloseIcon
           color={closeIconColor}
-          onClick={closeMap}
+          onClick={handleClose}
         />
         <SidebarContent />
       </MapContentSidebar>

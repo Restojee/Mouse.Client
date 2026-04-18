@@ -1,4 +1,5 @@
 import { createSheet } from "@/ui/Sheet/core/createSheet";
+import { SheetKind } from "@/ui/Sheet/core/sheetKind";
 import { ConfirmContent, ConfirmContentProps } from "@/ui/Sheet/components/ConfirmContent";
 
 /**
@@ -9,4 +10,4 @@ import { ConfirmContent, ConfirmContentProps } from "@/ui/Sheet/components/Confi
  * const ok = await confirmSheet.show({ text: "Удалить?" })
  * if (ok) doDelete()
  */
-export const confirmSheet = createSheet<ConfirmContentProps, boolean>(ConfirmContent);
+export const confirmSheet = createSheet<ConfirmContentProps, boolean>(ConfirmContent, SheetKind.Confirm);

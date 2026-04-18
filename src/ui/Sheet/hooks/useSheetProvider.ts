@@ -4,13 +4,13 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useZindexContext } from "@/hooks/useZindexContext";
 import { GlobalThemes } from "@/layout/theme/constants";
 import { ThemeKey } from "@/layout/theme/types";
-import { AnySheetInstance } from "../core/sheetData";
+import { SheetViewInstance } from "../core/types";
 
 const MOBILE_ANIM_MS = 350;
 const DESKTOP_ANIM_MS = 180;
 
 export type SheetProviderProps = {
-  instance: AnySheetInstance;
+  instance: SheetViewInstance;
   onClose: (result?: unknown) => void;
 };
 

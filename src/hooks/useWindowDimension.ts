@@ -6,10 +6,11 @@ type WindowDimensions = {
 };
 
 export const useWindowDimension = (): WindowDimensions => {
-  const [windowDimensions, setWindowDimensions] = useState<WindowDimensions>(() => ({
-    width: typeof window !== "undefined" ? window.innerWidth : undefined,
-    height: typeof window !== "undefined" ? window.innerHeight : undefined,
-  }));
+  const [windowDimensions, setWindowDimensions] = useState<WindowDimensions>({
+    width: undefined,
+    height: undefined,
+  });
+
   useEffect(() => {
     function handleResize(): void {
       setWindowDimensions({

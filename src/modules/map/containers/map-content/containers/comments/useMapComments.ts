@@ -64,7 +64,7 @@ export const useMapComments = () => {
       }, 5000);
       return () => clearInterval(id);
     }
-  }, [levelId]);
+  }, [levelId, dispatch]);
 
   return {
     comments,

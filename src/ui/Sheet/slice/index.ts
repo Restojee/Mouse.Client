@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store";
+import { SheetKind } from "../core/sheetKind";
 import { SheetConfig } from "../core/types";
 
 export type SheetStoreEntry = {
   id: string;
+  kind: SheetKind;
+  props: unknown;
   config: SheetConfig;
 };
 

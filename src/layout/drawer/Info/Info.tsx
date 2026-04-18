@@ -24,7 +24,7 @@ export const Info = () => {
 
   useEffect(() => {
     dispatch(getInfoThunk());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={infoStyles.infoContainer}>
@@ -36,7 +36,7 @@ export const Info = () => {
           </IconButton>
         </Display>
       </div>
-      <Display condition={isInfoFetching && !infoList?.length}>
+      <Display condition={isInfoFetching ? !infoList?.length : null}>
         <MessageSkeleton count={4} />
       </Display>
       <Display condition={infoList?.length}>

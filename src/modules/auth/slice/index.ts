@@ -1,7 +1,6 @@
 import { authApi } from "@/api/authApi";
 import { LoginRequest, RegisterRequest, User } from "@/api/codegen/genMouseMapsApi";
 import { setAppMessage } from "@/bll/appReducer";
-import { updateFilter as updateStateFilter } from "@/modules/map/containers/map-list/slice";
 import { getUsersThunk } from "@/modules/user/slice";
 import { accessTokenProvider, refreshTokenProvider } from "@/services";
 import { RootState } from "@/store";
@@ -60,7 +59,6 @@ export const getCurrentUserThunk = createAsyncThunk("current-user", async (arg, 
     const currentUser = state.auth.user;
     const res = await authApi.getCurrentUser();
     if (res.id && res.id !== currentUser?.id) {
-      thunkAPI.dispatch(updateStateFilter({ userId: res.id }));
       thunkAPI.dispatch(setAuthStatus("authenticated"));
       thunkAPI.dispatch(setCurrentUser(res));
     }

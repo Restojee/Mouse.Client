@@ -1,6 +1,7 @@
 import React, { Suspense, useCallback } from "react";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { createSheet, SheetComponentProps } from "@/ui/Sheet/core/createSheet";
+import { SheetKind } from "@/ui/Sheet/core/sheetKind";
 import { setOpenModalByUserId } from "@/modules/user/slice";
 
 const LazyUserModal = React.lazy(() => import("@/modules/user/containers/user-modal/UserModal"));
@@ -20,4 +21,4 @@ const UserModalSheet = ({ onClose }: SheetComponentProps) => {
   );
 };
 
-export const userSheet = createSheet(UserModalSheet, { withoutButtons: true });
+export const userSheet = createSheet(UserModalSheet, SheetKind.User, { withoutButtons: true });

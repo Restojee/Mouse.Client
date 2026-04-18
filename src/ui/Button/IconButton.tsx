@@ -7,7 +7,7 @@ type IconButtonPropsType = {
   margin?: Property.Margin;
   padding?: Property.Padding;
   right?: Property.Right;
-  isAdmin?: boolean;
+  // isAdmin?: boolean;
   isStylized?: boolean;
   isPanel?: boolean;
   children?: React.ReactNode;

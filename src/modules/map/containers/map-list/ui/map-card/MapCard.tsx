@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useCallback } from "react";
+import Link from "next/link";
 import { Map } from "@/api/codegen/genMouseMapsApi";
 import { MapCard as MapCardWrapper } from "@/modules/map/styles/MapCard/MapCard";
 import { MapCardBody } from "@/modules/map/styles/MapCardBody/MapCardBody";
@@ -33,6 +34,10 @@ export const MapCard = React.memo((props: MapCardPropsType) => {
     onCardClick,
   } = useMapCard(props);
 
+  const stopPropagation = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+  }, []);
+
   return (
     <MapCardWrapper
       onMouseLeave={onMouseLeave}
@@ -40,7 +45,20 @@ export const MapCard = React.memo((props: MapCardPropsType) => {
       onClick={onCardClick}
     >
       <MapCardHeader onClick={onIconsClick}>
-        <Typography>{formattedName}</Typography>
+        <Link
+          href={`/maps/${props.map.id}`}
+          prefetch={false}
+          legacyBehavior
+          passHref
+        >
+          <a
+            className={styles.titleLink}
+            title={`Карта ${formattedName ?? ""}`}
+            onClick={stopPropagation}
+          >
+            <Typography>{formattedName}</Typography>
+          </a>
+        </Link>
         <IconButton>
           <CopyIcon size={24} />
         </IconButton>

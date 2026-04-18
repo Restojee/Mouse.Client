@@ -25,7 +25,10 @@ export const Avatar = (props: AvatarPropsType) => {
   const imageSrc = image || DEFAULT_MAP_IMAGE;
 
   return (
-    <div className={rootClassName} style={rootStyle}>
+    <div
+      className={rootClassName}
+      style={rootStyle}
+    >
       <Display condition={image}>
         <img
           src={imageSrc}

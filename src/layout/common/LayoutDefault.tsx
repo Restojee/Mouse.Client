@@ -10,7 +10,7 @@ import { MapCreateContext } from "@/layout/common/MapCreateContext";
 import { Wrapper } from "@/layout/Wrapper";
 
 type DefaultProps = {
-  children: React.ReactElement;
+  children: React.ReactNode;
 };
 
 export const LayoutDefault: React.FC<DefaultProps> = (props) => {

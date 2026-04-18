@@ -57,7 +57,7 @@ export const Message = (props: MessagePropsType) => {
           showDelete ? (
             <IconButton
               onClick={onDeleteHandler}
-              isAdmin
+              // isAdmin
             >
               <CloseIcon />
             </IconButton>

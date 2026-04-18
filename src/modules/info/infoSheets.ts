@@ -1,4 +1,5 @@
 import { createSheet } from "@/ui/Sheet/core/createSheet";
+import { SheetKind } from "@/ui/Sheet/core/sheetKind";
 import { CreateInfoModal } from "@/modules/info/containers/create-modal/CreateInfoModal";
 
 /**
@@ -8,6 +9,6 @@ import { CreateInfoModal } from "@/modules/info/containers/create-modal/CreateIn
  * @example
  * await createInfoSheet.show({}, { title: "Редактировать" })
  */
-export const createInfoSheet = createSheet<object, void>(CreateInfoModal, {
+export const createInfoSheet = createSheet<object, void>(CreateInfoModal, SheetKind.CreateInfo, {
   withoutButtons: true,
 });

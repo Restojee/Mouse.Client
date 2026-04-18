@@ -17,7 +17,10 @@ export const MapsByCategoryNavigation = React.memo((props: MapsByCategoryNavigat
 
   return (
     <div className={rootClassName}>
-      <SidebarSection label="Общие разделы" isOpen={props.isOpen} />
+      <SidebarSection
+        label="Общие разделы"
+        isOpen={props.isOpen}
+      />
       <NavLink
         onClick={onAllClickHandler}
         isChecked={isAllChecked}

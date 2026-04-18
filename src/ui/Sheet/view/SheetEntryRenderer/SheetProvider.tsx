@@ -6,17 +6,8 @@ const SheetProvider = (props: SheetProviderProps) => {
   const { instance } = props;
   const { component: Component, props: componentProps, config } = instance;
 
-  const {
-    isMobile,
-    isOpen,
-    zIndex,
-    vars,
-    dataTheme,
-    shouldRender,
-    handleClose,
-    handleCloseVoid,
-    handleAccess,
-  } = useSheetProvider(props);
+  const { isMobile, isOpen, zIndex, vars, dataTheme, shouldRender, handleClose, handleCloseVoid, handleAccess } =
+    useSheetProvider(props);
 
   if (!shouldRender) return null;
 

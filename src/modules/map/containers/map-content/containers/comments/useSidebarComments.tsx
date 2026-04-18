@@ -17,15 +17,8 @@ type UseSidebarCommentsProps = {
 export const useSidebarComments = ({ levelId }: UseSidebarCommentsProps) => {
   const dispatch = useAppDispatch();
   const { onOpenUserModal } = useUser();
-  const {
-    comments,
-    commentText,
-    onCommentDelete,
-    onInputChange,
-    onInputKeyUp,
-    isCommentsInitialized,
-    isCommentCreateFetching,
-  } = useMapComments();
+  const { comments, commentText, onCommentDelete, onInputChange, isCommentsInitialized, isCommentCreateFetching } =
+    useMapComments();
 
   const users = useAppSelector(selectUsers);
   const isAuth = useAppSelector(selectIsAuth);

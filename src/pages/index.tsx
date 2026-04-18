@@ -1,27 +1,24 @@
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { MapPageContainer } from "@/modules/map/components/MapContainer";
-import { AsyncMapViewModal } from "@/modules/map/containers";
-import { MapsQueryParams } from "@/modules/map/containers/map-list";
-import { MapsList } from "@/modules/map/containers/map-list/ui/maps-list/MapsList";
-import { getUsersThunk } from "@/modules/user/slice";
+import { MapsLayout } from "@/layout/maps/MapsLayout";
+import { DEFAULT_MAPS_SEO } from "@/modules/map/containers/map-view-modal/mapSeoTexts";
+import { NextPageWithLayout } from "@/pages/_app";
 import { MetaTags } from "@/ui/MetaTags/MetaTags";
-import React, { Suspense, useEffect } from "react";
+import { VisuallyHidden } from "@/ui/VisuallyHidden/VisuallyHidden";
+import { ReactElement } from "react";
 
-export default function Maps() {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getUsersThunk());
-  }, []);
-
+const HomePage: NextPageWithLayout = () => {
   return (
-    <MapPageContainer>
-      <MetaTags title={"Maps"} />
-      <MapsQueryParams />
-      <MapsList />
-      <Suspense fallback={null}>
-        <AsyncMapViewModal />
-      </Suspense>
-    </MapPageContainer>
+    <>
+      <MetaTags
+        title={DEFAULT_MAPS_SEO.title}
+        description={DEFAULT_MAPS_SEO.description}
+        keywords={DEFAULT_MAPS_SEO.keywords}
+        url={"https://onlyplanks.ru/"}
+      />
+      <VisuallyHidden as={"h1"}>Прохождения карт Transformice</VisuallyHidden>
+    </>
   );
-}
+};
+
+HomePage.getLayout = (page: ReactElement) => <MapsLayout>{page}</MapsLayout>;
+
+export default HomePage;

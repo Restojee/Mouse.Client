@@ -80,12 +80,12 @@ export const MobileSheet: React.FC<MobileSheetProps> = ({
       style={overlayStyle}
       data-theme={themeKey}
     >
-      {withBackdrop && (
+      {withBackdrop ? (
         <div
           className={backdropClassName}
           onClick={onClose}
         />
-      )}
+      ) : null}
       <div
         ref={sheetRef}
         className={containerClassName}
@@ -97,11 +97,11 @@ export const MobileSheet: React.FC<MobileSheetProps> = ({
         >
           <div className={styles.handleBarPill} />
         </div>
-        {!noHeader && title && (
+        {!noHeader && title ? (
           <div className={styles.header}>
             <Typography className={styles.title}>{title}</Typography>
           </div>
-        )}
+        ) : null}
         <div className={styles.body}>{children}</div>
         {!withoutButtons && (
           <Row

@@ -1,31 +1,11 @@
-import { ComponentType } from "react";
-import { SheetConfig } from "./types";
-import { pushSheet, removeSheet, clearSheets } from "../slice";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnySheetInstance = SheetInstance<any, any>;
-
-export type SheetInstance<TProps, TResult> = {
-  id: string;
-  component: ComponentType<TProps & { onClose: (result?: TResult) => void }>;
-  props: TProps;
-  config: SheetConfig;
-  resolve: (value: TResult | undefined) => void;
-};
-
-type RegistryEntry = {
-  component: ComponentType<{ onClose: (result?: unknown) => void }>;
-  props: object;
-  resolve: (value: unknown) => void;
-};
+import { clearSheets, removeSheet } from "../slice";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AppDispatch = (action: any) => void;
 
 let _dispatch: AppDispatch | null = null;
 let _nextId = 0;
-
-const _registry = new Map<string, RegistryEntry>();
+const _resolves = new Map<string, (value: unknown) => void>();
 
 export const sheetData = {
   init(dispatch: AppDispatch) {
@@ -36,29 +16,24 @@ export const sheetData = {
     return `sheet-${++_nextId}`;
   },
 
-  push(instance: AnySheetInstance): void {
-    if (!_dispatch) return;
-    _registry.set(instance.id, {
-      component: instance.component,
-      props: instance.props,
-      resolve: instance.resolve,
-    });
-    _dispatch(pushSheet({ id: instance.id, config: instance.config }));
+  setResolve(id: string, fn: (value: unknown) => void): void {
+    _resolves.set(id, fn);
   },
 
-  remove(id: string): void {
-    if (!_dispatch) return;
-    _registry.delete(id);
-    _dispatch(removeSheet(id));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dispatch(action: any): void {
+    _dispatch?.(action);
+  },
+
+  remove(id: string, result?: unknown): void {
+    const fn = _resolves.get(id);
+    _resolves.delete(id);
+    fn?.(result);
+    _dispatch?.(removeSheet(id));
   },
 
   removeAll(): void {
-    if (!_dispatch) return;
-    _registry.clear();
-    _dispatch(clearSheets());
-  },
-
-  getEntry(id: string): RegistryEntry | undefined {
-    return _registry.get(id);
+    _resolves.clear();
+    _dispatch?.(clearSheets());
   },
 };

@@ -1,12 +1,12 @@
 import { PageContent as PageContentLayout } from "@/layout/page/styles/PageContent";
 import { Box } from "@/ui/Box";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
   id?: string;
 };
-export const PageContent = React.forwardRef((props: Partial<Props>) => {
+export const PageContent = (props: Partial<Props>) => {
   return (
     <Box
       overflow={"hidden"}
@@ -17,4 +17,4 @@ export const PageContent = React.forwardRef((props: Partial<Props>) => {
       <PageContentLayout id={"maps-page-container"}>{props.children}</PageContentLayout>
     </Box>
   );
-});
+};

@@ -20,10 +20,7 @@ export const useUserModal = ({ onClose }: UseUserModalProps) => {
   const { changeFilterNavigate } = useFilterQueryParams();
   const isMobile = useIsMobile();
 
-  const starsCount = useMemo(
-    () => getStarsByUserId(currentUserView?.id, users),
-    [currentUserView?.id, users],
-  );
+  const starsCount = useMemo(() => getStarsByUserId(currentUserView?.id, users), [currentUserView?.id, users]);
 
   const onFilterClick = useCallback(
     async (filter: Partial<GetMapsApiArg>) => {
@@ -36,10 +33,7 @@ export const useUserModal = ({ onClose }: UseUserModalProps) => {
     [changeFilterNavigate, onClose, levelId, closeMap],
   );
 
-  const avatarImage = useMemo(
-    () => getAvatarImageLink(currentUserView?.avatar, "display"),
-    [currentUserView?.avatar],
-  );
+  const avatarImage = useMemo(() => getAvatarImageLink(currentUserView?.avatar, "display"), [currentUserView?.avatar]);
 
   const registrationDateFull = useMemo(
     () => formatDateTime(currentUserView?.createdUtcDate),

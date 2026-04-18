@@ -34,8 +34,14 @@ export const Form = (props: FormPropsType) => {
   );
 
   return (
-    <div className={clsx(styles.root, className)} style={rootStyle}>
-      <form onSubmit={onSubmitHandler} style={FORM_STYLE}>
+    <div
+      className={clsx(styles.root, className)}
+      style={rootStyle}
+    >
+      <form
+        onSubmit={onSubmitHandler}
+        style={FORM_STYLE}
+      >
         {children}
       </form>
     </div>

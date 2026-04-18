@@ -24,7 +24,7 @@ export const List: React.FC<ListProps> = ({
   options,
   onChange,
   size = "sm",
-  showCheckbox = false,
+  showCheckbox: _showCheckbox = false,
   showSearch = false,
   placeholder = "Поиск...",
   emptyMessage = "Ничего не найдено",
@@ -41,7 +41,7 @@ export const List: React.FC<ListProps> = ({
     (option: ListItemOptions) => {
       onChange?.(option);
     },
-    [onChange, showCheckbox],
+    [onChange],
   );
 
   const handleSearchChange = useCallback(

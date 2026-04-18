@@ -57,10 +57,7 @@ export const DesktopSheet = (props: DesktopSheetProps) => {
     e.stopPropagation();
   }, []);
 
-  const sheetWidth = React.useMemo(
-    () => (typeof width === "number" ? `${width}px` : width || "400px"),
-    [width],
-  );
+  const sheetWidth = React.useMemo(() => (typeof width === "number" ? `${width}px` : width || "400px"), [width]);
 
   const overlayClassName = React.useMemo(
     () =>
@@ -71,10 +68,7 @@ export const DesktopSheet = (props: DesktopSheetProps) => {
     [closing, withBackdrop],
   );
 
-  const wrapperClassName = React.useMemo(
-    () => clsx(styles.wrapper, { [styles.closing]: closing }),
-    [closing],
-  );
+  const wrapperClassName = React.useMemo(() => clsx(styles.wrapper, { [styles.closing]: closing }), [closing]);
 
   const overlayStyle = React.useMemo<React.CSSProperties>(
     () => ({ ...style, zIndex: resolvedZIndex }),

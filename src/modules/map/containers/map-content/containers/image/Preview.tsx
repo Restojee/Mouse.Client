@@ -16,16 +16,8 @@ type PreviewPropsType = {
 
 export const Preview = React.memo((props: PreviewPropsType) => {
   const { image } = props;
-  const {
-    activeIndex,
-    imagesCount,
-    hasImages,
-    showCount,
-    renderedSlides,
-    onOpenImage,
-    onSwiper,
-    onActiveIndexChange,
-  } = usePreview(props);
+  const { activeIndex, imagesCount, hasImages, showCount, renderedSlides, onOpenImage, onSwiper, onActiveIndexChange } =
+    usePreview(props);
 
   if (!hasImages) {
     return (

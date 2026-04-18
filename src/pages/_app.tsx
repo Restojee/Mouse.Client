@@ -1,23 +1,30 @@
 import { LayoutProvider } from "@/layout/common/LayoutProvider";
+import ThemeProvider from "@/layout/theme/ThemeProvider";
 import { AuthProvider } from "@/modules/auth/AuthProvider";
 import { RootState, wrapper } from "@/store";
 import "@/styles/globals.scss";
 import ImageModal from "@/ui/ImageModal";
 import Notification from "@/ui/Notification/Notification";
+import { PopupProvider } from "@/ui/Popup/PopupContext";
 import { SheetHost } from "@/ui/Sheet/view/SheetHost";
 import { Session } from "next-auth";
+import { NextPage } from "next";
 import { AppProps } from "next/app";
-import dynamic from "next/dynamic";
-import React from "react";
+import React, { ReactElement, ReactNode } from "react";
 import { Provider } from "react-redux";
-import { PopupProvider } from "@/ui/Popup/PopupContext";
-import Maps from "@/pages/index";
 
-const ThemeProvider = dynamic(() => import("@/layout/theme/ThemeProvider"), { ssr: false });
+export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
 
-function App({ Component: _Component, ...rest }: AppProps<{ session: Session; initialState: RootState }>) {
+type AppPropsWithLayout = AppProps<{ session: Session; initialState: RootState }> & {
+  Component: NextPageWithLayout;
+};
+
+function App({ Component, ...rest }: AppPropsWithLayout) {
   const { store, props } = wrapper.useWrappedStore(rest);
-  const { pageProps } = rest;
+  const { pageProps } = props;
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <Provider
@@ -28,9 +35,7 @@ function App({ Component: _Component, ...rest }: AppProps<{ session: Session; in
       <PopupProvider>
         <AuthProvider>
           <ThemeProvider>
-            <LayoutProvider>
-              <Maps {...props.pageProps} />
-            </LayoutProvider>
+            <LayoutProvider>{getLayout(<Component {...pageProps} />)}</LayoutProvider>
             <Notification />
             <ImageModal />
           </ThemeProvider>

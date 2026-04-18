@@ -33,11 +33,11 @@ export const AuthProvider = (props: AuthProviderProps) => {
     return () => {
       clearInterval(id);
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getCurrentUserThunk());
-  }, [isAuth]);
+  }, [dispatch]);
 
   return props.children;
 };

@@ -3,6 +3,7 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectSheetStack } from "../slice";
 import { sheetData } from "../core/sheetData";
+import { sheetRegistry } from "../core/sheetRegistry";
 import SheetProvider from "./SheetEntryRenderer/SheetProvider";
 
 export const SheetHost = () => {
@@ -25,22 +26,18 @@ export const SheetHost = () => {
   return (
     <>
       {stack.map((entry) => {
-        const registryEntry = sheetData.getEntry(entry.id);
-        if (!registryEntry) return null;
+        const Component = sheetRegistry.get(entry.kind);
+        if (!Component) return null;
         return (
           <SheetProvider
             key={entry.id}
             instance={{
               id: entry.id,
-              component: registryEntry.component,
-              props: registryEntry.props,
+              component: Component,
+              props: (entry.props ?? {}) as object,
               config: entry.config,
-              resolve: registryEntry.resolve,
             }}
-            onClose={(result) => {
-              registryEntry.resolve(result);
-              sheetData.remove(entry.id);
-            }}
+            onClose={(result) => sheetData.remove(entry.id, result)}
           />
         );
       })}

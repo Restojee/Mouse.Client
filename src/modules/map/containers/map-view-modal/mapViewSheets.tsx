@@ -1,19 +1,10 @@
-import React, { Suspense } from "react";
-import { createSheet } from "@/ui/Sheet/core/createSheet";
 import { ThemeKey } from "@/layout/theme/types";
+import { MapContent } from "@/modules/map/containers/map-content/MapContent";
+import { createSheet } from "@/ui/Sheet/core/createSheet";
+import { SheetKind } from "@/ui/Sheet/core/sheetKind";
+import { SheetConfig } from "@/ui/Sheet/core/types";
 
-const LazyMapContent = React.lazy(() =>
-  import("@/modules/map/containers/map-content").then((m) => ({ default: m.MapContent })),
-);
-
-const MapContentWrapper = () => (
-  <Suspense fallback={null}>
-    <LazyMapContent />
-  </Suspense>
-);
-
-/** Sheet для просмотра карты (MapContent). */
-export const mapContentSheet = createSheet(MapContentWrapper, {
+export const MAP_CONTENT_SHEET_CONFIG: SheetConfig = {
   noHeader: true,
   padding: 0,
   height: "95vh",
@@ -21,4 +12,7 @@ export const mapContentSheet = createSheet(MapContentWrapper, {
   withoutButtons: true,
   withoutTitle: true,
   themeKey: ThemeKey.DARK,
-});
+};
+
+/** Sheet для просмотра карты (MapContent). */
+export const mapContentSheet = createSheet(MapContent, SheetKind.MapContent, MAP_CONTENT_SHEET_CONFIG);

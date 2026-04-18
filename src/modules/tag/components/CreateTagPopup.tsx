@@ -34,7 +34,12 @@ export const CreateTagPopup = (props: Partial<CreateTagPopupPropsType>) => {
     >
       <div className={styles.body}>
         <Typography className={styles.title}>Добавить тег</Typography>
-        <Form onSubmit={onFormSubmit} gap="5px" align="center" direction={"row"}>
+        <Form
+          onSubmit={onFormSubmit}
+          gap="5px"
+          align="center"
+          direction={"row"}
+        >
           <FormElement
             autoFocus
             value={name}

@@ -15,20 +15,16 @@ type TagsNavigationPropsType = {
 
 export const TagsNavigation = (props: TagsNavigationPropsType) => {
   const { isOpen, noScroll } = props;
-  const {
-    isAuth,
-    hasTags,
-    isCreatePopupVisible,
-    showCreatePopup,
-    renderedTags,
-    onCloseModal,
-    modalToggleHandler,
-  } = useTagsNavigation({ isOpen });
+  const { isAuth, hasTags, isCreatePopupVisible, showCreatePopup, renderedTags, onCloseModal, modalToggleHandler } =
+    useTagsNavigation({ isOpen });
 
   const listClassName = clsx(styles.list, isOpen && styles.listOpen, noScroll && styles.listNoScroll);
 
   const addTagAnchor = (
-    <NavLinkSection onClick={modalToggleHandler} isOpen={isAuth}>
+    <NavLinkSection
+      onClick={modalToggleHandler}
+      isOpen={isAuth}
+    >
       <AddIcon />
     </NavLinkSection>
   );

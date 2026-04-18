@@ -44,10 +44,13 @@ export const useChat = () => {
     setIsSendLoading(false);
   }, [dispatch, isSendLoading, messageText]);
 
-  const onMessageDelete = useCallback(async (message: Comment): Promise<void> => {
-    if (!message.id) return;
-    await dispatch(deleteChatMessageThunk({ messageId: message.id }));
-  }, []);
+  const onMessageDelete = useCallback(
+    async (message: Comment): Promise<void> => {
+      if (!message.id) return;
+      await dispatch(deleteChatMessageThunk({ messageId: message.id }));
+    },
+    [dispatch],
+  );
 
   const onInputChange = useCallback((value: string) => {
     setMessageText(value);
@@ -81,7 +84,7 @@ export const useChat = () => {
       dispatch(pollNewMessagesThunk());
     }, 5000);
     return () => clearInterval(id);
-  }, []);
+  }, [dispatch, initChatMessages]);
 
   const fetchOlderMessages = useCallback(() => {
     dispatch(fetchOlderMessagesThunk());
@@ -93,7 +96,7 @@ export const useChat = () => {
 
   const updateMessagesCount = useCallback(() => {
     setValue(totalMessages);
-  }, [totalMessages]);
+  }, [totalMessages, setValue]);
 
   return {
     messageText,

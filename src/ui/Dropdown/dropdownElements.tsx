@@ -43,7 +43,11 @@ type DropdownListPropsType = React.HTMLAttributes<HTMLDivElement> & {
 
 export const DropdownList = React.forwardRef<HTMLDivElement, DropdownListPropsType>(
   ({ width: _width, isOpen: _isOpen, className, ...props }, ref) => (
-    <div ref={ref} className={clsx(styles.list, styles.listFlex, className)} {...props} />
+    <div
+      ref={ref}
+      className={clsx(styles.list, styles.listFlex, className)}
+      {...props}
+    />
   ),
 );
 DropdownList.displayName = "DropdownList";
