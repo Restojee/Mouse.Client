@@ -103,9 +103,9 @@ export const useTag = () => {
   );
 
   const openTagsModal = useCallback(async () => {
-    const initial = levelId
+    const initial: number[] = levelId
       ? mapContent?.tags?.map((tag) => tag.id as number) || []
-      : selectedIdForCreateMap || [];
+      : (selectedIdForCreateMap || []).filter((id): id is number => id !== undefined);
     dispatch(setSelectedTagIds(initial));
 
     const confirmed = await tagsUpdateSheet.show();

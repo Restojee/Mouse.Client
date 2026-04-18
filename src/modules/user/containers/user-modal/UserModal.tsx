@@ -23,6 +23,7 @@ const UserModal = ({ onClose }: UserModalPropsType) => {
     registrationDateShort,
     closeButtonColor,
     onFilterClick,
+    isMobile,
   } = useUserModal({ onClose });
 
   if (!currentUserView) {
@@ -68,12 +69,14 @@ const UserModal = ({ onClose }: UserModalPropsType) => {
         user={currentUserView}
         onFilterClick={onFilterClick}
       />
-      <Button
-        color={closeButtonColor}
-        size={"lg"}
-        label={"Закрыть"}
-        onClick={onClose}
-      />
+      {!isMobile && (
+        <Button
+          color={closeButtonColor}
+          size={"lg"}
+          label={"Закрыть"}
+          onClick={onClose}
+        />
+      )}
     </Column>
   );
 };

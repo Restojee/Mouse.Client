@@ -1,20 +1,16 @@
 import React, { useCallback, useMemo } from "react";
-import { formatDateTime } from "@/common/utils/formatDateTime";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { selectIsAuth } from "@/modules/auth/slice";
 import { selectIsMapFetching } from "@/modules/map/containers/map-content/slice";
-import { MapContentMainSkeleton, MapContentSidebarSkeleton } from "./components/skeleton/MapContentSkeleton";
+import { MapContentMainSkeleton } from "./components/skeleton/MapContentSkeleton";
 import { useMap } from "@/modules/map/common";
 import { removeNonDigits } from "@/modules/map/containers/map-list";
 import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
 import { Button } from "@/ui/Button";
 import { Display } from "@/ui/Display";
-import { sheetService } from "@/ui/Sheet";
-import { SidebarProfile } from "./components/sidebar-profile/SidebarProfile";
-import { SidebarIcons } from "./containers/actions/SidebarIcons";
-import { SidebarComments } from "./containers/comments/SidebarComments";
+import { mapSidebarSheet } from "./mapContentSheets";
 import { MiniMapImages } from "./containers/completed-images/MiniMapImages";
 import { Header } from "./containers/header/Header";
 import { Preview } from "./containers/image/Preview";
@@ -27,7 +23,7 @@ export const useMapContent = () => {
   const { theme } = useAppTheme();
   const { closeMap } = useMapView();
   const { map } = useMap();
-  const { activeMapCompleted, changeActiveCompletedMap, selectedCompletedMaps } = useCompletedMap();
+  const { changeActiveCompletedMap, selectedCompletedMaps, activeMapCompleted } = useCompletedMap();
   const isAuth = useAppSelector(selectIsAuth);
   const isMapFetching = useAppSelector(selectIsMapFetching);
   const isMapContentLoading = isMapFetching && !map;
@@ -41,52 +37,9 @@ export const useMapContent = () => {
 
   const title = useMemo(() => (isVanilla ? removeNonDigits(map?.name) : map?.name), [isVanilla, map?.name]);
 
-  const dateTime = useMemo(() => {
-    if (map) {
-      const dt = activeMapCompleted?.createdUtcDate || map?.createdUtcDate;
-      return formatDateTime(dt);
-    }
-    return "";
-  }, [map, activeMapCompleted?.createdUtcDate]);
-
-  const sidebarContent = useMemo(() => {
-    if (isMapContentLoading) {
-      return <MapContentSidebarSkeleton />;
-    }
-    return (
-      <>
-        <SidebarProfile
-          user={activeMapCompleted?.user || map?.user}
-          date={dateTime}
-        />
-        <SidebarIcons
-          levelId={map?.id}
-          favoritesCount={map?.favoritesCount}
-          isCompleted={map?.isCompletedByUser}
-          isFavorite={map?.isFavoriteByUser}
-        />
-        <SidebarComments levelId={map?.id} />
-      </>
-    );
-  }, [
-    isMapContentLoading,
-    activeMapCompleted?.user,
-    dateTime,
-    map?.favoritesCount,
-    map?.id,
-    map?.isCompletedByUser,
-    map?.isFavoriteByUser,
-    map?.user,
-  ]);
-
   const onShowSidebarHandler = useCallback(() => {
-    sheetService.show(sidebarContent, {
-      noHeader: true,
-      withoutButtons: true,
-      withoutTitle: true,
-      height: 600,
-    });
-  }, [sidebarContent]);
+    mapSidebarSheet.show();
+  }, []);
 
   const mainContent = useMemo(() => {
     if (isMapContentLoading) {
@@ -145,7 +98,6 @@ export const useMapContent = () => {
     closeMap,
     fixEventPropagation,
     isMobile,
-    sidebarContent,
     mainContent,
     closeIconColor,
   };

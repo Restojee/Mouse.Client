@@ -92,6 +92,10 @@
   font-weight: bolder;
   font-size: calc(var(--font-size) + 2px);
   top: 0;
+
+  @media all and (max-width: 768px) {
+    padding: 10px;
+  }
 }
 
 .drawerBlock {

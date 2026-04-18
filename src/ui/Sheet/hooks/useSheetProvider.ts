@@ -20,6 +20,7 @@ type UseSheetProviderResult = {
   zIndex: number;
   vars: CSSProperties;
   dataTheme: ThemeKey | undefined;
+  shouldRender: boolean;
   handleClose: (result?: unknown) => void;
   handleCloseVoid: () => void;
   handleAccess: () => void;
@@ -56,6 +57,8 @@ export const useSheetProvider = (props: SheetProviderProps): UseSheetProviderRes
   const handleCloseVoid = useCallback(() => handleClose(undefined), [handleClose]);
   const handleAccess = useCallback(() => handleClose(true), [handleClose]);
 
+  const shouldRender = !(config.onlyMobile && !isMobile);
+
   const vars = useMemo(
     (): CSSProperties =>
       ({
@@ -74,6 +77,7 @@ export const useSheetProvider = (props: SheetProviderProps): UseSheetProviderRes
     zIndex,
     vars,
     dataTheme,
+    shouldRender,
     handleClose,
     handleCloseVoid,
     handleAccess,

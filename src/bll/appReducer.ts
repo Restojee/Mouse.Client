@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type TAppMessage = {
   id: string;
-  severity: "error" | "success";
+  severity: "error" | "success" | "info";
   text: string;
 };
 
@@ -28,7 +28,7 @@ const slice = createSlice({
     setIsInitialized(state, action: PayloadAction<boolean>) {
       state.isInitialized = action.payload;
     },
-    setAppMessage(state, action: PayloadAction<{ text: string; severity: "error" | "success" }>) {
+    setAppMessage(state, action: PayloadAction<{ text: string; severity: "error" | "success" | "info" }>) {
       const newMessage: TAppMessage = {
         id: String(Math.random()),
         severity: action.payload.severity,

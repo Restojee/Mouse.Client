@@ -15,4 +15,5 @@ export type SheetConfig = {
   padding?: number;
   themeKey?: ThemeKey;
   zIndex?: number;
+  onlyMobile?: boolean;
 };

@@ -1,6 +1,6 @@
 import { MobileSheet } from "../MobileSheet/MobileSheet";
 import { DesktopSheet } from "../DesktopSheet/DesktopSheet";
-import { SheetProviderProps, useSheetProvider } from "../../viewModel/useSheetProvider";
+import { SheetProviderProps, useSheetProvider } from "../../hooks/useSheetProvider";
 
 const SheetProvider = (props: SheetProviderProps) => {
   const { instance } = props;
@@ -12,10 +12,13 @@ const SheetProvider = (props: SheetProviderProps) => {
     zIndex,
     vars,
     dataTheme,
+    shouldRender,
     handleClose,
     handleCloseVoid,
     handleAccess,
   } = useSheetProvider(props);
+
+  if (!shouldRender) return null;
 
   const content = (
     <Component
@@ -31,6 +34,9 @@ const SheetProvider = (props: SheetProviderProps) => {
         data-theme={dataTheme}
         isOpen={isOpen}
         onClose={handleCloseVoid}
+        onAccess={handleAccess}
+        withoutButtons={config.withoutButtons}
+        accessDisabled={config.accessDisabled}
         title={config.withoutTitle ? undefined : config.title}
         height={config.height}
         noHeader={config.noHeader}

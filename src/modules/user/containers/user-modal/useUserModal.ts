@@ -4,6 +4,7 @@ import { getAvatarImageLink } from "@/common/utils";
 import { formatDateTime } from "@/common/utils/formatDateTime";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useFilterQueryParams from "@/hooks/useFilterQueryParams";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useMapView } from "@/modules/map/containers/map-view-modal/hooks/useMapView";
 import { useUser } from "@/modules/user/hooks/useUser";
 import { getStarsByUserId } from "@/modules/user/utils/getStarsByUserId";
@@ -17,6 +18,7 @@ export const useUserModal = ({ onClose }: UseUserModalProps) => {
   const { theme } = useAppTheme();
   const { closeMap, levelId } = useMapView();
   const { changeFilterNavigate } = useFilterQueryParams();
+  const isMobile = useIsMobile();
 
   const starsCount = useMemo(
     () => getStarsByUserId(currentUserView?.id, users),
@@ -57,5 +59,6 @@ export const useUserModal = ({ onClose }: UseUserModalProps) => {
     registrationDateShort,
     closeButtonColor: theme.colors.brandColorContrastText,
     onFilterClick,
+    isMobile,
   };
 };

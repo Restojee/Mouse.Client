@@ -15,6 +15,7 @@ export type SheetConfig = {
   padding?: number;
   themeKey?: ThemeKey;
   zIndex?: number;
+  onlyMobile?: boolean;
 };
 
 /** Опции для sheet.show() — включает callbacks и контент */

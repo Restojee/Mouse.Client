@@ -1,14 +1,20 @@
 import * as React from "react";
 import clsx from "clsx";
+import { Button } from "@/ui/Button";
+import { Row } from "@/ui/Row";
 import { Typography } from "@/ui/Typography";
-import { useDragToClose } from "../../viewModel/useDragToClose";
-import { useSheetZIndex } from "../../viewModel/useSheetZIndex";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useDragToClose } from "../../hooks/useDragToClose";
+import { useSheetZIndex } from "../../hooks/useSheetZIndex";
 import { ThemeKey } from "@/layout/theme/types";
 import styles from "./MobileSheet.module.scss";
 
 export type MobileSheetProps = {
   isOpen: boolean;
   onClose: () => void;
+  onAccess?: () => void;
+  accessDisabled?: boolean;
+  withoutButtons?: boolean;
   children: React.ReactNode;
   title?: string;
   height?: number | string;
@@ -24,6 +30,9 @@ export type MobileSheetProps = {
 export const MobileSheet: React.FC<MobileSheetProps> = ({
   isOpen,
   onClose,
+  onAccess,
+  accessDisabled,
+  withoutButtons = false,
   children,
   title,
   height,
@@ -35,6 +44,7 @@ export const MobileSheet: React.FC<MobileSheetProps> = ({
   withBackdrop = true,
   snapPoints,
 }) => {
+  const { theme } = useAppTheme(themeKey);
   const fallbackZIndex = useSheetZIndex();
   const resolvedZIndex = zIndexProp ?? fallbackZIndex;
 
@@ -87,12 +97,35 @@ export const MobileSheet: React.FC<MobileSheetProps> = ({
         >
           <div className={styles.handleBarPill} />
         </div>
-        {!noHeader && (
+        {!noHeader && title && (
           <div className={styles.header}>
             <Typography className={styles.title}>{title}</Typography>
           </div>
         )}
         <div className={styles.body}>{children}</div>
+        {!withoutButtons && (
+          <Row
+            className={styles.footer}
+            gap={10}
+            fullWidth
+          >
+            <Button
+              label="Отмена"
+              color={theme.colors.textOnSecondary}
+              bgColor={theme.colors.default.paperAccent}
+              onClick={onClose}
+              width="100%"
+            />
+            <Button
+              label="Подтвердить"
+              color={theme.colors.brandColorContrastText}
+              type="submit"
+              onClick={onAccess}
+              disabled={accessDisabled}
+              width="100%"
+            />
+          </Row>
+        )}
       </div>
     </div>
   );

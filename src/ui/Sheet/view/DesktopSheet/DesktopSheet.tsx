@@ -9,8 +9,8 @@ import { Button } from "@/ui/Button";
 import formStyles from "@/ui/Form/Form.module.scss";
 import { Typography } from "@/ui/Typography";
 import { Box } from "@/ui/Box";
-import { useSheetZIndex } from "../../viewModel/useSheetZIndex";
-import { useClosingAnimation } from "../../viewModel/useClosingAnimation";
+import { useSheetZIndex } from "../../hooks/useSheetZIndex";
+import { useClosingAnimation } from "../../hooks/useClosingAnimation";
 import { ThemeKey } from "@/layout/theme/types";
 import styles from "./DesktopSheet.module.scss";
 
