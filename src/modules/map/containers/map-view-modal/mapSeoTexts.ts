@@ -1,21 +1,10 @@
 const SITE_URL = "https://onlyplanks.ru";
 
 export const DEFAULT_MAPS_SEO = {
-  title: "Смотреть прохождения карт Transformice",
+  title: "Карты Transformice",
   description:
-    "Смотреть прохождения карт для игры Transformice: база карт сообщества, скриншоты прохождений, комментарии и заметки игроков.",
-  keywords: [
-    "transformice",
-    "трансформайс",
-    "прохождения карт",
-    "transformice maps",
-    "карты transformice",
-    "onlyplanks",
-    "планки",
-    "палки",
-    "мышки",
-    "tfm",
-  ],
+    "Карты и прохождения для игры Transformice: карты сообщества, скриншоты прохождений, комментарии и заметки игроков.",
+  keywords: ["transformice", "трансформайс", "прохождения", "maps", "onlyplanks", "карты", "палки", "мышки", "tfm"],
 };
 
 type SeoInput = {
@@ -26,8 +15,8 @@ type SeoInput = {
 };
 
 export const buildMapSeoTitle = ({ code, authorName }: SeoInput) => {
-  const authorPart = authorName ? ` ${authorName}` : "";
-  return `${code}${authorPart} — смотреть прохождение`;
+  const authorPart = authorName ? ` от ${authorName}` : "";
+  return `Прохождение карты ${code}${authorPart}`;
 };
 
 export const buildMapSeoDescription = ({ code, authorName, description, tags }: SeoInput) => {
@@ -40,7 +29,7 @@ export const buildMapSeoDescription = ({ code, authorName, description, tags }: 
 };
 
 export const buildMapSeoKeywords = ({ code, authorName, tags }: SeoInput) => {
-  const base = ["transformice", "трансформайс", "прохождение карты", `карта ${code}`, code, "onlyplanks", "tfm"];
+  const base = ["transformice", "трансформайс", "прохождение", "карты", `карта ${code}`, code, "onlyplanks", "tfm"];
   if (authorName) base.push(authorName);
   if (tags?.length) base.push(...tags);
   return base;

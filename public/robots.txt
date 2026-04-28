@@ -1,7 +1,4 @@
 User-agent: *
-Allow: /
-Allow: /maps
-Allow: /maps/
 
 Disallow: /api/
 Disallow: /_next/

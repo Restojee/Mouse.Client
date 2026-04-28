@@ -8,7 +8,7 @@ export const MAP_CONTENT_SHEET_CONFIG: SheetConfig = {
   noHeader: true,
   padding: 0,
   height: "95vh",
-  width: "1400px",
+  width: "1200px",
   withoutButtons: true,
   withoutTitle: true,
   themeKey: ThemeKey.DARK,
