@@ -21,7 +21,7 @@ export const useTagsNavigation = ({ isOpen }: UseTagsNavigationProps) => {
   const { updateFilter } = useFilterQueryParams();
   const isAuth = useAppSelector(selectIsAuth);
   const filter = useAppSelector(selectFilter);
-  const [collapsedGroupIds, setCollapsedGroupIds] = useState<Array<number>>([]);
+  const [expandedGroupIds, setExpandedGroupIds] = useState<Array<number>>([]);
 
   useEffect(() => {
     dispatch(getTagsThunk());
@@ -48,14 +48,14 @@ export const useTagsNavigation = ({ isOpen }: UseTagsNavigationProps) => {
 
   const onGroupToggle = useCallback((id?: Tag["id"]) => {
     if (id == null) return;
-    setCollapsedGroupIds((prev) => (prev.includes(id) ? prev.filter((groupId) => groupId !== id) : [...prev, id]));
+    setExpandedGroupIds((prev) => (prev.includes(id) ? prev.filter((groupId) => groupId !== id) : [...prev, id]));
   }, []);
 
   const renderedTags = useMemo(() => {
     const groupedTags = sortTagsByName(tagsList.filter(hasChildTags));
     const plainTags = sortTagsByName(tagsList.filter((tag) => !hasChildTags(tag)));
     const renderedGroups = groupedTags.map((tag) => {
-      const isCollapsed = tag.id == null ? false : collapsedGroupIds.includes(tag.id);
+      const isCollapsed = tag.id == null ? true : !expandedGroupIds.includes(tag.id);
 
       return (
         <TagGroupNavItem
@@ -82,7 +82,7 @@ export const useTagsNavigation = ({ isOpen }: UseTagsNavigationProps) => {
     ));
 
     return [...renderedGroups, ...renderedPlainTags];
-  }, [tagsList, filter.tagIds, isAuth, isOpen, onTagClickHandler, collapsedGroupIds, onGroupToggle]);
+  }, [tagsList, filter.tagIds, isAuth, isOpen, onTagClickHandler, expandedGroupIds, onGroupToggle]);
 
   const hasTags = tagsList.length > 0;
   const isCreatePopupVisible = modalType === "tag-create" && isAuth;
