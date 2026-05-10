@@ -21,3 +21,56 @@
     overflow: visible;
   }
 }
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 0;
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  color: var(--color-text-on-primary);
+  opacity: 0.72;
+  cursor: pointer;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.groupTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.groupList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.groupActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.groupIcon {
+  transition: transform 0.2s;
+}
+
+.groupIconOpen {
+  transform: rotate(90deg);
+}

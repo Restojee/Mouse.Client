@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { checkFilter } from "@/common/utils/checkFilters";
 import useFilterQueryParams from "@/hooks/useFilterQueryParams";
 import { navItems } from "../constants";
@@ -10,6 +10,12 @@ type UseMapsByFiltersNavigationProps = {
 
 export const useMapsByFiltersNavigation = ({ isOpen }: UseMapsByFiltersNavigationProps) => {
   const { filter, changeFilterNavigate } = useFilterQueryParams();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const onToggleCollapse = useCallback(() => {
+    if (!isOpen) return;
+    setIsCollapsed((prev) => !prev);
+  }, [isOpen]);
 
   const renderedItems = useMemo(
     () =>
@@ -27,5 +33,5 @@ export const useMapsByFiltersNavigation = ({ isOpen }: UseMapsByFiltersNavigatio
     [filter, isOpen, changeFilterNavigate],
   );
 
-  return { renderedItems };
+  return { renderedItems, isCollapsed, onToggleCollapse };
 };

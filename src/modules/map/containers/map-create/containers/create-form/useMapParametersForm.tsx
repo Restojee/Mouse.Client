@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useMapCreate } from "@/modules/map/containers/map-create/hooks/useMapCreate";
 import { useTag } from "@/modules/tag/hooks/useTag";
+import { flattenTags } from "@/modules/tag/utils";
 import { MapParametersTagItem } from "./MapParametersTagItem";
 
 type TabKey = "map" | "completed";
@@ -13,9 +14,11 @@ export const useMapParametersForm = () => {
   const { image, completedMapImage, setImage, setCompletedMapImage } = useMapCreate();
   const { tagsList, openTagsModal, selectedIdForCreateMap } = useTag();
 
+  const flatTagsList = useMemo(() => flattenTags(tagsList), [tagsList]);
+
   const selectedTags = useMemo(
-    () => tagsList.filter((tag) => selectedIdForCreateMap?.includes(tag.id)),
-    [tagsList, selectedIdForCreateMap],
+    () => flatTagsList.filter((tag) => selectedIdForCreateMap?.includes(tag.id)),
+    [flatTagsList, selectedIdForCreateMap],
   );
 
   const renderedTags = useMemo(

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Tag } from "@/api/codegen/genMouseMapsApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
@@ -7,6 +7,8 @@ import { selectIsAuth } from "@/modules/auth/slice";
 import { selectFilter } from "@/modules/map/containers/map-list/slice";
 import { useTag } from "@/modules/tag/hooks/useTag";
 import { getTagsThunk } from "@/modules/tag/slice";
+import { hasChildTags, sortTagsByName } from "@/modules/tag/utils";
+import { TagGroupNavItem } from "./TagGroupNavItem";
 import { TagNavItem } from "./TagNavItem";
 
 type UseTagsNavigationProps = {
@@ -19,6 +21,7 @@ export const useTagsNavigation = ({ isOpen }: UseTagsNavigationProps) => {
   const { updateFilter } = useFilterQueryParams();
   const isAuth = useAppSelector(selectIsAuth);
   const filter = useAppSelector(selectFilter);
+  const [collapsedGroupIds, setCollapsedGroupIds] = useState<Array<number>>([]);
 
   useEffect(() => {
     dispatch(getTagsThunk());
@@ -43,20 +46,43 @@ export const useTagsNavigation = ({ isOpen }: UseTagsNavigationProps) => {
     onOpenTagModal(modalType === "tag-create" ? null : "tag-create");
   }, [modalType, onOpenTagModal]);
 
-  const renderedTags = useMemo(
-    () =>
-      tagsList?.map((el) => (
-        <TagNavItem
-          key={el.id}
-          tag={el}
-          isChecked={Boolean(filter.tagIds?.includes(el.id))}
+  const onGroupToggle = useCallback((id?: Tag["id"]) => {
+    if (id == null) return;
+    setCollapsedGroupIds((prev) => (prev.includes(id) ? prev.filter((groupId) => groupId !== id) : [...prev, id]));
+  }, []);
+
+  const renderedTags = useMemo(() => {
+    const groupedTags = sortTagsByName(tagsList.filter(hasChildTags));
+    const plainTags = sortTagsByName(tagsList.filter((tag) => !hasChildTags(tag)));
+    const renderedGroups = groupedTags.map((tag) => {
+      const isCollapsed = tag.id == null ? false : collapsedGroupIds.includes(tag.id);
+
+      return (
+        <TagGroupNavItem
+          key={tag.id}
+          tag={tag}
+          selectedTagIds={filter.tagIds}
           isAuth={isAuth}
           isOpen={isOpen}
+          isCollapsed={isCollapsed}
           onSelect={onTagClickHandler}
+          onToggle={onGroupToggle}
         />
-      )),
-    [tagsList, filter.tagIds, isAuth, isOpen, onTagClickHandler],
-  );
+      );
+    });
+    const renderedPlainTags = plainTags.map((tag) => (
+      <TagNavItem
+        key={tag.id}
+        tag={tag}
+        isChecked={Boolean(filter.tagIds?.includes(tag.id))}
+        isAuth={isAuth}
+        isOpen={isOpen}
+        onSelect={onTagClickHandler}
+      />
+    ));
+
+    return [...renderedGroups, ...renderedPlainTags];
+  }, [tagsList, filter.tagIds, isAuth, isOpen, onTagClickHandler, collapsedGroupIds, onGroupToggle]);
 
   const hasTags = tagsList.length > 0;
   const isCreatePopupVisible = modalType === "tag-create" && isAuth;

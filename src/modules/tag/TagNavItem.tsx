@@ -9,9 +9,10 @@ type TagNavItemPropsType = {
   isAuth: boolean;
   isOpen: boolean;
   onSelect: (id?: number) => void;
+  isNested?: boolean;
 };
 
-export const TagNavItem = memo(({ tag, isChecked, isAuth, isOpen, onSelect }: TagNavItemPropsType) => {
+export const TagNavItem = memo(({ tag, isChecked, isAuth, isOpen, onSelect, isNested }: TagNavItemPropsType) => {
   const handleClick = () => onSelect(tag.id);
 
   return (
@@ -23,6 +24,7 @@ export const TagNavItem = memo(({ tag, isChecked, isAuth, isOpen, onSelect }: Ta
       append={isAuth ? <TagItemActions tag={tag} /> : undefined}
       justifyContent="space-between"
       isOpen={isOpen}
+      margin={isNested ? "0 0 0 12px" : undefined}
     />
   );
 });

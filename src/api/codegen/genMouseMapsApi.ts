@@ -160,14 +160,14 @@ export type Tag = {
   childs?: Tag[];
   createdUtcDate?: string;
   modifiedUtcDate?: string | null;
-  translations?: Record<string, string>;
+  translations?: Record<string, unknown>;
 };
 export type TagParent = {
   id?: number;
   name: string;
   createdUtcDate?: string;
   modifiedUtcDate?: string | null;
-  translations?: Record<string, string>;
+  translations?: Record<string, unknown>;
 };
 export type UpdateTagRequest = {
   id?: number;

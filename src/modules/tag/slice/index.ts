@@ -3,6 +3,7 @@ import { tagsApi } from "@/api/tagsApi";
 import { setAppMessage } from "@/bll/appReducer";
 import { RootState } from "@/store";
 import { TagModalTypes, TagsStateType } from "../types";
+import { normalizeTagTree } from "../utils";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const updateTagThunk = createAsyncThunk(
@@ -70,7 +71,7 @@ const slice = createSlice({
       state.modalType = action.payload;
     },
     setTags: (state, action: PayloadAction<Tag[]>) => {
-      state.tagsList = [...action.payload].sort((a, b) => a.name.localeCompare(b.name));
+      state.tagsList = normalizeTagTree(action.payload);
     },
     setEditingTag: (state, action: PayloadAction<Tag | null>) => {
       state.editingTag = action.payload;

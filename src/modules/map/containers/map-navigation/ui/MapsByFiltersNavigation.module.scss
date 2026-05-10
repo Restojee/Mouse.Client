@@ -10,3 +10,20 @@
     margin: 0;
   }
 }
+
+.sectionButton {
+  cursor: pointer;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.collapseIcon {
+  transition: transform 0.2s;
+}
+
+.collapseIconOpen {
+  transform: rotate(90deg);
+}
