@@ -15,6 +15,11 @@ const SITE_NAME = "OnlyPlanks";
 const SITE_URL = "https://onlyplanks.ru";
 const DEFAULT_IMAGE = `${SITE_URL}/images/default-map-image.jpg`;
 
+const getAbsoluteUrl = (value: string) => {
+  if (/^https?:\/\//i.test(value)) return value;
+  return `${SITE_URL}${value.startsWith("/") ? "" : "/"}${value}`;
+};
+
 export const MetaTags = ({
   title,
   description,
@@ -26,8 +31,8 @@ export const MetaTags = ({
   noIndex,
 }: MetaTagsProps) => {
   const fullTitle = title ? `${title} • ${SITE_NAME}` : SITE_NAME;
-  const ogImage = image ?? DEFAULT_IMAGE;
-  const canonical = url ?? SITE_URL;
+  const ogImage = image ? getAbsoluteUrl(image) : DEFAULT_IMAGE;
+  const canonical = url ? getAbsoluteUrl(url) : SITE_URL;
 
   return (
     <Head>
@@ -56,7 +61,14 @@ export const MetaTags = ({
       <meta
         key={"robots"}
         name="robots"
-        content={noIndex ? "noindex, nofollow" : "index, follow"}
+        content={noIndex ? "noindex, nofollow" : "index, follow, max-image-preview:large"}
+      />
+      <meta
+        key={"googlebot"}
+        name="googlebot"
+        content={
+          noIndex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+        }
       />
       <link
         key={"canonical"}
@@ -100,6 +112,11 @@ export const MetaTags = ({
         key={"og:image"}
         property="og:image"
         content={ogImage}
+      />
+      <meta
+        key={"og:image:alt"}
+        property="og:image:alt"
+        content={title ?? SITE_NAME}
       />
 
       <meta

@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import { mapsApi } from "@/api/mapsApi";
+import type { Map } from "@/api/codegen/genMouseMapsApi";
 
 const SITE_URL = "https://onlyplanks.ru";
 const PAGE_SIZE = 50;
@@ -20,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
     return { notFound: true };
   }
 
-  let ids: number[] = [];
+  let maps: Map[] = [];
   let totalPages = 0;
 
   try {
@@ -31,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
       sortDirection: "DESC",
     });
 
-    ids = (data?.records ?? []).map((m) => m.id).filter((id): id is number => typeof id === "number");
+    maps = data?.records ?? [];
 
     const total = data?.totalItems ?? 0;
     totalPages = Math.ceil(total / PAGE_SIZE);
@@ -39,16 +40,20 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
     return { notFound: true };
   }
 
-  if (page > totalPages || ids.length === 0) {
+  if (page > totalPages || maps.length === 0) {
     return { notFound: true };
   }
 
-  const items = ids
-    .map((id) => {
-      const loc = escapeXml(`${SITE_URL}/maps/${id}`);
+  const items = maps
+    .filter((map) => typeof map.id === "number")
+    .map((map) => {
+      const loc = escapeXml(`${SITE_URL}/maps/${map.id}`);
+      const lastmod = escapeXml(map.modifiedUtcDate ?? map.createdUtcDate ?? new Date().toISOString());
       return `
   <url>
     <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>`;
     })
@@ -60,6 +65,7 @@ ${items}
 </urlset>`;
 
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
+  res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
   res.write(xml);
   res.end();
 

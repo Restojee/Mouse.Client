@@ -22,6 +22,7 @@ export type DesktopSheetProps = {
   text?: string;
   title?: string;
   width?: Property.Width<number>;
+  height?: Property.Height<number>;
   themeKey?: ThemeKey;
   children?: React.ReactNode;
   withoutTitle?: boolean;
@@ -40,6 +41,7 @@ export const DesktopSheet = (props: DesktopSheetProps) => {
     title,
     children,
     width,
+    height,
     withoutTitle,
     withoutButtons,
     isOpen,
@@ -58,6 +60,11 @@ export const DesktopSheet = (props: DesktopSheetProps) => {
   }, []);
 
   const sheetWidth = React.useMemo(() => (typeof width === "number" ? `${width}px` : width || "400px"), [width]);
+  const sheetHeight = React.useMemo(() => (typeof height === "number" ? `${height}px` : height), [height]);
+  const sheetMaxHeight = React.useMemo(
+    () => (sheetHeight ? `min(${sheetHeight}, calc(100dvh - 80px))` : "100%"),
+    [sheetHeight],
+  );
 
   const overlayClassName = React.useMemo(
     () =>
@@ -78,10 +85,12 @@ export const DesktopSheet = (props: DesktopSheetProps) => {
   const paperStyle = React.useMemo<React.CSSProperties>(
     () => ({
       width: sheetWidth,
-      maxWidth: sheetWidth,
+      maxWidth: "100%",
+      height: sheetHeight,
+      maxHeight: sheetMaxHeight,
       ["--sheet-padding" as string]: `${padding}px`,
     }),
-    [sheetWidth, padding],
+    [sheetWidth, sheetHeight, sheetMaxHeight, padding],
   );
 
   const titleColor = theme.colors.textOnSecondary;

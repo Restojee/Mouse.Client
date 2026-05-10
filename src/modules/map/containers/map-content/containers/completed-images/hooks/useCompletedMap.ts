@@ -68,9 +68,12 @@ export const useCompletedMap = (levelId?: Map["id"]) => {
   );
 
   const selectedCompletedMaps = useMemo(() => {
-    const result = maps?.filter((el) => el && el.user.id === activeMapCompleted?.user.id);
+    const activeUserId = activeMapCompleted?.user?.id;
+    if (!maps?.length || !activeUserId) return null;
+
+    const result = maps.filter((el) => el?.user?.id === activeUserId);
     return result.length ? result : null;
-  }, [activeMapCompleted?.user.id, maps]);
+  }, [activeMapCompleted?.user?.id, maps]);
 
   const changeActiveCompletedMap = useCallback(
     (map: MapCompleted) => {

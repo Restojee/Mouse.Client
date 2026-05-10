@@ -12,11 +12,16 @@ const escapeXml = (value: string) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
 
-const buildIndex = (sitemapCount: number) => {
-  const items = Array.from({ length: sitemapCount }, (_, i) => {
-    const loc = escapeXml(`${SITE_URL}/sitemap-maps/${i + 1}.xml`);
-    return `  <sitemap>\n    <loc>${loc}</loc>\n  </sitemap>`;
-  }).join("\n");
+const buildSitemapItem = (loc: string, lastmod: string) =>
+  `  <sitemap>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${escapeXml(lastmod)}</lastmod>\n  </sitemap>`;
+
+const buildIndex = (sitemapCount: number, lastmod: string) => {
+  const staticSitemap = buildSitemapItem(`${SITE_URL}/sitemap-static.xml`, lastmod);
+  const mapSitemaps = Array.from({ length: sitemapCount }, (_, i) =>
+    buildSitemapItem(`${SITE_URL}/sitemap-maps/${i + 1}.xml`, lastmod),
+  ).join("\n");
+  const items = [staticSitemap, mapSitemaps].filter(Boolean).join("\n");
+
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</sitemapindex>`;
 };
 
@@ -32,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
 
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
   res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
-  res.write(buildIndex(sitemapCount));
+  res.write(buildIndex(sitemapCount, new Date().toISOString()));
   res.end();
 
   return { props: {} };

@@ -1,10 +1,13 @@
 import { MobileSheet } from "../MobileSheet/MobileSheet";
 import { DesktopSheet } from "../DesktopSheet/DesktopSheet";
 import { SheetProviderProps, useSheetProvider } from "../../hooks/useSheetProvider";
+import { sheetData } from "../../core/sheetData";
 
 const SheetProvider = (props: SheetProviderProps) => {
   const { instance } = props;
   const { component: Component, props: componentProps, config } = instance;
+  const volatileProps = sheetData.getVolatileProps(instance.id);
+  const mergedProps = { ...componentProps, ...volatileProps };
 
   const { isMobile, isOpen, zIndex, vars, dataTheme, shouldRender, handleClose, handleCloseVoid, handleAccess } =
     useSheetProvider(props);
@@ -13,7 +16,7 @@ const SheetProvider = (props: SheetProviderProps) => {
 
   const content = (
     <Component
-      {...componentProps}
+      {...mergedProps}
       onClose={handleClose}
     />
   );
@@ -50,6 +53,7 @@ const SheetProvider = (props: SheetProviderProps) => {
       title={config.title}
       text={config.text}
       width={config.width}
+      height={config.height}
       withoutTitle={config.withoutTitle}
       withoutButtons={config.withoutButtons}
       accessDisabled={config.accessDisabled}

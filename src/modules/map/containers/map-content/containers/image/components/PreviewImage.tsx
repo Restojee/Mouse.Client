@@ -30,6 +30,7 @@ export const PreviewImage = (props: PreviewImagePropsType) => {
     <Box
       onClick={onImageOpen}
       cursor={props.image ? "zoom-in" : "default"}
+      className={styles.imageFrame}
     >
       <img
         src={mapImage}

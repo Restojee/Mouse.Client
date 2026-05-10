@@ -45,13 +45,14 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
+  border-radius: inherit;
   top: -2px;
   font-size: 0.9rem;
   font-weight: bold;
   opacity: 0;
   color: var(--color-brand);
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--color-primary-accent);
   transition: 0.2s;
 
   &:hover {

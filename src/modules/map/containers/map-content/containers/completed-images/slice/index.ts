@@ -54,12 +54,17 @@ const slice = createSlice({
     setCompletedMaps: (state, action: PayloadAction<MapCompleted[]>) => {
       const nextMaps = action.payload;
       const prevMaps = state.completedMapsList;
+      const prevActiveId = state.activeMapCompleted?.id;
+      const prevActiveIndex = prevMaps.findIndex((map) => map.id === prevActiveId);
 
       const prevUserId = prevMaps[0]?.user.id;
       const nextUserId = nextMaps[0]?.user.id;
       const isUserChanged = prevUserId !== nextUserId;
       const isNewImageAdded = nextMaps.length > prevMaps.length && !isUserChanged;
       const lastAdded = nextMaps.at(-1);
+      const activeMap = prevActiveId ? nextMaps.find((map) => map.id === prevActiveId) : null;
+      const nextActiveIndex = prevActiveIndex >= 0 ? Math.min(prevActiveIndex, nextMaps.length - 1) : 0;
+      const fallbackActiveMap = nextMaps[nextActiveIndex] ?? null;
 
       state.completedMapsList = nextMaps;
 
@@ -67,6 +72,8 @@ const slice = createSlice({
         state.activeMapCompleted = null;
       } else if (isNewImageAdded && lastAdded) {
         state.activeMapCompleted = lastAdded;
+      } else if (prevActiveId) {
+        state.activeMapCompleted = activeMap ?? fallbackActiveMap;
       } else {
         state.activeMapCompleted = null;
       }

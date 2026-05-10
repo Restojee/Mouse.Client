@@ -1,8 +1,9 @@
 User-agent: *
 
 Disallow: /api/
-Disallow: /_next/
 Disallow: /*?invite=*
 Disallow: /*?filter=*
+Allow: /
+Allow: /maps/
 
 Sitemap: https://onlyplanks.ru/sitemap.xml

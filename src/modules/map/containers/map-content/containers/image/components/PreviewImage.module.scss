@@ -1,8 +1,16 @@
+.imageFrame {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
 .image {
   object-position: center;
   object-fit: contain;
   width: 100%;
-  aspect-ratio: 16/8;
+  height: 100%;
+  display: block;
 }
 
 .contentPreview {
@@ -10,14 +18,9 @@
   position: relative;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  aspect-ratio: 16 / 8;
   overflow: hidden;
-  transition: 0.2s;
   flex-grow: 1;
-  min-height: 150px;
   background-color: #6b7495;
-
-  @media all and (min-width: 1199px) {
-    min-height: 350px;
-  }
 }
-

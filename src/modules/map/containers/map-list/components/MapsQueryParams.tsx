@@ -15,7 +15,7 @@ export const MapsQueryParams = React.memo(() => {
     }
     updateQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [filter, router.isReady]);
 
   return null;
 });

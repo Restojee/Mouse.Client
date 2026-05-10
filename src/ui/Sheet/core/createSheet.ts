@@ -15,6 +15,22 @@ export type SheetCreator<TProps extends object, TResult> = {
   close(): void;
 };
 
+const splitProps = (props: object) => {
+  const serializableProps: Record<string, unknown> = {};
+  const volatileProps: Record<string, unknown> = {};
+
+  Object.entries(props).forEach(([key, value]) => {
+    if (typeof value === "function") {
+      volatileProps[key] = value;
+      return;
+    }
+
+    serializableProps[key] = value;
+  });
+
+  return { serializableProps, volatileProps };
+};
+
 export function createSheet<TProps extends object = object, TResult = void>(
   component: ComponentType<TProps & SheetComponentProps<TResult>>,
   kind: SheetKind,
@@ -28,13 +44,16 @@ export function createSheet<TProps extends object = object, TResult = void>(
     show(props?: TProps, config?: Partial<SheetConfig>): Promise<TResult | undefined> {
       return new Promise<TResult | undefined>((resolve) => {
         const id = sheetData.nextId();
+        const { serializableProps, volatileProps } = splitProps((props ?? {}) as object);
+
         _lastId = id;
         sheetData.setResolve(id, resolve as (value: unknown) => void);
+        sheetData.setVolatileProps(id, volatileProps);
         sheetData.dispatch(
           pushSheet({
             id,
             kind,
-            props: (props ?? {}) as object,
+            props: serializableProps,
             config: { ...defaultConfig, ...config } as SheetConfig,
           }),
         );

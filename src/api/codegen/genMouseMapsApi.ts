@@ -155,15 +155,30 @@ export type Tag = {
   id?: number;
   description?: string;
   name: string;
+  parentTagId?: number | null;
+  parentTag?: TagParent | null;
+  childs?: Tag[];
+  createdUtcDate?: string;
+  modifiedUtcDate?: string | null;
+  translations?: Record<string, string>;
+};
+export type TagParent = {
+  id?: number;
+  name: string;
+  createdUtcDate?: string;
+  modifiedUtcDate?: string | null;
+  translations?: Record<string, string>;
 };
 export type UpdateTagRequest = {
   id?: number;
   name?: string;
   description?: string;
+  parentTagId?: number | null;
 };
 export type CreateTagRequest = {
   name?: string;
   description?: string;
+  parentTagId?: number | null;
 };
 export type User = {
   id?: number;

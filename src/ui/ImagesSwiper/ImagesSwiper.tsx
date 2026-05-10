@@ -16,10 +16,7 @@ export const ImagesSwiper = ({ children, ...swiperProps }: Props) => {
   const slideNextClass = `images-slider-nav-arrow-next`;
 
   return (
-    <div
-      className={swiperStyles.wrapper}
-      style={{ display: "flex", width: "100%", alignItems: "center", height: "max-content", position: "relative" }}
-    >
+    <div className={swiperStyles.wrapper}>
       <Swiper
         spaceBetween={10}
         navigation={{

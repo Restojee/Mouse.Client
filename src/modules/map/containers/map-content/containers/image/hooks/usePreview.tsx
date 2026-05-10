@@ -54,14 +54,23 @@ export const usePreview = ({ images, mapCompleted, setActiveMapCompleted }: UseP
   const onActiveIndexChange = useCallback(
     (swiper: SwiperClass) => {
       if (!images) return;
-      setActiveMapCompleted?.(images[swiper.activeIndex]);
+      const nextMap = images[swiper.activeIndex];
+      if (!nextMap) return;
+
+      setActiveMapCompleted?.(nextMap);
     },
     [images, setActiveMapCompleted],
   );
 
   useEffect(() => {
-    swiperRef.current?.slideTo(activeIndex);
-  }, [activeIndex]);
+    const swiper = swiperRef.current;
+    if (!swiper?.slideTo || !images?.length) return;
+
+    const safeIndex = Math.min(activeIndex, images.length - 1);
+    if (safeIndex < 0) return;
+
+    swiper.slideTo(safeIndex);
+  }, [activeIndex, images?.length]);
 
   const hasImages = Boolean(images?.length);
   const showCount = Boolean(imagesCount && imagesCount > 1);

@@ -4,6 +4,7 @@ import { MapJsonLd } from "@/modules/map/containers/map-view-modal/MapJsonLd";
 import { MapsByIdController } from "@/modules/map/containers/map-view-modal/MapsByIdController";
 import {
   buildMapSeoDescription,
+  buildAbsoluteSeoImageUrl,
   buildMapSeoKeywords,
   buildMapSeoTitle,
   buildMapSeoUrl,
@@ -22,6 +23,12 @@ type MapMeta = {
   image: string | null;
   authorName: string | null;
   tags: string[];
+  createdUtcDate: string | null;
+  modifiedUtcDate: string | null;
+  commentsCount: number;
+  completedCount: number;
+  favoritesCount: number;
+  visitsCount: number;
 };
 
 type MapsByIdPageProps = {
@@ -53,6 +60,7 @@ const MapsByIdPage: NextPageWithLayout<MapsByIdPageProps> = ({ initialMapMeta, l
   };
   const description = buildMapSeoDescription(seoInput);
   const url = buildMapSeoUrl(initialMapMeta.id);
+  const image = buildAbsoluteSeoImageUrl(initialMapMeta.image);
 
   return (
     <>
@@ -60,17 +68,24 @@ const MapsByIdPage: NextPageWithLayout<MapsByIdPageProps> = ({ initialMapMeta, l
         title={buildMapSeoTitle(seoInput)}
         description={description}
         keywords={buildMapSeoKeywords(seoInput)}
-        image={initialMapMeta.image ?? undefined}
+        image={image}
         url={url}
         type={"article"}
       />
       <MapJsonLd
+        id={initialMapMeta.id}
         code={initialMapMeta.code}
         description={description}
-        image={initialMapMeta.image ?? undefined}
+        image={image}
         url={url}
         authorName={initialMapMeta.authorName}
         tags={initialMapMeta.tags}
+        createdUtcDate={initialMapMeta.createdUtcDate}
+        modifiedUtcDate={initialMapMeta.modifiedUtcDate}
+        commentsCount={initialMapMeta.commentsCount}
+        completedCount={initialMapMeta.completedCount}
+        favoritesCount={initialMapMeta.favoritesCount}
+        visitsCount={initialMapMeta.visitsCount}
       />
       <article>
         <VisuallyHidden as={"h1"}>Прохождение карты {initialMapMeta.code} в Transformice</VisuallyHidden>
@@ -103,6 +118,12 @@ export const getServerSideProps: GetServerSideProps<MapsByIdPageProps> = async (
             image: m.image?.variants.display ?? null,
             authorName: m.user?.username ?? null,
             tags: m.tags?.map((t) => t.name).filter(Boolean) ?? [],
+            createdUtcDate: m.createdUtcDate,
+            modifiedUtcDate: m.modifiedUtcDate,
+            commentsCount: m.commentsCount,
+            completedCount: m.completedCount,
+            favoritesCount: m.favoritesCount,
+            visitsCount: m.visitsCount,
           },
         },
       };
