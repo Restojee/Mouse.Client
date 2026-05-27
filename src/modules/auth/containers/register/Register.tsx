@@ -1,44 +1,18 @@
-import { RegisterRequest } from "@/api/codegen/genMouseMapsApi";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { useRegister } from "@/modules/auth/hooks/useRegister";
-import { registerValidation } from "@/modules/auth/schemas/registerValidation";
+import { Controller } from "react-hook-form";
 import { Box } from "@/ui/Box";
 import { Button } from "@/ui/Button";
 import { Form } from "@/ui/Form/Form";
 import { Input, PasswordInput } from "@/ui/Input";
 import { Typography } from "@/ui/Typography";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
-import { Controller, useForm } from "react-hook-form";
-import { useState } from "react";
+import { PersonalDataConsent } from "./PersonalDataConsent/PersonalDataConsent";
+import { useRegisterForm } from "./useRegisterForm";
 
 export const Register = () => {
-  const router = useRouter();
-
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<RegisterRequest & { confirmPassword: string }>({
-    resolver: yupResolver(registerValidation),
-    defaultValues: { inviteToken: router.query.invite as string },
-  });
-
-  const { register } = useRegister();
-  const { theme } = useAppTheme();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const onSubmit = async (data: RegisterRequest) => {
-    try {
-      setIsLoading(true);
-      await register(data);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { control, errors, isLoading, submitButtonColor, isSubmitDisabled, submitHandler, openPrivacyPolicy } =
+    useRegisterForm();
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={submitHandler}>
       <Box
         direction={"column"}
         width={"100%"}
@@ -101,12 +75,27 @@ export const Register = () => {
             />
           )}
         />
+        <Controller
+          control={control}
+          name={"personalDataAccepted"}
+          render={({ field }) => (
+            <PersonalDataConsent
+              name={field.name}
+              checked={field.value}
+              disabled={field.disabled || isLoading}
+              error={errors.personalDataAccepted?.message}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              onPolicyOpen={openPrivacyPolicy}
+            />
+          )}
+        />
         <Button
-          color={theme.colors.brandColorContrastText}
+          color={submitButtonColor}
           margin={"auto"}
           label={"Создать аккаунт"}
           type={"submit"}
-          disabled={isLoading}
+          disabled={isSubmitDisabled}
         />
       </Box>
     </Form>

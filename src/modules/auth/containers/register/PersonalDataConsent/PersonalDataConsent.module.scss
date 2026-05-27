@@ -1,0 +1,78 @@
+.root {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  color: var(--color-text-on-secondary);
+}
+
+.checkbox {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  border: 1px solid color-mix(in srgb, var(--color-text-on-secondary) 45%, transparent);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--color-primary) 88%, transparent);
+  cursor: pointer;
+}
+
+.checkboxChecked {
+  border-color: var(--color-brand);
+  background: var(--color-brand);
+}
+
+.nativeInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.checkMark {
+  width: 10px;
+  height: 6px;
+  border-bottom: 2px solid var(--color-brand-contrast-text);
+  border-left: 2px solid var(--color-brand-contrast-text);
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.labelText {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  opacity: 0.82;
+}
+
+.linkButton {
+  display: inline;
+  padding: 0;
+  border: 0;
+  color: var(--color-brand);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.linkButton:hover {
+  text-decoration: underline;
+}
+
+.error {
+  color: var(--color-error);
+  font-size: 0.68rem;
+  line-height: 1.25;
+}

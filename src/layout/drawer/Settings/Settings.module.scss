@@ -34,3 +34,34 @@
   border-radius: 15px;
   line-height: 1.5;
 }
+
+.policySection {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.policyDivider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.policyLink {
+  padding: 0;
+  border: 0;
+  color: var(--color-brand);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  opacity: 0.86;
+
+  &:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+}

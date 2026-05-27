@@ -3,6 +3,7 @@ export enum SheetKind {
   NavDrawer = "navDrawer",
   Login = "login",
   Register = "register",
+  PrivacyPolicy = "privacyPolicy",
   CreateInfo = "createInfo",
   MapSidebar = "mapSidebar",
   MapContent = "mapContent",

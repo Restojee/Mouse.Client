@@ -1,7 +1,12 @@
 import { RegisterRequest } from "@/api/codegen/genMouseMapsApi";
 import * as yup from "yup";
 
-export const registerValidation: yup.ObjectSchema<RegisterRequest & { confirmPassword: string }> = yup.object({
+export type RegisterFormValues = RegisterRequest & {
+  confirmPassword: string;
+  personalDataAccepted: boolean;
+};
+
+export const registerValidation: yup.ObjectSchema<RegisterFormValues> = yup.object({
   userName: yup
     .string()
     .trim()
@@ -24,4 +29,8 @@ export const registerValidation: yup.ObjectSchema<RegisterRequest & { confirmPas
     .string()
     .oneOf([yup.ref("password"), undefined], "Пароли должны совпадать")
     .required("Это обязательное поле"),
+  personalDataAccepted: yup
+    .boolean()
+    .oneOf([true], "Нужно согласие на обработку персональных данных")
+    .required("Нужно согласие на обработку персональных данных"),
 });

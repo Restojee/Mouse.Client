@@ -14,8 +14,10 @@ import { authApi } from "@/api/authApi";
 import { Controller, ControllerRenderProps, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ChangePasswordForm, changePasswordValidation } from "@/modules/auth/schemas/changePasswordValidation";
+import { useRouter } from "next/router";
 
 export const Settings = () => {
+  const router = useRouter();
   const { onError, onSuccess } = useAppNotifications();
   const { currentUser, updateUserImage } = useUser();
   const { theme } = useAppTheme();
@@ -112,6 +114,11 @@ export const Settings = () => {
     }
   }, [currentUser?.username, onError, onSuccess]);
 
+  const onPrivacyPolicyOpen = useCallback(() => {
+    const from = router.asPath || "/maps";
+    router.push({ pathname: "/privacy", query: { from } }).catch(() => undefined);
+  }, [router]);
+
   return (
     <div className={settingsStyles.settingsContainer}>
       <div className={drawerStyles.drawerHeader}>
@@ -187,6 +194,16 @@ export const Settings = () => {
           label={"Скопировать"}
           color={theme.colors.brandColorContrastText}
         />
+      </div>
+      <div className={settingsStyles.policySection}>
+        <div className={settingsStyles.policyDivider} />
+        <button
+          type="button"
+          className={settingsStyles.policyLink}
+          onClick={onPrivacyPolicyOpen}
+        >
+          Политика конфиденциальности
+        </button>
       </div>
     </div>
   );

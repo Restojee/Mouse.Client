@@ -6,6 +6,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const items = [
     buildSitemapUrlItem(`${SITE_URL}/`, "0.9", "daily", lastmod),
     buildSitemapUrlItem(`${SITE_URL}/maps`, "0.8", "daily", lastmod),
+    buildSitemapUrlItem(`${SITE_URL}/privacy`, "0.4", "monthly", lastmod),
   ];
 
   res.setHeader("Content-Type", "application/xml; charset=utf-8");

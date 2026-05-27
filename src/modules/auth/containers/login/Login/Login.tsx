@@ -8,11 +8,11 @@ import { Input, PasswordInput } from "@/ui/Input";
 import { Typography } from "@/ui/Typography";
 import { Display } from "@/ui/Display";
 import { LogInIcon } from "@/svg/LogInIcon";
-import { GoogleIcon } from "@/svg/GoogleIcon";
 import loginStyles from "./Login.module.scss";
 import { useLoginForm } from "./useLoginForm";
 
 const textColor = "var(--color-text)";
+
 export const Login = () => {
   const {
     control,
@@ -21,8 +21,8 @@ export const Login = () => {
     isInviteHintOpen,
     onSubmit,
     onToggleInviteHint,
-    onGoogleLogin,
     onForgotPassword,
+    onPrivacyPolicyOpen,
   } = useLoginForm();
 
   return (
@@ -105,21 +105,7 @@ export const Login = () => {
 
         <Row className={loginStyles.divider}>
           <div className={loginStyles.dividerLine} />
-          <Typography className={loginStyles.dividerText}>или</Typography>
-          <div className={loginStyles.dividerLine} />
         </Row>
-
-        <Button
-          label={"Войти через Google"}
-          type={"button"}
-          size={"lg"}
-          variant={"outline"}
-          fullWidth
-          prepend={<GoogleIcon size={20} />}
-          onClick={onGoogleLogin}
-          disabled={isLoading}
-          color={textColor}
-        />
 
         <Row className={loginStyles.footer}>
           <Typography className={loginStyles.footerMuted}>Нет аккаунта?</Typography>
@@ -135,6 +121,12 @@ export const Login = () => {
             На данный момент регистрация возможна только по приглашению
           </Typography>
         </Display>
+        <Typography
+          className={loginStyles.privacyLink}
+          onClick={onPrivacyPolicyOpen}
+        >
+          Политика конфиденциальности
+        </Typography>
       </Column>
     </Form>
   );

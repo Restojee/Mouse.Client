@@ -1,14 +1,16 @@
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 import { LoginRequest } from "@/api/codegen/genMouseMapsApi";
+import { setAppMessage } from "@/bll/appReducer";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useLogin } from "@/modules/auth/hooks/useLogin";
 import { loginValidateSchema } from "@/modules/auth/schemas/loginValidateSchema";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { setAppMessage } from "@/bll/appReducer";
 
 export const useLoginForm = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const { login } = useLogin();
 
   const {
@@ -40,15 +42,6 @@ export const useLoginForm = () => {
     setIsInviteHintOpen((prev) => !prev);
   }, []);
 
-  const onGoogleLogin = useCallback(() => {
-    dispatch(
-      setAppMessage({
-        severity: "info",
-        text: "Авторизация через Google скоро появится",
-      }),
-    );
-  }, [dispatch]);
-
   const onForgotPassword = useCallback(() => {
     dispatch(
       setAppMessage({
@@ -58,6 +51,11 @@ export const useLoginForm = () => {
     );
   }, [dispatch]);
 
+  const onPrivacyPolicyOpen = useCallback(() => {
+    const from = router.asPath || "/maps";
+    router.push({ pathname: "/privacy", query: { from } }).catch(() => undefined);
+  }, [router]);
+
   return {
     control,
     errors,
@@ -65,7 +63,7 @@ export const useLoginForm = () => {
     isInviteHintOpen,
     onSubmit,
     onToggleInviteHint,
-    onGoogleLogin,
     onForgotPassword,
+    onPrivacyPolicyOpen,
   };
 };
