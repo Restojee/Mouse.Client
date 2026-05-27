@@ -7,7 +7,6 @@ import { SheetConfig } from "@/ui/Sheet/core/types";
 export const MAP_CONTENT_SHEET_CONFIG: SheetConfig = {
   noHeader: true,
   padding: 0,
-  height: "95vh",
   width: "1200px",
   withoutButtons: true,
   withoutTitle: true,
