@@ -52,7 +52,7 @@ const slice = createSlice({
       }
     },
     setMapContentTags: (state, action: PayloadAction<Tag[]>) => {
-      if (state.mapContent?.tags) {
+      if (state.mapContent) {
         state.mapContent.tags = action.payload;
       }
     },

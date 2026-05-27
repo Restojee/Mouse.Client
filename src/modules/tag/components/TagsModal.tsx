@@ -3,11 +3,15 @@ import styles from "./TagsModal.module.scss";
 import { useTagsModal } from "./useTagsModal";
 
 const TagsModal = () => {
-  const { renderedTags } = useTagsModal();
+  const { renderedGroups, renderedPlainTags, hasGroups, hasPlainTags, groupsClassName, plainTagsClassName } =
+    useTagsModal();
 
   return (
     <div className={styles.root}>
-      <div className={styles.list}>{renderedTags}</div>
+      <div className={styles.list}>
+        {hasGroups ? <div className={groupsClassName}>{renderedGroups}</div> : null}
+        {hasPlainTags ? <div className={plainTagsClassName}>{renderedPlainTags}</div> : null}
+      </div>
     </div>
   );
 };

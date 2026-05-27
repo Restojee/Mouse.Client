@@ -108,17 +108,11 @@ export const removeFavorite = createAsyncThunk("map/favorite", async (arg: Remov
 });
 
 export const getMapByIdThunk = createAsyncThunk("map/get-by-id", async (arg: GetMapApiArg, thunkAPI) => {
-  const state = thunkAPI.getState() as RootState;
   try {
-    const cachedMap = state.maps.mapsData?.records.find((el) => el.id === arg.levelId) as Map;
     const map = await mapsApi.getMapsById({ levelId: arg.levelId }, mapByIdAbortController.signal);
     const tagIds = map.tags?.map((el) => el.id as number) || [];
 
-    if (cachedMap) {
-      thunkAPI.dispatch(setMapContent({ ...cachedMap, image: map.image }));
-    } else {
-      thunkAPI.dispatch(setMapContent(map));
-    }
+    thunkAPI.dispatch(setMapContent(map));
 
     thunkAPI.dispatch(setSelectedTagIds(tagIds));
     thunkAPI.dispatch(setCompletedMaps(map.completed || []));

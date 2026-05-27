@@ -29,7 +29,12 @@ export const useTag = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const levelId = useMemo(() => router.query.levelId, [router.query.levelId]);
+  const levelId = useMemo(() => {
+    const rawLevelId = router.query.id ?? router.query.levelId;
+    const value = Array.isArray(rawLevelId) ? rawLevelId[0] : rawLevelId;
+
+    return Number(value);
+  }, [router.query.id, router.query.levelId]);
 
   const selectedTagIds = useAppSelector(selectSelectedTagIds);
   const modalType = useAppSelector(selectTagModalType);
@@ -76,9 +81,9 @@ export const useTag = () => {
 
   const commitDraft = useCallback((): void => {
     dispatch((innerDispatch, getState) => {
-      const id = Number(levelId);
+      const id = levelId;
       const draft = selectSelectedTagIds(getState()) || [];
-      if (levelId) {
+      if (id) {
         innerDispatch(updateMapTagsThunk(id));
       } else {
         innerDispatch(setMapTagIds(draft));
