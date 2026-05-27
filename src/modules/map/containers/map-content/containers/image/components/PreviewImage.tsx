@@ -10,26 +10,24 @@ type PreviewImagePropsType = {
 export const PreviewImage = (props: PreviewImagePropsType) => {
   const { image } = props;
 
+  const hasImage = Boolean(image);
+
   const mapImage = useMemo(() => {
     return getMapImageLink(image, "display");
   }, [image]);
 
   const onImageOpen = useCallback(() => {
-    if (!image) {
+    if (!hasImage) {
       return;
     }
 
     props.onClick?.(mapImage);
-  }, [image, mapImage, props]);
-
-  if (!image) {
-    return null;
-  }
+  }, [hasImage, mapImage, props]);
 
   return (
     <Box
       onClick={onImageOpen}
-      cursor={props.image ? "zoom-in" : "default"}
+      cursor={hasImage ? "zoom-in" : "default"}
       className={styles.imageFrame}
     >
       <img
