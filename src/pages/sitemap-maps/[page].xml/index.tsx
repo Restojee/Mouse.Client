@@ -1,17 +1,7 @@
 import { GetServerSideProps } from "next";
 import { mapsApi } from "@/api/mapsApi";
 import type { Map } from "@/api/codegen/genMouseMapsApi";
-
-const SITE_URL = "https://onlyplanks.ru";
-const PAGE_SIZE = 50;
-
-const escapeXml = (value: string) =>
-  value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+import { buildSitemapUrlItem, buildUrlSetXml, getMapPageUrl, MAP_SITEMAP_PAGE_SIZE } from "@/common/sitemap";
 
 export const getServerSideProps: GetServerSideProps = async ({ params, res }) => {
   const raw = params?.page;
@@ -27,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
   try {
     const data = await mapsApi.getMaps({
       page,
-      size: PAGE_SIZE,
+      size: MAP_SITEMAP_PAGE_SIZE,
       sortBy: "DATE",
       sortDirection: "DESC",
     });
@@ -35,38 +25,27 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
     maps = data?.records ?? [];
 
     const total = data?.totalItems ?? 0;
-    totalPages = Math.ceil(total / PAGE_SIZE);
+    totalPages = data?.totalPages ?? Math.ceil(total / MAP_SITEMAP_PAGE_SIZE);
   } catch {
     return { notFound: true };
   }
 
-  if (page > totalPages || maps.length === 0) {
+  if (maps.length === 0 || (totalPages > 0 && page > totalPages)) {
     return { notFound: true };
   }
 
   const items = maps
     .filter((map) => typeof map.id === "number")
     .map((map) => {
-      const loc = escapeXml(`${SITE_URL}/maps/${map.id}`);
-      const lastmod = escapeXml(map.modifiedUtcDate ?? map.createdUtcDate ?? new Date().toISOString());
-      return `
-  <url>
-    <loc>${loc}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>`;
-    })
-    .join("");
+      const loc = getMapPageUrl(map.id as number);
+      const lastmod = map.modifiedUtcDate ?? map.createdUtcDate ?? new Date().toISOString();
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${items}
-</urlset>`;
+      return buildSitemapUrlItem(loc, "0.7", "weekly", lastmod);
+    });
 
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
   res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
-  res.write(xml);
+  res.write(buildUrlSetXml(items));
   res.end();
 
   return { props: {} };
